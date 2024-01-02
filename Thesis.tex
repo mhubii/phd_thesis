@@ -10,8 +10,8 @@
 \documentclass[british,a4paper,11pt,twoside]{StyleThese}
 
 \makeatletter
-\title{Lorem Ipsum}\let\thetitle\@title
-\author{Foo von Bar}\let\theauthor\@author
+\title{Data Driven Endoscopic Camera Motion Automation}\let\thetitle\@title
+\author{Martin Huber}\let\theauthor\@author
 \makeatother
 
 \include{FormatAndDefsBasic}
@@ -20,13 +20,11 @@
 \newcommand{\draftnote}{\textcolor[gray]{0.5}{\textbf{DRAFT -- \today}}}
 \include{FormatAndDefsThesisExtra}
 
-
 \begin{document}
 
 \frontmatter
 
 \include{TitlePageKCL}
-%\include{TitlePageUCL}
 
 \dominitoc
 
@@ -56,14 +54,15 @@ An impact statement is often required.
 
 \mainmatter
 
-\include{Introduction}
-
-\include{Methods}
-
-\include{Conclusion}
+\include{introduction/chapter}
+\include{methods/chapter}
+\include{chapter_1/chapter}
+\include{chapter_2/chapter}
+\include{chapter_3/chapter}
+\include{chapter_4/chapter}
 
 \backmatter
 
-\bibliography{JNFull,ThesisBibliography}
+\bibliography{JNFull,introduction/references,chapter_1/references,chapter_2/references,chapter_3/references,chapter_4/references}
 
 \end{document}
