@@ -19,8 +19,8 @@ Compared to open surgery, laparoscopy leads to significantly faster intervention
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{introduction/img/robotic_since_introduction.png}
-    \caption{Relative increase in laparoscopic procedures over open approaches for surgical residents in the United States over a 16 year period from 2003 to 2018. Figures and data taken from \cite{sheetz2020trends}. Analyzed were cholecystectomy, appendectomy, inguinal hernia repair, colectomy, gastrectomy, and Nissen fundoplication.}
+    \includegraphics[width=0.8\textwidth]{introduction/img/robotic_since_introduction.png}
+    \caption{explain figure. Figure provided with courtesy by \cite{sheetz2020trends}.}
     \label{in:fig:robotic_vs_laparoscopic_vs_open}
 \end{figure}
 Some types of laparoscopic procedures are cholecystectomy (gallbladder removal), appendectomy (appendix removal), inguinal hernia repair (e.g. leaking of intestines through abdominal wall), colectomy (partial colon removal), and gastrectomy (partial or full stomach removal) among others. In the following, cholecystectomy will be considered an example for explaining a laparoscopic surgery procedure. 
@@ -32,24 +32,29 @@ During a cholecystectomy, trocars are inserted through small incisions in the ab
 % In parts of this work
 
 \section{Robot Assisted Laparoscopy}
+\label{in:sec:robot_assisted_laparoscopy}
 
 \begin{itemize}
     \item make the case for robotic laparoscopic surgery
 \end{itemize}
 \subsection{Robot Surgery Platforms}
-explain surge in laparoscopic robotics with various form-factors following da Vinci patent (20 years, filed 1990s)
+\label{in:sec:robot_surgery_platforms}
+The da Vinci\textsuperscript{\textregistered} robot by Intuitive (\figref{in:fig:da_vinci}) was launched in 1999. The company has seen sustained growth ever since TODO: add figure of revenue. Its initial success can be attributed to the minimally invasive prostatectomy, the partial or complete removal of the prostate. About $85\%$ of radical prostatectomies 2017 were performed robotically in England \cite{maynou2021patterns}. The system has made it ergonomically much simpler to access the prostate, being located low in the pelvis.
 
-RCM / Fulcrum
+Intuitive filed multiple patents in the 1990s, which guarded market access from other companies. Patents in the US generally last for 20 years, which is why as of 2020 most of these critical patents ran out. Many other companies are thus trying to gain some of Intuitive's market share. This competition will ultimately benefit patients, as it might help drive down cost for robotic surgery in the future, increase accessibility, and lead to innovation in general. An non-exhaustive overview of current commercial systems is given in \tabref{in:fig:systems}. It can be seen that the competition has already brought innovation and a broader variety of systems. Multiple companies are adopting Intuitive's monolithic structure, that is all robotic arms are attached to a single instance. Many others, such as Medtronic and CMR Surgical, are taking a modular approach instead. The systems further differentiate themselves not only by their modularity, but also through their mechanical properties. The da Vinci\textsuperscript{\textregistered} robot has a mechanical remote center of motion (RCM), i.e. there are dedicated degrees of freedom (DOF) for achieving a zero translational velocity at the entry point to the patient. The RCM is also sometimes called fulcrum in the medical context. Having a mechanical RCM provides additional safety, but leads to highly dedicated systems that are hard to re-purpose. This is why recent systems are exploring programmable RCMS, in which an RCM is achieved through control theory. This has implications on safety, as sometimes the RCM may not be achieved, and thus extra care has to be taken, but can potentially provide multi-purpose systems. It is too early to tell which design will prevail, there might even be a future where in which multiple designs could coincide. 
 
-Different systems
+% left out:
+    % \item Monarch by Johnson \& Johnson (not really laparoscopic, no RCM)
+    % \item Saroa by Riverfield (unclear RCM)
 
 \begin{table}[]
 \centering
-\caption{Some commercial systems}
+\caption{A non-exhaustive list of commercial robotic laparoscopy systems. The table differentiates between monolithic / modular systems and systems with mechanical / programmable remote center of motion (RCM). The market competition has lead to a variety of systems with a tendency to stand apart from Intuitive's status-quo approach. Refers to \secref{in:sec:robot_surgery_platforms}.}
+\label{in:fig:systems}
 \begin{tabular}{lll}
                                        & Mechanical RCM                                                                                                                                                                                                                                                                                                             & Programmable RCM                                                                                                                                                                                                                                                                                                         \\ \cline{2-3} 
-\multicolumn{1}{l|}{Monolythic} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ da Vinci\textsuperscript{\textregistered} (Intuitive)\\ $\bullet$ avatera\textsuperscript{\textregistered} (avateramedical)\\ $\bullet$ Maestro\textsuperscript{\textregistered} (Moon Surgical)\end{tabular}} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ hinotori\textsuperscript{\texttrademark} (Medicaroid)\\ $\,$\\ $\,$\end{tabular}}                                                                                                                                                            \\ \cline{2-3} 
-\multicolumn{1}{l|}{Modular}    & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ Hugo\textsuperscript{\texttrademark} (Medtronic)\\ $\bullet$ SSi Mantra\textsuperscript{\texttrademark} (SS Innovations)\\ $\,$\end{tabular}}                                                                                  & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ Versius\textsuperscript{\textregistered} (CMR)\\ $\bullet$ Dexter\textsuperscript{\textregistered} (Distalmotion)\\ $\bullet$ Senhance\textsuperscript{\texttrademark} (Asensus Surgical)\end{tabular}} \\ \cline{2-3} 
+\multicolumn{1}{l|}{Monolithic} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ da Vinci\textsuperscript{\textregistered} (Intuitive)\\ $\bullet$ avatera\textsuperscript{\textregistered} (avateramedical)\\ $\bullet$ Maestro\textsuperscript{\textregistered} (Moon Surgical)\end{tabular}} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ hinotori\textsuperscript{\texttrademark} (Medicaroid)\\ $\,$\\ $\,$\end{tabular}}                                                                                                                                                            \\ \cline{2-3} 
+\multicolumn{1}{l|}{Modular}    & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ Hugo\textsuperscript{\texttrademark} (Medtronic)\\ $\bullet$ SSi Mantra\textsuperscript{\texttrademark} (SS Innovations)\\ $\,$\end{tabular}}                                                                                  & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ Versius\textsuperscript{\textregistered} (CMR Surgical)\\ $\bullet$ Dexter\textsuperscript{\textregistered} (Distalmotion)\\ $\bullet$ Senhance\textsuperscript{\texttrademark} (Asensus Surgical)\end{tabular}} \\ \cline{2-3} 
 \end{tabular}
 \end{table}
 
@@ -59,45 +64,48 @@ Different systems
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{introduction/img/JPG_Large-DV_SYS_Xi_PatientCart_PRF_RGB-min.jpg}
-        \caption{Da Vinci Xi: TODO add note following guidelines \href{https://www.intuitive.com/en-gb/about-us/newsroom}{link}}
+        \caption{The da Vinci\textsuperscript{\textregistered} Xi system. Images provided with courtesy by \textcopyright2023 Intuitive Surgical Operations, Inc.}
+        \label{in:fig:da_vinci}
     \end{subfigure}
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{introduction/img/Product-Versius-3-Arm-Setup-B.jpg}
-        \caption{Versius: TODO add note following guideleines \href{https://cmrsurgical.com/press-kit?ggt_3867=Versius}{link}}
+        \caption{The Versius\textsuperscript{\textregistered} system. Images provided with courtesy by \textcopyright2023 CMR Surgical, Ltd.}
+        \label{in:fig:versius}
     \end{subfigure}
-    % \begin{subfigure}[b]{0.49\textwidth}
-    %     \centering
-    %     % \includegraphics[width=\textwidth]{}
-    %     \caption{Maestro (outdated pictures): TODO add note following guidelines \href{https://www.moonsurgical.com/copie-de-spontaneous-application}{link}}
-    % \end{subfigure}
-    % \begin{subfigure}[b]{0.49\textwidth}
-    %     \centering
-    %     % \includegraphics[width=\textwidth]{}
-    %     \caption{Dexter (to be approved, consisting of endoscope holder and patient cart)}
-    % \end{subfigure}
-    \caption{Surgical systems}
+    \caption{Two examples of currently available commercial robotic laparoscopy systems. It is demonstrated how competition has lead to two very different designs. The da Vinci\textsuperscript{\textregistered} Xi system in \figref{in:fig:da_vinci} is monolithic with a mechanical RCM. The Versius\textsuperscript{\textregistered} system is modular with a programmable RCM. Refers to \secref{in:sec:robot_surgery_platforms}.}
     \label{in:fig:surgical_systems}
 \end{figure}
 
-left out:
-
-\begin{itemize}
-    \item Monarch by Johnson \& Johnson (not really laparoscopic, no RCM)
-    \item Saroa by Riverfield (unclear RCM)
-\end{itemize}
-
 \subsection{Limitations of Current Systems}
+very sofisticated systems ...
+
+Whilst current commercial systems are quite capable already 
+
+cluttered workspace, anaesthesia, ekg, breathing, tools, staff, microscopes, tiny rooms, quick turn-around (in and out)
 
 explain limitations of current systems, missed opportunities given current robots (capable actuators)
 
 \subsection{Enhancing Current Systems}
 Without impacting clinical workflow
 Through
-- Automation
-- Global Understanding (only aware of entry point, not so much on surroundings)
+\begin{itemize}
+    \item Automation
+    \item Global Understanding (only aware of entry point, not so much on surroundings)
+\end{itemize}
 
-\section{Camera Motion Automation in Robot Assisted Laparoscopy}
+\section{Spatial Awareness in Robotic Laparoscopy}
+Positioning is vital for reach-ability \cite{zelechowski2023automatic}
+
+Workspace is crucial in laparoscopcy \cite{alhusseinawi2023validation}
+
+Workspace optimization works \cite{hutzl2015knowledge}
+
+\subsection{Eye-in-hand and Eye-to-hand Calibration}
+\subsection{Clinical Workflow}
+\subsection{Unified Calibration}
+
+\section{Camera Motion Automation in Robotic Laparoscopy}
 consider adding some paper introductions here already
 
 % make the case for automation
@@ -194,8 +202,6 @@ Where a mechanical RCM is not available, it can be achieved programmatically. As
     \item write, write, write! hammer it
 \end{itemize}
 
-\section{Towards the Operating Theater}
-\subsection{Spatial Awareness}
 
 % \subsection{Minimally Invasive Surgery}
 % Minimally Invasive Surgery (MIS) minimizes blood loss, allows for faster recovery and leaves a patient with smaller scars. In traditional MIS, a main surgeon would usually be supported by an assistant to help move the endoscope. In this setup, the assistant surgeon often introduces tremor and suffers fatigue. To oveRCMe these, robotic endoscope holders like AESOP \cite{unger1994aesop} or EndoAssist \cite{gilbert2009endoassist} were developed. Different control schemes, such as gaze control, control via joystick, foot or voice were investigated. They, however, lead to eye strain, additional mental workload or communication failures, respectively. Therefore, attempts to automate the endoscope motion via visual servoing were explored. These can broadly by separated into approaches that rely on a mechanical remote center of motion (RCM) and approaches that cast the RCM as part of the optimal control, often referred to as programmable RCM. 
