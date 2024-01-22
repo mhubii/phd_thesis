@@ -1,346 +1,374 @@
-\graphicspath{{chapter_2}}
-\chapter[Short tile for table of content]{Endoscopic Camera Motion Extraction from Dynamic Surgical Scenes}
+\graphicspath{{chapter_1}}
+\chapter[Short tile for table of content]{Robotic Endoscope Camera Motion Automation under Remote Center of Motion Constraint}
 \chaptermark{Short title for headers}
-\label{chap:camera_motion_extraction}
+\label{chap:robotic_endoscope}
 \minitoc
-\section{Introduction}
-% short introduction to deep learning in medical imaging
-% The advancement of dedicated chips unlocked the application of Deep Neural Networks (DNN) to vast datasets, and with it, the extraction of previously intangible information from them. As a result, DNNs lead to dramatic SOTA improvements in 
-The goal in IL is to learn an expert policy from a set of expert demonstrations.
-% $\pi_\text{E}: s_t \rightarrow a_t$ that maps a state $s_t$ to an action $a_t$ at timestep $t$, with action-state pairs drawn from a trajectory $\tau_i = \{(s_t,a_t),...,(s_{t+T-1},a_{t+T-1})\}$, sampled from expert demonstrations $\tau_i \in D$.
-IL has been slow to transition to interventional imaging. In particular, the slow transition of modern IL methods into automating laparoscopic camera motion is due to a lack state-action-pair data \cite{kassahun2016surgical, esteva2019guide}. The need for automated laparoscopic camera motion \cite{pandya2014review, ellis2016task} has, therefore, historically sparked research in rule-based approaches that aim to reactively center surgical tools in the field of view \cite{agustinos2014visual, da2020scan}. DNNs could contribute to this work by facilitating SOTA tool segmentations and automated tool tracking \cite{garcia2017toolnet, garcia2021image, gruijthuijsen2021autonomous}.
 
-% Widely available, and well curated datasets then quickly enabled the adaptation of DNNs to the medical imaging domain, facilitating assisted or fully automated image analysis, e.g. for diagnosis or segmentation. This progress, however, is slow to transition to the realm of interventional imaging, where automation faces dynamic environments and contextual dependencies \cite{vercauteren2019cai4cai}, in general. 
+This chapter ... the work introduced in Huber... 
 
-% In particular, the slow transition of DNNs into automating laparoscopic camera motion in Minimally Invasive Surgery (MIS) can be accounted for by a lack of task-specific data \cite{kassahun2016surgical, esteva2019guide}. The need for automated laparoscopic camera motion \cite{pandya2014review, ellis2016task} has, therefore, historically sparked research in rule-based approaches that, in their simplest form, aim at reactively centering surgical tools in the field of view (TODO: add citations). DNNs contribute to this work by facilitating SOTA tool segmentations for the identification of tool tips. 
+\newpage
 
-Recent research contextualizes laparoscopic camera motion with respect to (w.r.t.) the user and the state of the surgery. DNNs could facilitate contextualization, as indicated by research in surgical phase and skill recognition \cite{kitaguchi2020real}. However, current contextualization is achieved through handcrafted rule-based approaches \cite{rivas2014towards, rivas2017smart}, or through stochastic modeling of camera positioning w.r.t. the tools \cite{weede2011intelligent, rivas2019transferring}. While the former do not scale well and are prone to nonlinear interventions, the latter only consider surgical tools. However, clinical evidence suggests camera motion is also caused by the surgeon's desire to observe tissue \cite{ellis2016task}. Non-rule-based, i.e. IL, attempts that consider both, tissue, and tools as source for camera motion are \cite{ji2018learning, su2020multicamera, wagner2021learning}, but they utilize an oversimplified setup, require multiple cameras or tedious annotations.
+% Contributes ...
 
-In current laparoscopic camera motion automation, DNNs merely solve auxiliary tasks. Consequentially, current laparoscopic camera motion automation is rule-based, and disregards tissue. While modern IL approaches could alleviate these issues, clinical data of laparoscopic surgeries remains unusable for IL. Therefore, SOTA IL attempts rely on artificially acquired data \cite{ji2018learning, su2020multicamera, wagner2021learning}. 
+% \section{Introduction}
+When compared to open surgery, MIS takes place under endoscopic guidance and offers improved cosmetics, less blood loss, shorter recovery times and reduced cost \cite{vitiello2012emerging}. In a traditional MIS setup, the surgeon is supported by an assistant who guides the endoscope. Although this task is conceptually simple, it requires trained personnel, which introduces cost \cite{horgan2001robots}. The assistant surgeon exhibits tremor, suffers fatigue, and can be prone to communication failures \cite{horgan2001robots, palep2009robotic, li2020accelerated}. 
 
-In this work, we aim to extract camera motion from videos of laparoscopic interventions, thereby creating state-action-pairs for IL. To this end, we introduce a method that isolates camera motion (actions) from object and tool motion by solely relying on observed images (states). To this end, DNNs are supervisedly trained to estimate camera motion while disregarding object, and tool motion. This is achieved by synthetically adding camera motion via a novel \textit{homography generation algorithm} to a newly acquired dataset of camera motion free da Vinci surgery image sequences. In this way, object, and tool motion reside within the image sequences, and the synthetically added camera motion can be regarded as the only source, and therefore ground truth, for camera motion estimation. Extensive experiments are carried out to identify modern network architectures that perform best at camera motion estimation. The DNNs that are trained in this manner are found to generalize well across domains, in that they transfer to vast laparoscopic datasets. They are further found to outperform classical camera motion estimators.
+Several robotic endoscope holders, such as AESOP \cite{unger1994aesop}, ViKY \cite{long2007development}, and EndoAssist \cite{gilbert2009endoassist}, have been developed to address these shortcomings. Research in \cite{aiono2002controlled} and \cite{voros2010viky} showcased a reduction in the intervention time. While robotic endoscope holders can facilitate improvements, they introduce additional workload to the surgeon. With the advance of automated surgical systems this additional workload can be reduced \cite{moustris2011evolution}. Therefore, different methods to automate endoscopic camera motion were explored. 
 
-\section{Related Work}
+Alongside automation via kinematic data, visual servoing, i.e. control through images, is considered a promising alternative, as it provides intra-operative feedback \cite{pandya2014review} and is less prone to errors from model mismatch \cite{azizian2014visual}. In semi-autonomous setups, such as gaze or voice control \cite{taniguchi2010classification}, visual servoing can robustly reflect a surgeon's intent and respect anatomical constraints or facilitate full autonomy.
 
-Supervised deep homography estimation was first introduced in \cite{detone2016deep} and got improved through a hierarchical homography estimation in \cite{erlik2017homography}. It got adopted in the medical field in \cite{bano2020deep}. All three approaches generate a limited set of homographies, only train on static images, and use non-SOTA VGG-based network architectures \cite{simonyan2014very}.
-
-Unsupervised deep homography estimation has the advantage to be applicable to unlabelled data, e.g. videos. It was first introduced in \cite{nguyen2018unsupervised}, and got applied to endoscopy in \cite{gomes2019unsupervised}. The loss in image space, however, can't account for object motion, and only static scenes are considered in their works. Consequentially, recent work seeks to isolate object motion from camera motion through unsupervised incentives. Closest to our work are \citet{le2020deep}, where the authors generate a dataset of camera motion free image sequences. However, due to tool, and object motion, their data generation method is not applicable to laparoscopic videos, since it relies on motion free image borders. \citet{zhang2020content} provide the first work that does not need a synthetically generated dataset. Their method works fully unsupervised, but constraining what the network minimizes, is difficult to achieve.
-
-Only \cite{le2020deep} and \cite{zhang2020content} train DNNs on object motion invariant homography estimation. Contrary to their works, we train DNNs supervisedly. We do so by applying the data generation of \citet{detone2016deep} to image sequences rather than single images. We further improve their method by introducing a novel \textit{homography generation algorithm} that allows to continuously generate synthetic homographies at runtime, and by using SOTA DNNs.
-
-\section{Materials and Methods}
-
-\subsection{Theoretical Background}
-Two images are related by a homography if both images view the same plane from different angles and distances. Points on the plane, as observed by the camera from different angles in homogeneous coordinates $\mathbf{p}_i = \begin{bmatrix}u_i&v_i&1\end{bmatrix}^\text{T}$ are related by a projective homography $\mathbf{G}$ \cite{malis2007deeper}
-\begin{equation}
-    \alpha_g\mathbf{p}_i = \mathbf{G}\mathbf{p}_i^\prime.
-    \label{c2:eq:proj_hom}
-\end{equation}
-Since the points $\mathbf{p}_i$ and $\mathbf{p}_i^\prime$ are only observed in the 2D image, depth information is lost, and the projective homography $\mathbf{G}$ can only be determined up to scale $\alpha_g$. The distinction between projective homography $\mathbf{G}$ and homography in Euclidean coordinates $\mathbf{H} = \mathbf{K}^{-1}\mathbf{G}\mathbf{K}$, with the camera intrinsics $\mathbf{K}$, is often not made for simplicity, but is nonetheless important for control purposes. The eight unknown parameters of $\mathbf{G}$ can be obtained through a set of $N\geq4$ matching points $\mathbb{P} = \{(\mathbf{p}_i, \mathbf{p}^\prime_i), i\in[0,N-1]\}$ by rearranging \eqref{c2:eq:proj_hom} into
-\begin{equation}
-    \begin{bmatrix}
-        u^\prime_i & v^\prime_i & 1 & 0   &   0 & 0 & -u^\prime_i u_i & -v^\prime_i u_i & -u_i \\
-        0   &   0 & 0 & u^\prime_i & v^\prime_i & 1 & -u^\prime_i v_i & -v^\prime_i v_i & - v_i
-    \end{bmatrix}\mathbf{g}= \mathbf{0}\quad\forall i,
-    \label{c2:eq:hom_lin_sys}
-\end{equation}
-where $\mathbf{g}$ holds the entries of $\mathbf{G}$ as a column vector. The ninth constraint, by convention, is usually to set $||\mathbf{g}||_2 = 1$. Classically, $\mathbb{P}$ is obtained through feature detectors but it may also be used as a means to parameterise the spatial transformation.
-Recent deep approaches indeed set $\mathbb{P}$ as the corners of an image, and predict $\Delta \mathbf{p}_i = \mathbf{p}^\prime_i - \mathbf{p}_i$. This is also known as the four point homography $\mathbf{G}_{4\text{point}}$
-\begin{equation}
-    \mathbf{G}_{4\text{point}} = \begin{bmatrix}
-        \Delta u_0 & \Delta v_0 \\
-        \Delta u_1 & \Delta v_1 \\
-        \Delta u_2 & \Delta v_2 \\
-        \Delta u_3 & \Delta v_3
-    \end{bmatrix},
-    \label{c2:eq:4pt}
-\end{equation}
-which relates to $\mathbf{G}$ through \eqref{c2:eq:hom_lin_sys}, where $\mathbf{p}^\prime_i = \mathbf{p}_i + \Delta \mathbf{p}_i$.    
-
-%\section{Isolating Camera Motion from Surgical Scene Motion}
-
-\subsection{Data Preparation}
-
-Similar to \cite{le2020deep}, we initially find camera motion free image sequences, and synthetically add camera motion to them. In our work, we isolate camera motion free image sequences from da Vinci surgeries, and learn homography estimation supervisedly. We acquire publicly available laparoscopic, and da Vinci surgery videos. An overview of all datasets is shown in \figref{c2:fig:data}. Excluded are synthetic, and publicly unavailable datasets. Da Vinci surgery datasets, and laparoscopic surgery datasets require different pre-processing steps, which are described below.
-
+Visual servoing approaches that satisfy a RCM constraint can be split into methods that rely on a mechanical RCM and methods that rely on a programmable RCM. There has been less research on visual servoing with programmable RCM because of robot singularities and constraints on the robot positioning, however, in contrast to a mechanical RCM, a programmable RCM can be adapted in real-time, and the robot, with which the programmable RCM is achieved, can be used for multiple purposes \cite{kuo2012kinematic}, for example in open surgery. Existing methods with mechanical RCM, and programmable RCM, will be detailed in \secref{c2:sec:mech_rcm}, and \secref{c2:sec:prog_rcm}, respectively.
 \begin{figure}
-\centering
-\begin{subfigure}[b]{\textwidth}
     \centering
-    \includegraphics[width=0.8\textwidth]{fig/fig_da_vinci.pdf}
-    \caption{Da Vinci surgery datasets. Included are: \href{https://surgvisdom.grand-challenge.org/}{SurgVisDom} \cite{zia2021surgical}, \href{http://hamlyn.doc.ic.ac.uk/vision/}{GN} \cite{giannarou2012probabilistic}, \href{http://hamlyn.doc.ic.ac.uk/vision/}{MT} \cite{mountney2010three}, \href{https://saras-esad.grand-challenge.org/}{SARAS-ESAD} \cite{bawa2020esad}, \href{https://endovissub2017-kidneyboundarydetection.grand-challenge.org/}{KBD} \cite{hattab2020kidney}, \href{https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/}{RIS} \cite{allan20192017}, \href{https://endovissub2018-roboticscenesegmentation.grand-challenge.org/home/}{RSS} \cite{allan20202018}}
-    \label{c2:fig:data_a}
-\end{subfigure}
-\begin{subfigure}[b]{\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{fig/fig_da_vinci_high_fps_laparoscopic.pdf}
-    \caption{Laparoscopic datasets and HFR da Vinci dataset from (a) for comparison. Included are: \href{https://robustmis2019.grand-challenge.org/}{ROBUST-MIS} \cite{maier2020heidelberg}, \href{http://camma.u-strasbg.fr/datasets}{Cholec80} \cite{twinanda2016endonet}, \href{https://endovissub-instrument.grand-challenge.org/}{ISAT} \cite{bodenstedt2018comparative}.}
-    \label{c2:fig:data_b}
-\end{subfigure}    
-\caption{Da Vinci surgery and laparoscopic surgery datasets. Shown are relative sizes and the absolute number of frames. Da Vinci surgery datasets are often released at a low frame rate of $1\,\text{fps}$ for segmentation tasks (a). Much more laparoscopic surgery data is available (b).}
-\label{c2:fig:data}
+    \includegraphics[width=\textwidth]{img/labeled_setup_compressed.png}
+    \caption{Robotic setup. A Storz Endocameleon Hopkins Telescope, which provides a light source port and a camera attachment point, is mounted to a KUKA LBR Med 7 R800 robot via a 3D printed clamp. The robotic system undergoes image-based control to reach desired views of the surgical scene and simultaneously pivots around a programmable RCM.}
+    \label{c2:fig:setup}
 \end{figure}
 
-\subsubsection{Da Vinci Surgery Data Pre-Processing}
+%\subsection{with Mechanical RCM}
+\subsection{Visual Servoing with Mechanical RCM}
+\label{c2:sec:mech_rcm}
+Examples of approaches that use a mechanical RCM are~\cite{omote1999self}, where a visual servo controls the position of a marked forceps in image space. In \cite{agustinos2014visual, voros2007automatic}, the tool entry point is exploited to find the tool tip in image space and to center it via visual servoing. Another common scheme is to alter the camera's zoom based on the surgical tools' distance, which was first presented in \cite{king2013towards}, where the tools are tracked with markers. Research in \cite{eslamian2020development, mariani2020experimental, dascan}, based on  \cite{Eslamian2016TowardsTI, eslamian2017autonomous}, adjusts the camera's distance in this manner. They align the camera's optical axis with the line that spans from RCM to the tools' center point. Such an approach requires a complicated registration procedure. In~\cite{abdelaal2020orientation}, Abdelaal \emph{et al.} also adjust the camera's distance to the surgical scene based on the tool distance, but they align the camera's optical axis with the scene's surface normal, which is made possible by their 6 DOF endoscope. Yu \emph{et al.}~\cite{yu2016automatic} adjust the field of view's width based on tool distance. In~\cite{ma2019autonomous}, Ma \emph{et al.} deploy a visual servo to center a marked tool by incorporating depth information, which they extract from camera and tool motion. In \cite{ma2020visual}, they extend this work into a quadratic program in which they constrain the camera's distance with respect to the tools and the tool position in the image plane, whilst minimizing the joint velocities. They rely on stereoscopic images for depth information.
 
-Many of the da Vinci surgery datasets are designed for tool or tissue segmentation tasks, therefore, they are published at a frame rate of $1\,\text{fps}$, see \figref{c2:fig:data_a}. We merge all high frame rate (HFR) datasets into a single dataset and manually remove image sequences with camera motion, which amount to $5\%$ of all
-HFR data. We crop the remaining data to remove status indicators, and scale the images to $306\times408$ pixels, later to be cropped by the \textit{homography generation algorithm} to a resolution of $240\times320$.
+\subsection{Visual Servoing with Programmable RCM}
+\label{c2:sec:prog_rcm}
+Multi-purpose serial manipulators can achieve a RCM programmatically. In \cite{osa2010framework}, Osa \emph{et al.} adapt the interaction matrix to account for the RCM constraint, which they then use to control a point in image space. The authors in \cite{aghakhani2013task} design a composite Jacobian method that integrates a RCM objective with a task function that defines an error on points in image space. Yang \emph{et al.} in \cite{yang2019adaptive} also design a Jacobian gain controller that enforces the tip of a tool to reside within a defined region. They additionally request the endoscope to extend the surgeon's natural line of sight. In \cite{li2020accelerated}, Li \emph{et al.} introduce the RCM and a visual error via the image Jacobian as constraints to a quadratic problem that aims at satisfying these constraints whilst minimizing the joint velocities.
 
-\subsubsection{Laparoscopic Surgery Data Pre-Processing}
-\label{c2:sec:lap_pre}
+% option A:
+% Automation in General
+% Automation with mechanical RCM, Automation with programmable RCM
+% Add other kinematic papers (\cite{weede2011intelligent})
+% Add sun
+% Move kinematic shortcomings to "Limitations of current approaches"
 
-Laparoscopic images are typically observed through a Hopkins telescope, which causes a black circular boundary in the view, see \figref{c2:fig:seg}. This boundary does not exist in da Vinci surgery recordings. For inference on the laparoscopic surgery image sequences, the most straightforward approach is to crop the view. To this purpose, we determine the center and radius of the circular boundary, which is only partially visible. We detect it by randomly sampling $N$ points $\mathbf{p}_i = (u_i,v_i)^\text{T}$ on the boundary. This is similar to work in \cite{munzer2013detection}, but instead of computing an analytical solution, we fit a circle by means of a least squares solution through inversion of
+% option B:
+% Remove "kinematic" VS from Mech RCM
+% Add short list of kinematic approaches
+% Add collection of visual servo with mechanical rcm
+% Add sun
+% Highlight shortcomings
+
+%\cite{weede2011intelligent}   % Markov
+%\cite{sun2020development}     % kinematic -> image space velocity, center tool
+%\cite{sun2020adaptive}        % mechanical rcm, adjust angle based on fusion of kinematic and visual data (stereoscopic)
+%\cite{sun2020visual}          % (estimate depth based on laparoscopic motion)
+
+\subsection{Limitations of Current Approaches and Contributions}
+The majority of existing methods rely on the tool distance to infer a control law. Only in \cite{ma2019autonomous, ma2020visual, aghakhani2013task, yang2019adaptive, li2020accelerated, osa2010framework}, the position of arbitrary points wrt. the camera frame is fed back to the robot. All of the existing methods rely on relative positions, which either requires tool and camera positions or depth images. Position data might only be accessible in a fully robotic setup and image depth is difficult to estimate in a dynamic surgical environment from a monocular camera. Stereoscopic images are usually not available in robotically assisted surgery.
+
+Our paper addresses the above limitations with the following contributions:
+\begin{itemize}
+    \item We introduce a visual servo that navigates towards desired images rather than towards points.
+    \item We formulate a visual servo control law that depends neither on explicit tool and camera positions nor on depth information.
+\end{itemize} 
+These are achieved with a programmable RCM, as it, in contrast to a mechanical RCM, is more flexible. 
+
+This paper is structured as follows. In \secref{c2:sec:methods}, we introduce the necessary theoretical background and the derivation of the proposed visual servoing task. In \secref{c2:sec:experimental_setup}, we explain implementation details and the robotic setup. Results are provided in \secref{c2:sec:results}, and conclusions in \secref{c2:sec:conclusions}.
+
+\section{Methods}
+\label{c2:sec:methods}
+%In this section,
+Here, we first introduce the composite Jacobian for control in \secref{c2:sec:task_rcm}. Then, we extend it by a novel homography-based task function in \secref{c2:sec:homography_task}, and describe the processing pipeline in \secref{c2:sec:pipe}. In the following, scalars are depicted by lower case letters, vectors through bold lower case letters, and matrices as bold upper case letters. A point $x$ is described with respect to frame F as $^\text{F}\mathbf{x}$.
+
+\subsection{Task Control with Remote Center of Motion Objective}
+\label{c2:sec:task_rcm}
+For the task control with RCM objective, we follow the derivation of Aghakhani \emph{et al.}  \cite{aghakhani2013task}. Therefore, as schematically shown in \figref{c2:fig:schematic}, an open kinematic chain is attached to reference frame W. An endoscope is attached to the chain. It originates at position $^\text{W}\mathbf{x}_i$ and has its camera frame at position $^\text{W}\mathbf{x}_{i+1}$. The endoscope enters the patient through the trocar at position $^\text{W}\mathbf{x}_\text{trocar}$. The RCM position $^\text{W}\mathbf{x}_\text{RCM}$ is required to lie along the line connecting $^\text{W}\mathbf{x}_i$ to $^\text{W}\mathbf{x}_{i+1}$, hence
 \begin{equation}
-    \begin{bmatrix}
-        2u_0     & 2v_0     & 1 \\
-                 & \vdots   & \\
-        2u_{N-1} & 2v_{N-1} & 1
+^\text{W}\mathbf{x}_\text{RCM} = ^\text{W}\mathbf{x}_i+\lambda\left(^\text{W}\mathbf{x}_{i+1} - ^\text{W}\mathbf{x}_i\right),
+\label{c2:eq:lambda}
+\end{equation}
+where the scalar $\lambda \geq 0$ is proportional to the entry depth. $\lambda = 0$ corresponds to maximal insertion. The endoscope's translational velocity at position $^\text{W}\mathbf{x}_\text{RCM}$ has to remain zero for the endoscope to reside at the trocar $^\text{W}\mathbf{x}_\text{trocar}$. It was derived in \cite{aghakhani2013task} as
+\begin{equation}
+    ^\text{W}\dot{\mathbf{x}}_\text{RCM} = \begin{bmatrix}\mathbf{J}^v_i + \lambda(\mathbf{J}^v_{i+1}-\mathbf{J}^v_i)\\ ^\text{W}\mathbf{x}_{i+1} - ^\text{W}\mathbf{x}_i\end{bmatrix}^\text{T}\begin{bmatrix}\dot{\mathbf{q}} \\ \dot{\lambda}\end{bmatrix},
+    \label{c2:eq:dx_RCM}
+\end{equation}
+where $\mathbf{J}^v_i$, $\mathbf{J}^v_{i+1}$ are the Jacobians' top three rows, therefore the translational parts, corresponding to points $^\text{W}\mathbf{x}_i$, $^\text{W}\mathbf{x}_{i+1}$ w.r.t. the world frame, $\dot{\mathbf{q}}$ are the instantaneous joint velocities, and $\dot{\lambda}$ is the rate of change of entry depth. \eqref{c2:eq:dx_RCM} can be rewritten as
+\begin{equation}
+    ^\text{W}\dot{\mathbf{x}}_\text{RCM} = \mathbf{J}_\text{RCM}\begin{bmatrix}\dot{\mathbf{q}} \\ \dot{\lambda}\end{bmatrix}.
+    \label{c2:eq:dx_RCM_short}
+\end{equation}
+Expanding on \cite{aghakhani2013task}, we introduce a feedback to $\lambda$ by projecting the trocar position $\mathbf{x}_\text{trocar}$ onto the endoscope via
+\begin{equation}
+    \lambda = \frac{(^\text{W}\mathbf{x}_{i+1} - ^\text{W}\mathbf{x}_i)^\text{T}(^\text{W}\mathbf{x}_\text{trocar}-^\text{W}\mathbf{x}_i)}{||^\text{W}\mathbf{x}_{i+1}-^\text{W}\mathbf{x}_i||_2^2}.
+\end{equation}
+\eqref{c2:eq:dx_RCM_short} can be further extended by a task as follows
+\begin{equation}
+    \begin{bmatrix}\dot{\mathbf{t}} \\ ^\text{W}\dot{\mathbf{x}}_\text{RCM}\end{bmatrix} =
+    \begin{bmatrix}\mathbf{J}_\text{t} & \mathbf{0}_{n_\text{t}\times 1} \\ \multicolumn{2}{c}{\mathbf{J}_\text{RCM}}
     \end{bmatrix}
-    \begin{bmatrix}
-        x_0 \\ x_1 \\ x_2
-    \end{bmatrix} = 
-    \begin{bmatrix}
-        u_0^2 + v_0^2 \\
-        \vdots        \\
-        u_{N-1}^2 + v_{N-1}^2
-    \end{bmatrix},
+    \begin{bmatrix}\dot{\mathbf{q}}\\\dot{\lambda}\end{bmatrix},
+    \label{c2:eq:task_jac}
 \end{equation}
-where the circle's center is $(x_0, x_1)$, and its radius is $\sqrt{x_2 + x^2_0 + x^2_1}$. We then crop the view centrally around the circle's center, and scale it to a resolution of $240\times320$. An implementation is provided on GitHub\footnote[2]{\url{https://github.com/RViMLab/endoscopy}}.
+where $\dot{\mathbf{t}}$ is the task velocity with task dimension $n_\text{t}$ and $\mathbf{J}_\text{t}$ is the task Jacobian. \eqref{c2:eq:task_jac} can be turned into a PID controller
+\begin{equation}
+    \centering
+    \begin{bmatrix}
+        \dot{\mathbf{q}}\\
+        \dot{\lambda}
+    \end{bmatrix} = 
+    \mathbf{J}_\text{cp}^\#
+    \left(
+        \mathbf{K}^\text{p}
+        \begin{bmatrix}
+            \mathbf{e}_\text{t}^\text{p}\\
+            ^\text{W}\mathbf{e}_\text{RCM}^\text{p}
+        \end{bmatrix} +
+        \mathbf{K}^\text{i}
+        \begin{bmatrix}
+            \mathbf{e}_\text{t}^\text{i}\\
+            ^\text{W}\mathbf{e}_\text{RCM}^\text{i}
+        \end{bmatrix} +
+        \mathbf{K}^\text{d}
+        \begin{bmatrix}
+            \mathbf{e}_\text{t}^\text{d}\\
+            ^\text{W}\mathbf{e}_\text{RCM}^\text{d}
+        \end{bmatrix}
+    \right),
+    \label{c2:eq:pid}
+\end{equation}
+where $\mathbf{J}_\text{cp}^\#$ is the pseudo-inverse of the composite Jacobian from (\eqref{c2:eq:task_jac}), $\mathbf{e}^{\text{p}/\text{i}/\text{d}}_t$ and $^\text{W}\mathbf{e}^{\text{p}/\text{i}/\text{d}}_\text{RCM}$, are the proportional, integral, and differential errors for the task and the RCM, respectively, and $\mathbf{K}^{\text{p}/\text{i}/\text{d}}$ are the diagonal gain matrices. Therein, $^\text{W}\mathbf{e}_\text{RCM}^{\text{i}/\text{d}}$ are computed as the integral, and the differential of the proportional error $^\text{W}\mathbf{e}_\text{RCM}^\text{p} = ^\text{W}\mathbf{x}_\text{trocar} - ^\text{W}\mathbf{x}_\text{RCM}$. 
+
+In the following section, we introduce a homography-based visual servoing task.
+
+\subsection{Homography-based Visual Servoing Task}
+\label{c2:sec:homography_task}
 
 \begin{figure}
 \centering
-\begin{subfigure}[b]{\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{img/annotation/annotation_seg.png}
-    \caption{Binary segmentation mask, obtained through thresholding the bilateral filtered image.}
-    \label{c2:fig:seg_a}
-\end{subfigure}
-\begin{subfigure}[b]{\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{img/annotation/annotation_real.png}
-    \caption{Circular boundary detection and static landmarks (blue arrows).}
-    \label{c2:fig:seg_b}
-\end{subfigure}
-\caption{Cholec80 dataset pre-processing, referring to \secref{c2:sec:lap_pre}. The black boundary circle is automatically detected. Landmarks are manually annotated and tracked over time (b).}
-\label{c2:fig:seg}
+\includegraphics[width=0.8\textwidth]{img/h_rcm_vs_fig.pdf}
+\caption{Schematic illustration of the setup: The axes' RGB coloring corresponds to XYZ, respectively. A serial manipulator is connected to the world frame W. The endoscope spans from $^\text{W}\mathbf{x}_i$ to $^\text{W}\mathbf{x}_{i+1}$ and it enters the trocar, which lies at $\mathbf{x}_\text{trocar}$. The camera rotates around the RCM $^\text{W}\mathbf{x}_\text{RCM}$ and its entry depth is proportional to $\lambda \geq 0$.  The camera observes the surgical scene (pink) from different frames $\text{C}$ and $\text{C}^*$.}
+\label{c2:fig:schematic}
 \end{figure}
-
-\subsubsection{Ground Truth Generation}
-\label{c2:sec:gt_gen}
-One can simply use the synthetically generated camera motion as ground truth at train time. For inference on the laparoscopic dataset, this is not possible. We therefore generate ground truth data by randomly sampling $50$ image sequences with $10$ frames each from the Cholec80 dataset. In these image sequences, we find characteristic landmarks that are neither subject to tool, nor to object motion, see \figref{c2:fig:seg_b}. Tracking of these landmarks over time allows one to estimate the camera motion in between consecutive frames through \eqref{c2:eq:hom_lin_sys}.
-
-\subsection{Deep Homography Estimation}
-
-In this work we exploit the static camera in da Vinci surgeries, which allows us to isolate camera motion free image sequences. The processing pipeline is shown in \figref{c2:fig:hom}.
-
-Image pairs are sampled from image sequences of the HFR da Vinci surgery dataset of \figref{c2:fig:data_a}. An image pair consists of an anchor image $\mathcal{I}_n$, and an offset image $\mathcal{I}_{n+t}$. The offset image is sampled uniformly from and interval $t\in[-T,T]$ around the anchor. The HFR da Vinci surgery dataset is relatively small, compared to the laparoscopic datasets, see \figref{c2:fig:data_b}. Therefore, we apply image augmentations to the sampled image pairs. They include transform to grayscale, horizontal, and vertical flipping, cropping, change in brightness, and contrast, Gaussian blur, fog simulation, and random combinations of those. Camera motion is then added synthetically to the augmented image $\mathcal{I}^\text{aug}_{n+t}$ via the \textit{homography generation algorithm} from \secref{c2:sec:hom_gen}. A DNN, with a backbone, then learns to predict the homography $\mathbf{G}_{4\text{point}}$ between the augmented image, and the augmented image with synthetic camera motion at time step $n+t$.
 
 \begin{landscape}
 \begin{figure}
-    \centering
-    \includegraphics[width=\linewidth]{img/pipeline.pdf}
-    \caption{Deep homography estimation training pipeline. Image pairs are sampled from the HFR da Vinci surgery dataset. The \textit{homography generation algorithm} then adds synthetic camera motion to the augmented images, which is regressed through a backbone DNN.}
-    \label{c2:fig:hom}
+\centering
+\includegraphics[width=\textwidth]{img/h_rcm_vs_pipeline_real_view.pdf}
+\caption{Processing pipeline. A surgeon manually controls the robot through a GUI, collecting desired views along the way. The images are pre-processed, and a graph of desired views is built in the background by the homography generation node. Once built, the surgeon selects desired views through the GUI, which triggers a shortest path finding from the current vertex (yellow), to the desired one (pink), and the execution of subsequent homography estimations that lead to the target.}
+\label{c2:fig:pipe}
 \end{figure}
 \end{landscape}
 
-\subsection{Homography Generation Algorithm}
-\label{c2:sec:hom_gen}
-
-In its core, the \textit{homography generation algorithm} is based on the works of \cite{detone2016deep}. However, where \citeauthor{detone2016deep} crop the image with a safety margin, our method allows to sample image crops across the entire image. Additionally, our method computes feasible homographies at runtime. This allows us to continuously generate synthetic camera motion, rather then training on a fixed set of precomputed homographies. The \textit{homography generation algorithm} is summarized in Alg.\,\ref{alg::hom}, and visualized in \figref{c2:fig:hom}.
-
-Initially, a \textit{crop polygon} $\mathbb{P}_c$ is generated for the augmented image $\mathcal{I}^\text{aug}_n$. The \textit{crop polygon} is defined through a set of points in the augmented image $\mathbb{P}_c = \{\mathbf{p}^c_i,\,i\in \left[0,3\right]\}$, which span a rectangle. The top left corner $\mathbf{p}^c_0$ is randomly sampled such that the \textit{crop polygon} $\mathbb{P}_c$ resides within the image border polygon $\mathbb{P}_b$, hence $\mathbf{p}^c_0 \in ([0, h_b - h_c], [0, w_b - w_c])$, where $h$, and $w$ are the height and width of the \textit{crop}, and the \textit{border polygon}, respectively. Following that, a random four point homography $\mathbf{G}_{4\text{point}}$ \eqref{c2:eq:4pt} is generated by sampling edge deviations $\Delta u_i \land \Delta v_i \in [-\varrho, \varrho]$. The corresponding inverse homography $\mathbf{G}^{-1}$ is used to warp each point of the border polygon $\mathbb{P}_b$ to $\mathbb{P}^\prime_b$. Finally, the Dimensionally Extended 9-Intersection Model \cite{clementini1994modelling} is used to determine whether the warped polygon $\mathbb{P}^\prime_b$ contains $\mathbb{P}_c$, for which we utilize the Python library \textit{Shapely}\footnote[3]{\url{https://pypi.org/project/Shapely}}. If the thus found intersection matrix $\IM$ satisfies
+Suppose point $^\text{W}\mathbf{X}$ is projected from a plane, i.e. the surgical scene, onto normalized coordinates $\mathbf{m}^*$ in camera frame $C^*$, see \figref{c2:fig:schematic}, via
 \begin{equation}
-    \IM(\mathbb{P}^\prime_b, \mathbb{P}_c) = \begin{bmatrix}
-        T & * & * \\
-        * & * & * \\
-        F & F & *
-    \end{bmatrix},
+    ^{\text{C}^*}\mathbf{m}^* = \frac{1}{^{\text{C}^*}Z^*}\begin{bmatrix}^{\text{C}^*}X^*&^{\text{C}^*}Y^*&^{\text{C}^*}Z^*\end{bmatrix}^\text{T},
 \end{equation}
-the homography $\mathbf{G}^{-1}$ is returned, otherwise a new four point homograpy $\mathbf{G}_{4\text{point}}$ is sampled. Therein, $*$ indicates that the intersection matrix may hold any value, and $T,\,F$ indicate that the intersection matrix must be true or false at the respective position. In the unlikely case that no homography is found after \textit{maximum rollouts}, the identity $\mathbf{G}_{4\text{point}} = \mathbf{0}$ is returned. Once a suitable homography is found, a crop of the augmented image $\Crop(\mathcal{I}^\text{aug}_n, \mathbb{P}_c)$ is computed, as well as a crop of the warped augmented image at time $n+t$, $\Crop(\Warp(\mathcal{I}^\text{aug}_{n+t}, \mathbf{G}^{-1}), \mathbb{P}_c)$. This keeps all computationally expensive operations outside the loop.
+which means it is observed by the camera as
+\begin{equation}
+    ^{\text{C}^*}\mathbf{p}^* = \mathbf{K}^{\text{C}^*}\mathbf{m}^*,
+\end{equation}
+in pixel coordinates $^{\text{C}^*}\mathbf{p}^*=\begin{bmatrix}u^*&v^*&1\end{bmatrix}^\text{T}$, with the camera's intrinsic parameters $\mathbf{K}$. Should the camera move under rotation $\mathbf{R}$ and translation $\mathbf{t}$, the points in normalized coordinates will change according to a homography $\mathbf{H}$ such that~\cite{benhimane2006homography}
+\begin{equation}
+    \frac{^{\text{C}}Z}{^{\text{C}^*}Z^*}{^{\text{C}}\mathbf{m}} = \mathbf{H}^{\text{C}^*}\mathbf{m}^*
+\end{equation}
+In pixel coordinates this can be written as
+\begin{equation}
+    \frac{^{\text{C}}Z}{^{\text{C}^*}Z^*}{^{\text{C}}\mathbf{p}} = \mathbf{G}{^{\text{C}^*}\mathbf{p}}^*,
+\end{equation}
+with the projective homography $\mathbf{G}$, for which the following relation holds
+\begin{equation}
+    \mathbf{H} = \mathbf{K}^{-1}\mathbf{G}\mathbf{K}.
+    \label{c2:eq:h_norm}
+\end{equation}
 
-\begin{algorithm}
-    \SetAlgoLined
-    Randomly sample crop polygon $\mathbb{P}_c$ of desired shape in $\mathbb{P}_b$\;
-    \While{rollouts $<$ maximum rollouts}{
-        Randomly sample $\mathbf{G}_{4\text{point}}$, where $\Delta u_i \land \Delta v_i \in \left[-\varrho, \varrho\right] \forall i$\;
-        Perspective transform boundary polygon $p: \mathbb{P}_b, \mathbf{G}^{-1}\rightarrow\mathbb{P}^\prime_b$\;
-        Compute intersection matrix $\IM(\mathbb{P}^\prime_b, \mathbb{P}_c)$\;
-        \If{$\IM = \begin{bmatrix}T & * & * \\ * & * & * \\ F & F & *\end{bmatrix}$}{
-            \Return{$\mathbf{G}_{4\text{point}}$, $\mathbb{P}_c$}\;
-        }
-        Increment \textit{rollouts}\;
-    }
-    \Return{$\mathbf{0}$, $\mathbb{P}_c$}\;
-    \caption{Homography generation algorithm.}
-    \label{alg::hom}
-\end{algorithm}
+As shown in \cite{benhimane2006homography}, the task error $^\text{C}\mathbf{e}_{\text{t}'} = \begin{bmatrix}^\text{C}\mathbf{e}_v & ^\text{C}\mathbf{e}_\omega\end{bmatrix}^\text{T}$ that urges to minimize the distance between the desired projection of $^\text{W}\mathbf{X}$, $^{\text{C}^*}\mathbf{m}^*$, and the current one $^\text{C}\mathbf{m}$, can be obtained purely from the homography that relates those points in normalized coordinates via
+\begin{equation}
+    \begin{split}
+        ^\text{C}\mathbf{e}_v & = (\mathbf{H} - \mathbf{I})^{\text{C}^*}\mathbf{m}^*\\
+        \left[^\text{C}\mathbf{e}_\omega\right]_\times & = \mathbf{H} - \mathbf{H}^\text{T},
+    \end{split}
+    \label{c2:eq:dc}
+\end{equation}
+where $\left[^\text{C}\mathbf{e}_\omega\right]_\times$ is the skew symmetric matrix of $^\text{C}\mathbf{e}_\omega$. The task error $^\text{C}\mathbf{e}_{\text{t}'}$ is described in body coordinates. It can be transferred to the world frame W through rotation, which is proportional to camera frame's instantaneous velocity
+\begin{equation}
+    \begin{bmatrix}^\text{W}\mathbf{R}_\text{C} & \mathbf{0} \\ \mathbf{0} & ^\text{W}\mathbf{R}_\text{C}\end{bmatrix}{^\text{C}\mathbf{e}_{\text{t}'}} = ^\text{W}\mathbf{e}_{\text{t}'} \sim \mathbf{J}_{i+1}\dot{\mathbf{q}}
+    \label{c2:eq:body}
+\end{equation}
+where $^\text{W}\mathbf{R}_\text{C}$ is the rotation of the camera frame with respect to the world frame, and $\mathbf{J}_{i+1}$ is the camera frame's Jacobian, including its rotational contributions. Only 4 DOF can be controlled at a time after imposing the RCM, which constraints 2 DOF. To capture this, we introduce operator $\mathbf{P}$ that projects the camera frame body velocity onto the remaining DOF. Together with \ (\eqref{c2:eq:body}), this yields
+\begin{equation}
+    \mathbf{P}_{a/b}{^\text{C}\mathbf{e}_{\text{t}'}} = ^\text{C}\mathbf{e}_{\text{t}_{a/b}} \sim \mathbf{P}_{a/b} \begin{bmatrix}^\text{C}\mathbf{R}_\text{W} & \mathbf{0} \\ \mathbf{0} & ^\text{C}\mathbf{R}_\text{W}\end{bmatrix}\mathbf{J}_{i+1}\dot{\mathbf{q}}.
+    \label{c2:eq:proj}
+\end{equation}
+The projection operator $\mathbf{P}_{a/b}$ can take different forms, such that the task error is mapped onto any of the decoupled remaining DOF via
+\begin{equation}
+    \mathbf{P}_a = \begin{bmatrix}
+        \mathbf{I}_{3\times3} & \multicolumn{3}{c}{\mathbf{0}_{3\times3}} \\
+        \mathbf{0}_{1\times3} & 0 & 0 & 1
+    \end{bmatrix},
+    \mathbf{P}_b =
+    \begin{bmatrix}
+        0 & 0 & 1 & \mathbf{0}_{1\times3} \\
+        \multicolumn{3}{c}{\mathbf{0}_{3\times3}} & \mathbf{I}_{3\times3}
+    \end{bmatrix}.
+    \label{c2:eq:projection}
+\end{equation}
+Therefore, $\mathbf{P}_a$ maps the task error $^\text{C}\mathbf{e}_{\text{t}'}$ to its translational parts and the rotation about the optical axis, and $\mathbf{P}_b$ maps it to its rotational part and the error along the optical axis. We identify the case sensitive contributions of (\eqref{c2:eq:proj}) as the task Jacobian from (\eqref{c2:eq:task_jac}) and the task error from (\eqref{c2:eq:pid}), which yields
+\begin{equation}
+    \mathbf{J}_\text{t} = \mathbf{P}_{a/b} \begin{bmatrix}^\text{C}\mathbf{R}_\text{W} & \mathbf{0} \\ \mathbf{0} & ^\text{C}\mathbf{R}_\text{W}\end{bmatrix}\mathbf{J}_\text{i+1},\,
+    %\mathbf{J}_\text{t} = 
+    %\begin{cases}
+    %    \mathbf{J}_{\text{t}_a}=\mathbf{P}_{a} \begin{bmatrix}^\text{C}\mathbf{R}_\text{W} & \mathbf{0} \\ \mathbf{0} & ^\text{C}\mathbf{R}_\text{W}\end{bmatrix}\mathbf{J}_\text{i+1} \\
+    %    \mathbf{J}_{\text{t}_b}=\mathbf{P}_{b} \begin{bmatrix}^\text{C}\mathbf{R}_\text{W} & \mathbf{0} \\ \mathbf{0} & ^\text{C}\mathbf{R}_\text{W}\end{bmatrix}\mathbf{J}_\text{i+1}
+    %\end{cases}
+    \mathbf{e}^\text{p}_\text{t} = 
+    \begin{cases}
+        ^\text{C}\mathbf{e}_{\text{t}_a}=\begin{bmatrix}^\text{C}\mathbf{e}_v & ^\text{C}e_{\omega_z} \end{bmatrix}^T \\
+        ^\text{C}\mathbf{e}_{\text{t}_b}=\begin{bmatrix}^\text{C}e_{v_z} & ^\text{C}\mathbf{e}_{\omega} \end{bmatrix}^T
+    \end{cases}
+    %\mathbf{J}_{\text{t}_{a/b}} = \mathbf{P}_{a/b} \begin{bmatrix}^\text{C}\mathbf{R}_\text{W} & \mathbf{0} \\ \mathbf{0} & ^\text{C}\mathbf{R}_\text{W}\end{bmatrix}\mathbf{J}_\text{i+1}, ^\text{C}\mathbf{e}_{\text{t}_{a}} = \begin{bmatrix}\mathbf{e}_v \\ e_{\omega_z} \end{bmatrix}, ^\text{C}\mathbf{e}_{\text{t}_{b}} = \begin{bmatrix}e_{v_z} \\ \mathbf{e}_{\omega} \end{bmatrix}
+\end{equation}
+This results in a task dimension $n_\text{t} = 4$, which means that together with the RCM objective that introduces 3 constraints and adds the additional DOF $\lambda$, the robot has to have at least 6 DOF.
 
-\section{Experiments}
-We train DNNs on a $80\%$ train split of the HFR da Vinci surgery dataset from \figref{c2:fig:data_a}. The $20\%$ test split is referred to as test set in the following. Inference is performed on the ground truth set from \secref{c2:sec:gt_gen}. We compute the Mean Pairwise Distance (MPD) of the predicted value for $\mathbf{G}_{4\text{point}}$ from the desired one. We then compute the Cumulative Distribution Function (CDF) of all MPDs. We evaluate the CDF at different thresholds $t_i,\,i\in\{30,50,70.90\}$, e.g. $30\%$ of all homography estimations are below a MPD of $t_{30}$. We additionally evaluate the compute time on a GeForce RTX 2070 GPU, and a Intel Core i7-9750H CPU.
+\subsection{Processing Pipeline}
+\label{c2:sec:pipe}
 
-\subsection{Backbone Search}
-In this experiment, we aim to find the best performing backbone for homography estimation. Therefore, we run the same experiment repeatedly with fixed hyperparameters, and varying backbones. We train each network for $50$ epochs, with a batch size of $64$, using the Adam optimizer with a learning rate of $\num{2e-4}$. The edge devation $\varrho$ is set to $32$, and the sequence length $T$ to $25$.
+An overview of the processing pipeline is depicted in \figref{c2:fig:pipe}. A surgeon first controls the endoscope from within the camera's reference frame via the keyboard. Images of desired views are manually taken along the way and are used to construct a graph, wherein each vertex is an image. This is done within the \textit{homography generation} node. 
 
-\subsection{Homography Generation Algorithm}
-In this experiment, we evaluate the \textit{homography generation algorithm}. For this experiment we fix the backbone to a ResNet-34, and train it for $100$ epochs, with a batch size of $256$, using the Adam optimizer with a learning rate of \num{1e-3}. Initially, we fix the sequence length $T$ to $25$, and train on different edge deviations $\varrho\in\{32,48,64\}$. Next, we fix the edge deviation $\varrho$ to $48$, and train on different sequence lengths $T\in\{1,25,50\}$, where a sequence length of $1$ corresponds to a static pair of images.
+Initially, camera calibration considering an underlying radial/tangential distortion model is carried out to obtain the distortion coefficients and the camera intrinsics. Following that, an eye in hand calibration is performed to locate the camera frame position $^\text{W}\mathbf{x}_{i+1}$, and $^\text{W}\mathbf{x}_i$ is set to lie along the negative optical axis at the endoscope's length, see \figref{c2:fig:schematic}. 
 
-% Given the ResNet-34, which performs well on inference, and executes fast on the GPU, we run additional experiments to determine the effect of our method on homography estimation in dynamic surgical scenes. In this section, we train the ResNet-34 backbone for $100$ epochs, with a batch size of $256$, using the Adam optimizer with a learning rate of \num{1e-3}. Initially, we fix the sequence length $T$ to $25$, and train on different edge deviations $\varrho\in\{32,48,64\}$. Next, we fix the edge deviation $\varrho$ to $48$, and train on different sequence lengths $T\in\{1,25,50\}$, where a sequence length of $1$ corresponds to a static pair of images. The results are shown in \figref{c2:fig:resnet34}, and a qualitative example is presented in \figref{c2:fig:qualitative}.
+Each image $\mathcal{I}$ that is processed within the \textit{homography generation} node undergoes distortion removal, followed by an intensity-based automatic detection of the endoscopic boundary circle. Therein, the image is smoothed with a bilateral filter and thresholded in HSV image space to obtain a binary mask. The circle's center is computed as the center of mass, and its radius is obtained from the steepest gradient of the marginalized binary mask. If the illumination in the endoscopic view is below a certain value, then the last known center and radius are considered instead. The maximum rectangle of a given aspect ratio that fits into the extracted circle is then cropped from the image $\mathcal{I}$. The crop is further rescaled. The camera intrinsics are updated accordingly from $\mathbf{K}$ to $\mathbf{K}^\prime$ by offsetting and scaling the principal point. 
 
+Once the graph is built, the surgeon can browse through the image gallery, as shown in \figref{c2:fig:pipe}, where each image corresponds to a vertex within the graph. The surgeon may then select a desired view and execute the visual servo. This will trigger a Dijkstra search for the closest path from the current vertex to the desired view/vertex at constant cost per edge. This path is executed sequentially. Therefore, the homography $\mathbf{G}$ from the next vertex to the current view is computed for the visual servo. To compute the homography, we extract image features and their descriptors with a SURF feature detector \cite{bay2006surf}. For each feature in the target view, the two nearest neighbors are found in the current view, and, via Lowe's ratio test \cite{lowe2004distinctive}, only features with distinctive descriptors are kept. The homography that maps features from the target view to the current view is then determined under RANSAC outlier rejection.
 
+The updated camera intrinsics $\mathbf{K}^\prime$, together with the desired homography $\mathbf{G}$, are then sent down the pipeline to first transform the homography from pixel coordinates to normalized coordinates via (\eqref{c2:eq:h_norm}) and then to compute the desired task $^\text{C}\mathbf{e}_{\text{t}'}$ from (\eqref{c2:eq:dc}). The update rate of these operations are restricted by the camera frame rate, which is why the desired trocar position $^\text{W}\mathbf{x}_\text{trocar}$ is sent separately to the synchronizer node, see \figref{c2:fig:pipe}. The synchronizer node takes a homography RCM visual servo action client, \textit{HRCMVSActionClient}, which request the \textit{HRCMVSActionServer} to execute the desired task $^\text{C}\mathbf{e}_{\text{t}'}$, while maintaining a desired trocar position $^\text{W}\mathbf{x}_\text{trocar}$. 
+
+The \textit{HRCMVSActionServer} implements a state machine, which rejects infeasible requests. It computes the forward kinematics as well as the Jacobians and computes a joint position update $\Delta\mathbf{q}=\Delta t\dot{\mathbf{q}}$ via (\eqref{c2:eq:pid}) in the RCM implementation \textit{RCMImpl}, where $\Delta t$ is the control interval. The desired joint positions are then sent to the robot.
+
+\section{Experimental Setup}
+\label{c2:sec:experimental_setup}
+
+This section gives an overview of the robotic system and its components in \secref{c2:sec:robotic_system}. Following that, clinically relevant questions and the evaluation protocol are addressed in \secref{c2:sec:clin_protocol}.
+
+\subsection{Robotic System}
+\label{c2:sec:robotic_system}
+
+Our experimental setup, see \figref{c2:fig:setup}, uses a KUKA LBR Med 7 R800 robot. To control it, we created a bridge to ROS by wrapping the Fast Robot Interface (FRI) \cite{schreiber2010fast} with ROS' Hardware Interface functionality. We use a Storz Endocameleon Hopkins Telescope, from which we capture images using a Storz TH~102~H3-Z~FI camera head. The endoscope is mounted to the LBR Med 7 R800 robot with a custom designed 3D print. For illumination, we connect a Storz TL 300 Power LED 300 light source to the endoscope. The image feed is output to SDI, which we convert to HDMI with a Monoprice 3G SDI to HDMI converter. We then grab the HDMI signal with a DeckLink 4K Extreme 12G and stream it onto the ROS network.
+
+% The acquired images are sent to the Storz TC 300 Image1 S H3-Link, which links the camera via DisplayPort to the Storz TC 200 Image1 S Connect. From there on, the image feed...
+
+\subsection{Clinical Scenario Evaluation Protocol}
+\label{c2:sec:clin_protocol}
+
+The proposed method is evaluated in the laparoscopic setup shown in \figref{c2:fig:setup}. We utilize a Szabo Pelvic Trainer to simulate a trocar. A Kyoto Kagaku colon rectum tube is inserted into the Szabo Pelvic Trainer to model a laparoscopic view of the abdomen. The clinical procedure is then modeled as follows. The robot initially drives the endoscope to the trocar and $\lambda$ in (\eqref{c2:eq:lambda}) is set to $1$. Following that, the user mounts the camera and the light source to the laparoscope. The user then drives the laparoscope through the trocar into the phantom.
+
+In the phantom, we identify four clinically relevant views of the scene. These views include an overview of the scene, a view of the tool insertion area towards the abdominal wall, and two close-ups, one for further examination. For visual servoing between these views in a clinical scenario, these three objectives are of importance
+
+\begin{itemize}
+    \item Servoing from any current to any target view.
+    \item Servoing to target views under tool motion.
+    \item Servoing to target views after phantom repositioning.
+\end{itemize}
+
+To address these scenarios, we design three experiments. For all experiments, after the laparoscope insertion, the user moves to the overview of the surgical scene, where the first image is taken through the GUI, which corresponds to the graph's root view/vertex, see \figref{c2:fig:pipe}. We measure the deviation of the RCM from the trocar position, record the Mean Pairwise Distance (MPD) of SURF features from the current to the desired view, the task error, execution time, joint angles, and the camera tip position.
+
+\subsubsection{Servoing from any current view to any target view}
+\label{c2:sec:clin_protocol_any}
+In this scenario we investigate the system's capability to autonomously execute extreme view changes. The user moves from the overview to a close-up, from where the scene is further examined. The laparoscope is then moved manually to grant view of the tool insertion area. At this stage, tools would be inserted into the patient and the user would begin to operate. Therefore, the user selects the close-up view through the GUI and executes the autonomous visual servo towards it.
+
+\subsubsection{Servoing to target views under tool motion}
+\label{c2:sec:clin_protocol_tool}
+In this scenario we investigate autonomous visual servoing towards desired views under tool motion. Therefore, the user moves the laparoscope from the overview to the tool insertion area. Tools are then inserted and the user is asked to perform a sample task, which involves moving small LASTT Training Package rings. The visual servo simultaneously navigates back towards the overview.
+
+\subsubsection{Servoing to target views after phantom repositioning}
+\label{c2:sec:clin_protocol_re}
+In this scenario we investigate the system's invariance under patient motion. Therefore, we reposition the phantom and execute the visual servo to autonomously readjust the overview. We include both phantom rotation and tilting.
 
 \section{Results}
+\label{c2:sec:results}
+In this section, we first present generic findings in \secref{c2:sec:generic_res}, followed by quantitative measurements for the evaluation protocol from \secref{c2:sec:clin_protocol}, in \secref{c2:sec:clin_res}.
+\begin{figure}
+\centering
+\begin{subfigure}[b]{\textwidth}
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig/rcm_error.pdf}
+\end{subfigure}
+\begin{subfigure}[b]{\textwidth}
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig/task_error.pdf}
+\end{subfigure}
+\begin{subfigure}[b]{\textwidth}
+\centering
+\includegraphics[width=0.6\textwidth]{fig/visual_error.pdf}
+\end{subfigure}
+\caption{RCM deviation (top) and task error evolution (bottom) over time for the protocol in \secref{c2:sec:clin_protocol_any}. The visual servo autonomously servos from the tool insertion area to the close-up. Target views/vertices are updated along the way, as indicated by the black dotted lines.}
+\label{c2:fig:errors}
+\end{figure}
+\subsection{Generic Results}
+\label{c2:sec:generic_res}
+In practice we found that controlling the camera frame's rotational DOF, using $\mathbf{P}_b$ in (\eqref{c2:eq:projection}), leads to more stable solutions. We tried to invert the task part of the composite Jacobian from (\eqref{c2:eq:pid}) within the Nullspace of the RCM Jacobian, but obtained more flexible solutions by computing the pseudo-inverse as a damped least squares solution from the SVD with a damping factor of $5\mathrm{e}{-4}$. Empirically, we got good results with the following gain matrices
+\begin{equation*}
+    \begin{split}
+        \mathbf{K}^\text{p} &= \diag(1.2, 1.5, 1.5, 1.8, 1\mathrm{e}{2}, 1\mathrm{e}{2}, 1\mathrm{e}{2}) \\
+        \mathbf{K}^\text{i} &= \diag(3\mathrm{e}{-3}, 2.5\mathrm{e}{-3},2.5\mathrm{e}{-3}, 1.5\mathrm{e}{-3}, 0, 
+    0, 0)\\
+        \mathbf{K}^\text{d} &= \diag(6\mathrm{e}{-2}, 5\mathrm{e}{-2}, 5\mathrm{e}{-2}, 3\mathrm{e}{-2}, 0, 0, 0).
+    \end{split}
+\end{equation*}
+The integral term therein helped remove a steady state error in the homography-based image alignments. The desired homography extraction proved noisy but correct on average, so we introduced a moving average filter on the task error $^\text{C}\mathbf{e}_\text{t}$ with a buffer length of $10$ at a frame rate of $30\,\text{fps}$. The sequential execution of desired views was greatly sped up by calling early convergence for intermediate vertices/views at a MPD of $5\,\text{pixels}$ and a final convergence at a MPD of $1.5\,\text{pixels}$. 
 
-%In the following, the HFR da Vinci test set, and the Cholec80 annotated subset are referred to as test set, and inference set, respectively.   
+\subsection{Clinical Scenario Results}
+\label{c2:sec:clin_res}
+\subsubsection{Servoing from any current view to any target view}
+\label{c2:sec:clin_res_any}
 
+In this section we investigate the trajectory from tool insertion view to close-up, see \secref{c2:sec:clin_protocol_any}. The task error and the RCM deviation from the trocar position are depicted in \figref{c2:fig:errors}. It can be seen that the deviation from the trocar position stays below $4.6\,\text{mm}$, at an average deviation of $0.8\pm0.8\,\text{mm}$. The task error converges for all vertices/views. The final task error corresponds to a camera tip deviation of $0.4\,\text{mm}$, when compared to the desired position. The joint angles deviate on average by $8.2\pm6.0^\circ$ from the initial configuration.
 
-%For the experiments, we use the HFR da Vinci surgery dataset, shown in \figref{c2:fig:data_a}, for training, and 
+\subsubsection{Servoing to target views under tool motion}
+\label{c2:sec:clin_res_tool}
+For this measurement, the visual servo navigates from the tool insertion area to the overview under tool motion, see \secref{c2:sec:clin_protocol_tool}. The trajectory with all intermediate and the final vertex/view is shown in \figref{c2:fig:tool_insertion_trajectory}. It can be seen that, despite tool motion, the visual servo converges at pixel accuracy towards the desired views. The final camera position deviates by $1.4\,\text{mm}$ to the desired one. The robot joint angles deviate on average by $1.1\pm1.1^\circ$ from the initial configuration. A video of this experiment is provided under\ \footnote{\label{foot:vid}\url{https://drive.google.com/file/d/1UCr__R2_7xit6TTq3T9pTIEg1fMsfT3j/view?usp=sharing}}.
 
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{img/tool_insertion_trajectory.pdf}
+    \caption{Servoing under tool motion, see \secref{c2:sec:clin_protocol_tool}. Initially, the graph is built in manual control mode (top row), yellow indicates the current vertex. The visual servo is then executed to navigate back from the tool insertion to the overview (bottom row). Pink indicates the target vertex.}
+    \label{c2:fig:tool_insertion_trajectory}
+\end{figure}
 
-%We adjust the image resolution to $[240,\,320]$ for both datasets. We split the HFR da Vinci dataset into $20\%$ test, and $80\%$ training.
-
-\subsection{Backbone Search}
-\label{c2:sec:backbone_search}
-
-% Previous work mainly relies on VGG-style DNN architectures. Our initial findings suggest that VGG-style DNNs perform badly at homography estimation. In the context of finding a better network, we evaluate different SOTA backbones across multiple compute regimes, see Tab.\,\ref{c2:tab::results}. 
-
-
-% Each network is trained for $50$ epochs, with a batch size of $64$, using the Adam optimizer with a learning rate of $\num{2e-4}$. The edge devation $\varrho$ is set to $32$, and the sequence length $T$ to $25$.
-
-The results are listed in Tab.\,\ref{c2:tab::results}. It can be seen that the deep methods generally outperform the classical methods on the test set. There is a tendency that models with more parameters perform better. On the ground truth set, this tendency vanishes. The differences in performance become independent of the number of parameters. Noticeably, many backbones still outperform the classical methods across all thresholds on the ground truth set, and low compute regime models also run quicker on CPU than comparable classical methods. E.g. we find that EfficientNet-B0, and RegNetY-400MF run at $36\,\text{Hz}$, and $50\,\text{Hz}$ on a CPU, respectively. Both outperform SURF \& RANSAC in homography estimation, which runs at $20\,\text{Hz}$.
-
-%These findings make the backbone selection a matter of optimization for computational requirements. ResNet-34 is among the models with the best inference performance, and runs $6\,\text{ms}$ on GPU. For further investigation, we therefore select a ResNet-34 backbone. 
+\subsubsection{Servoing to target views after phantom repositioning}
+\label{c2:sec:clin_res_re}
+In this section we investigate the convergence of the visual error after phantom repositioning, see \secref{c2:sec:clin_protocol_re}. We perform clockwise and counterclockwise repositioning as well as phantom tilting. We keep the trocar at the initial position. The camera frame then rotates and translates towards a position that minimizes the visual error. The translation $\Delta\mathbf{x}_{i+1}$ and the angle axis rotation angle $\alpha$ are listed in \tabref{c2:tab:repositioning}. It can be seen that the robotic laparoscope performs significant motion to readjust the view. The MPD is minimized to pixel range and the final deviation from the trocar remains in the submillimeter scale for all cases. 
 
 \begin{table}
 \centering
-\caption{Results referring to \secref{c2:sec:backbone_search}. All methods are tested on the da Vinci HFR test set, indicated by $t^\text{test}_i$, and the Cholec80 inference set, indicated by $t^\text{gt}_i$. Best, and second best metrics are highlighted with bold character. Improvements in precision $t^\text{gt}_{90,\text{imp}}$ and compute time $\text{CPU}_\text{imp}$ are given w.r.t. SURF \& RANSAC. \label{c2:tab::results}}
-\begin{adjustbox}{angle=90, max height=0.9\textheight}
-    \begin{tabular}{lrrrrrrrrrr} \toprule
-        Name            & $t^\text{test}_{30}/t^\text{gt}_{30}\,[\text{pixels}]$ & $t^\text{test}_{50}/t^\text{gt}_{50}\,[\text{pixels}]$ & $t^\text{test}_{70}/t^\text{gt}_{70}\,[\text{pixels}]$ & $t^\text{test}_{90}/t^\text{gt}_{90}\,[\text{pixels}]$ & $t^\text{gt}_{90,\text{imp}}\,[\%]$ & $\text{params}\,[\text{M}]$ & $\text{flops}\,[\text{M}]$ & $\text{GPU}\,[\text{ms}]$ & $\text{CPU}\,[\text{ms}]$ & $\text{CPU}_\text{imp}\,[\%]$ \\ \midrule
-        VGG-style       & $4.83/2.45         $ & $ 6.47/2.94         $ & $ 8.68/3.59         $ & $ 13.23/5.41                  $ & $- 60         $ & $92.92$ & $11.12$ & $ \mathbf{2} \pm 1$ & $83          \pm 2$ & $- 69          \pm 33$ \\
-        ResNet-18       & $1.42/1.12         $ & $ 1.95/1.33         $ & $ 2.82/1.58         $ & $  5.06/2.20                  $ & $  35         $ & $11.19$ & $ 6.02$ & $ \mathbf{3} \pm 1$ & $31          \pm 3$ & $  38          \pm 13$ \\
-        ResNet-34       & $1.33/\mathbf{1.02}$ & $ 1.81/\mathbf{1.19}$ & $ 2.56/\mathbf{1.52}$ & $  4.63/2.08                  $ & $  \mathbf{39}$ & $21.3 $ & $11.74$ & $ 6          \pm 1$ & $51          \pm 5$ & $-  3          \pm 23$ \\
-        ResNet-50       & $1.40/1.08         $ & $ 1.89/1.33         $ & $ 2.70/1.57         $ & $  4.79/2.21                  $ & $  35         $ & $23.53$ & $13.12$ & $10          \pm 1$ & $72          \pm 4$ & $- 46          \pm 29$ \\
-        EfficientNet-B0 & $1.36/1.09         $ & $ 1.83/1.31         $ & $ 2.62/\mathbf{1.50}$ & $  4.64/\mathbf{2.01}         $ & $  \mathbf{41}$ & $ 4.02$ & $ 1.28$ & $12          \pm 2$ & $28          \pm 2$ & $  43          \pm 12$ \\
-        EfficientNet-B1 & $1.32/\mathbf{1.02}$ & $ 1.77/\mathbf{1.26}$ & $ 2.50/1.57         $ & $  4.42/\mathbf{2.01}         $ & $  \mathbf{41}$ & $ 6.52$ & $ 1.88$ & $17          \pm 1$ & $37          \pm 1$ & $  25          \pm 15$ \\
-        EfficientNet-B2 & $1.40/1.06         $ & $ 1.85/1.29         $ & $ 2.57/1.55         $ & $  4.42/2.15                  $ & $  37         $ & $ 7.71$ & $ 2.16$ & $17          \pm 2$ & $41          \pm 1$ & $  18          \pm 16$ \\
-        EfficientNet-B3 & $1.31/1.05         $ & $ 1.75/1.36         $ & $ 2.44/1.68         $ & $  4.23/2.26                  $ & $  33         $ & $10.71$ & $ 3.14$ & $20          \pm 2$ & $55          \pm 4$ & $- 11          \pm 23$ \\
-        EfficientNet-B4 & $\mathbf{1.23}/1.08$ & $ \mathbf{1.65}/1.31$ & $ \mathbf{2.29}/1.69$ & $  \mathbf{4.02}/2.14         $ & $  37         $ & $17.56$ & $ 4.88$ & $24          \pm 2$ & $68          \pm 5$ & $- 38          \pm 29$ \\
-        EfficientNet-B5 & $1.26/1.18         $ & $ 1.67/1.35         $ & $ \mathbf{2.30}/1.65$ & $  \mathbf{4.02}/\mathbf{2.06}$ & $  \mathbf{39}$ & $28.36$ & $ 7.62$ & $29          \pm 2$ & $93          \pm 5$ & $- 89          \pm 37$ \\
-        RegNetY-400MF   & $1.55/\mathbf{1.01}$ & $ 2.07/1.29         $ & $ 2.90/1.60         $ & $  5.08/2.12                  $ & $  37         $ & $ 3.91$ & $ 1.32$ & $13          \pm 1$ & $\mathbf{20} \pm 1$ & $  \mathbf{58} \pm  8$ \\
-        RegNetY-600MF   & $1.47/1.03         $ & $ 1.98/1.28         $ & $ 2.80/1.56         $ & $  4.87/2.21                  $ & $  35         $ & $ 5.45$ & $ 1.94$ & $13          \pm 1$ & $24          \pm 3$ & $  52          \pm 11$ \\
-        RegNetY-800MF   & $1.43/1.08         $ & $ 1.92/1.32         $ & $ 2.70/1.59         $ & $  4.76/2.12                  $ & $  37         $ & $ 5.50$ & $ 2.54$ & $12          \pm 1$ & $24          \pm 1$ & $  51          \pm 10$ \\
-        RegNetY-1.6GF   & $1.38/1.03         $ & $ 1.83/1.27         $ & $ 2.52/1.60         $ & $  4.35/2.16                  $ & $  36         $ & $10.32$ & $ 5.08$ & $21          \pm 2$ & $42          \pm 4$ & $  16          \pm 18$ \\
-        RegNetY-4.0GF   & $1.27/1.05         $ & $ 1.69/\mathbf{1.26}$ & $ 2.36/1.66         $ & $  4.17/2.17                  $ & $  36         $ & $19.57$ & $12.36$ & $21          \pm 2$ & $66          \pm 5$ & $- 34          \pm 28$ \\
-        RegNetY-6.4GF   & $\mathbf{1.21}/1.04$ & $ \mathbf{1.64}/1.27$ & $ 2.32/1.60         $ & $  4.17/2.09                  $ & $  38         $ & $29.30$ & $19.72$ & $25          \pm 3$ & $98          \pm 6$ & $-100          \pm 40$ \\
-        SURF \& RANSAC  & $4.06/1.07         $ & $ 5.65/1.40         $ & $ 7.93/2.02         $ & $ 13.62/3.39                  $ & $   0         $ & N/A     & N/A     &  N/A                & $49          \pm 9$ & $   0          \pm 27$ \\
-        SIFT \& RANSAC  & $4.28/1.25         $ & $ 6.02/1.76         $ & $ 8.65/2.48         $ & $ 16.52/4.63                  $ & $- 37         $ & N/A     & N/A     &  N/A                & $37          \pm 9$ & $  25          \pm 22$ \\
-        ORB \& RANSAC   & $6.52/1.65         $ & $10.48/2.47         $ & $20.12/3.71         $ & $122.66/6.81                  $ & $-101         $ & N/A     & N/A     &  N/A                & $\mathbf{12} \pm 2$ & $  \mathbf{76} \pm  6$ \\ \bottomrule
-    \end{tabular}
-\end{adjustbox}
+\caption{Clockwise (CW), and counterclockwise (CCW) repositioning, and phantom tilting, corresponding to the protocol in \secref{c2:sec:clin_protocol_re}. $\Delta\mathbf{x}_{i+1}$ indicates the camera motion, $\alpha$ the angle axis rotation angle from initial to final camera rotation, $\Delta\mathbf{q}$ the joint angle position change, $\mathbf{e}_\text{RCM}$ the final deviation of the RCM from the trocar, and MPD the final visual error.}
+\begin{tabular}{lccc}
+    \toprule
+     Metric & CW & CCW & Tilt \\
+     \hline
+     $\Delta\mathbf{x}_{i+1}\,/\,\text{mm}$ & $10.4$ & $6.7$ & $4.7$ \\
+     \hline
+     $\alpha\,/\,^\circ$ & $16.6$ & $10.2$ & $4.8$ \\
+     \hline
+     $\Delta\mathbf{q}\,/\,^\circ$ & $20.5\pm12.0$ & $17.4\pm13.4$ & $2.6 \pm 2.3$ \\
+     \hline
+     $^\text{W}\mathbf{e}^\text{p}_\text{RCM}\,/\,\text{mm}$& $0.1$ & $0.2$ & $0.07$ \\
+     \hline
+     MPD / pixel & $3.2\pm2.5$ & $2.0\pm1.0$ & $1.4\pm1.2$ \\
+     \bottomrule
+\end{tabular}
+\label{c2:tab:repositioning}
 \end{table}
-\subsection{Homography Generation Algorithm}
-\label{c2:sec:hom_opt}
-
-% Given the ResNet-34, which performs well on inference, and executes fast on the GPU, we run additional experiments to determine the effect of our method on homography estimation in dynamic surgical scenes. In this section, we train the ResNet-34 backbone for $100$ epochs, with a batch size of $256$, using the Adam optimizer with a learning rate of \num{1e-3}. Initially, we fix the sequence length $T$ to $25$, and train on different edge deviations $\varrho\in\{32,48,64\}$. Next, we fix the edge deviation $\varrho$ to $48$, and train on different sequence lengths $T\in\{1,25,50\}$, where a sequence length of $1$ corresponds to a static pair of images. The results are shown in \figref{c2:fig:resnet34}, and a qualitative example is presented in \figref{c2:fig:qualitative}.
-
-\begin{figure}
-\centering
-\begin{subfigure}[b]{\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{fig/frac/var_rho.pdf}
-    \caption{Varying edge deviation $\varrho\in\{32,48,64\}$, and fixed sequence length $T=25$.}
-    \label{c2:fig:resnet34_a}
-\end{subfigure}
-\begin{subfigure}[b]{\textwidth}
-    \centering
-    \includegraphics[width=0.8\textwidth]{fig/frac/var_seq.pdf}
-    \caption{Varying sequence length $T\in\{1,25,50\}$, and fixed edge deviation $\varrho=48$.}
-    \label{c2:fig:resnet34_b}
-\end{subfigure}
-\caption{Homography generation optimization, referring to \secref{c2:sec:hom_opt}. Shown is a ResNet-34 homography estimation for different homography generation configurations, and a SURF \& RANSAC homography estimation for reference. The edge deviation $\varrho$ is varied in (a), and the sequence length $T$ is varied in (b).}
-\label{c2:fig:resnet34}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics[width=\textwidth]{fig/frac/cdf.pdf}
-\caption{CDF for SURF \& RANSAC, and ResNet-34, trained with a sequence length $T=25$, and edge deviation $\varrho=48$. The identity is added for reference. CDF thresholds for the SURF \& RANSAC are $t^\text{gt}_{1/10/30/50/70/90} = 0.51/0.80/1.09/1.48/2.07/3.53\,\text{pixels}$, and for the ResNet-34 $t^\text{gt}_{1/10/30/50/70/90} = 0.50/0.83/1.00/1.26/1.59/2.15\,\text{pixels}$. ResNet-34 generally performs better, and has no outliers.}
-\label{c2:fig:resnet34_c}
-\end{figure}
-
-% Given the ResNet-34, which performs well on inference, and executes fast on the GPU, we run additional experiments to determine the effect of our method on homography estimation in dynamic surgical scenes. In this section, we train the ResNet-34 backbone for $100$ epochs, with a batch size of $256$, using the Adam optimizer with a learning rate of \num{1e-3}. Initially, we fix the sequence length $T$ to $25$, and train on different edge deviations $\varrho\in\{32,48,64\}$. Next, we fix the edge deviation $\varrho$ to $48$, and train on different sequence lengths $T\in\{1,25,50\}$, where a sequence length of $1$ corresponds to a static pair of images. The results are shown in \figref{c2:fig:resnet34}, and a qualitative example is presented in \figref{c2:fig:qualitative}.
-
-Given that ResNet-34 performs well on the ground truth set, and executes fast on the GPU, we run the \textit{homography generation algorithm} experiments with it. It can be seen in \figref{c2:fig:resnet34_a}, that the edge deviation $\varrho$ is neglectable for inference. In \figref{c2:fig:resnet34_b}, one sees the effects of the sequence length $T$ on the inference performance. Notably, with $T=1$, corresponding to static image pairs, the SURF \& RANSAC homography estimation outperforms the ResNet-34. For the other sequence lengths, ResNet-34 outperforms the classical homography estimation. The CDF for the best performing combination of parameters, with $T=25$, and $\varrho=48$, is shown in \figref{c2:fig:resnet34_c}. Our method generally outperforms SURF \& RANSAC. The advantage of our method becomes most apparent for a $\text{CDF}\geq0.5$. Even the identity outperforms SURF \& RANSAC for large MPDs. This aligns with the qualitative observation that motion is often overestimated by SURF \& RANSAC, which is shown in \figref{c2:fig:qualitative}. An exemplary video is provided\footnote{\url{https://drive.google.com/file/d/1totjHbhIMEL7a-QAiL7B1rT44wvWB6lO/view?usp=sharing}}.
-
-% It can be seen in \figref{c2:fig:resnet34_a}, that the effect of the edge deviation $\varrho$ is neglectable for inference. This is because the motion in the inference set does not exceed the motion in the training set. In \figref{c2:fig:resnet34_b}, one sees the effects of the sequence length $T$ on the inference performance. Notably, with $T=1$, corresponding to static image pairs, the SURF \& RANSAC homography estimation outperforms the ResNet-34. For the other sequence lengths, ResNet-34 outperforms the classical homography estimation, validating our method. The CDF for the best performing combination of parameters, with $T=25$, and $\varrho=48$, is shown in \figref{c2:fig:resnet34_c}. Our method generally outperforms SURF \& RANSAC. The advantage of our method becomes most apparent for $\text{CDF}\geq0.5$. Even the identity outperforms SURF \& RANSAC for large MPD. This aligns with the qualitative observation that motion is often overestimated by SURF \& RANSAC, which is shown in \figref{c2:fig:qualitative}. 
-
-
-% $\text{ResNet-34}$      - 0.50/0.83/1.00/1.26/1.59/2.15
-% $\text{SURF \& RANSAC}$ - 0.51/0.80/1.09/1.48/2.07/3.53
-
-%\begin{figure}
+%\begin{table}[]
 %    \centering
-%    \resizebox{0.8\linewidth}{!}{
-%        \includegraphics{fig/frac/cdf.pdf}
-%    }
-%    \caption{Caption}
-%    \label{c2:fig:cdf}
-%\end{figure}
+%    \caption{Clockwise (CW), counterclockwise (CCW), and tilt patient repositioning. $\Delta\mathbf{x}_{i+1}$ indicates the camera motion, $\Delta\mathbf{q}$ the joint angle position change, $\mathbf{e}_\text{RCM}$ the final deviation of the RCM from the trocar, and MPD the final visual error.}
+%    \begin{tabular}{l|c|c|c|c|c}
+%    
+%         Type & $\Delta\mathbf{x}_{i+1}\,/\,\text{mm}$ & $\alpha\,/\,^\circ$ & $\Delta\mathbf{q}\,/\,^\circ$ & $\mathbf{e}_\text{RCM}\,/\,\text{mm}$ & MPD / pixel \\
+%         \hline
+%         CW   & $10.4$ & $16.6$ & $20.5\pm12.0$ & $0.1$  & $3.2\pm2.5$ \\
+%         CCW  & $6.7$ & $10.2$ & $17.4\pm13.4$ & $0.2$  & $2.0\pm1.0$ \\
+%         Tilt & $4.7$ & $4.8$ & $2.6 \pm 2.3$ & $0.07$ & $1.4\pm1.2$
+%    \end{tabular}
+%    \label{c2:tab:repositioning}
+%\end{table}
 
+\section{Conclusion}
+\label{c2:sec:conclusions}
+% summary
+In this work we introduced a visual servo that is independent of depth information and explicit tool and camera positions. The introduced method simultaneously respects a programmable RCM. Our method was successfully integrated into a robotic setup and clinically relevant scenarios were investigated on an abdominal phantom.
 
-% qualitative classical tends to overestimate motion
-\begin{landscape}
-\begin{figure}
-\centering
-\begin{subfigure}[b]{0.3\textwidth}
-    \centering
-    \includegraphics[width=0.3\textwidth]{img/homography_blends/blend_identity_strong_motion.png}
-    \caption{Identity}
-\end{subfigure}
-\begin{subfigure}[b]{0.3\textwidth}
-    \centering
-    \includegraphics[width=0.3\textwidth]{img/homography_blends/blend_surf_strong_motion.png}
-    \caption{SURF \& RANSAC}
-\end{subfigure}
-\begin{subfigure}[b]{0.3\textwidth}
-    \centering
-    \includegraphics[width=0.3\textwidth]{img/homography_blends/blend_resnet_34_strong_motion.png}
-    \caption{ResNet-34}
-\end{subfigure}
-\begin{subfigure}[b]{0.5\textwidth}
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/homography_blends/blend_surf_zoom.png}
-    \caption{Object Motion - SURF \& RANSAC, zoom}
-\end{subfigure}
-\begin{subfigure}[b]{0.5\textwidth}
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/homography_blends/blend_resnet_34_zoom.png}
-    \caption{Object Motion - ResNet-34, zoom}
-\end{subfigure}
-\caption{Classical homography estimation using a SURF feature detector under RANSAC outlier rejection, and the proposed deep homography estimation with a ResNet-34 backbone, referring to \secref{c2:sec:hom_opt}. Shown are blends of consecutive images from a $5\,\text{fps}$ resampled Cholec80 exemplary sequence \cite{twinanda2016endonet}. Decreasing the framerate from originally $25\,\text{fps}$ to $5\,\text{fps}$, increases the motion in between consecutive frames. (Top row) Homography estimation under predominantly camera motion. Both methods perform well. (Bottom row) Homography estimation under predominantly object motion. Especially in the zoomed images it can be seen that the classical method (d) misaligns the stationary parts of the image, whereas the proposed method (e) aligns the background well.}
-\label{c2:fig:qualitative}
-\end{figure}
-\end{landscape}
+% results discussion
+It was shown in \secref{c2:sec:clin_res_any} that the proposed composite Jacobian PID controller with homography-based task simultaneously minimizes the RCM and the visual servo objective. The integral term proved helpful to remove a steady state error in the image alignment. The homography estimation was noisy due to feature sparseness and required for average filtering. The graph representation allowed for visual servoing between images that were not relatable by a single homography transformation. In \secref{c2:sec:clin_res_tool}, tools were successfully introduced into the scene. It is to be noted that the tools were initially not present in the target views, which removed potential image misalignment. In \secref{c2:sec:clin_res_re} the phantom was repositioned significantly with a constant trocar position and image readjustment was successfully demonstrated. The MPD got close to perfect alignment, however, the trocar was possibly moved slightly during repositioning, which made perfect convergence not possible. The robot's joint angles did not always return to their initial configuration. The camera position converged in submillimeter range to its target.
 
-%\url{https://drive.google.com/file/d/1totjHbhIMEL7a-QAiL7B1rT44wvWB6lO/view?usp=sharing} %<- submission
-%\url{https://drive.google.com/file/d/17fmhSsPq290PuLXmtO-aWwo3KN4QkZA8/view?usp=sharing}
-%\url{https://drive.google.com/file/d/1SpUtSVgwo_PAwAjULF-Ky_5CxRuhMYlm/view?usp=sharing}
-
-
-\section{Discussion}
-
-% summarize work
-In this work we supervisedly learn homography estimation in dynamic surgical scenes. We train our method on a newly acquired, synthetically modified da Vinci surgery dataset and successfully cross the domain gap to videos of laparoscopic surgeries. To do so, we introduce extensive data augmentation and continuously generate synthetic camera motion through a novel \textit{homography generation algorithm}.
-
-% highlight results and draw conclusions
-In \secref{c2:sec:backbone_search}, we find that, despite the domain gap for the ground truth set, DNNs outperform classical methods, which is indicated in Tab.\,\ref{c2:tab::results}. The homography estimation performance proofs to be independent of the number of model parameters, which indicates an overfit to the test data. The independence of the number of parameters allows to optimize the backbone for computational requirements. E.g., a typical laparoscopic setup runs at $25-30\,\text{Hz}$, the classical method would thus already introduce a bottleneck at $20\,\text{Hz}$. On the other hand, EfficientNet-B0, with $36\,\text{Hz}$, and RegNetY-400MF, with $50\,\text{Hz}$, introduce no latency, and could be integrated into systems without GPU.
-
-% In \secref{c2:sec:backbone_search}, we evaluate SOTA DNNs on homography estimation in dynamic surgical scenes. Despite the domain gap, we find that DNNs outperform classical methods, which is indicated in Tab.\,\ref{c2:tab::results}. It can further be seen that the homography estimation performance is independent of the DNN's number of parameters. This allows to directly optimize the backbone for computational requirements. E.g. in the low compute regime, we find that EfficientNet-B0, and RegNetY-400MF run at $36\,\text{Hz}$, and $50\,\text{Hz}$ on a CPU, respectively. Both outperform SURF \& RANSAC in homography estimation, which runs at $20\,\text{Hz}$. Typical laparoscopic setups run at $25-30\,\text{Hz}$, the classical method would thus already introduce a bottleneck. EfficientNet-B0, and RegNetY-400MF, on the other hand, would not, and could be integrated into systems without GPU.
-
-In \secref{c2:sec:hom_opt}, we find that increasing the edge deviation has no effect on the homography estimation, see \figref{c2:fig:resnet34_a}. This is because the motion in the ground truth set does not exceed the motion in the training set. In \figref{c2:fig:resnet34_b}, we further find how training DNNs on synthetically modified da Vinci surgery image sequences enables our method to isolate camera from object and tool motion, validating our method. In \figref{c2:fig:resnet34_c}, it is demonstrated that ResNet-34 generally outperforms SURF \& RANSAC. This shows that generating camera motion synthetically through homographies, which approximates the surgical scene as a plane, does not pose an issue.
-
-% In \secref{c2:sec:hom_opt}, we evaluate hyperparameters for the synthetic camera motion generation. The assumption that the surgical scene transforms as a plane might only be locally correct. However, we find that this does not pose an issue, and that our method estimates homographies across the entire range of camera motions well, see Fig.\ref{c2:fig:qualitative}. In \figref{c2:fig:resnet34}, we further find how training DNNs on synthetically modified da Vinci surgery image sequences enables our method to isolate camera from object and tool motion.
-
-The object, and tool motion invariant camera motion estimation allows one to extract a laparoscope holder's actions from videos of laparoscopic interventions, which enables the generation of image-action-pairs. In future work, we will generate image-action-pairs from laparoscopic datasets and apply IL to them. Describing camera motion (actions) by means of a homography is grounded in recent research for robotic control of laparoscopes \cite{huber2021homographybased}. This work will therefore support the transition towards robotic automation approaches. It might further improve augmented reality, and image mosaicing methods in dynamic surgical environments.
-
+% future work
+We successfully demonstrated that our visual servo navigates the camera in submillimeter range without depth information or explicit tool and camera positions. This proves the future potential for safe patient application and it circumvents time-consuming registration procedures. As our setup has one redundant DOF, the robot did not always return to its initial configuration. This might be handled by introducing joint state objectives to the Jacobian's nullspace. While our visual servo is independent of registration procedures, the RCM requires initialization, and tracking. In future work, the controller might be updated as to incorporate force-torque sensing to update the RCM. Although the environment was mostly static, the homography estimation was noisy. In future research, one might, therefore, incorporate homography estimation that is invariant under object motion and robust under feature sparseness, using deep learning approaches, as shown in \cite{huber2021deep}.

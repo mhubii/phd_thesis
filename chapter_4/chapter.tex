@@ -1,442 +1,370 @@
-\graphicspath{{chapter_4}}
-\chapter[Short tile for table of content]{Hydra / roboreg / unified...}
+\graphicspath{{chapter_3}}
+\chapter[Short tile for table of content]{Self-supervised Endoscopic Camera Motion Imitation Learning from Videos of Laparoscopic Interventions}
 \chaptermark{Short title for headers}
-\label{chap:registration}
+\label{chap:camera_motion_extraction}
 \minitoc
-Multi-robot arm systems possess an incredible potential to revolutionize the way we approach complex tasks, improving efficiency and productivity. 
-By utilizing multiple arms, we can overcome the limitations of a single unit, extending the range of possible tasks that the system can perform. 
-For example, suturing requires at least two arms.
-There exists a wide variety of multi-robot arm applications beyond surgical robotics including 
-agriculture~\cite{Xiong20}, 
-civil engineering~\cite{Yasutomi23}, 
-space robotics~\cite{Yan20},
-packaging and assembly~\cite{Do12},
-nuclear decommissioning~\cite{Mohamed07},
-disaster recovery~\cite{Kamezaki16}, and
-sub-sea robotics~\cite{Brantner21}.
+% \section{Introduction}
+Automation in robot-assisted minimally invasive surgery (RMIS) may reduce human error that is linked to fatigue, lack of attention and cognitive overload \cite{fiorini2022concepts}.
+It could help surgeons operate such systems by reducing the learning curve \cite{van2018learning}.
+And in an ageing society with shrinking workforce, it could help to retain accessibility to healthcare. It is therefore expected that parts of RMIS will be ultimately automated \cite{davenport2019potential,zidane2022robotics}. On the continuous transition towards different levels of autonomy, camera motion automation is likely to happen first \cite{kitaguchi2022artificial}.
 
-The da Vinci\textsuperscript{\textregistered} system by Intuitive Surgical is widely regarded as an example of a successful surgical robot system~\cite{yang2018grand, DEttorre2021} utilizing four robot arms (three for manipulation and one for imaging).
-However, due to its large size, incorporating the da Vinci system into the operating theater becomes arduous, restricting patient access, and making it cumbersome to remove in the event of manual intervention being required.
-Recently, alternative platforms have emerged that adopt a modular design where the robot arms are mounted on mobile platforms or the surgical table. 
-Examples include the 
-DLR MIRO research platform~\citep{miro}
-as well as commercial systems such as 
-the Senhance\textsuperscript{\texttrademark} Surgical System by Asensus Surgical, 
-the Hugo\textsuperscript{\texttrademark} RAS System by Medtronic, 
-the Versius\textsuperscript{\textregistered} Surgical System by CMR Surgical, and 
-the SSI Mantra by SS Innovations.
+Initial attempts to automate camera motion in RMIS include rule-based approaches that keep surgical tools in the center of the field of view \cite{da2020scan,garcia2022robotic,sandoval2021towards}. The assumption that surgical tools remain centrally is, however, simplistic, as in many cases the surgeon may want to observe the surrounding anatomy to decide their next course of action. 
 
-Direct teleoperation, classified as ``Level 0'' in the taxonomy proposed by Yang et al.~\cite{Yang2017}, is a control approach that maps signals from a surgeon-device interface onto robot motion~\cite{Niemeyer2008}, typically using position/velocity based commands.
-Currently, direct teleoperation is the gold-standard for the majority of surgical robotic systems in use today.
-This approach guarantees that the operating surgeon is solely responsible for the robot's motion, emphasizing the need for skilled training and practice~\cite{Liu15}. 
-As a result, the system integration forgoes the requirement for a collision model in these multi-arm setups.
-With the increasing automation of surgical procedures, e.g. see recent work by Saeidi et al~\cite{Saeidi2022}, the demand for localization strategies and collision models becomes more pronounced.
+Contrary to rule-based approaches, data-driven methods are capable to capture more complex control 
+%modes.
+policies.
+Example data-driven methods suitable for camera motion automation include reinforcement learning (RL) and imitation learning (IL). The sample inefficiency and potential harm to the patient currently restrict RL approaches to simulation \cite{su2021multicamera,scheikl2023lapgym,agrawal2018automating}, where a domain gap remains. Work to bridge the domain gap and make RL algorithms deployable in real setups have been proposed \cite{cartucho2021visionblender,marzullo2021towards}, but clinical translation has not yet been achieved. For IL, on the other hand, camera motion automation could be learned from real data, thereby implicitly tackling the domain-gap challenge. The downside is that sufficient data may be difficult to collect. Many works highlight that lack of expert annotated data hinders progress towards camera motion automation in RMIS \cite{maier2022surgical,kassahun2016surgical,esteva2019guide}.
+%To this end, it 
+It is thus not surprising that existing literature on IL for camera motion automation utilizes data from mock setups \cite{ji2018learning,wagner2021learning}.
 
-A key requirement for future automated systems is robot base-to-base localization, i.e. each robot arm must be aware of the other arm's position and orientation with respect to its own.
-This is needed in order to implement an effective collision model into the automated control system ensuring patient and the operating team's safety.
-In the case where multi-robot arm systems are deployed on a surgical table, base localization can be derived from CAD models, however, these measurements may not accurately reflect reality due to manufacturing inaccuracies.
-In the case of the modern modular systems, mentioned above, the arm setup may be different every time the theater is prepared.
-Furthermore, robotic systems must also undergo localization in relation to other elements present in the operating theater, including patient anatomy, lighting fixtures, imaging systems (e.g. C-arm), etc.
-This motivates the need for a robot base calibration step introduced into the surgical workflow.
-Such a step, however, should be designed in a way that can be quickly and safely performed by non-robotics experts, i.e. the theater staff.
+Recent efforts to make vast amounts of laparoscopic intervention videos publicly available \cite{maier2022surgical} drastically change how IL for camera motion automation can be approached. So far, this data is leveraged mainly to solve auxiliary tasks that could contribute to camera motion automation. As reviewed in \cite{loukas2018video}, these tasks include tool and organ segmentation, as well as surgical phase recognition. For camera motion automation specifically, however, there exist no publicly available image-action pairs. Some work, therefore, continues to focus on the tools to infer camera motion \cite{li2021data}, or learns on a robotic setup altogether \cite{li20223d} where camera motion is accessible. The realization, however, that camera motion is intrinsic to the videos of laparoscopic interventions and that camera motion could be learned on harvested actions was first realized in \cite{huber2022deep}, and later in \cite{li2022learning}. This comes with the additional advantage that no robot is necessary to learn behaviors and that one can directly learn from human demonstrations.
 
-The development of commercialized RGBD camera devices has been  
+In this work, we build on \cite{huber2022deep} for computationally efficient image-action pair extraction from publicly available datasets of laparoscopic interventions, which yields more than $20\times$ the amount of data that was used in the closed source data of \cite{li2022learning}. Contrary to \cite{li2022learning}, our camera motion extraction does not rely on image features, which are sparse in surgical videos, and is intrinsically capable to differentiate between camera and object motion. We further propose a novel importance sampling and data augmentation step for achieving camera motion automation IL.
 
-% Knowledge of the robot base-to-base localization is especially important in the case of the modern modular systems mentioned above.
-% However, it can also be important for systems mounted on the surgical table since the measurements from CAD models may not reflect reality due to .
-% need to recalibrate for modern modular systems 
-% especially in the case of the modern modular systems mentioned above
-% furthermore, the calibration process needs to be simplified so that it can be performed quickly by non-robotics experts
-% even in case of robots being deployed on a surgical table, the CAD models may need not fully reflect reality
+%21x
 
-% Surgical robotics has become a key tool for improving patient outcomes.
+%~170 minutes their
+%~2950 minutes cholec80
+%~630 minutes heichole
 
-% Reduced physical stress on surgeons~\citep{}.
-% Reduced forces applied to trocars~\citep{} reducing damage to the incision points thus reducing recovery time, need a reference.
-% Finer control/dexterity for certain tasks, e.g. suturing~\citep{}, spine 
-% Furthermore, surgical robotics can enable autonomous surgery~\citep{}
+%  \cite{huber2022deep}
+%  \cite{huber2021homography}
 
-% The established paradigm for surgical robots is to have a monolithic device which integrates all robot arms into a single connected device. Example systems that have adopted this design are the da Vinci\textsuperscript{\textregistered} by Intuitive Surgical, the avatera\textsuperscript{\textregistered} by avateramedical, and the hinotori\textsuperscript{\texttrademark} by Medicaroid. These are inflexible for use in the operating room, restrict patient access and are difficult to remove should the need arise for manual intervention.
+% Minimally invasive robot assisted surgery leads to reduced patient pain, reduced blood loss, shorter recovery times, less scarring, and reduced risk of infection  \cite{}. Additionally, it offers surgeons better ergonomics that lead to reduced fatigue, greater precision, and less physical exertion  \cite{}. On the downside, however, it requires additional training.
 
-% To improve flexibility, other surgical robotics platforms have adopted a new modular design paradigm where the robot arms are mounted on individual mobile platforms or the surgical table. Examples are the  DLR MIRO~\citep{miro} research platform as well as commercial systems such as the Senhance\textsuperscript{\texttrademark} Surgical System by Asensus Surgical, the Hugo\textsuperscript{\texttrademark} RAS System by Medtronic, the Versius\textsuperscript{\textregistered} Surgical System by CMR Surgical, and the SSI Mantra by SS Innovations.
+% make clear that camera motion is the target
 
-While providing numerous benefits, the distributed paradigm brings its own issues, primarily the unknown location of the robots with respect to each other and with respect to the surgical setup. 
-
-- spine to robot registration
-- camera to robot registration
-- greatly simplifying setup
-- building a world map (providing a better world model)
-- robot to whatever registration for collision free path
-
-WHAT TASKS IN HUMAN CONTROLLED ROBOTIC SURGERY REQUIRE GOOD BASE-TO-BASE REGISTRATION?
-
-Autonomous surgery needs accurate base-to-base.
-
-This paper focuses on solving this problem
+% Efforts have been made to reduce training requirements for surgeons by improved human-machine interfaces, e.g. through voice, gaze, or the introduction of haptic devices  \cite{}. The effort is to essentially relieve surgeons of some of their tasks, similar to what an assistant would do, through robot autonomy.
 
 
-~\cite{optas}
-~\cite{point_cloud_based_robot_cell_calib}
-~\citep{hand_eye_calibration_robotic_assisted}
+%\textbf{This is all a bit too sudden. I think you need to make the case for autonomous endoscope motion, how you will extract motion, and why this is important. Also, what have others done on the topic? Your introduction is a bit too general. Keep what you have, but slowly narrow it down to something more specific. You are solving a very specific problem, not the full imitation learning problem}
 
+% dive deeper into homography estimation / prediction
+% used for visual servoing, shown to work in the surgical context
 
-%\begin{figure}[tbh]
-%\centering
-%\includegraphics[width=0.45\columnwidth]{fig/preop_plan}
-%\includegraphics[width=0.45\columnwidth]{fig/preop_plan}
-%\caption{The preoperative plan (left) and the corresponding surgical site (right). The arrows on the left-hand image show the planned imaging targets that will be executed by the robot.} 
-%\label{c4:fig:preop_plan}
-%\end{figure}
-
-
-
-\subsection{Contributions}
-
-In this work we make the following contributions:
-\begin{itemize}
-    \item We present a unified approach for base-to-base registration of multiple surgical robots using a single-shot image captured from a stereo or RGB-D camera, the robot joint position for each arm, and their respective mesh files or CAD models. Our methodology utilizes the well-established Iterative Closest Point (ICP) method. Our novel contribution extends robot localization approaches specifically tailored for surgical robotics.
-    \item We conducted a benchmarking analysis comparing our proposed method to less preferable alternatives (with regards to safety). Our method ensures safety and, based on the comparisons, demonstrates faster execution and comparable outcomes when compared to other options. The method provides a unified approach to eye-in-hand and eye-to-hand calibration and does not require any calibration targets, since it uses the robot itself as the calibration target.
-    \item A hardware realisation of the approach on a dual robot arm system. Furthermore, we showcase a human-robot collaboration task where the collision model for the two robots relies on the measurements generated by our proposed method. Upon acceptance acceptance of this manuscript, our intention is to make the code-base publicly available as an open-source contribution. This will encompass both the proposed method itself and the HRI controller, that includes integrated collision avoidance functionality.
-\end{itemize}
-
-% We present a method of providing base-to-base registration for two or more surgical robots using a stereo or RGB-D camera. The method uses the current joint states of each arm to configure the arm's mesh, which is then fitted to the point cloud using the Iterative Closest Point (ICP) method.
-% We compare our results to handshaking and show our results to be comparable while taking much less time to perform.
-
-
-% It provides a unified approach to eye-in-hand and eye-to-hand calibration and does not require any calibration targets, since it uses the robot as calibration target itself.
-
-\section{Problem formulation}
-
-\begin{figure}[t]
-     \centering
-     \begin{subfigure}[b]{0.45\textwidth}
-         \centering
-         \includegraphics[width=\textwidth]{img/base2base.png}
-         \caption{Robot base to base calibration.}
-         \label{c4:fig:base2base}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{0.45\textwidth}
-         \centering
-         \includegraphics[width=0.75\textwidth]{img/eyeinhand.png}
-         \caption{Eye-in-hand calibration.}
-         \label{c4:fig:eyeinhand}
-     \end{subfigure}
-     
-    \caption{
-    Schematic overview of the key coordinate frames of interest for this work.
-    Whilst we show a dual arm system, it is easy to extend the methods discussed in this paper to multiple robots.
-    }
-    \label{c4:fig:schematic}
-\end{figure}
-
-In this section, we formally present the two problems that our research addresses. 
-The key coordinate frames are illustrated in the schematic diagrams shown in Figure~\ref{c4:fig:schematic}. 
-The following subsection introduces the notation employed in the entirety of this paper and also states some important assumptions we make to facilitate our approach. 
-Subsequently, we outline our problems in the remaining subsections.
-
-\subsection{Notation and assumptions}
-
-In general, we use 
-Greek letters (e.g. $\alpha, \gamma$) to denote scalars, 
-Latin letters (e.g. $a, b$) to denote vectors, 
-capital letters (e.g. $A, \Gamma$) to denote matrices, and 
-calligraphy and blackboard formats (e.g. $\mathcal{A}, \mathbb{B}$) to denote sets and spaces.
-
-A homogeneous transformation matrix, denoted $T^B_A\in\mathbb{R}^{4 \times 4}$, represents the pose of frame $A$ with respect to $B$ (i.e. $B$, in this case, is the base frame).
-The matrix $T^B_A$ can be expressed as
-\[
-T^B_A = 
-    \left(
-    \begin{array}{cc}
-     R\big(q^B_A\big) & p^B_A \\
-     0_3 & 1
-    \end{array}
-    \right)
-\]
-where $p^B_A\in\mathbb{R}^3$ is a column vector representing the position, $R:\mathbb{R}^4\rightarrow\mathbb{R}^{3\times 3}$ is function that converts the unit-quaternion $q^B_A\in\mathbb{R}^4$ to a rotation matrix, and $0_3$ is the three element row vector containing only zeros.
-With reference to the schematic of a robot arm in Figure \ref{c4:fig:eyeinhand}, the camera frame $C$ is expressed in the end-effector frame $E$ by $T^E_C$,
-$E$ is expressed in the robot base frame $R$ by $T^R_E$, and
-$R$ is expressed in the world frame $W$ by $T^W_R$.
-Therefore, the camera frame $C$ expressed in the world frame $W$ is found using
-\[
-T^W_C = T^E_C T^R_E T^W_R.
-\]
-
-For an $N$-DoF robot manipulator, the joint positions are denoted $x\in\mathbb{R}^N$.
-In this work, we assume that the end-effector frame $E$ expressed in the robot base frame $R$, i.e. $T^R_E$, can be computed accurately using the forward kinematics. 
-We denote the relationship between the joint positions and end-effector pose by
-\[
-\left(
-\begin{array}{c}
-     p^R_E\\
-     q^R_E
-\end{array}
-\right)
-= \phi(x)
-\]
-where $\phi: \mathbb{R}^N\rightarrow\mathbb{R}^{7}$ represents the forward kinematics function.
-Given a geometric description of the robot's joints and links (typically in the common URDF format), the forward kinematics $\phi(\cdot)$ is easily derived.
-
-Regarding the camera, that is either placed in the environment, as in Figure~\ref{c4:fig:base2base}, or mounted at the robot end-effector, as in Figure~\ref{c4:fig:eyeinhand}, we assume that this is Stereo or RGB-D camera -- not a typical RGB camera (e.g. webcam).
-Finally, we assume access to the mesh files for each of the robot arms used.
-Also, any additional equipment that is required to be localized in the robot base frame, we assume access to a mesh file or CAD model.
-
-\subsection{Robot base-to-base calibration}
-
-In this sub-section we primarily describe the problem associated with Figure~\ref{c4:fig:base2base}.
-As discussed above, several robots could be positioned at once in the operating theater.
-To enable automated approaches, these robot arms must be aware of the other's position and orientation.
-With reference to Figure~\ref{c4:fig:base2base}, the transforms $T^{R_i}_{E_i}$ are assumed known for each $i=\{1, 2\}$.
-The goal of this work is to utilize information from the camera located at frame $C$, and with the mesh files or CAD models to compute estimates for the transforms $T^W_{R_1}$ and $T^W_{R_2}$.
-Given estimates for these frames, we can thus compute one robot pose with respect to the other.
-This can be expressed by
-\[
-T^{R_1}_{R_2} = T^W_{R_2} T^{R_1}_W = T^W_{R_2} (T^W_{R_1})^{-1}
-\]
-where superscript -1 denotes the matrix inverse. 
-
-\subsection{Eye-in-hand calibration}
-
-In this sub-section we primarily describe the problem associated with Figure \ref{c4:fig:eyeinhand}.
-Sensors, such as cameras, are often mounted at the robot end-effector in order to perform imaging tasks.
-Often, the transform between the camera frame $C$ and the robot end-effector $E$ is not known.
-Often CAD models are available for the mount which attaches the camera to the end-effector.
-However, the precise location of the camera imaging sensor is not known accurately, i.e. the camera extrinsic parameters.
-
-Estimating the unknown static transformation frame $T^E_C$ is a problem we address in this work as part of our unified approach.
-This is the so-called \textit{eye-in-hand}, or also known as \textit{hand-eye}, calibration problem~\cite{Horaud95}.
-An additional consideration regarding this problem, is that the static transform $T^W_R$ is often also unknown.
-The majority of previous approaches in the literature attempt to solve the ill-posed problem $T^W_C T^R_W = T^E_C T^R_E$.
-Typically, a marker (e.g. checkerboard) of known geometry is affixed to the world frame $W$ that can be estimated and provide an estimate for the transformation frame $T^C_W$ (assuming properly calibrated camera intrinsic parameters).
-As mentioned as an assumption above, the forward kinematics can provide an accurate estimate for the transformation $T^R_E$.
-Multiple images from the camera at various joint positions are taken, and thus recording multiple measurements for $T^C_W$ and $T^R_E$.
-In order to simplify notation, let us denote the unknowns by $X=T^R_W$ and $Y=T^E_C$ and the known values $A_i=T^W_C = (T^C_W)^{-1}$ and $B_i=T^R_E$ (the subscript $i$ refers to the fact that we take multiple measurements), thus the eye-in-hand problem can be re-written as $A_i X = Y B_i$.
-
-The standard formulation of the eye-in-hand calibration problem is expressed by
-\begin{equation}
-\label{c4:eq:eyeinhand}
-    \widehat{X}, \widehat{Y} = \underset{X, Y\in\mathbb{R}^{4\times 4}}{\text{arg}\min}~\sum_i \| A_i X - Y B_i\|^2
-\end{equation}
-where $\widehat{X}, \widehat{Y}$ are the solution to the least squares problem and represent estimated homogeneous transformation matrices.
-In our work, we remove the need for a marker affixed in the environment.
-Instead, we make use of the mesh files or CAD model for the robot arm.
-This requires a reformulation of \eqref{c4:eq:eyeinhand}, which we discuss in later sections.
-
-\section{Related work}
-
-\subsection{Base to base calibration}
-
-\subsection{Eye-in-hand calibration}
-
-Some work was done~\citep{Li_2021}.
-
-\cite{Bhat_2021_CVPR}~did some work.
-
-Prior work on the eye-in-hand problem~\cite{Horaud95, Strobl06} require the user to fabricate a marker (e.g. checkerboard or AprilTag~\cite{Olson11}) with known geometry making it easy to extract a pose from images.
-In our work, we do not require the user to create such a marker.
-Instead, we make use of the (assumed) mesh files or CAD models provided by the manufacturer.
-
-\section{Materials and methods}
-\label{c4:sec:materials_and_methods}
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{fig/pipeline_refined.pdf}
-    \caption{Proposed registration procedure. Refer to Section \ref{c4:sec:proposed_calibration_procedure} for details. The pipeline takes as input a single instance of joint positions and a corresponding stereo image shot (or equivalently a single RGB-D shot) and yields the robot(s)-to-camera homogeneous transform(s) $^\text{C}\mathbf{T}_\text{R}$. Upper half: Joint positions are extracted from the robot(s) and are used to transform the individual link mesh files into unaligned robot model(s).
-    Lower half:
-    A single-shot stereo (or RGB-D) image is fed through a depth estimator to obtain a depth map.
-    A monocular image is extracted from the stereo image and is fed to a robot detector and a segmentor computer vision algorithm to obtain an instance segmentation of the robot(s).
-    The depth map and instance segmentation are fused to obtain an instance segmented point cloud.
-    Each individual unaligned robot model is registered to the instance segmented point cloud to obtain a robot model that is aligned with the observed image. The transform from unaligned to aligned robot model describes the robot to camera homogeneous transform $^\text{C}\mathbf{T}_\text{R}$.}
-    \label{c4:fig:calibration_pipeline}
-\end{figure}
-This section introduces baseline calibration procedures in Section \ref{c4:sec:handshake_and_eye_in_hand_calibration}. The baseline calibration procedures are considered the reference for the proposed calibration method. The proposed calibration method is explained in Section \ref{c4:sec:proposed_calibration_procedure} and an overview is given in Figure \ref{c4:fig:calibration_pipeline}. Finally, an overview of the experimental setup, including data collection and utilized hardware, is provided in Section \ref{c4:sec:experimental_setup} and Figure \ref{c4:fig:calibrations}.
-
-In the following sections, homogeneous transforms, from the coordinate frame $\text{A}$ to $\text{B}$, are denoted by $$^\text{B}\mathbf{T}_\text{A}=\begin{bmatrix} ^\text{B}\mathbf{R}_\text{A} & ^\text{B}\textbf{t}_\text{A} \\ \mathbf{0} & 1 \end{bmatrix}$$ where the rotation matrix $^\text{B}\mathbf{R}_\text{A}$ and the translation vector $^\text{B}\textbf{t}_\text{A}$. The world coordinate frame is indicated by $\text{W}$. The world coordinate frame $\text{W}$ is considered to coincide with the robot base coordinate frame $\text{R}$. $\text{W}$ and \text{R} may be used interchangeably. The camera coordinate frame is highlighted through $\text{C}$. Furthermore, $\text{A}$ indicates the coordinate frame of an ArUco marker.
-
-\subsection{Handshake and eye-in-hand calibration baselines}
-\label{c4:sec:handshake_and_eye_in_hand_calibration}
-For the handshake calibration procedure, the two robots are rigidly linked to one another at their end-effectors via a calibration fixture of known transform $^{\text{EE}_1}\mathbf{T}_{\text{EE}_2}$. The robots are then moved in admittance control mode and L base-to-end-effector samples are collected for both robots, i.e. $^{\text{R}_1}\mathbf{T}^l_{\text{EE}_1}$ and $^{\text{EE}_2}\mathbf{T}^l_{\text{R}_2}$. Since the system forms a closed kinematic chain, the base-to-base transform $^{\text{R}_2}\mathbf{T}_{\text{R}_1}$ can then be obtained by minimizing:
-%
-\begin{equation}
-    \label{c4:eq:handsake}
-    \min_{^{\text{EE}_1}\mathbf{T}_{\text{EE}_2}, ^{\text{R}_2}\mathbf{T}_{\text{R}_1}} \sum_{l=0}^{L-1}\,^{\text{R}_1}\mathbf{T}^l_{\text{EE}_1}\,^{\text{EE}_1}\mathbf{T}_{\text{EE}_2}\,^{\text{EE}_2}\mathbf{T}^l_{\text{R}_2}\,^{\text{R}_2}\mathbf{T}_{\text{R}_1} - \mathbf{I},
-\end{equation}
-%
-where $\mathbf{I}$ is the $4\times4$ identity matrix. Therein, $^{\text{EE}_1}\mathbf{T}_{\text{EE}_2}$ is part of the optimization to correct for manufacturing errors.
-
-Classically, eye-in-hand calibration is conducted by collecting end-effector to base $^\text{R}\mathbf{T}_\text{EE}$ and camera to ArUco marker transformations $^\text{A}\mathbf{T}_\text{C}$~\citep{eye_in_hand}. The correspondences are re-arranged into an equation of the form $\mathbf{A}\mathbf{X}=\mathbf{X}\mathbf{B}$, with $\mathbf{A}$ containing multiple $^{\text{EE}_j}\mathbf{T}_{\text{EE}_i}$ and $\mathbf{B}$ containing multiple $^{\text{C}_j}\mathbf{T}_{\text{C}_i}$. A 2-step regression is applied to solve for $\mathbf{X}=^\text{C}\mathbf{T}_\text{EE}$.
-
-\subsection{Proposed registration procedure}
-\label{c4:sec:proposed_calibration_procedure}
-An overview of the proposed method is shown in \figref{c4:fig:calibration_pipeline}. The method provides an efficient way to find the homogeneous transformation from the robot base frame to the camera frame $^\text{C}\mathbf{T}_\text{R}$. It aligns an unaligned robot model to an observed instance segmented point cloud through registration. Importantly, the instance segmented point cloud and unaligned robot model must be synchronized. The unaligned robot model and the instance segmentation are detailed in \secref{c4:sec:unaligned_robot_model_and_instance_segmented_point_cloud}. The registration procedure is explained in \secref{c4:sec:registration}. Crucially, a single snapshot is sufficient to find the transformation, which differentiates it from classical calibration procedures described in Section \ref{c4:sec:handshake_and_eye_in_hand_calibration}. In the case of a robot-mounted camera, i.e. eye-in-hand calibration illustrated in \figref{c4:fig:eye_in_hand}, the calibration can be used to determine the transformation from robot end effector to camera $^\text{C}\mathbf{T}_\text{EE}$. In the case of an externally mounted camera, i.e. eye-to-hand calibration illustrated in \figref{c4:fig:eye_to_hand}, the calibration can be used to determine the robot base-to-base transformation $^{\text{R}_2}\mathbf{T}_{\text{R}_1}$ through $^{\text{R}_2}\mathbf{T}_{\text{R}_1} = ^C\mathbf{T}^{-1}_{\text{R}_2}\,^{C}\mathbf{T}_{\text{R}_1}$.
-
-\subsubsection{Unaligned robot model and instance segmented point cloud}
-\label{c4:sec:unaligned_robot_model_and_instance_segmented_point_cloud}
-\paragraph{Unaligned robot model}
-\label{c4:sec:unaligned_robot_model}
-To obtain an unaligned robot model, the proposed registration procedure takes as input measured joint positions $\mathbf{q}_t$ and link mesh files $\mathcal{M}_{\text{L}_i}$ as shown in \figref{c4:fig:calibration_pipeline}. Since we only aim to perform point cloud registration with the robot model, only the mesh vertices $\mathbf{V}_{\text{L}_i}$ are extracted from the meshes and everything else is discarded. The joint positions are utilized to transform the individual link mesh files by $^{\text{L}_i}\mathbf{T}_\text{W}$ through forward kinematics $\text{FK}(\mathbf{q}) = ^{\text{L}_i}\mathbf{T}_\text{W}$. Mesh files usually contain interior points, which cannot be observed by the stereo or RGB-D camera.
-Interopr points would indeed confuse the registration discussed in \secref{c4:sec:registration}. To obtain only points that lie on the alpha shape of the mesh, sometimes referred to as the concave hull, we utilize a simple sampling strategy. We specify a bounding box that has the meshes' center of mass at the center. We then uniformly sample N points on the bounding box and for each find the closest point on the mesh. These steps result in in the unaligned robot model, that is the robot model's base frame coincides with the camera coordinate frame.
-
-\paragraph{Instance segmented point cloud}
-\label{c4:sec:instance_segmented_point_cloud}
-The instance segmented point cloud is generated by fusing an instance segmentation with a depth map $\mathbf{D}_t$ as shown in \figref{c4:fig:calibration_pipeline}. For the instance segmentation, we combine a detector with a segmentor. In this work, a human-in-the-loop acts as the detector by selecting a few points $\mathbf{f}_t$ on the robot in the image. We then deploy the pre-trained Segment Anything~\cite{segment_anything} and prompt it with the detection points $\mathbf{f}_t$. We thus achieve an instance segmentation of the image $\mathbf{I}_t$. To obtain the depth map $\mathbf{D}_t$, one might either use a stereo camera or an RGB-D camera and run it through a depth estimator. In this work, we utilize Stereolab's Neural Depth perception as the depth estimator.
-
-\subsubsection{Registration}
-\label{c4:sec:registration}
-In the registration step, shown in \figref{c4:fig:calibration_pipeline}, the goal is to align the unaligned robot model (as detailled in \secref{c4:sec:unaligned_robot_model}), with the instance segmented point cloud (as detailled in \secref{c4:sec:instance_segmented_point_cloud}), through finding the transform $^\text{C}\mathbf{T}_\text{R}$. Pseudo-code for the proposed algorithm is given in Algorithm \ref{alg:registration}.
-First, the unaligned robot model is generated through extracting and transforming superficial mesh vertices $\mathbf{V}_\tau$ (as detailled in \secref{c4:sec:unaligned_robot_model}).
-Next, robot instances are detected and segmented in the observed image $\mathbf{I}_\tau$, which yields a mask $\mathbf{M}_\tau$.
-The mask is utilized to isolate the target robot instance in the depth map $\mathbf{D}_\tau$ via a simple Hadamard product, which results in the instance segmented point cloud $\mathbf{P}_\tau$.
-We then compute the instance segmented point cloud's center of mass for an initial guess of the transform $\mathbf{T}_\text{init}$. Finally, we run an ICP~\citep{simple_icp} algorithm between vertices $\mathbf{V}_\tau$ and point cloud $\mathbf{P}_\tau$, see \eqref{c4:eq:icp}. In contrast to ~\citep{simple_icp}, we only consider vertices from $\mathbf{V}_\tau$ whose surface normals point towards the camera. That is, they should be visible to the camera.
-
-\begin{equation}
-    \label{c4:eq:icp}
-    \text{ICP} = \argmin_{^\text{C}\mathbf{T}_\text{R}} || ^\text{C}\mathbf{T}_\text{R}(\mathbf{V}_\tau) - \mathbf{P}_\tau||_2
-\end{equation}
-
-\begin{algorithm}
-\caption{Registration algorithm (refer to \secref{c4:sec:registration} for details). Joint positions $\mathbf{q}_t$, images $\mathbf{I}_t$, and depth map $\mathbf{D}_t$ all correspond to a single configuration, e.g. they are all synchronously observed at time $t=\tau$.}
-\label{alg:registration}
-\begin{algorithmic}
-    \Function{UnalignedRobotModel}{N, $\mathbf{q}$, $\mathcal{M}$}
-        \State $\mathbf{T} =$ \Call{ForwardKinematics}{$\mathbf{q}$} \Comment{get link transforms}
-        \State $\mathbf{V} =$ \Call{Extract}{$\mathcal{M}$} \Comment{extract vertices from mesh files} 
-        \State $\mathbf{V} =$ \Call{Transform}{$\mathbf{T}$, $\mathbf{V}$} \Comment{convert mesh vertices by link transforms}
-        \State $\mathbf{V} =$ \Call{Sample}{N, $\mathbf{V}$} \Comment{sample vertices on robot surface}
-        \State \Return $\mathbf{V}$
-    \EndFunction
-    \Function{Registration}{N, $\mathbf{q}_\tau$,   $\mathcal{M}$, $\mathbf{I}_\tau$, $\mathbf{D}_\tau$}
-        \State $\mathbf{V}_\tau =$ \Call{UnalignedRobotModel}{N, $\mathbf{q}_\tau$,   $\mathcal{M}$} \Comment{get unaligned robot model}
-        \State $\mathbf{f}_\tau =$ \Call{Detector}{$\mathbf{I}_\tau$} \Comment{detect robot instances}
-        \State $\mathbf{M}_\tau =$ \Call{Segmentor}{$\mathbf{I}_\tau$, $\mathbf{f}_\tau$} \Comment{segment robot instances}
-        \State $\mathbf{P}_\tau = \mathbf{M}_\tau \odot \mathbf{D}_\tau$ \Comment{compute Hadamard product}
-        \State $\mathbf{T}_\text{init} =$ \Call{CoM}{$\mathbf{P}_\tau$} \Comment{center of mass as initial transform}
-        \State $^\text{C}\mathbf{T}_\text{R} =$ \Call{ICP}{$\mathbf{T}_\text{init}$, $\mathbf{V}_\tau$, $\mathbf{P}_\tau$} \Comment{run iterative closest point}
-        \State \Return $^\text{C}\mathbf{T}_\text{R}$
-    \EndFunction
-\end{algorithmic}
-\end{algorithm}
-
-\subsection{Experimental setup}
-\label{c4:sec:experimental_setup}
-\begin{figure}
-     \centering
-     \begin{subfigure}[b]{0.3\textwidth}
-         \centering
-         \includegraphics[width=\textwidth]{fig/handshake.png}
-         \caption{Handshake calibration for base-to-base calibration. The two serial manipulators are rigidly attached and in admittance control mode.}
-         \label{c4:fig:handshake}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{0.3\textwidth}
-         \centering
-         \includegraphics[width=\textwidth]{fig/eye_in_hand.png}
-         \caption{Eye-in-hand calibration obtained through self-observation, where the serial manipulator observes itself.}
-         \label{c4:fig:eye_in_hand}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{0.3\textwidth}
-         \centering
-         \includegraphics[width=\textwidth]{fig/eye_to_hand.png}
-         \caption{Eye-to-hand calibration in a dual serial manipulator setup to obtain base-to-base calibration.}
-         \label{c4:fig:eye_to_hand}
-     \end{subfigure}
-    \caption{Calibration procedures, refer to Section \ref{c4:sec:proposed_calibration_procedure} and \ref{c4:sec:experimental_setup}. The proposed registration procedure, see Figure \ref{c4:fig:calibration_pipeline}, is evaluated against alternative calibrations. The base-to-base calibration via eye-to-hand registration in (c) is compared against a handshake calibration in (a). The eye-in-hand calibration in (b) is compared against a classical calibration via an ArUco marker target, also (b).}
-    \label{c4:fig:calibrations}
-\end{figure}
-
-The experimental setup is shown in Figure \ref{c4:fig:handshake}-\ref{c4:fig:eye_to_hand}. We utilize two KUKA LBR Med 7 robots and control them via the lbr\_fri\_ros2\_stack\footnote{\href{https://github.com/kCL-BMEIS/lbr_fri_ros2_stack}{lbr\_fri\_ros2\_stack}} at a control rate of $100\,\text{Hz}$. For the handshake calibration, we deploy them in impedance control mode, see Section \ref{c4:sec:handshake_and_eye_in_hand_calibration}, for all other calibrations we use position control mode. The robots are mounted on a table and are fixed with respect to each other. By construction, their distance is $38\,\text{cm}$. For the camera we use a ZED 2i. We collect images and depth mapes with a resolution of $448 \times 256$ at a frame rate of $15\,\text{Hz}$. For the depth estimation, we utilize the camera in neural depth perception mode.
-
-Four experiments are conducted, two regarding eye-in-hand and two regarding eye-to-hand calibration. For the eye-in-hand calibration, the camera is mounted to the robot via a GRIP G-SHW063 tool connector, see Figure \ref{c4:fig:eye_in_hand}. For the baseline calibration experiments, see Section \ref{c4:sec:handshake_and_eye_in_hand_calibration}, we use a $3\times4$ ArUco marker target of square size $15.77\,\text{mm}$. $1259$ image-joint position correspondences are collected. For the proposed method, see Section \ref{c4:sec:registration}, we have the robot observe itself through the camera. We collect $1272$ image-joint position correspondences, but only use one. For the eye-to-hand calibration, the camera is put on an external tripod, see Figure \ref{c4:fig:eye_to_hand}. $790$ image-joint position correspondences are collected, again only one is used. Robot 1 and robot 2 are calibrated and the base-to-base calibration is extracted, see Section \ref{c4:sec:proposed_calibration_procedure}. The base-to-base calibration is compared to a handshake calibration, see Figure \ref{c4:fig:handshake} and Section \ref{c4:sec:handshake_and_eye_in_hand_calibration}. For the handshake, the robots are rigidly connected via a calibration fixture. $27700$ data points are collected of which $277$ are used for the calibration.
-
-\section{Results}
-\label{c4:sec:results}
-\textbf{Qualitative} results are shown in \figref{c4:fig:registration_results}. It can be observed that in both scenarios, i.e. eye-in-hand (\figref{c4:fig:self_registration} and base-to-base via eye-to-hand (\figref{c4:fig:double_registration}), the segmentation via initial detection works well. The detections $\mathbf{f}_\tau$ are indicated through stars. Robot one and two can be clearly separated. This precise segmentation mask $\mathbf{M}_\tau$ results in an instance segmented point cloud without outliers. The registration of the unaligned robot models $\mathbf{V}_\tau$ onto the instance segmented point clouds $\mathbf{P}_\tau$ results in a visually compelling alignment (\figref{c4:fig:self_registration} - right - and \figref{c4:fig:double_registration} - right). Therein, the instance segmented point clouds are visualized in yellow and the aligned robot models are shown in purple.
-
-\textbf{Quantitative} results summarized in \tabref{c4:tab:calibration_results}. For the eye-in-hand calibrations, it can be seen that the classical calibration procedure via ArUco markers deviates significantly from the manufactured values. This is most likely caused by noisy samples. In contrast, the proposed method, although single-shot, compares better with the expected manufactured values, which aligns well with the qualitative results in \figref{c4:fig:self_registration}. For the base-to-base calibration, it should be noted that the robots are fixed on a plain surface. The manufactured values can, therefore, be considered accurate. The proposed method yields precise results along the y-axis (distance between the robots), whereas the handshake deviates by $1\,\text{cm}$. The proposed method deviates $1\,\text{cm}$ along the z-axis from the manufactured and the handshake values. This dimension is the perpendicular offset to the surface plane. It can further be seen that the proposed method deviates slightly from the orientations of the handshake calibrations when compared to the manufactured values. The deviations might be caused by insufficiently synchronized images and joint states.
-
-% NOTE TO SELF:
-% classical eye-in-hand calibration seems odd. Only 5 samples were used for registration
-% the proposed solution to eye-in-hand seems solid
+\section{Materials and Methods}
+The proposed approach to learning camera motion prediction is summarized in \figref{c4:fig:training_pipeline}. The following sections will describe its key components in more detail.
 
 \begin{landscape}
-\begin{table}[]
-\caption{Calibration results using the proposed method (\secref{c4:sec:proposed_calibration_procedure}) and the baseline methods (\secref{c4:sec:handshake_and_eye_in_hand_calibration}). In addition to the calibration baselines, the table also lists manufactured values. The transforms are displayed in terms of translations $t_{x/y/z}$ and rotations in terms of Euler angles $r_{x/y/z}$.}
-\label{c4:tab:calibration_results}
+\begin{figure}
 \centering
-\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
-\hline
-Calibration Class             & Method       & Transform                                                                                                        & $t_x\,[\text{m}]$ & $t_y\,[\text{m}]$ & $t_z\,[\text{m}]$ & $r_x\,[^\circ]$ & $r_y\,[^\circ]$ & $r_z\,[^\circ]$ \\ \hline
-\multirow{3}{*}{Eye-in-hand}  & Manufactured & $^\text{C}\mathbf{T}_\text{EE}$                                                                                  & $ 0.0$            & $-0.06$           & $-0.06$           & $ 0.0$          & $-2.9$          & $-145.0$        \\ \cline{2-9} 
-                              & ArUco        & $^\text{C}\mathbf{T}_\text{EE}$                                                                                  & $ 0.0$            & $-0.04$           & $ 0.03$           & $-1.1$          & $-15.0$         & $-167.7$        \\ \cline{2-9} 
-                              & Proposed     & $^\text{C}\mathbf{T}_\text{EE}$                                                                                  & $ 0.0$            & $-0.07$           & $-0.08$           & $ 1.6$          & $ 1.6$          & $-146.7$        \\ \hline
-\multirow{2}{*}{Base-to-base} & Manufactured & $^{\text{R}_2}\mathbf{T}_{\text{R}_1}$                                                                           & $ 0.0$            & $-0.38$           & $ 0.0$            & $0.0$           & $0.0$           & $ 0.0$          \\ \cline{2-9}
-                              & Handshake    & $^{\text{R}_2}\mathbf{T}_{\text{R}_1}$                                                                           & $-0.01$           & $-0.37$           & $ 0.0$            & $1.3$           & $0.3$           & $-0.6$          \\ \hline
-Base-to-base via eye-to-hand  & Proposed     & $^{\text{R}_2}\mathbf{T}_{\text{R}_1} = ^\text{C}\mathbf{T}^{-1}_{\text{R}_2}\,^\text{C}\mathbf{T}_{\text{R}_1}$ & $-0.01$           & $-0.38$           & $-0.01$           & $1.7$           & $2.2$           & $-5.1$          \\ \hline
-\end{tabular}
-\end{table}
+\includegraphics[width=0.7\paperheight]{fig/23_02_13_miccai_figures.drawio.pdf}
+\caption{Training pipeline, refer to  \secref{c4:sec:proposed_pipeline}. From left to right: Image sequences are importance sampled from the video database and random augmentations are applied per sequence online. The lower branch estimates camera motion between subsequent frames, which is taken as pseudo-ground-truth for the upper branch, which learns to predict camera motion on a preview horizon.}
+\label{c4:fig:training_pipeline}
+\end{figure}
 \end{landscape}
 
-% classical eye in hand (huanyu)
-% mean translation:
-%  [ 0.    -0.042  0.026]
-% std translation:
-%  [0.159 0.07  0.041]
-% mean rotation:
-%  [  -1.057  -15.003 -167.708]
-% std rotation:
-%  [127.06   16.682   6.183]
 
-% inverse of huanyu's
-% translation:
-%  [-0.015 -0.04  -0.024]
-% euler:
-%  [  2.199 -14.881 167.56 ]
+\subsection{Theoretical Background}
+\label{c4:sec:theoretical_background}
+Points on a plane, as observed from a moving camera, transform by means of the $3\times3$ projective homography matrix $\mathbf{G}$ in image space. Thus, predicting future camera motion (up to scale) may be equivalently treated as predicting future projective homographies.
 
-% proposed
-% translation:
-% [-0.04  -0.056  0.085]
-% euler_c_ee:
-% [  0.461   2.212 146.686]
+It has been shown in \cite{DeTone2016DeepEstimation} that the four point representation of the projective homography, \emph{i.e.,}  taking the difference between four points in homogeneous coordinates $\Delta\mathbf{uv} = \{\mathbf{p}_i - \mathbf{p}^\prime_i\,|\,i \in [0, 4)\} \in \mathbb{R}^{4\times2}$ that are related by $\mathbf{G}\mathbf{p}_i \sim \mathbf{p}^\prime_i\,\,\forall i$, is better behaved for deep learning applications than the $3\times3$ matrix representation of a homography.
+%
+Therefore, in this work, we treat camera motion $\mathcal{C}$ as a sequence of four point homographies on a time horizon $[T_0, T_{N+M})$, $N$ being the recall horizon's length, $M$ being the preview horizon's length. Time points 
+%$T_i$
+lie $\Delta t$ apart, that is $T_{i+1} = T_{i} + \Delta t$. For image sequences of length $\text{N+M}$,
+we work with
+four point homography sequences $\mathcal{C}=\{\Delta\mathbf{uv}_t \,|\, t\in[T_0, T_{N+M})\}$.
 
-% inverse of proposed
-% translation inverse:
-% [ 0.    -0.069 -0.084]
-% euler_c_ee inverse:
-% [   1.601    1.595 -146.655]
 
-% manufactured (zed)
-% translation_inv:
-%  [ 0.003 -0.06  -0.063]
-% euler_inv:
-%  [ 0.    -2.865  -156.000 ]
 
+\subsection{Data and Data Preparation}
+\label{c4:sec:data_and_data_preparation}
+Three datasets are
+%acquired
+curated
+to train and evaluate the proposed method: two cholecystectomy datasets (laparoscopic gallbladder removal), namely Cholec80 \cite{twinanda2016endonet} and HeiChole \cite{wagner2023comparative}, and one hysterectomy dataset (laparoscopic uterus removal), namely AutoLaparo \cite{wang2022autolaparo}.
+
+% The laparoscope typically captures a circular field of view, with status indicators often displayed on the image borders. Further, reflected light frequently exposes parts of the covered regions. 
+
+To remove status indicator overlays from the laparoscopic videos, which may hinder the camera motion estimator, we identify the bounding circle of the circular field of view using \cite{Budd2022RapidDataset}. We crop the view about the center point of the bounding circle to a shape of $240\times320$, so that no black regions are prominent in the images.
+
+% The split is done on a video basis, \emph{e.g.,} be dataset $\text{A} = \{\text{vid}_0, \text{vid}_1, \text{vid}_2, \text{vid}_3\}$, then a possible split is $\text{A}_\text{training} = \{\text{vid}_0, \text{vid}_1\}$, $\text{A}_\text{validation} = \{\text{vid}_2\}$, and $\text{A}_\text{testing} = \{\text{vid}_3\}$. In other words, there is never an overlap. 
+
+All three datasets are split into training, validation, and testing datasets. We split the videos by frame count into $80\pm 1\,\%$ training and $20 \pm 1\,\%$ testing. Training and testing videos never intersect. We repeat this step to further split the training dataset into (pure) training and validation datasets.
+
+Due to errors during processing the raw data, we exclude videos $19$, $21$, and $23$ from HeiChole, as well as videos $22$, $40$, $65$, and $80$ from Cholec80. This results in dataset sizes of: Cholec80 - $4.4e6$ frames at $25\,\text{fps}$, HeiChole - $9.5e5$ frames at $25\,\text{fps}$, and AutoLaparo - $7.1e4$ frames at $25\,\text{fps}$.
+
+% cholec80 frames: 4422770
+% heichole frames: 948929
+% phantom frames: 7180
+% autolaparo frames: 70590
+
+\subsection{Proposed Pipeline}
+\label{c4:sec:proposed_pipeline}
+
+% previously in figure c4:fig:training_pipeline, double check
+% Image sequences are loaded from a video database and geometric transforms, i.e transforms that flip the images / manipulate the perspective and so on, are applied equally to each image within the sequence. The pipeline is then split into two branches. One for camera motion estimation and one for the camera prediction. No further transforms are applied to the camera motion estimation branch to guarantee optimal estimation. Additional photometric transforms, i.e transforms that modify the contrast / color temperature / noise and so on, are applied to the camera motion prediction branch for further augmentation. The estimator takes as input the entire image sequence and estimates camera motion between subsequent frames. The predictor takes as input a recall horizon of past images and predicts a preview horizon of future camera motion. The predictor is optionally conditioned on previous camera motion from the recall horizon. Finally, a loss is computed between estimated and predicted motion.
+
+\subsubsection{Video Database and Importance Sampling}
+\label{c4:sec:video_database_and_importance_sampling}
+The curated data from \secref{c4:sec:data_and_data_preparation} is accumulated into a video database. Image sequences of length $N+M$ are sampled at a frame increment of $\Delta n$ between subsequent frames and with $\Delta c$ frames between the sequence's initial frames. Prior to adding the videos to the database, an initial offline run is performed to estimate camera motion $\Delta\mathbf{uv}$ between the frames. This creates image-motion correspondences of the form $(\mathbf{I}_n\,,\mathbf{I}_{n+\Delta n}\,,\Delta\mathbf{uv}_n)$. Image-motion correspondences where $\mathbb{E}(||\Delta\mathbf{uv}_n||_2) > \sigma$, with sigma being the standard deviation over all motions in the respective dataset, define anchor indices $n$. Image sequences are sampled such that the last image in the recall horizon lies at index $n = N-1$, marking the start of a motion. The importance sampling samples indices from the intersection of all anchor indices, shifted by $-N$, with all possible starting indices for image sequences.
+
+\subsubsection{Geometric and Photometric Transforms}
+\label{c4:sec:geometric_and_photometric_transforms}
+The importance sampled image sequences are fed to a data augmentation stage. This stage entails geometric and photometric transforms. The distinction is made because downstream, the pipeline is split into two branches. The upper branch serves as camera motion prediction whereas the lower branch serves as camera motion estimation, also refer to the next section.
+As it acts as the source of pseudo-ground-truth,
+it is crucial that the camera motion estimator performs under optimal conditions, hence no photometric transforms, i.e. transforms that change brightness / contrast / fog etc., are applied. Photometrically transformed images shall further be denoted as $\tilde{\mathbf{I}}$. To encourage same behavior under different perspectives, geometric transforms are applied, i.e. transforms that change orientation / up to down / left to right etc. Transforms are always
+%to be
+sampled randomly, and 
+%to be
+applied consistently to the entire image sequence.
+% maybe cite imgaug
+ 
+\subsubsection{Camera Motion Estimator and Predictor}
+\label{c4:sec:camera_motion_estimator_and_predictor}
+The goal of this work is to have a predictor learn camera motion computed by an estimator.
+The predictor takes as input a photometrically and geometrically transformed recall horizon $\{\tilde{\mathbf{I}}_t\,|\,t\in[T_0, T_N)\}$ of length $N$, and predicts camera motion $\tilde{\mathcal{C}} = \{\Delta \tilde{\mathbf{uv}}_t\,|\,t\in[T_N,T_{N+M})\}$ on the preview horizon of length $M$. The estimator takes as input the geometrically transformed preview horizon $\{\mathbf{I}_t\,|\,t\in[T_M, T_{N+M})\}$ and estimates camera motion $\mathcal{C}$, which serves as a target to the predictor. The estimator is part of the pipeline to facilitate on-the-fly perspective augmentation via the geometric transforms.
+
+% maybe adjust figure so estimator only inputs preview horizon
+
+% make this part of results????
+% cite feature-based ie loftr, surf, sift / and end-to-end
+% also mention downside of end-to-end, that is large homographies
+% talk about runtime, memory footprint, accuracy, object motion, texture
+% mention predictor architecture
+
+% feature-based homography estimators: de-stabalize training (outliers), slow
+% autolaparo misses rotation case, generally doesn't de-couple cases well
+% 4 dof can be classified through 4 cases (cross)
+
+\section{Experiments and Evaluation Methodology}
+The following two sections elaborate the experiments we conduct to investigate the proposed pipeline from \figref{c4:fig:training_pipeline} in \secref{c4:sec:proposed_pipeline}. First the camera motion estimator is investigated, followed by the camera motion predictor.
+%Since the camera motion estimator was studied in detail in \cite{huber2022deep}, the main focus of this work shall lie on the camera motion predictor. However, since there exists no data on camera motion distribution in videos of laparoscopic interventions, 
+% a brief experiment is dedicated to determine camera motion distribution in videos of laparoscopic interventions.
+%This section shall also probe the camera motion estimator for the purpose of online camera motion estimation.
+
+\subsection{Camera Motion Estimator}
+\label{c4:sec:camera_motion_estimator}
+\subsubsection{Camera Motion Distribution} 
+To extract the camera motion distribution, we run the camera motion estimator from \cite{huber2022deep} with a ResNet-34 backbone over all datasets from \secref{c4:sec:data_and_data_preparation}. We map the estimated four point homographies to up/down/left/right/zoom-in/zoom-out for interpretability. Left/right/up/down corresponds to all four point displacements $\Delta\mathbf{uv}$ consistently pointing left/right/{\allowbreak}up/down respectively.
+Zoom-in/out corresponds to all four point displacements $\Delta\mathbf{uv}$ consistently pointing inwards/outwards. Rotation left corresponds to all four point displacements pointing up right, bottom right, and so on. Same for rotation right. Camera motion is defined static if it lies below the standard deviation in the dataset. The frame increment is set to $0.25\,\text{s}$, corresponding to $\Delta n = 5$ for the $25\,\text{fps}$ videos.
+
+\subsubsection{Online Camera Motion Estimation}
+\label{c4:sec:online_camera_motion_estimation}
+Since the camera motion estimator is executed online, memory footprint and computational efficiency are of importance. Therefore, we evaluate the estimator from \cite{huber2022deep} with a ResNet-34 backbone, SURF \& RANSAC, and LoFTR \cite{sun2021loftr} \& RANSAC. Each estimator is run 1000 times on a single image sequence of length $N+M=15$ with an NVIDIA GeForce RTX 2070 GPU and an Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz.
+
+\subsection{Camera Motion Predictor}
+\label{c4:sec:camera_motion_predictor_experiments}
+\subsubsection{Model Architecture}
+For all experiments, the camera motion predictor is a ResNet-18/34/50, with the number of input features equal to the recall horizon $\text{N}\times3$ (RGB), where $\text{N}=14$. We set the preview horizon $\text{M}=1$. The frame increment is set to $0.25\,\text{s}$, or $\Delta n = 5$ for the $25\,\text{fps}$ videos. The number of frames between clips is also set to $0.25\,\text{s}$, or $\Delta c = 5$.
+
+\subsubsection{Training Details}
+The camera motion predictor is trained on each dataset from \secref{c4:sec:data_and_data_preparation} individually. For training on Cholec80/HeiChole/AutoLaparo, we run $80/50/50$ epochs on a batch size of $64$ with a learning rate of $2.5e-5/1.e-4/1.e-4$. The learning rates for Cholec80 and HeiChole relate approximately to the dataset's training sizes, see \ref{c4:tab:camera_motion_prediction}. For Cholec80, we reduce the learning rate by a factor $0.5$ at epochs $50,\,75$. For Heichole/AutoLaparo we drop the learning rate by a factor $0.5$ at epoch $35$. The loss in \figref{c4:fig:training_pipeline} is set to the mean pairwise distance between estimation and prediction $\mathbb{E}(||\Delta\tilde{\mathbf{uv}}_t - \Delta\mathbf{uv}_t||_2) + \lambda \mathbb{E}(||\Delta\tilde{\mathbf{uv}}_t||_2)$ with a regularizer that discourages the identity $\Delta\tilde{\mathbf{uv}}_t = \mathbf{0}$ (i.e. no motion). We set $\lambda = 0.1$.
+
+\subsubsection{Evaluation Metrics}
+For evaluation we compute the mean pairwise distance between estimated and predicted motion $\mathbb{E}(||\Delta\tilde{\mathbf{uv}}_t - \Delta\mathbf{uv}_t||_2)$. All camera motion predictors are benchmarked against a baseline, that is a $\mathcal{O}(1)$/$\mathcal{O}(2)$-Taylor expansion of the estimated camera motion $\Delta\mathbf{uv}_t$. Furthermore, the model that is found to perform best is evaluated on the multi-class labels (left, right, up, down) that are provided in AutoLaparo. 
+
+\section{Results}
+\subsection{Camera Motion Estimator}
+\subsubsection{Camera Motion Distribution}
+The camera motion distributions for all datasets are shown in \figref{c4:fig:camera_motion_distribution}. It is observed that for a large fraction of the sequences there is no significant camera motion (Cholec80 $76.21\%$, HeiChole $76.2\%$, AutoLaparo $71.29\%$). This finding supports the importance sampling that was introduced in \secref{c4:sec:video_database_and_importance_sampling}. It can further be seen that e.g. left/right and up/down motions are equally distributed.
+
+% TODO: add explanation for labels
 \begin{figure}
-     \centering
-     \begin{subfigure}[b]{\textwidth}
-         \centering
-         \includegraphics[width=0.8\textwidth]{img/visual_calibration/self_registration_combined_white.png}
-         \caption{Eye-in-hand calibration, corresponding to Figure \ref{c4:fig:eye_in_hand}. Left: Instance segmentation. The camera is mounted to robot one, highlighted through the blue mask. For visualization purposes, the image is rotated by $180^{\circ}$. Right: Point cloud to robot model registration.}
-         \label{c4:fig:self_registration}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{\textwidth}
-         \centering
-         \includegraphics[width=0.8\textwidth]{img/visual_calibration/double_registration_combined_white.png}
-         \caption{Eye-to-hand calibration, corresponding to Figure \ref{c4:fig:eye_to_hand}. Left: Instance segmentation. The camera is mounted externally and observes robot one (blue mask) and robot two (orange mask). Right: Point cloud to robot model registration. Note that first the robot to camera calibration $^\text{C}\mathbf{T}_{\text{R}_1}$ and $^\text{C}\mathbf{T}_{\text{R}_2}$ are obtained. These are fused to obtain the robot base-to-base calibration $^{\text{R}_2}\mathbf{T}_{\text{R}_1}$, refer to Section \ref{c4:sec:materials_and_methods}.}
-         \label{c4:fig:double_registration}
-     \end{subfigure}
-     \caption{Eye-in-hand (a) and eye-to-hand (b) calibration results, refer to Section \ref{c4:sec:results}. The instance segmentations are obtained through Segment Anything~\citep{segment_anything}. A human detector selects points on the robots, as indicated through stars. These points are used as a prior for the segmentation and fused with a depth map to obtain an instance segmented point cloud, see Figure \ref{c4:fig:calibration_pipeline}. It can be seen that the observed instance segmented point clouds align well with the robot model for both (a) and (b).}
-     \label{c4:fig:registration_results}
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{fig/23_03_07_Cholec80_motion_dist_no_title.pdf}
+        \caption{Cholec80}
+    \end{subfigure}
+    \hfill
+    \centering
+    \begin{subfigure}[b]{\textwidth}
+        \centering
+        \includegraphics[width=0.8\textwidth]{fig/23_03_07_HeiChole_motion_dist_no_title.pdf}
+        \caption{HeiChole}
+    \end{subfigure}
+    % \begin{subfigure}[b]{0.49\textwidth}
+    %    \centering
+    %    \includegraphics[width=\textwidth]{fig/23_03_07_Phantom_motion_dist.pdf}
+    %    \caption{}
+    % \end{subfigure}
+    % \begin{subfigure}[b]{0.49\textwidth}
+    %    \centering
+    %    \includegraphics[width=\textwidth]{fig/23_03_07_AutoLaparo_motion_dist.pdf}
+    %    \caption{}
+    % \end{subfigure}
+    \caption{Camera motion distribution, refer to \secref{c4:sec:camera_motion_estimator}. AutoLaparo: $2.81\%$ - up, $1.88\%$ - down, $4.48\%$ - left, $3.38\%$ - right, $0.45\%$ - zoom\_in, $0.2\%$ - zoom\_out, $0.3\%$ - rotate\_left $0.3\%$, - rotate\_right $14.9\%$ - mixed, $71.29\%$ - static.}
+    \label{c4:fig:camera_motion_distribution}
 \end{figure}
 
+\subsubsection{Online Camera Motion Estimation}
+The results of the online camera motion estimation are summarized in \tabref{c4:tab:estimation_speed}. The deep homography estimation with a Resnet34 backbone executes $11\times$ quicker and has the lowest GPU memory footprint of the GPU accelerated methods. This allows for efficient implementation of the proposed online camera motion estimation in \figref{c4:fig:training_pipeline}.
 
-\section{Discussion}% and outlook}
-In this work we present a novel vision-based robot calibration procedure that unifies eye-in-hand and eye-to-hand calibration through casting them the same problem formulation. This is achieved by treating the robot as calibration target itself. In the eye-in-hand calibration scenario, the robot simply observes itself whilst in the eye-to-hand scenario the camera observes the robot from an external stand. The introduced formulation can further be used for rapid robot base-to-base calibrations.
+\begin{table}[htb]
+    \caption{Memory footprint and execution time of different camera motion estimators, refer to \secref{c4:sec:online_camera_motion_estimation}.}
+    \label{c4:tab:estimation_speed}
+    \centering
+    \resizebox{\textwidth}{!}{
+        \begin{tabular}{lrrr}
+            \toprule
+            Method & Execution time [s] & Speed-up [a.u.] & Model / Batch [Mb] \\
+            \midrule
+            Resnet34 & $\mathbf{0.016 \pm 0.048}$ & $\mathbf{11.1}$ & $\mathbf{664} / \mathbf{457}$  \\
+            LoFTR \& RANSAC & $0.178 \pm 0.06$ & $1.0$ & $669 / 2412$ \\
+            SURF \& RANSAC & $0.131 \pm 0.024$ & $1.4$ & NA \\
+            \bottomrule
+        \end{tabular}
+    }
+\end{table}
 
-\textbf{Promising} qualitative resutls are presented in Figure \ref{c4:fig:registration_results}. For both, eye-in-hand \ref{c4:fig:self_registration} and eye-to-hand \ref{c4:fig:double_registration}, the instance segmented point cloud, as well as the robot model align well after registration. These qualitative observations also solidify through our quantitative comparisons against baselines, which are summarized in Table \ref{c4:tab:calibration_results}. Whilst an error remains, the proposed method is much quicker, as it is single shot, is much safer to use, as opposed to the handshake calibration, and does not require any calibration targets, as opposed to the eye-in-hand calibration with ArUco target.
+\subsection{Camera Motion Prediction}
+The camera motion prediction results for all datasets are highlighted in \tabref{c4:tab:camera_motion_prediction}. It can be seen that significant improvements over the baseline are achieved on the Cholec80 and HeiChole datasets. Whilst the learned prediction performs better on average than the baseline, no significant improvement is found for the AutoLaparo dataset.
 
-\textbf{Limitations} of this work are that a sufficient view of the robot is required to perform the calibration. In a surgical scenario, draping would cause an insufficient view. Consequentially, the calibration would have to be carried out as initialization and the robots would not be allowed to move afterwards. Another limitation is the simple ICP algorithm that was used in Algorithm \ref{alg:registration}, Section \ref{c4:sec:registration}. At times, convergence to local minima is observed.
+The displacement of the image center point under the predicted camera motion for AutoLaparo is plotted against the provided multi-class motion annotations and shown in \figref{c4:fig:autolapato_results}. It can be seen that the camera motion predictions align well with the ground truth labels.
 
-\textbf{Future} improvements could focus on addressing the above, but also on exploring novel concepts. Instead of using a simple ICP algorithm for registration, one should investigate registration methods that deal well with registering partially observable points clouds. To address the partially observable point cloud issue, one might further move from single shot towards multi shot registration, where multiple robot configurations are observed. This should help improve the calibration accuracy. Research might find that optimal robot configurations exist for performing self-observation in eye-in-hand calibration and also for eye-to-hand calibration. The system might actively sense itself and its surroundings by minimizing uncertainty. Finally, it was omitted in this work that the presented method can also be used to have a robot observe itself and other surrounding robots. Active sensing could be deployed to have an observing robot understand its environment with high precision.
+% TODO: update cholec80 results here!
+% TODO: move more sample to the appendix
+\begin{table}[]
+\caption{Camera motion predictor performance, refer to \secref{c4:sec:camera_motion_predictor_experiments}. Taylor baselines predict based on previous estimated motion, ResNets based on images.}
+\label{c4:tab:camera_motion_prediction}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}{|l|l|lllll|}
+\hline
+\multirow{3}{*}{Dataset} & \multirow{3}{*}{\begin{tabular}[c]{@{}l@{}}Train Size\\ {[}Frames{]}\end{tabular}} & \multicolumn{5}{l|}{Mean Pairwise Distance {[}Pixels{]}}                                                                                                                                          \\ \cline{3-7} 
+                         &                                                                                 & \multicolumn{2}{l|}{Taylor}                                                   & \multicolumn{3}{l|}{ResNet (proposed)}                                                                                              \\ \cline{3-7} 
+                         &                                                                                 & \multicolumn{1}{l|}{$\mathcal{O}(1)$} & \multicolumn{1}{l|}{$\mathcal{O}(2)$} & \multicolumn{1}{l|}{$18$}                     & \multicolumn{1}{l|}{$34$}                     & $50$                     \\ \hline
+Cholec80                 & $3.5e6$                                                                         & \multicolumn{1}{l|}{$27.2 \pm 23.1$}  & \multicolumn{1}{l|}{$36.4 \pm 31.2$}  & \multicolumn{1}{l|}{$\mathbf{14.8} \pm 11.7$} & \multicolumn{1}{l|}{$\mathbf{14.4} \pm 11.4$} & $\mathbf{14.4} \pm 11.4$ \\ \hline
+HeiChole                 & $7.6e5$                                                                         & \multicolumn{1}{l|}{$29.7 \pm 26.4$}  & \multicolumn{1}{l|}{$39.8 \pm 35.9$}  & \multicolumn{1}{l|}{$\mathbf{15.8} \pm 12.5$} & \multicolumn{1}{l|}{$\mathbf{15.8} \pm 12.5$} & $\mathbf{15.8} \pm 12.5$ \\ \hline
+AutoLaparo               & $5.9e4$                                                                         & \multicolumn{1}{l|}{$19.4 \pm 18.4$}  & \multicolumn{1}{l|}{$25.8 \pm 24.7$}  & \multicolumn{1}{l|}{$\mathbf{11.2} \pm 11.0$} & \multicolumn{1}{l|}{$\mathbf{11.3} \pm 11.0$} & $\mathbf{11.3} \pm 11.0$ \\ \hline
+\end{tabular}
+}
+\end{table}
+
+%cholec80 frames:
+%4423520
+%cholec80 train frames:
+%3505700
+%heichole frames:
+%949469
+%heichole train frames:
+%763123
+%phantom frames:
+%7360
+%phantom train frames:
+%5888
+%autolaparo frames:
+%73500
+%autolaparo train frames:
+%58800
+
+%mean estim
+%mean pred
+
+% cholec80 resnet 18
+%$16.3 \pm 12.8$
+%$8.1 \pm 6.3$
+
+% cholec80 resnet 34
+%$15.9 \pm 12.5$
+%$8.1 \pm 6.4$
+
+% cholec80 resnet 50
+%$15.9 \pm 12.5$
+%$7.8 \pm 6.1$
+
+% heichole resnet 18
+%$16.3 \pm 13.0$
+%$6.2 \pm 4.5$
+
+% heichole resnet 34
+%$16.3 \pm 13.0$
+%$7.3 \pm 5.4$
+
+% heichole resnet 50
+%$16.3 \pm 13.0$
+%$6.5 \pm 4.3$
+
+% autolaparo resnet 18
+%$11.2 \pm 11.0$
+%$1.0 \pm 0.3$
+
+% autolaparo resnet 34
+%$11.2 \pm 11.0$
+%$1.2 \pm 0.4$
+
+% autolaparo resnet 50
+%$11.2 \pm 11.0$
+%$1.1 \pm 0.7$
+
+%phantom resnet 18
+%$4.1 \pm 10.1$
+%$5.8 \pm 4.6$
+
+%phantom resnet 34
+%$14.1 \pm 10.1$
+%$3.3 \pm 0.6$
+
+%phantom resnet 50
+%$14.1 \pm 10.1$
+%$4.0 \pm 1.6$
+
+\begin{figure}
+\centering
+\begin{subfigure}[b]{\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/23_03_07_autolaparo_cholec80_resnet50_duv_center_x.pdf}
+    \caption{Predicted camera motion along x-axis, scaled by image size to $[-1, 1]$.}
+    \label{c4:fig:autolaparo_results_a}
+\end{subfigure}
+\begin{subfigure}[b]{\textwidth}
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig/23_03_07_autolaparo_cholec80_resnet50_duv_center_y.pdf}
+    \caption{Predicted camera motion along y-axis, scaled by image size to $[-1, 1]$.}
+    \label{c4:fig:autolaparo_results_b}
+\end{subfigure}
+\caption{Predicted camera motion on AutoLaparo, refer to \secref{c4:sec:camera_motion_predictor_experiments}. Camera motion predictor trained on Cholec80 with ResNet-50 backbone, see \tabref{c4:tab:camera_motion_prediction}. Shown is the motion of the image center under the predicted homography. Clearly, for videos labeled left/right, the center point is predicted to move left/right and for up/down labels, the predicted left/right motion is centered around zero (a). Same is observed for up/down motion in (b), where left/right motion is zero-centered.}
+\label{c4:fig:autolapato_results}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\linewidth]{fig/23_03_09_blends_drawio_update.drawio.pdf}
+\caption{Exemplary camera motion prediction, refer to \secref{c4:sec:camera_motion_predictor_experiments}. In the image sequence, the attention changes from the right to the left tool. We warp the past view (yellow) by the predicted homography and overlay the current view (blue). Good alignment corresponds to good camera motion prediction. Contrary to the baseline, the proposed method predicts the motion well. Data taken from HeiChole test set, ResNet-50 backbone trained on Cholec80, refer \tabref{c4:tab:camera_motion_prediction}.}
+\label{c4:fig:predicted_camera_motion_sequence}
+\end{figure}
+
+% analysis should be done for all datasets!
+% todo: surf or sift (kornia)
+% loftr: 1078 nans
+
+
+%Show a train / eval correlation matrix for every dataset, showing the improvements over baseline (motion continuation)
+%\begin{table}[]
+%    \caption{Figure showing the improvements over baseline. Trained / evaluated on different datasets.}
+%    \label{c4:tab:my_label}
+%    \centering
+%    \begin{tabular}{ccccc}
+%         Train / Eval & Cholec80 & HeiChole & Autolaparo & Phantom \\
+%         Cholec80 & & & &  \\
+%         HeiChole & & & &  \\
+%         Phantom & & & &  \\
+%    \end{tabular}
+%\end{table}
+
+%Show a figure of an image sequence with overlapped motion prediction for the best method
+%\begin{itemize}
+%    \item Identity
+%    \item Continuation
+%    \item Prediction
+%\end{itemize}
+
+\section{Conclusion and Outlook}
+%In this work, we are the first
+To the best of our knowledge, this work is the first
+to demonstrate that camera motion can indeed be learned from 
+%publicly available
+retrospective
+videos of laparoscopic interventions,
+with no manual annotation.
+%simply
+Self-supervision is achieved 
+by harvesting image-motion correspondences using a camera motion estimator, see \figref{c4:fig:training_pipeline}. The camera motion predictor is shown to generate statistically significant better predictions over a baseline in \tabref{c4:tab:camera_motion_prediction} as measured using pseudo-ground-truth and on multi-class manually annotated motion labels from AutoLaparo in \figref{c4:fig:autolapato_results}. An exemplary image sequence in \figref{c4:fig:predicted_camera_motion_sequence} demonstrates successful camera motion prediction on HeiChole. These results were achieved through the key finding from \figref{c4:fig:camera_motion_distribution}, which states that most image sequences, i.e. static ones, are irrelevant to learning camera motion. Consequentially, we contribute a novel importance sampling method, as described in \secref{c4:sec:video_database_and_importance_sampling}. Finally, we hope that our open-source commitment will help the community explore this area of research further.
+
+A current limitations of this work is the preview horizon $M$ of length $1$. One might want to extend it for model predictive control. Furthermore, to improve explainability to the surgeon, but also to improve the prediction in general, it would be beneficial to include auxiliary tasks, e.g. tool and organ segmentation, surgical phase recognition, and audio. There also exist limitations for the camera motion estimator. The utilized camera motion estimator is efficient and isolates object motion well from camera motion, but is limited to relatively small camera motions. Improving the camera motion estimator to large camera motions would help increase the preview horizon $M$.
+
+In future work, we will execute this model in a real setup for investigating transferability. This endeavor is backed by \cite{huber2021homography}, which demonstrates how the learned homography could immediately be deployed on a robotic laparoscope holder. It  might proof necessary to fine-tune the presented policy through reinforcement learning with human feedback.
+
