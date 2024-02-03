@@ -24,22 +24,20 @@ Compared to open surgery, laparoscopy leads to significantly faster intervention
     \caption{Shown is the increase of minimally invasive laparoscopy over open approaches from 2012 to 2018. Indicated as year zero is the introduction of robotic laparoscopy, which increased from $1.8\%$ in 2012 to $15.1\%$ in 2018. For inguinal hernia repair, an even greater increase in robotic surgery was identified from $0.7\%$ to $28.8\%$. A total of $169.404$ cases were investigated. Figure and data provided with courtesy by \cite{sheetz2020trends}. Refers to \secref{in:sec:laparoscopy}.}
     \label{in:fig:robotic_vs_laparoscopic_vs_open}
 \end{figure}
-Some types of laparoscopic procedures are cholecystectomy (gallbladder removal), appendectomy (appendix removal), inguinal hernia repair (i.e. leaking of intestines through the abdominal wall), colectomy (partial colon removal), and gastrectomy (partial or full stomach removal) among others. Since of particular interest for this work, in the following, cholecystectomy will be considered an example for explaining a laparoscopic surgery setup and procedure. A cholecystectomy is the surgical removal of the gallbladder. The gallbladder serves as a reservoir for the liver-produced bile, a fat digesting fluid. Bile may harden and form gallstones, which can lead to inflammation and severe pain. Since the liver also releases bile directly into the digestive tract, shown in \figref{in:fig:cholecystectomy_incisions}, the gallbladder may be removed in such cases. A cholecystectomy setup is depicted in \figref{in:fig:room_setup}.
+Some types of laparoscopic procedures are cholecystectomy (gallbladder removal), appendectomy (appendix removal), inguinal hernia repair (i.e. leaking of intestines through the abdominal wall), colectomy (partial colon removal), and gastrectomy (partial or full stomach removal) among others. Since the laparoscopic cholecystectomy is carried out in high volumes and is additionally a relatively simple procedure, it is of special relevance to this work. It will thus be considered an example for explaining a laparoscopic surgery setup and procedure. A cholecystectomy is the surgical removal of the gallbladder. The gallbladder serves as a reservoir for the liver-produced bile, a fat digesting fluid. Bile may harden and form gallstones, which can lead to inflammation and severe pain. Since the liver also releases bile directly into the digestive tract, shown in \figref{in:fig:cholecystectomy_incisions}, the gallbladder may be removed in such cases. A cholecystectomy setup is depicted in \figref{in:fig:room_setup}.
 \begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{introduction/fig/24_01_26_room_setup.pdf}
     \caption{Typical setup for a cholecystectomy. Image adapted from \cite{sages2010room}. Refers to \secref{in:sec:cholecystectomy_setup}.}
     \label{in:fig:room_setup}
 \end{figure}
-\subsubsection{Cholecystectomy Setup}
+\subsubsection{Laparoscopic Cholecystectomy Setup}
 \label{in:sec:cholecystectomy_setup}
-Even this relatively simple procedure requires multiple skilled workers. Therein, the surgeon is supported by a camera holder, a second assistant, an anesthesiologist, and a mayo nurse (for providing tools). Several devices and tools are used for the procedure. This commonly includes a harmonic scalpel, which cauterizes tissue and coagulates blood (i.e. causes blood clothing) through ultra-sonic waves. More commonly used, however, due to lower cost for cautarization and coagulation, is an electrosurgical unit (ESU), which generates different electrical waveforms and can be connected to most laparoscopic tools \cite{archana2018comparing}. Further devices include a suction-irrigator for removing body fluids from the surgical scene, as well as a camera system and a light source, and multiple monitors. A laparoflator is used to insulflate the abdomen with $\text{CO}_2$ and to maintain a fixed pressure. An anesthisia machine, and an intravenous stand are utilized to regulate the patient's conditions. Finally, a C-arm is often used to visualize the bile duct to investigate for possible injuries and leakage caused by the intervention \cite{cuschieri1994intraoperative}, referred to as cholangiography (x-ray visualization of the bile duct with contrast agent).
+Even this relatively simple procedure requires multiple skilled workers. Therein, the surgeon is supported by a camera holder, a second assistant, an anesthesiologist, and a mayo nurse (for providing tools). Several devices and tools are used for the procedure. This commonly includes a harmonic scalpel, which cauterizes tissue and coagulates blood (i.e. causes blood clothing) through ultra-sonic waves. More commonly used, however, due to lower cost for cautarization and coagulation, is an electrosurgical unit (ESU), which generates different electrical waveforms and can be connected to most laparoscopic tools \cite{archana2018comparing}. Further devices include a suction-irrigator for removing body fluids from the surgical scene, as well as a camera system, a light source, and multiple monitors. A laparoflator is used to insulflate the abdomen with $\text{CO}_2$ and to maintain a fixed pressure. An anesthisia machine, and an intravenous stand are utilized to regulate the patient's conditions. Finally, a C-arm visualizes the bile duct to probe for possible injuries and leakage caused by the intervention \cite{cuschieri1994intraoperative}, referred to as cholangiography (x-ray visualization of the bile duct with contrast agent).
 
-\subsubsection{Cholecystectomy Procedure}
+\subsubsection{Laparoscopic Cholecystectomy Procedure}
 \label{in:sec:cholecystectomy_procedure}
-To begin with, $\text{CO}_2$ is injected into the abdomen via a needle. The pressure is controlled through the laparoflator, see \figref{in:fig:room_setup}. Next, four small incisions are made for trocars T1-T4, which serve as entry point through the abdominal wall, shown in \figref{in:fig:cholecystectomy_incisions}. A laparoscope is inserted through T1 to grant an adequate view of the surgical scene. A grasper is inserted through T2 and used by the assistant to elevate the gallbladder. Trocars T3 and T4 are used by the surgeon to perform the cholecystectomy.
-
-% organs: https://commons.wikimedia.org/wiki/File:Digestive_system_showing_bile_duct.svg?uselang=en#Licensing
+This paragraph explains the laparoscopic cholecystectomy in simplified terms and vastly refers to \cite{ALES5766}. To begin with, $\text{CO}_2$ is injected into the abdomen via a needle. The pressure is controlled through the laparoflator, see \figref{in:fig:room_setup}. Next, four small incisions are made for trocars T1-T4, which serve as entry point through the abdominal wall, shown in \figref{in:fig:cholecystectomy_incisions}. A laparoscope is inserted through T1 to grant an adequate view of the surgical scene. A grasper is inserted through T2 and used by the assistant to elevate the gallbladder. Trocars T3 and T4 are used by the surgeon to perform the cholecystectomy. Following the preparatory steps, the surgery can broadly be partitioned into six steps.
 
 \begin{figure}
     \centering
@@ -47,9 +45,32 @@ To begin with, $\text{CO}_2$ is injected into the abdomen via a needle. The pres
     \caption{Common cholecystectomy incisions. Several incisions are made for the trocars T1-T4. Image with courtesy of \cite{ALES5766} and modified to include port descriptions and organs. Refers to \secref{in:sec:cholecystectomy_procedure}}
     \label{in:fig:cholecystectomy_incisions}
 \end{figure}
-, multiple trocars are inserted through small incisions in the abdominal wall, refer \figref{in:fig:cholecystectomy_incisions}. Trocars serve as entry points for the laparoscope and tools.
+
+\paragraph{Dissection of the Hepatocystic Triangle} The goal is to expose the hepatocystic trianlge \cite{mischinger2020critical}, see \figref{in:fig:hepatocystic_triangle}. First, the gallbladder is gently pulled upward over the liver, and its neck is pulled downward to expose its different parts, as can be seen in \figref{in:fig:cholecystectomy_incisions}. Swollen gallbladders are precautiously poked to prevent perforation with leakage of bile and gallstones. Potential adhesions (scarred connections to other organs) are carefully separated using cautery and regular tools, avoiding the area near the duodenum (beginning of the small intestine).
 
 
+% \paragraph{Hepatocystic Triangle Dissection} The goal is to clear away fat and tissue around the gallbladder and to clear the hepatocystic triangle, see \figref{in:fig:hepatocystic_triangle}. To start, the gallbladder is gently pulled upward over the liver, and its neck is pulled downward to expose its different parts, as can be seen in \figref{in:fig:cholecystectomy_incisions} and \figref{in:fig:hepatocystic_triangle}. Swollen gallbladders are precautiously poked to prevent perforation with leakage of bile and gallstones. Potential adhesions (scarred connections to other organs) are carefully separated using cautery and regular tools, avoiding the area near the duodenum (beginning of the small intestine).
+
+% It is of utmost importance to identify the cystic artery and cystic duct without doubt prior to 
+
+\paragraph{Establishing the Critical View of Safety} To ensure safety, three things are checked: the area around the gallbladder's neck is free of fat and tissue, the lower part of the gallbladder is separated from the liver, and only two structures (cystic duct and cystic artery) enter the gallbladder. Once this safe view is achieved, the surgeon and assistant double-check before cutting or clipping anything. Understanding variations in anatomy is crucial to avoid mistakes.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{introduction/fig/24_02_03_hepatocystic_triangle.png}
+    \caption{The bile duct (green), together with liver and gallbladder form the hepatocystic triangle, which is often covered in fat tissue. Image with courtesy of \cite{mischinger2020critical} and updated font.}
+    \label{in:fig:hepatocystic_triangle}
+\end{figure}
+
+\paragraph{Clipping and Cutting the Cystic Artery} To save costs, a tool with clips is used to close the cystic artery, and then it is cut. Care is taken not to displace the clips, leaving a small piece of tissue to prevent any accidental movement during or after the procedure.
+
+\paragraph{Checking and Cutting the Cystic Duct} An X-ray is often taken to check the ducts. If needed, the cystic duct is clipped and cut. If there are concerns about the clips, a special loop suture is used instead.
+
+\paragraph{Separating Gallbladder from Liver} After cutting the cystic duct, the gallbladder is carefully dissected from the liver. Special tools and techniques are used to avoid bleeding or bile leakage. Any bleeding or spillage is cleaned up. The gallbladder is then put in a bag and removed through a port.
+
+\paragraph{Removing Specimen and Closing} The bag containing the gallbladder is taken out through a port, and the skin and fascia at the extraction site are closed with sutures. All gas used during the procedure is released from the ports.
+
+% organs: https://commons.wikimedia.org/wiki/File:Digestive_system_showing_bile_duct.svg?uselang=en#Licensing
 
 
 
@@ -57,9 +78,6 @@ To begin with, $\text{CO}_2$ is injected into the abdomen via a needle. The pres
 % setup figure: https://www.sages.org/image-library/basic-room-setup/
 % setup figure: https://www.researchgate.net/publication/267805211_Ergonomic_considerations_in_natural_orifice_translumenal_endoscopic_surgery_NOTES_A_case_study
 % explanatory video: https://ales.amegroups.org/article/view/5766/html also contains anathomy image
-
-
-\cite{ALES5766} incisions, trocars, workflow
 
 % In parts of this work
 
@@ -85,9 +103,9 @@ Intuitive filed multiple patents in the 1990s, which guarded market access from 
 \caption{A non-exhaustive list of commercial robotic laparoscopy systems. The table differentiates between monolithic / modular systems and systems with mechanical / programmable remote center of motion (RCM). The market competition has lead to a variety of systems with a tendency to stand apart from Intuitive's status-quo approach. Refers to \secref{in:sec:robot_surgery_platforms}.}
 \label{in:fig:systems}
 \begin{tabular}{lll}
-                                       & Mechanical RCM                                                                                                                                                                                                                                                                                                             & Programmable RCM                                                                                                                                                                                                                                                                                                         \\ \cline{2-3} 
-\multicolumn{1}{l|}{Monolithic} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ da Vinci\textsuperscript{\textregistered} (Intuitive)\\ $\bullet$ avatera\textsuperscript{\textregistered} (avateramedical)\\ $\bullet$ Maestro\textsuperscript{\textregistered} (Moon Surgical)\end{tabular}} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ hinotori\textsuperscript{\texttrademark} (Medicaroid)\\ $\,$\\ $\,$\end{tabular}}                                                                                                                                                            \\ \cline{2-3} 
-\multicolumn{1}{l|}{Modular}    & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ Hugo\textsuperscript{\texttrademark} (Medtronic)\\ $\bullet$ SSi Mantra\textsuperscript{\texttrademark} (SS Innovations)\\ $\,$\end{tabular}}                                                                                  & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ Versius\textsuperscript{\textregistered} (CMR Surgical)\\ $\bullet$ Dexter\textsuperscript{\textregistered} (Distalmotion)\\ $\bullet$ Senhance\textsuperscript{\texttrademark} (Asensus Surgical)\end{tabular}} \\ \cline{2-3} 
+                                       & Mechanical RCM                                                                                                                                                                                                                            & Programmable RCM                                                                                                                                                                                                                                                                                                         \\ \cline{2-3} 
+\multicolumn{1}{l|}{Monolythic System} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ da Vinci\textsuperscript{\textregistered}\\ $\bullet$ Maestro\textsuperscript{\textregistered}\end{tabular}}     & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ hinotiri\textsuperscript{\texttrademark}\\ $\,$\end{tabular}}                                                                                                                                                                   \\ \cline{2-3} 
+\multicolumn{1}{l|}{Modular System}    & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ Hugo\textsuperscript{\texttrademark}\\ $\bullet$ SSi Mantra\textsuperscript{\texttrademark}\\ $\,$\end{tabular}} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ Versius\textsuperscript{\textregistered}\\ $\bullet$ Dexter\textsuperscript{\textregistered}\\ $\bullet$ Senhance\textsuperscript{\texttrademark}\end{tabular}} \\ \cline{2-3} 
 \end{tabular}
 \end{table}
 
