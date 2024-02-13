@@ -4,11 +4,50 @@
 % TODO: remove
 And Schmidhuber said, Let there be backpropagation, and there was backpropagation.
 \minitoc
-Data driven endoscopic camera motion automation. 
+\section{Foreword}
+\label{in:sec:foreword}
+This thesis investigates data driven endoscopic camera motion automation by means of a robot and therefore falls into the realm of robot assisted surgery (RAS). It aims to find novel ways that support clinical staff in their daily work by elevating them of unfulfilling tasks and it takes enhanced patient care as its core guiding principle.
+
+In RAS, it is commonly acknowledged that automation will proceed stepwise. From no autonomy to full automation, these steps are often categorized into six stages \cite{zhang2017automation, fosch2021human}:
+\begin{enumerate}
+    \item No autonomy: Surgeon is in full charge of the robot
+    \item Robot assistance: Robot constrains motion and corrects surgeon  
+    \item Task autonomy: Robot executes specific tasks autonomously under human supervision
+    \item Conditional autonomy: Robot plans and executes tasks under human approval
+    \item High autonomy: As conditional autonomy without approval but human intervention
+    \item Full automation: Robot performs an entire surgery autonomously
+\end{enumerate}
+This work explores level five, high autonomy, which would require approval-free endoscopic camera motion execution with the possibility of human intervention. Although some works \cite{battaglia2021rethinking} argue that the focus should not lie on automation, rather enhancement, we adopt a futuristic sentiment and are in alignment with \cite{kitaguchi2022artificial}, where the authors explain why camera motion automation will likely be achieved first. This futuristic notion follows previous surgical revolutions, from the advancement of open surgery to minimally invasive surgery (MIS), and the success of the da Vinci\textsuperscript{\textregistered} surgical robot in robot assisted minimally invasive surgery (RMIS), see also \figref{in:fig:camera_motion_automation} and \figref{in:fig:robotic_vs_laparoscopic_vs_open}.
+
+The ever evolving field of surgery has repeatedly demonstrated gradual acceptance of new technology \cite{attanasio2021autonomoy}, and we argue that automation is no exception. The growth of RMIS can clearly be considered an enabling factor for full automation, see also \figref{in:fig:camera_motion_automation}.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{introduction/fig/24_02_13_surgical_revolution.pdf}
+    \caption{The gradual introduction of novel technology into the surgical field, one enabling the next. Endoscopic camera motion automation is likely to appear first towards full automation. Refers to \secref{in:sec:foreword}.}
+    \label{in:fig:camera_motion_automation}
+\end{figure}
+When compared to other domains, such as autonomous driving, service and household robots, where robots already exert a significant amount autonomy that far exceeds RMIS, it becomes obvious that these advances will ultimately make their way into the operating theater as well. This is because the medical field usually adopts novel technology in the order of tens of years later due to regulatory hurdles and cost. However, there might even be a future where RMIS will not only adopt full automation from other domains but make significant contributions to general machine intelligence. Others \cite{lecun2022path} have argued that machines will need to interact with the real world in order to become truly intelligent and, arguably, RMIS has grown to be the most advanced physical human-robot interaction (pHRI) domain with thousands of deployed robots.
+
+As we dive deeper into level five autonomy endoscopic camera motion automation, the introductory chapter will provide a solid clinical background for laparoscopy, a sub-domain of endoscopy, in \secref{in:sec:laparoscopy}, including an in-depth explanation of laparoscopic cholecystectomy (minimally invasive gallbladder removal). This is because laparoscopic cholecystectomy is performed in high volumes and can be considered a relatively simple procedure. It serves as the perfect test-bed for the methods that will be derived as part of this thesis. Next, we explain the rise of robot assisted laparoscopy in \secref{in:sec:robot_assisted_laparoscopy} and the potentials of automation that evolve with it. We highlight different commercial systems, their limitations, and propose solutions.
+
+\secref{in:sec:spatial_awareness}
+
+\secref{in:sec:camera_motion_automation}
+
+follow a hypothesis-based approach that will be rigorously tested
+\secref{in:sec:hypothesis_one}
+\secref{in:sec:hypothesis_two}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{introduction/img/robotic_since_introduction.png}
+    \caption{Shown is the increase of minimally invasive laparoscopy over open approaches from 2012 to 2018. Indicated as year zero is the introduction of robotic laparoscopy, which increased from $1.8\%$ in 2012 to $15.1\%$ in 2018. For inguinal hernia repair, an even greater increase in robotic surgery was identified from $0.7\%$ to $28.8\%$. A total of $169.404$ cases were investigated. Figure and data provided with courtesy by \cite{sheetz2020trends}. Refers to \secref{in:sec:foreword}.}
+    \label{in:fig:robotic_vs_laparoscopic_vs_open}
+\end{figure}
 
 \section{Laparoscopy}
 \label{in:sec:laparoscopy}
-Endoscopy refers to the observation of internal parts by means of an endoscope \cite{oedendoscopy}. The word endoscopy derives from the Greek by combining the prefix "endo" meaning "within" and the verb "skopein", "to view or observe" \cite{majumdar1993short}. In the surgical context, endoscopy refers to a minimally invasive surgery (MIS) with the goal to observe within the body. Endoscopy inside the abdominal (belly) or pelvic (hip) cavity are called laparoscopy. During laparoscopy, a laparoscope is inserted through small incisions for diagnostic or interventional purposes, see \figref{in:fig:laparoscopy}.
+Endoscopy refers to the observation of internal parts by means of an endoscope \cite{oedendoscopy}. The word endoscopy derives from the Greek by combining the prefix "endo" meaning "within" and the verb "skopein", "to view or observe" \cite{majumdar1993short}. In the surgical context, endoscopy refers to a MIS with the goal to observe within the body. Endoscopy inside the abdominal (belly) or pelvic (hip) cavity is called laparoscopy. During laparoscopy, a laparoscope is inserted through small incisions for diagnostic or interventional purposes, see \figref{in:fig:laparoscopy}.
 
 \begin{figure}
     \centering
@@ -16,26 +55,32 @@ Endoscopy refers to the observation of internal parts by means of an endoscope \
     \caption{Illustration of a laparoscopic procedure. The laparoscope is inserted through a small incision in the patient's abdominal wall and provides a view of the surgical scene. To provide space, carbon dioxide ($\text{CO}_2$) is injected through a needle into the abdomen. Image provided with courtesy by \cite{blausen2014laparoscopy}. Refers to \secref{in:sec:laparoscopy}.}
     \label{in:fig:laparoscopy}
 \end{figure}
+
 Compared to open surgery, laparoscopy leads to significantly faster interventions ($57.19\pm10.13\,\text{min}$ vs. $85.10\pm15.18\,\text{min}$), less bleeding complications ($2\%$ vs $7\%$ of interventions), shorter hospital stays ($2.1\pm1.1\,\text{days}$ vs $4.4\pm2.1\,\text{days}$), less infections, and less post-operative pain \cite{shi2023laparoscopic}. These eminent advantages of laparoscopic over open surgeries have long led to their adoption since the introduction in the early 1980s. This trend continues in the foreseeable future and even increases as the majority of surgical residents is nowadays trained on the minimally invasive variant \cite{john2020rise}.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.7\textwidth]{introduction/img/robotic_since_introduction.png}
-    \caption{Shown is the increase of minimally invasive laparoscopy over open approaches from 2012 to 2018. Indicated as year zero is the introduction of robotic laparoscopy, which increased from $1.8\%$ in 2012 to $15.1\%$ in 2018. For inguinal hernia repair, an even greater increase in robotic surgery was identified from $0.7\%$ to $28.8\%$. A total of $169.404$ cases were investigated. Figure and data provided with courtesy by \cite{sheetz2020trends}. Refers to \secref{in:sec:laparoscopy}.}
-    \label{in:fig:robotic_vs_laparoscopic_vs_open}
-\end{figure}
-Some types of laparoscopic procedures are cholecystectomy (gallbladder removal), appendectomy (appendix removal), inguinal hernia repair (i.e. leaking of intestines through the abdominal wall), colectomy (partial colon removal), and gastrectomy (partial or full stomach removal) among others. Since the laparoscopic cholecystectomy is carried out in high volumes and is additionally a relatively simple procedure, it is of special relevance to this work. It will thus be considered an example for explaining a laparoscopic surgery setup and procedure. A cholecystectomy is the surgical removal of the gallbladder. The gallbladder serves as a reservoir for the liver-produced bile, a fat digesting fluid. Bile may harden and form gallstones, which can lead to inflammation and severe pain. Since the liver also releases bile directly into the digestive tract, shown in \figref{in:fig:cholecystectomy_incisions}, the gallbladder may be removed in such cases. A cholecystectomy setup is depicted in \figref{in:fig:room_setup}.
+
+% explain why chol is introducted next, and show that an explanation for fig... is given in the following chapter TODO: reference this figure \figref{in:fig:robotic_vs_laparoscopic_vs_open}
+
+
+
+Some types of laparoscopic procedures are cholecystectomy (gallbladder removal), appendectomy (appendix removal), inguinal hernia repair (i.e. leaking of intestines through the abdominal wall), colectomy (partial colon removal), and gastrectomy (partial or full stomach removal) among others.
+
+
+
+Since the laparoscopic cholecystectomy is carried out in high volumes and is additionally a relatively simple procedure, it is of special relevance to this work.
+
+It will thus be considered an example for explaining a laparoscopic surgery setup and procedure. A cholecystectomy is the surgical removal of the gallbladder. The gallbladder serves as a reservoir for the liver-produced bile, a fat digesting fluid. Bile may harden and form gallstones, which can lead to inflammation and severe pain. Since the liver also releases bile directly into the digestive tract, shown in \figref{in:fig:cholecystectomy_incisions}, the gallbladder may be removed in such cases. A cholecystectomy setup is depicted in \figref{in:fig:room_setup}.
 \begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{introduction/fig/24_01_26_room_setup.pdf}
     \caption{Typical setup for a cholecystectomy. Image adapted from \cite{sages2010room}. Refers to \secref{in:sec:cholecystectomy_setup}.}
     \label{in:fig:room_setup}
 \end{figure}
-\subsubsection{Laparoscopic Cholecystectomy Setup}
+\subsection{Laparoscopic Cholecystectomy Setup}
 \label{in:sec:cholecystectomy_setup}
 Even this relatively simple procedure requires multiple skilled workers. Therein, the surgeon is supported by a camera holder, a second assistant, an anesthesiologist, and a mayo nurse (for providing tools). Several devices and tools are used for the procedure. This commonly includes a harmonic scalpel, which cauterizes tissue and coagulates blood (i.e. causes blood clothing) through ultra-sonic waves. More commonly used, however, due to lower cost for cautarization and coagulation, is an electrosurgical unit (ESU), which generates different electrical waveforms and can be connected to most laparoscopic tools \cite{archana2018comparing}. Further devices include a suction-irrigator for removing body fluids from the surgical scene, as well as a camera system, a light source, and multiple monitors. A laparoflator is used to insulflate the abdomen with $\text{CO}_2$ and to maintain a fixed pressure. An anesthisia machine, and an intravenous stand are utilized to regulate the patient's conditions. Finally, a C-arm visualizes the bile duct to probe for possible injuries and leakage caused by the intervention \cite{cuschieri1994intraoperative}, referred to as cholangiography (x-ray visualization of the bile duct with contrast agent).
 
-\subsubsection{Laparoscopic Cholecystectomy Procedure}
+\subsection{Laparoscopic Cholecystectomy Procedure}
 \label{in:sec:cholecystectomy_procedure}
 This paragraph explains the laparoscopic cholecystectomy in simplified terms and vastly refers to \cite{ALES5766}. To begin with, $\text{CO}_2$ is injected into the abdomen via a needle. The pressure is controlled through the laparoflator, see \figref{in:fig:room_setup}. Next, four small incisions are made for trocars T1-T4, which serve as entry point through the abdominal wall, shown in \figref{in:fig:cholecystectomy_incisions}. A laparoscope is inserted through T1 to grant an adequate view of the surgical scene. A grasper is inserted through T2 and used by the assistant to elevate the gallbladder. Trocars T3 and T4 are used by the surgeon to perform the cholecystectomy. It is important to identify anatomical landmarks before other steps are attempted. A good exposure of the surgical area is achieved through adequate patient and port positioning \cite{gupta2023achieve}. Following the preparatory steps, the surgery can broadly be partitioned into six steps. These steps will be explained in the following.
 
@@ -46,7 +91,8 @@ This paragraph explains the laparoscopic cholecystectomy in simplified terms and
     \label{in:fig:cholecystectomy_incisions}
 \end{figure}
 
-\paragraph{Step 1: Dissection of the Hepatocystic Triangle} The goal is to expose the hepatocystic trianlge \cite{mischinger2020critical}, see \figref{in:fig:hepatocystic_triangle}. The gallbladder is gently pulled upward over the liver and its neck is pulled downward to expose its different parts, as can be seen in \figref{in:fig:cholecystectomy_incisions}. Swollen gallbladders are precautiously decompressed with a needle to prevent perforation with leakage of bile and gallstones. Potential adhesions (scarred connections to other organs) are carefully separated using cautery and regular tools, avoiding the area near the duodenum (beginning of the small intestine). Next, the hepatocystic triangle is dissected by carefully removing fibrous and fatty tissue. It is of utmost importance that no tubular structure may be damaged until cystic duct and cystic artery are identified \cite{mischinger2020critical}.
+\subsubsection{Step 1: Dissection of the Hepatocystic Triangle}
+The goal is to expose the hepatocystic trianlge \cite{mischinger2020critical}, see \figref{in:fig:hepatocystic_triangle}. The gallbladder is gently pulled upward over the liver and its neck is pulled downward to expose its different parts, as can be seen in \figref{in:fig:cholecystectomy_incisions}. Swollen gallbladders are precautiously decompressed with a needle to prevent perforation with leakage of bile and gallstones. Potential adhesions (scarred connections to other organs) are carefully separated using cautery and regular tools, avoiding the area near the duodenum (beginning of the small intestine). Next, the hepatocystic triangle is dissected by carefully removing fibrous and fatty tissue. It is of utmost importance that no tubular structure may be damaged until cystic duct and cystic artery are identified \cite{mischinger2020critical}.
 
 \begin{figure}
     \centering
@@ -55,7 +101,7 @@ This paragraph explains the laparoscopic cholecystectomy in simplified terms and
     \label{in:fig:hepatocystic_triangle}
 \end{figure}
 
-\paragraph{Step 2: Establishing the Critical View of Safety} The critical view of safety defines a state that is achieved through the hepatocystic triangle dissection, it is shown in \figref{in:sec:cholecystectomy_procedure}. No tubular structure may be damaged prior to achieving the critical view of safety. The critical view of safety is defined by three conditions. First, the hepatocystic triangle is cleared of all fat and fibrous tissue. The common bile duct and the common hepatic bile duct are identified but not exposed. Second, the lower third of the gallbladder is separated from the liver. Third, only two structures are identified entering the gallbladder, the cystic duct and the cystic artery. The surgery is halted in this stage and reflected upon. Potential anatomical variations are discussed.
+\subsubsection{Step 2: Establishing the Critical View of Safety} The critical view of safety defines a state that is achieved through the hepatocystic triangle dissection, it is shown in \figref{in:sec:cholecystectomy_procedure}. No tubular structure may be damaged prior to achieving the critical view of safety. The critical view of safety is defined by three conditions. First, the hepatocystic triangle is cleared of all fat and fibrous tissue. The common bile duct and the common hepatic bile duct are identified but not exposed. Second, the lower third of the gallbladder is separated from the liver. Third, only two structures are identified entering the gallbladder, the cystic duct and the cystic artery. The surgery is halted in this stage and reflected upon. Potential anatomical variations are discussed.
 
 \begin{figure}
     \centering
@@ -64,16 +110,16 @@ This paragraph explains the laparoscopic cholecystectomy in simplified terms and
     \label{fig:enter-label}
 \end{figure}
 
-\paragraph{Step 3: Clipping and Cutting the Cystic Artery} After establishing the critical view of safety, the next step is to separate the gallbladder from the cystic artery. Therefore, the csytic artery is clipped twice proximally (i.e. the side of the artery that stays inside the body) and once distally (i.e. on the side of the to be removed gallbladder). The distal clip should be attached close to the neck of the gallbladder to leave sufficient space for cutting. Next, the artery is cut with hook scissors, leaving some space at the proximal end to prevent the clip from detaching.
+\subsubsection{Step 3: Clipping and Cutting the Cystic Artery} After establishing the critical view of safety, the next step is to separate the gallbladder from the cystic artery. Therefore, the csytic artery is clipped twice proximally (i.e. the side of the artery that stays inside the body) and once distally (i.e. on the side of the to be removed gallbladder). The distal clip should be attached close to the neck of the gallbladder to leave sufficient space for cutting. Next, the artery is cut with hook scissors, leaving some space at the proximal end to prevent the clip from detaching.
 
-\paragraph{Step 4: Operative Cholangiography and Cutting the Cystic Duct} Post cutting the cystic artery, it is common to perform cholangiography, using the C-arm X-ray, which is shown in \figref{in:fig:room_setup}. This is to verify a functioning bile tree. First, the cystic duct is clipped distally, and then incised partially with hook scissors. Next, the common bile duct is flushed with saline and a constrast agent is injected. The fluoroscopy should reveal free flow of the contrast agent into the common hepactic bile duct, its left and right branches into the liver, as well as free flow into the duodenum via the common bile duct. Once satisfactory flow is observed, the cystic duct is clipped proximally and cut as the cystic artery in step three.
+\subsubsection{Step 4: Operative Cholangiography and Cutting the Cystic Duct} Post cutting the cystic artery, it is common to perform cholangiography, using the C-arm X-ray, which is shown in \figref{in:fig:room_setup}. This is to verify a functioning bile tree. First, the cystic duct is clipped distally, and then incised partially with hook scissors. Next, the common bile duct is flushed with saline and a constrast agent is injected. The fluoroscopy should reveal free flow of the contrast agent into the common hepactic bile duct, its left and right branches into the liver, as well as free flow into the duodenum via the common bile duct. Once satisfactory flow is observed, the cystic duct is clipped proximally and cut as the cystic artery in step three.
 
 % also refer to \secref{in:sec:cholecystectomy_setup}
 % ERCP: https://www.sages.org/publications/patient-information/patient-information-for-ercp-endoscopic-retrograde-cholangio-pancreatography-from-sages/
 
-\paragraph{Step 5: Separating Gallbladder from Liver} After cutting the cystic duct, the gallbladder is carefully dissected from the liver bed, commonly using an L-hook with monopolar energy. Care must be taken to prevent liver bed injury as this may cause bleeding and or bile leakage from superficial ducts. Entry into the gallbladder should be avoided as this may cause bile and bile stone leakage, which, however, can be removed with a suction irrigator, as shown in \figref{in:sec:cholecystectomy_setup}. In complex conditions with gallbladder inflammation, an ultrasound-driven harmonic scalpel may be used to perform ultrasonic coagulation to maintain hemostasis (blood thickening). Finally, the liver bed is once more inspected before separating the gallbladder fully. The surgical side is once more irrigated and cleaned of any blood and bile. The gallbladder is then put into a specimen bag.
+\subsubsection{Step 5: Separating Gallbladder from Liver} After cutting the cystic duct, the gallbladder is carefully dissected from the liver bed, commonly using an L-hook with monopolar energy. Care must be taken to prevent liver bed injury as this may cause bleeding and or bile leakage from superficial ducts. Entry into the gallbladder should be avoided as this may cause bile and bile stone leakage, which, however, can be removed with a suction irrigator, as shown in \figref{in:sec:cholecystectomy_setup}. In complex conditions with gallbladder inflammation, an ultrasound-driven harmonic scalpel may be used to perform ultrasonic coagulation to maintain hemostasis (blood thickening). Finally, the liver bed is once more inspected before separating the gallbladder fully. The surgical side is once more irrigated and cleaned of any blood and bile. The gallbladder is then put into a specimen bag.
 
-\paragraph{Step 6: Removing Specimen and Closing} Once in a bag, the gallbladder is removed through the T1 port, refer to \figref{in:fig:cholecystectomy_incisions}. This may require widening of the opening in the presence of larger stones. The ports T1-T4 are being vented to remove residual $\text{CO}_2$. Following that, the skin and fascia at the extraction site are closed with sutures.
+\subsubsection{Step 6: Removing Specimen and Closing} Once in a bag, the gallbladder is removed through the T1 port, refer to \figref{in:fig:cholecystectomy_incisions}. This may require widening of the opening in the presence of larger stones. The ports T1-T4 are being vented to remove residual $\text{CO}_2$. Following that, the skin and fascia at the extraction site are closed with sutures.
 
 \section{Robot Assisted Laparoscopy}
 \label{in:sec:robot_assisted_laparoscopy}
@@ -86,6 +132,13 @@ In the previous sections it was shown that...
 \subsection{Robot Surgery Platforms}
 \label{in:sec:robot_surgery_platforms}
 The da Vinci\textsuperscript{\textregistered} robot by Intuitive (\figref{in:fig:da_vinci}) was launched in 1999. The company has seen sustained growth ever since TODO: add figure of revenue. Its initial success can be attributed to the minimally invasive prostatectomy, the partial or complete removal of the prostate. About $85\%$ of radical prostatectomies 2017 were performed robotically in England \cite{maynou2021patterns}. The system has made it ergonomically much simpler to access the prostate, being located low in the pelvis.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\textwidth]{introduction/fig/intuitive_revenue.pdf}
+    \caption{Caption data from \href{https://www.macrotrends.net/stocks/charts/ISRG/intuitive-surgical/financial-statements}{https://www.macrotrends.net/stocks/charts/ISRG/intuitive-surgical/financial-statements}}
+    \label{fig:enter-label}
+\end{figure}
 
 Intuitive filed multiple patents in the 1990s, which guarded market access from other companies. Patents in the US generally last for 20 years, which is why as of 2020 most of these critical patents ran out. Many other companies are thus trying to gain some of Intuitive's market share. This competition will ultimately benefit patients, as it might help drive down cost for robotic surgery in the future, increase accessibility, and lead to innovation in general. An non-exhaustive overview of current commercial systems is given in \tabref{in:fig:systems}. It can be seen that the competition has already brought innovation and a broader variety of systems. Multiple companies are adopting Intuitive's monolithic structure, that is all robotic arms are attached to a single instance. Many others, such as Medtronic and CMR Surgical, are taking a modular approach instead. The systems further differentiate themselves not only by their modularity, but also through their mechanical properties. The da Vinci\textsuperscript{\textregistered} robot has a mechanical remote center of motion (RCM), i.e. there are dedicated degrees of freedom (DOF) for achieving a zero translational velocity at the entry point to the patient. The RCM is also sometimes called fulcrum in the medical context. Having a mechanical RCM provides additional safety, but leads to highly dedicated systems that are hard to re-purpose. This is why recent systems are exploring programmable RCMS, in which an RCM is achieved through control theory. This has implications on safety, as sometimes the RCM may not be achieved, and thus extra care has to be taken, but can potentially provide multi-purpose systems. It is too early to tell which design will prevail, there might even be a future where in which multiple designs could coincide. 
 
@@ -143,6 +196,7 @@ Through
 \end{itemize}
 
 \section{Spatial Awareness in Robotic Laparoscopy}
+\label{in:sec:spatial_awareness}
 Positioning is vital for reach-ability \cite{zelechowski2023automatic}
 
 Workspace is crucial in laparoscopcy \cite{alhusseinawi2023validation}
@@ -154,6 +208,7 @@ Workspace optimization works \cite{hutzl2015knowledge}
 \subsection{Unified Calibration}
 
 \section{Camera Motion Automation in Robotic Laparoscopy}
+\label{in:sec:camera_motion_automation}
 consider adding some paper introductions here already
 
 % make the case for automation
@@ -172,6 +227,7 @@ In a common BC setup that satisfies the Markov property one takes a current stat
 In IRL the aim is to extract a reward function from a set of expert demonstrations $D$. In practise this can be achieved by embedding observations $y_t$ into a meaningful feature space and by enforcing that a newly obtained policy $\pi$ and an expert policy $\pi_\text{E}$ follow similar trajectory embeddings. Different methods for embedding exist. A triplet loss can be formulated to pull similar images closer to each other while repelling them from different ones. In \cite{wang2014learning, schroff2015facenet}, the authors achieve a triplet loss via a simple distance metric while Wang et al. formulate it as the angle between features \cite{wang2015unsupervised}. Another option is to use prediction as a proxy for meaningful embeddings \cite{vondrick2016anticipating, sermanet2016unsupervised, srivastava2015unsupervised, mathieu2015deep}, self-supervised clustering \cite{caron2018deep}, or, most recently, contrastive learning methods \cite{khosla2020supervised}, which similarly to \cite{wang2015unsupervised} aim to align features of samples with similar properties. Sermanet et al. in \cite{sermanet2018time} used for example a triplet loss on multi-view videos to learn a view-point invariant embedding that can be used to have a learner learn an expert demonstration. Aytar et al. in \cite{aytar2018playing} had an agent learn to reach checkpoints by sampling checkpoints from demonstrations on YouTube and by defining a reward on the alignment between the current state and the desired checkpoint. In few-shot, Xie et al. \cite{xie2018few} learn initial parameters for a network via MAML, a form of meta-learning, to infer goals in demonstrations from a single gradient-step. They then perform RL to replicate a policy that yields these goals. The idea of Universal Planning Networks by Srinivas et al. in \cite{srinivas2018universal} is further extended by Yu et al. in \cite{yu2019unsupervised}, which learns a goal metric for RL in an unsupervised manner.
 
 \section{Hypothesis I: Imitation Learning}
+\label{in:sec:hypothesis_one}
 
 \subsection{Search for Available Data}
 \begin{landscape}
@@ -226,6 +282,8 @@ In IRL the aim is to extract a reward function from a set of expert demonstratio
 \subsection{Supervised and Self-supervised Learning}
 
 \section{Hypothesis II: Prior- and Depth-free Learning}
+\label{in:sec:hypothesis_two}
+
 \subsection{Camera Motion Formulation}
 \subsection{Robot Laparoscope Control}
 \subsubsection{Visual Servo with mechanical RCM}
