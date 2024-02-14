@@ -2,7 +2,7 @@
 \chaptermark{Introduction}
 \label{chap:introduction}
 % TODO: remove
-And Schmidhuber said, Let there be backpropagation, and there was backpropagation.
+% And Schmidhuber said, Let there be backpropagation, and there was backpropagation.
 \minitoc
 \section{Foreword}
 \label{in:sec:foreword}
@@ -18,58 +18,39 @@ In RAS, it is commonly acknowledged that automation will proceed stepwise. From 
     \item Full automation: Robot performs an entire surgery autonomously
 \end{enumerate}
 This work explores level five, high autonomy, which would require approval-free endoscopic camera motion execution with the possibility of human intervention. Although some works \cite{battaglia2021rethinking} argue that the focus should not lie on automation, rather enhancement, we adopt a futuristic sentiment and are in alignment with \cite{kitaguchi2022artificial}, where the authors explain why camera motion automation will likely be achieved first. This futuristic notion follows previous surgical revolutions, from the advancement of open surgery to minimally invasive surgery (MIS), and the success of the da Vinci\textsuperscript{\textregistered} surgical robot in robot assisted minimally invasive surgery (RMIS), see also \figref{in:fig:camera_motion_automation} and \figref{in:fig:robotic_vs_laparoscopic_vs_open}.
-
-The ever evolving field of surgery has repeatedly demonstrated gradual acceptance of new technology \cite{attanasio2021autonomoy}, and we argue that automation is no exception. The growth of RMIS can clearly be considered an enabling factor for full automation, see also \figref{in:fig:camera_motion_automation}.
-\begin{figure}
+\begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\textwidth]{introduction/fig/24_02_13_surgical_revolution.pdf}
+    \includegraphics[width=0.9\textwidth]{introduction/fig/24_02_13_surgical_revolution.pdf}
     \caption{The gradual introduction of novel technology into the surgical field, one enabling the next. Endoscopic camera motion automation is likely to appear first towards full automation. Refers to \secref{in:sec:foreword}.}
     \label{in:fig:camera_motion_automation}
 \end{figure}
+
+The ever evolving field of surgery has repeatedly demonstrated gradual acceptance of new technology \cite{attanasio2021autonomoy}, and we argue that automation is no exception. The growth of RMIS can clearly be considered an enabling factor for full automation, see also \figref{in:fig:camera_motion_automation}.
+
 When compared to other domains, such as autonomous driving, service and household robots, where robots already exert a significant amount autonomy that far exceeds RMIS, it becomes obvious that these advances will ultimately make their way into the operating theater as well. This is because the medical field usually adopts novel technology in the order of tens of years later due to regulatory hurdles and cost. However, there might even be a future where RMIS will not only adopt full automation from other domains but make significant contributions to general machine intelligence. Others \cite{lecun2022path} have argued that machines will need to interact with the real world in order to become truly intelligent and, arguably, RMIS has grown to be the most advanced physical human-robot interaction (pHRI) domain with thousands of deployed robots.
-
-As we dive deeper into level five autonomy endoscopic camera motion automation, the introductory chapter will provide a solid clinical background for laparoscopy, a sub-domain of endoscopy, in \secref{in:sec:laparoscopy}, including an in-depth explanation of laparoscopic cholecystectomy (minimally invasive gallbladder removal). This is because laparoscopic cholecystectomy is performed in high volumes and can be considered a relatively simple procedure. It serves as the perfect test-bed for the methods that will be derived as part of this thesis. Next, we explain the rise of robot assisted laparoscopy in \secref{in:sec:robot_assisted_laparoscopy} and the potentials of automation that evolve with it. We highlight different commercial systems, their limitations, and propose solutions.
-
-\secref{in:sec:spatial_awareness}
-
-\secref{in:sec:camera_motion_automation}
-
-follow a hypothesis-based approach that will be rigorously tested
-\secref{in:sec:hypothesis_one}
-\secref{in:sec:hypothesis_two}
-
-\begin{figure}
+\begin{figure}[t]
     \centering
-    \includegraphics[width=0.7\textwidth]{introduction/img/robotic_since_introduction.png}
-    \caption{Shown is the increase of minimally invasive laparoscopy over open approaches from 2012 to 2018. Indicated as year zero is the introduction of robotic laparoscopy, which increased from $1.8\%$ in 2012 to $15.1\%$ in 2018. For inguinal hernia repair, an even greater increase in robotic surgery was identified from $0.7\%$ to $28.8\%$. A total of $169.404$ cases were investigated. Figure and data provided with courtesy by \cite{sheetz2020trends}. Refers to \secref{in:sec:foreword}.}
+    \includegraphics[width=0.6\textwidth]{introduction/img/robotic_since_introduction.png}
+    \caption{Increase of minimally invasive laparoscopy over open approaches from 2012 to 2018. Year zero indicates the introduction of robotic laparoscopy, which increased from $1.8\%$ to $15.1\%$. For inguinal hernia repair, an increase in robotic surgery from $0.7\%$ to $28.8\%$ was found. A total of $169.404$ cases were investigated. Figure and data provided with courtesy of \cite{sheetz2020trends}. Refers to \secref{in:sec:foreword}.}
     \label{in:fig:robotic_vs_laparoscopic_vs_open}
 \end{figure}
+
+As we dive deeper into level five autonomy endoscopic camera motion automation, the introductory chapter will provide a solid clinical background for laparoscopy in \secref{in:sec:laparoscopy}, a sub-domain of endoscopy, including an in-depth explanation of laparoscopic cholecystectomy (minimally invasive gallbladder removal). This is because laparoscopic cholecystectomy is performed in high volumes and can be considered a relatively simple procedure. It thus, due to vast amounts of readily available data, serves as the perfect test-bed for the methods that are derived as part of this thesis. Next, we explain the rise of robot assisted laparoscopy in \secref{in:sec:robot_assisted_laparoscopy} and the potentials of automation that evolve with it. We highlight different commercial systems, their limitations, and propose innovative solutions. The limitations will include spatial awareness, refer \secref{in:sec:spatial_awareness}, as most RMIS systems lack a world model, and, crucially, camera motion automation, for which a thorough review of related methods is provided in \secref{in:sec:camera_motion_automation}. Following the camera motion automation literature review, we will hypothesize an approach to near-term full automation. The proposed approach will revolve around a mixture of imitation learning an classical control. It is grounded in successful automation in related domains and will be discussed in \secref{in:sec:imitation_learning}.
 
 \section{Laparoscopy}
 \label{in:sec:laparoscopy}
 Endoscopy refers to the observation of internal parts by means of an endoscope \cite{oedendoscopy}. The word endoscopy derives from the Greek by combining the prefix "endo" meaning "within" and the verb "skopein", "to view or observe" \cite{majumdar1993short}. In the surgical context, endoscopy refers to a MIS with the goal to observe within the body. Endoscopy inside the abdominal (belly) or pelvic (hip) cavity is called laparoscopy. During laparoscopy, a laparoscope is inserted through small incisions for diagnostic or interventional purposes, see \figref{in:fig:laparoscopy}.
-
-\begin{figure}
+\begin{figure}[h]
     \centering
-    \includegraphics[width=0.7\textwidth]{introduction/img/laparoscopy-min.png}
-    \caption{Illustration of a laparoscopic procedure. The laparoscope is inserted through a small incision in the patient's abdominal wall and provides a view of the surgical scene. To provide space, carbon dioxide ($\text{CO}_2$) is injected through a needle into the abdomen. Image provided with courtesy by \cite{blausen2014laparoscopy}. Refers to \secref{in:sec:laparoscopy}.}
+    \includegraphics[width=0.7\textwidth]{introduction/img/laparoscopy.jpg}
+    \caption{Illustration of a laparoscopic procedure. The laparoscope is inserted through a small incision in the patient's abdominal wall and provides a view of the surgical scene. To provide space, carbon dioxide ($\text{CO}_2$) is injected through a needle into the abdomen. Image provided with courtesy of \cite{blausen2014laparoscopy}. Refers to \secref{in:sec:laparoscopy}.}
     \label{in:fig:laparoscopy}
 \end{figure}
+Compared to open surgery, laparoscopy leads to significantly faster interventions ($57.19\pm10.13\,\text{min}$ vs. $85.10\pm15.18\,\text{min}$), less bleeding complications ($2\%$ vs $7\%$ of interventions), shorter hospital stays ($2.1\pm1.1\,\text{days}$ vs $4.4\pm2.1\,\text{days}$), less infections, and less post-operative pain \cite{shi2023laparoscopic}. These eminent advantages of laparoscopic over open surgeries have long led to their adoption since the introduction in the early 1980s, see \figref{in:fig:robotic_vs_laparoscopic_vs_open}. This trend continues in the foreseeable future and even increases as the majority of surgical residents is nowadays trained on the minimally invasive variant \cite{john2020rise}.
 
-Compared to open surgery, laparoscopy leads to significantly faster interventions ($57.19\pm10.13\,\text{min}$ vs. $85.10\pm15.18\,\text{min}$), less bleeding complications ($2\%$ vs $7\%$ of interventions), shorter hospital stays ($2.1\pm1.1\,\text{days}$ vs $4.4\pm2.1\,\text{days}$), less infections, and less post-operative pain \cite{shi2023laparoscopic}. These eminent advantages of laparoscopic over open surgeries have long led to their adoption since the introduction in the early 1980s. This trend continues in the foreseeable future and even increases as the majority of surgical residents is nowadays trained on the minimally invasive variant \cite{john2020rise}.
+Some types of laparoscopic procedures are cholecystectomy (gallbladder removal), appendectomy (appendix removal), inguinal hernia repair (i.e. leaking of intestines through the abdominal wall), colectomy (partial colon removal), and gastrectomy (partial or full stomach removal) among others. Since laparoscopic cholecystectomy is carried out in high volumes and is additionally a relatively simple procedure, it is of special relevance to this work. It will thus be considered an example for explaining a laparoscopic surgery setup and procedure.
 
-
-% explain why chol is introducted next, and show that an explanation for fig... is given in the following chapter TODO: reference this figure \figref{in:fig:robotic_vs_laparoscopic_vs_open}
-
-
-
-Some types of laparoscopic procedures are cholecystectomy (gallbladder removal), appendectomy (appendix removal), inguinal hernia repair (i.e. leaking of intestines through the abdominal wall), colectomy (partial colon removal), and gastrectomy (partial or full stomach removal) among others.
-
-
-
-Since the laparoscopic cholecystectomy is carried out in high volumes and is additionally a relatively simple procedure, it is of special relevance to this work.
-
-It will thus be considered an example for explaining a laparoscopic surgery setup and procedure. A cholecystectomy is the surgical removal of the gallbladder. The gallbladder serves as a reservoir for the liver-produced bile, a fat digesting fluid. Bile may harden and form gallstones, which can lead to inflammation and severe pain. Since the liver also releases bile directly into the digestive tract, shown in \figref{in:fig:cholecystectomy_incisions}, the gallbladder may be removed in such cases. A cholecystectomy setup is depicted in \figref{in:fig:room_setup}.
+A cholecystectomy is the surgical removal of the gallbladder. The gallbladder serves as a reservoir for the liver-produced bile, a fat digesting fluid. Bile may harden and form gallstones, which can lead to inflammation and severe pain. Since the liver also releases bile directly into the digestive tract, shown in \figref{in:fig:cholecystectomy_incisions}, the gallbladder may be removed in such cases. A cholecystectomy setup is depicted in \figref{in:fig:room_setup}.
 \begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{introduction/fig/24_01_26_room_setup.pdf}
@@ -82,21 +63,19 @@ Even this relatively simple procedure requires multiple skilled workers. Therein
 
 \subsection{Laparoscopic Cholecystectomy Procedure}
 \label{in:sec:cholecystectomy_procedure}
-This paragraph explains the laparoscopic cholecystectomy in simplified terms and vastly refers to \cite{ALES5766}. To begin with, $\text{CO}_2$ is injected into the abdomen via a needle. The pressure is controlled through the laparoflator, see \figref{in:fig:room_setup}. Next, four small incisions are made for trocars T1-T4, which serve as entry point through the abdominal wall, shown in \figref{in:fig:cholecystectomy_incisions}. A laparoscope is inserted through T1 to grant an adequate view of the surgical scene. A grasper is inserted through T2 and used by the assistant to elevate the gallbladder. Trocars T3 and T4 are used by the surgeon to perform the cholecystectomy. It is important to identify anatomical landmarks before other steps are attempted. A good exposure of the surgical area is achieved through adequate patient and port positioning \cite{gupta2023achieve}. Following the preparatory steps, the surgery can broadly be partitioned into six steps. These steps will be explained in the following.
-
 \begin{figure}
     \centering
-    \includegraphics[width=0.9\textwidth]{introduction/fig/24_01_26_cholecystectomy_incisions.pdf}
+    \includegraphics[width=0.9\textwidth]{introduction/fig/24_01_26_cholecystectomy_incisions.jpg}
     \caption{Common cholecystectomy incisions. Several incisions are made for the trocars T1-T4. Image with courtesy of \cite{ALES5766} and modified to include port descriptions and organs. Refers to \secref{in:sec:cholecystectomy_procedure}}
     \label{in:fig:cholecystectomy_incisions}
 \end{figure}
+This paragraph explains the laparoscopic cholecystectomy in simplified terms and vastly refers to \cite{ALES5766}. To begin with, $\text{CO}_2$ is injected into the abdomen via a needle. The pressure is controlled through the laparoflator, see \figref{in:fig:room_setup}. Next, four small incisions are made for trocars T1-T4, which serve as entry point through the abdominal wall, shown in \figref{in:fig:cholecystectomy_incisions}. A laparoscope is inserted through T1 to grant an adequate view of the surgical scene. A grasper is inserted through T2 and used by the assistant to elevate the gallbladder. Trocars T3 and T4 are used by the surgeon to perform the cholecystectomy. It is important to identify anatomical landmarks before other steps are attempted. A good exposure of the surgical area is achieved through adequate patient and port positioning \cite{gupta2023achieve}. Following the preparatory steps, the surgery can broadly be partitioned into six steps. These steps will be explained in the following.
 
 \subsubsection{Step 1: Dissection of the Hepatocystic Triangle}
 The goal is to expose the hepatocystic trianlge \cite{mischinger2020critical}, see \figref{in:fig:hepatocystic_triangle}. The gallbladder is gently pulled upward over the liver and its neck is pulled downward to expose its different parts, as can be seen in \figref{in:fig:cholecystectomy_incisions}. Swollen gallbladders are precautiously decompressed with a needle to prevent perforation with leakage of bile and gallstones. Potential adhesions (scarred connections to other organs) are carefully separated using cautery and regular tools, avoiding the area near the duodenum (beginning of the small intestine). Next, the hepatocystic triangle is dissected by carefully removing fibrous and fatty tissue. It is of utmost importance that no tubular structure may be damaged until cystic duct and cystic artery are identified \cite{mischinger2020critical}.
-
 \begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{introduction/fig/24_02_03_hepatocystic_triangle.png}
+    \includegraphics[width=0.8\textwidth]{introduction/fig/24_02_03_hepatocystic_triangle.jpg}
     \caption{The bile duct (green), together with liver and gallbladder form the hepatocystic triangle, which is often covered in fat tissue. Image with courtesy of \cite{mischinger2020critical} and updated font. Refers to \secref{in:sec:cholecystectomy_procedure}.}
     \label{in:fig:hepatocystic_triangle}
 \end{figure}
@@ -123,21 +102,48 @@ The goal is to expose the hepatocystic trianlge \cite{mischinger2020critical}, s
 
 \section{Robot Assisted Laparoscopy}
 \label{in:sec:robot_assisted_laparoscopy}
+Having a good understanding of laparoscopic surgery from the previous \secref{in:sec:laparoscopy}, and more specifically, laparoscopic cholecystectomy, we will next discuss robot assisted laparoscopic surgery. We will initially discuss the, at first glance, paradoxical rise of robot assisted laparoscopy in \secref{in:sec:the_rise_of_robot_assisted_laparoscopy}. Next, current commercial systems will be analyzed in \secref{in:sec:robot_surgery_platforms}, as to better understand where the field might be headed so to provide an informed research direction. Finally, limitations of the current systems will be explained in \secref{in:sec:limitations_of_current_systems} and solutions are outlined in \secref{in:sec:enhancing_current_systems}.
+
+\subsection{The Rise of Robot Assisted Laparoscopy}
+\label{in:sec:the_rise_of_robot_assisted_laparoscopy}
+Somewhat paradoxically, \figref{in:fig:robotic_vs_laparoscopic_vs_open}
+
+as to give an informed decision for this research
+
+Somewhat paradoxically, 
+
+0.2\% 30 days mortality rate in India for laparoscopic cholecystectomy \cite{thapar2023evaluation}
+
+the future of surgery is robotic \cite{times2021better}
+
+no advantages, equal complication rates, increased time and cost, equal post operative stay: \cite{kawka2023laparoscopic} some quality of outcome improvements
+higher cost, lower blood loss, longer time \cite{csirzo2023robot}
+mortality, equal conversion rates
+
+ergonomic benefits \cite{monfared2022comparison, zarate2019ergonomic}
+unification of simulation and real scenario
+data collection
+
+\cite{fiorini2022concepts} fatigue, lack of attention, cognitive overload
 
 In the previous sections it was shown that...
 
+
+so instead we can address the question what can be done to achieve these long awaited clinical benefits that lives up to the market
+
 \begin{itemize}
     \item make the case for robotic laparoscopic surgery
+    \item precision, improved ergonomics, reduced learning curve, data collection
 \end{itemize}
 \subsection{Robot Surgery Platforms}
 \label{in:sec:robot_surgery_platforms}
-The da Vinci\textsuperscript{\textregistered} robot by Intuitive (\figref{in:fig:da_vinci}) was launched in 1999. The company has seen sustained growth ever since TODO: add figure of revenue. Its initial success can be attributed to the minimally invasive prostatectomy, the partial or complete removal of the prostate. About $85\%$ of radical prostatectomies 2017 were performed robotically in England \cite{maynou2021patterns}. The system has made it ergonomically much simpler to access the prostate, being located low in the pelvis.
+The da Vinci\textsuperscript{\textregistered} robot by Intuitive (\figref{in:fig:da_vinci}) was launched in 1999. The company has seen sustained growth ever since, see \figref{in:fig:intuitive_revenue}. Its initial success can be attributed to the minimally invasive prostatectomy, the partial or complete removal of the prostate. About $85\%$ of radical prostatectomies 2017 were performed robotically in England \cite{maynou2021patterns}. The system has made it ergonomically much simpler to access the prostate, being located low in the pelvis.
 
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{introduction/fig/intuitive_revenue.pdf}
-    \caption{Caption data from \href{https://www.macrotrends.net/stocks/charts/ISRG/intuitive-surgical/financial-statements}{https://www.macrotrends.net/stocks/charts/ISRG/intuitive-surgical/financial-statements}}
-    \label{fig:enter-label}
+    \caption{Annual revenue of Intuitive Surgical, Inc. from 2009 to 2023. The company has achieved sustained growth throughout the years. Data obtained from \cite{intuitiverevenue}.}
+    \label{in:fig:intuitive_revenue}
 \end{figure}
 
 Intuitive filed multiple patents in the 1990s, which guarded market access from other companies. Patents in the US generally last for 20 years, which is why as of 2020 most of these critical patents ran out. Many other companies are thus trying to gain some of Intuitive's market share. This competition will ultimately benefit patients, as it might help drive down cost for robotic surgery in the future, increase accessibility, and lead to innovation in general. An non-exhaustive overview of current commercial systems is given in \tabref{in:fig:systems}. It can be seen that the competition has already brought innovation and a broader variety of systems. Multiple companies are adopting Intuitive's monolithic structure, that is all robotic arms are attached to a single instance. Many others, such as Medtronic and CMR Surgical, are taking a modular approach instead. The systems further differentiate themselves not only by their modularity, but also through their mechanical properties. The da Vinci\textsuperscript{\textregistered} robot has a mechanical remote center of motion (RCM), i.e. there are dedicated degrees of freedom (DOF) for achieving a zero translational velocity at the entry point to the patient. The RCM is also sometimes called fulcrum in the medical context. Having a mechanical RCM provides additional safety, but leads to highly dedicated systems that are hard to re-purpose. This is why recent systems are exploring programmable RCMS, in which an RCM is achieved through control theory. This has implications on safety, as sometimes the RCM may not be achieved, and thus extra care has to be taken, but can potentially provide multi-purpose systems. It is too early to tell which design will prevail, there might even be a future where in which multiple designs could coincide. 
@@ -151,9 +157,9 @@ Intuitive filed multiple patents in the 1990s, which guarded market access from 
 \caption{A non-exhaustive list of commercial robotic laparoscopy systems. The table differentiates between monolithic / modular systems and systems with mechanical / programmable remote center of motion (RCM). The market competition has lead to a variety of systems with a tendency to stand apart from Intuitive's status-quo approach. Refers to \secref{in:sec:robot_surgery_platforms}.}
 \label{in:fig:systems}
 \begin{tabular}{lll}
-                                       & Mechanical RCM                                                                                                                                                                                                                            & Programmable RCM                                                                                                                                                                                                                                                                                                         \\ \cline{2-3} 
-\multicolumn{1}{l|}{Monolythic System} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ da Vinci\textsuperscript{\textregistered}\\ $\bullet$ Maestro\textsuperscript{\textregistered}\end{tabular}}     & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ hinotiri\textsuperscript{\texttrademark}\\ $\,$\end{tabular}}                                                                                                                                                                   \\ \cline{2-3} 
-\multicolumn{1}{l|}{Modular System}    & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ Hugo\textsuperscript{\texttrademark}\\ $\bullet$ SSi Mantra\textsuperscript{\texttrademark}\\ $\,$\end{tabular}} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ Versius\textsuperscript{\textregistered}\\ $\bullet$ Dexter\textsuperscript{\textregistered}\\ $\bullet$ Senhance\textsuperscript{\texttrademark}\end{tabular}} \\ \cline{2-3} 
+                                       & Mechanical RCM                                                                                                                                                                                                                                                                                                             & Programmable RCM                                                                                                                                                                                                                                                                                                         \\ \cline{2-3} 
+\multicolumn{1}{l|}{Monolithic} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ da Vinci\textsuperscript{\textregistered} (Intuitive)\\ $\bullet$ Maestro\textsuperscript{\textregistered} (Moon Surgical)\end{tabular}} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ hinotori\textsuperscript{\texttrademark} (Medicaroid)\\ $\,$\end{tabular}}                                                                                                                                                            \\ \cline{2-3} 
+\multicolumn{1}{l|}{Modular}    & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ Hugo\textsuperscript{\texttrademark} (Medtronic)\\ $\bullet$ SSi Mantra\textsuperscript{\texttrademark} (SS Innovations)\\ $\,$\end{tabular}}                                                                                  & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}$\bullet$ Versius\textsuperscript{\textregistered} (CMR Surgical)\\ $\bullet$ Dexter\textsuperscript{\textregistered} (Distalmotion)\\ $\bullet$ Senhance\textsuperscript{\texttrademark} (Asensus Surgical)\end{tabular}} \\ \cline{2-3} 
 \end{tabular}
 \end{table}
 
@@ -163,13 +169,13 @@ Intuitive filed multiple patents in the 1990s, which guarded market access from 
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{introduction/img/JPG_Large-DV_SYS_Xi_PatientCart_PRF_RGB-min.jpg}
-        \caption{The da Vinci\textsuperscript{\textregistered} Xi system. Images provided with courtesy by \textcopyright2023 Intuitive Surgical Operations, Inc.}
+        \caption{The da Vinci\textsuperscript{\textregistered} Xi system. Images provided with courtesy of \textcopyright2023 Intuitive Surgical Operations, Inc.}
         \label{in:fig:da_vinci}
     \end{subfigure}
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{introduction/img/Product-Versius-3-Arm-Setup-B.jpg}
-        \caption{The Versius\textsuperscript{\textregistered} system. Images provided with courtesy by \textcopyright2023 CMR Surgical, Ltd.}
+        \caption{The Versius\textsuperscript{\textregistered} system. Images provided with courtesy of \textcopyright2023 CMR Surgical, Ltd.}
         \label{in:fig:versius}
     \end{subfigure}
     \caption{Two examples of currently available commercial robotic laparoscopy systems. It is demonstrated how competition has lead to two very different designs. The da Vinci\textsuperscript{\textregistered} Xi system in \figref{in:fig:da_vinci} is monolithic with a mechanical RCM. The Versius\textsuperscript{\textregistered} system is modular with a programmable RCM. Refers to \secref{in:sec:robot_surgery_platforms}.}
@@ -177,9 +183,18 @@ Intuitive filed multiple patents in the 1990s, which guarded market access from 
 \end{figure}
 
 \subsection{Limitations of Current Systems}
+\label{in:sec:limitations_of_current_systems}
+As outlined in the foreword \secref{in:sec:foreword}, 
+
 Despite their sophistication, 
 
 da vinci system review \cite{ngu2017vinci}
+
+image based avoidance \cite{hameed2016towards}, 3d avoidance \cite{li2023three}
+
+average of 5 collisions per colorectal procedure, propose process solutions: \cite{wong2023improving}
+several studies suggest improved assistant performance leads to enhanced performance \cite{cimen2019does, mitsinikos2017does, kwon2020impact}
+20\% of assistants reported bruising: \cite{van2019ergonomic}
 
 Whilst current commercial systems are quite capable already 
 
@@ -188,6 +203,7 @@ cluttered workspace, anaesthesia, ekg, breathing, tools, staff, microscopes, tin
 explain limitations of current systems, missed opportunities given current robots (capable actuators)
 
 \subsection{Enhancing Current Systems}
+\label{in:sec:enhancing_current_systems}
 Without impacting clinical workflow
 Through
 \begin{itemize}
@@ -197,6 +213,8 @@ Through
 
 \section{Spatial Awareness in Robotic Laparoscopy}
 \label{in:sec:spatial_awareness}
+
+
 Positioning is vital for reach-ability \cite{zelechowski2023automatic}
 
 Workspace is crucial in laparoscopcy \cite{alhusseinawi2023validation}
@@ -226,8 +244,8 @@ In a common BC setup that satisfies the Markov property one takes a current stat
 \subsubsection{Inverse Reinforcement Learning}
 In IRL the aim is to extract a reward function from a set of expert demonstrations $D$. In practise this can be achieved by embedding observations $y_t$ into a meaningful feature space and by enforcing that a newly obtained policy $\pi$ and an expert policy $\pi_\text{E}$ follow similar trajectory embeddings. Different methods for embedding exist. A triplet loss can be formulated to pull similar images closer to each other while repelling them from different ones. In \cite{wang2014learning, schroff2015facenet}, the authors achieve a triplet loss via a simple distance metric while Wang et al. formulate it as the angle between features \cite{wang2015unsupervised}. Another option is to use prediction as a proxy for meaningful embeddings \cite{vondrick2016anticipating, sermanet2016unsupervised, srivastava2015unsupervised, mathieu2015deep}, self-supervised clustering \cite{caron2018deep}, or, most recently, contrastive learning methods \cite{khosla2020supervised}, which similarly to \cite{wang2015unsupervised} aim to align features of samples with similar properties. Sermanet et al. in \cite{sermanet2018time} used for example a triplet loss on multi-view videos to learn a view-point invariant embedding that can be used to have a learner learn an expert demonstration. Aytar et al. in \cite{aytar2018playing} had an agent learn to reach checkpoints by sampling checkpoints from demonstrations on YouTube and by defining a reward on the alignment between the current state and the desired checkpoint. In few-shot, Xie et al. \cite{xie2018few} learn initial parameters for a network via MAML, a form of meta-learning, to infer goals in demonstrations from a single gradient-step. They then perform RL to replicate a policy that yields these goals. The idea of Universal Planning Networks by Srinivas et al. in \cite{srinivas2018universal} is further extended by Yu et al. in \cite{yu2019unsupervised}, which learns a goal metric for RL in an unsupervised manner.
 
-\section{Hypothesis I: Imitation Learning}
-\label{in:sec:hypothesis_one}
+\section{Imitation Learning for Camera Motion Automation}
+\label{in:sec:imitation_learning}
 
 \subsection{Search for Available Data}
 \begin{landscape}
@@ -280,9 +298,6 @@ In IRL the aim is to extract a reward function from a set of expert demonstratio
 \end{landscape}
 
 \subsection{Supervised and Self-supervised Learning}
-
-\section{Hypothesis II: Prior- and Depth-free Learning}
-\label{in:sec:hypothesis_two}
 
 \subsection{Camera Motion Formulation}
 \subsection{Robot Laparoscope Control}
