@@ -31,11 +31,11 @@ When compared to other domains, such as autonomous driving, service and househol
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.6\textwidth]{introduction/img/robotic_since_introduction.png}
-    \caption{Increase of minimally invasive laparoscopy over open approaches from 2012 to 2018. Year zero indicates the introduction of robotic laparoscopy, which increased from $1.8\%$ to $15.1\%$. For inguinal hernia repair, an increase in robotic surgery from $0.7\%$ to $28.8\%$ was found. A total of $169.404$ cases were investigated. Figure and data provided with courtesy of \cite{sheetz2020trends}. Refers to \secref{in:sec:foreword}.}
+    \caption{Increase of laparoscopy over open approaches and robotic laparoscopy versus other methods, respectively. Data normalized to year zero, the introduction of robotic laparoscopy. The use of robotic laparoscopy increased from $1.8\%$ to $15.1\%$. For inguinal hernia repair, an increase in robotic surgery from $0.7\%$ to $28.8\%$ was found. A total of $169.404$ cases over 73 hospitals in Michigan, United States, were investigated. Figure and data provided with courtesy of \cite{sheetz2020trends}. Refers to \secref{in:sec:foreword}.}
     \label{in:fig:robotic_vs_laparoscopic_vs_open}
 \end{figure}
 
-As we dive deeper into level five autonomy endoscopic camera motion automation, the introductory chapter will provide a solid clinical background for laparoscopy in \secref{in:sec:laparoscopy}, a sub-domain of endoscopy, including an in-depth explanation of laparoscopic cholecystectomy (minimally invasive gallbladder removal). This is because laparoscopic cholecystectomy is performed in high volumes and can be considered a relatively simple procedure. It thus, due to vast amounts of readily available data, serves as the perfect test-bed for the methods that are derived as part of this thesis. Next, we explain the rise of robot assisted laparoscopy in \secref{in:sec:robot_assisted_laparoscopy} and the potentials of automation that evolve with it. We highlight different commercial systems, their limitations, and propose innovative solutions. The limitations will include spatial awareness, refer \secref{in:sec:spatial_awareness}, as most RMIS systems lack a world model, and, crucially, camera motion automation, for which a thorough review of related methods is provided in \secref{in:sec:camera_motion_automation}. Following the camera motion automation literature review, we will hypothesize an approach to near-term full automation. The proposed approach will revolve around a mixture of imitation learning an classical control. It is grounded in successful automation in related domains and will be discussed in \secref{in:sec:imitation_learning}.
+As we dive deeper into level five autonomy endoscopic camera motion automation, the introductory chapter will provide a solid clinical background for laparoscopy in \secref{in:sec:laparoscopy}, a sub-domain of endoscopy, including an in-depth explanation of laparoscopic cholecystectomy (minimally invasive gallbladder removal). This is because laparoscopic cholecystectomy is the most common laparoscopic procedure \cite{sheetz2020trends}, and can be considered relatively simple. It thus, due to vast amounts of readily available data, serves as the perfect test-bed for the methods that are derived as part of this thesis. Next, we explain the rise of robot assisted laparoscopy in \secref{in:sec:robot_assisted_laparoscopy} and the potentials of automation that evolve with it. We highlight different commercial systems, their limitations, and propose innovative solutions. The limitations will include spatial awareness, refer \secref{in:sec:spatial_awareness}, as most RMIS systems lack a world model, and, crucially, camera motion automation, for which a thorough review of related methods is provided in \secref{in:sec:camera_motion_automation}. Following the camera motion automation literature review, we will hypothesize an approach to near-term full automation. The proposed approach will revolve around a mixture of imitation learning an classical control. It is grounded in successful automation in related domains and will be discussed in \secref{in:sec:imitation_learning}.
 
 \section{Laparoscopy}
 \label{in:sec:laparoscopy}
@@ -48,7 +48,7 @@ Endoscopy refers to the observation of internal parts by means of an endoscope \
 \end{figure}
 Compared to open surgery, laparoscopy leads to significantly faster interventions ($57.19\pm10.13\,\text{min}$ vs. $85.10\pm15.18\,\text{min}$), less bleeding complications ($2\%$ vs $7\%$ of interventions), shorter hospital stays ($2.1\pm1.1\,\text{days}$ vs $4.4\pm2.1\,\text{days}$), less infections, and less post-operative pain \cite{shi2023laparoscopic}. These eminent advantages of laparoscopic over open surgeries have long led to their adoption since the introduction in the early 1980s, see \figref{in:fig:robotic_vs_laparoscopic_vs_open}. This trend continues in the foreseeable future and even increases as the majority of surgical residents is nowadays trained on the minimally invasive variant \cite{john2020rise}.
 
-Some types of laparoscopic procedures are cholecystectomy (gallbladder removal), appendectomy (appendix removal), inguinal hernia repair (i.e. leaking of intestines through the abdominal wall), colectomy (partial colon removal), and gastrectomy (partial or full stomach removal) among others. Since laparoscopic cholecystectomy is carried out in high volumes and is additionally a relatively simple procedure, it is of special relevance to this work. It will thus be considered an example for explaining a laparoscopic surgery setup and procedure.
+Some types of laparoscopic procedures are cholecystectomy (gallbladder removal), appendectomy (appendix removal), inguinal hernia repair (i.e. leaking of intestines through the abdominal wall), colectomy (partial colon removal), nephrectomy (partial or complete kidney removal), prostatectomy (partial or complete prostate removal), and gastrectomy (partial or full stomach removal) among others. Since laparoscopic cholecystectomy is carried out in high volumes and is additionally a relatively simple procedure, it is of special relevance to this work. It will thus be considered an example for explaining a laparoscopic surgery setup and procedure.
 
 A cholecystectomy is the surgical removal of the gallbladder. The gallbladder serves as a reservoir for the liver-produced bile, a fat digesting fluid. Bile may harden and form gallstones, which can lead to inflammation and severe pain. Since the liver also releases bile directly into the digestive tract, shown in \figref{in:fig:cholecystectomy_incisions}, the gallbladder may be removed in such cases. A cholecystectomy setup is depicted in \figref{in:fig:room_setup}.
 \begin{figure}
@@ -102,51 +102,47 @@ The goal is to expose the hepatocystic trianlge \cite{mischinger2020critical}, s
 
 \section{Robot Assisted Laparoscopy}
 \label{in:sec:robot_assisted_laparoscopy}
-Having a good understanding of laparoscopic surgery from the previous \secref{in:sec:laparoscopy}, and more specifically, laparoscopic cholecystectomy, we will next discuss robot assisted laparoscopic surgery. We will initially discuss the, at first glance, paradoxical rise of robot assisted laparoscopy in \secref{in:sec:the_rise_of_robot_assisted_laparoscopy}. Next, current commercial systems will be analyzed in \secref{in:sec:robot_surgery_platforms}, as to better understand where the field might be headed so to provide an informed research direction. Finally, limitations of the current systems will be explained in \secref{in:sec:limitations_of_current_systems} and solutions are outlined in \secref{in:sec:enhancing_current_systems}.
+Having a good understanding of laparoscopic surgery from the previous \secref{in:sec:laparoscopy}, and more specifically, laparoscopic cholecystectomy, we will next discuss robot assisted laparoscopic surgery. We will initially explain the, at first glance, paradoxical rise of robot assisted laparoscopy in \secref{in:sec:the_rise_of_robot_assisted_laparoscopy}. Next, current commercial systems will be analyzed in \secref{in:sec:robot_surgery_platforms}, as to better understand where the field might be headed so to provide an informed research direction. Finally, limitations of the current systems will be explained in \secref{in:sec:limitations_of_current_systems} and solutions are outlined in \secref{in:sec:enhancing_current_systems}.
 
 \subsection{The Rise of Robot Assisted Laparoscopy}
 \label{in:sec:the_rise_of_robot_assisted_laparoscopy}
-Somewhat paradoxically, \figref{in:fig:robotic_vs_laparoscopic_vs_open}
+According to many, the future of surgery is robotic \cite{times2021better}. This trend was already exposed in \secref{in:sec:foreword}, \figref{in:fig:robotic_vs_laparoscopic_vs_open}, where \cite{sheetz2020trends} found an average increase in robotic laparoscopy from $1.8\%$ to $15.1\%$ post robotic laparoscopy introduction. For cholecystectomy, the most common procedure, an increase from $2.5\%$ to $7.5\%$ was found. Somewhat paradoxically, laparoscopic cholecystectomy is already a routine procedure with very low complication rates, \cite{thapar2023evaluation} e.g. reports a $0.2\%$ 30 days mortality rate in India. Hence, questions about benefits of robotic laparoscopy may be raised rightfully.
 
-as to give an informed decision for this research
+\paragraph{Patient Side Aspects} More than twenty years passed since the introduction of the da Vinci\textsuperscript{\textregistered} surgical robot by Intuitive (\figref{in:fig:da_vinci}), which was launched in 1999, and many review studies compared classical vs. robotic laparoscopies ever since to provide evidence-based care. The majority of which suggests that no significant advantages exist for patients. Despite increased cost and longer intervention times, these studies report equal complication, mortality, and conversion rates (i.e. conversion to open surgery), as well as equal post operative stay duration \cite{kawka2023laparoscopic, csirzo2023robot}. Some studies, however, also highlight underrepresented patient-reported outcome measures \cite{kawka2023laparoscopic} (e.g. post-operative pain, return to function). 
 
-Somewhat paradoxically, 
-
-0.2\% 30 days mortality rate in India for laparoscopic cholecystectomy \cite{thapar2023evaluation}
-
-the future of surgery is robotic \cite{times2021better}
-
-no advantages, equal complication rates, increased time and cost, equal post operative stay: \cite{kawka2023laparoscopic} some quality of outcome improvements
-higher cost, lower blood loss, longer time \cite{csirzo2023robot}
-mortality, equal conversion rates
-
-ergonomic benefits \cite{monfared2022comparison, zarate2019ergonomic}
-unification of simulation and real scenario
-data collection
-
-\cite{fiorini2022concepts} fatigue, lack of attention, cognitive overload
-
-In the previous sections it was shown that...
-
-
-so instead we can address the question what can be done to achieve these long awaited clinical benefits that lives up to the market
-
-\begin{itemize}
-    \item make the case for robotic laparoscopic surgery
-    \item precision, improved ergonomics, reduced learning curve, data collection
-\end{itemize}
-\subsection{Robot Surgery Platforms}
-\label{in:sec:robot_surgery_platforms}
-The da Vinci\textsuperscript{\textregistered} robot by Intuitive (\figref{in:fig:da_vinci}) was launched in 1999. The company has seen sustained growth ever since, see \figref{in:fig:intuitive_revenue}. Its initial success can be attributed to the minimally invasive prostatectomy, the partial or complete removal of the prostate. About $85\%$ of radical prostatectomies 2017 were performed robotically in England \cite{maynou2021patterns}. The system has made it ergonomically much simpler to access the prostate, being located low in the pelvis.
-
+\paragraph{Surgeon Side Aspects} Undoubtedly, the market for RAS, which is currently dominated by Intuitive Surgical, Inc., is growing sustainably, see \figref{in:fig:intuitive_revenue}.
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{introduction/fig/intuitive_revenue.pdf}
     \caption{Annual revenue of Intuitive Surgical, Inc. from 2009 to 2023. The company has achieved sustained growth throughout the years. Data obtained from \cite{intuitiverevenue}.}
     \label{in:fig:intuitive_revenue}
 \end{figure}
+The reasons for this steady growth, as per above and to the best current knowledge, cannot associated with patient benefits. Instead, the growth can be linked to surgeon benefits. Multiple studies suggest ergonomic advantages for surgeons \cite{monfared2022comparison, zarate2019ergonomic}, which prevent operating burnout \cite{wells2019operating} and improve longevity \cite{stucky2018surgeon}. This evidence can best be understood through the surgery that lead to the initial success of the da Vinci\textsuperscript{\textregistered} surgical robot, the minimally invasive prostatectomy. The prostate, being located low (inferiorly) in the pelvis, is hardly accessible via laparoscopic tools. The large distance from trocar to prostate makes precise motion difficult and creates a lever that generates torques which cause fatigue. A robot makes it ergonomically much simpler to operate in these areas. In England, about $85\%$ of radical prostatectomies 2017 were performed robotically \cite{maynou2021patterns}.
 
-Intuitive filed multiple patents in the 1990s, which guarded market access from other companies. Patents in the US generally last for 20 years, which is why as of 2020 most of these critical patents ran out. Many other companies are thus trying to gain some of Intuitive's market share. This competition will ultimately benefit patients, as it might help drive down cost for robotic surgery in the future, increase accessibility, and lead to innovation in general. An non-exhaustive overview of current commercial systems is given in \tabref{in:fig:systems}. It can be seen that the competition has already brought innovation and a broader variety of systems. Multiple companies are adopting Intuitive's monolithic structure, that is all robotic arms are attached to a single instance. Many others, such as Medtronic and CMR Surgical, are taking a modular approach instead. The systems further differentiate themselves not only by their modularity, but also through their mechanical properties. The da Vinci\textsuperscript{\textregistered} robot has a mechanical remote center of motion (RCM), i.e. there are dedicated degrees of freedom (DOF) for achieving a zero translational velocity at the entry point to the patient. The RCM is also sometimes called fulcrum in the medical context. Having a mechanical RCM provides additional safety, but leads to highly dedicated systems that are hard to re-purpose. This is why recent systems are exploring programmable RCMS, in which an RCM is achieved through control theory. This has implications on safety, as sometimes the RCM may not be achieved, and thus extra care has to be taken, but can potentially provide multi-purpose systems. It is too early to tell which design will prevail, there might even be a future where in which multiple designs could coincide. 
+\paragraph{Interviewing a Surgeon} To find further qualitative insights on the advantages of RMIS over MIS, we interviewed Nicholas Raison, a consultant urological surgeon, during a course he organized for robotic partial nephrectomy, hosted by the International Medical Robotics Academy at Guy's Hospital King's College London. Among the aforementioned lever with associated fatigue reduction, and precision improvements, he named four more advantages of robotic platforms. First, classical laparoscopic tools are straight and do not allow for wrist rotations at the grippers. Robotic tools provide additional degrees of freedom and therefore increased dexterity. This simplifies tasks such as suturing significantly. Second, the control of the tools through a console allows the surgeon to operate from a first-person view which reduces mental burden. Third, since surgeons are in charge of moving the camera themselves in RMIS, they tend to move it more frequently which provides them with a precise view. In classical MIS, there exists a communication barrier with the camera holder, refer \figref{in:fig:room_setup}. Therefore, in classical MIS, camera holders sometimes show a distant view to compensate for this communication barrier. Fourth, RMIS reduces the learning curve for newly trained surgeons, which results from the enhanced dexterity and the first-person view.
+
+\paragraph{Future Aspects} In summary, and to best current evidence, robotic surgery platforms currently do not provide any improved surgery outcomes, increase operating cost and time. Viewed differently, they don't worsen the surgery outcomes either. What makes robotic laparoscopy so successful are the surgeon side benefits instead. It is, however, challenging to quantify these, as described earlier. Other aspects, not mentioned yet, are the future prospects of robotic laparoscopy. These e.g. include the possibility to control the systems remotely, data collection, and realistic simulations for training, as well as potential automation. Having this knowledge in mind, the rest of the thesis will not attempt at improving clinical benefits, as these are good already. Instead, we will attempt to address the increased cost, as well as time. Furthermore, and in line with cost and time, this thesis will aim at contributing to laparoscopic camera motion automation. To get a better understanding for how this could best be achieved, the next section will provide an overview of current 
+
+% ⁃	Versius jerky, less smooth, no rotation about entry axis
+% ⁃	Hugo better range of motion inside abdomen vs xi
+% ⁃	Xi console restricting (goggles)
+% ⁃	Hugo console open 
+% ⁃	Versius console no foot pedals 
+% ⁃	Versius common laparoscopic tools, cheaper but less versatile
+% ⁃	Much more camera motion in robotic surgery compared to classic laparoscopic surgery (surgeons adjust to their desired view more commonly. Camera in traditional surgery further away to correct for communication shortcoming)
+% ⁃	Ergonomic benefits in robotic surgery (large lever over entry point, generating lots of torque)
+% ⁃	Versius small company in comparison to pharmaceutical giants 
+% ⁃	Footprint xi surprisingly small 
+% ⁃	Da Vinci console weight engaged, Hugo head tracking engaged (tracks glasses via camera and infrared balls on glasses)
+% ⁃	Hugo console feels laggy compared to da Vinci 
+% ⁃	Classical laparoscopic tools are straight, robotic tools offer additional dof, making e.g. suturing much simpler
+% ⁃	Da Vinci arm arm collisions happen, in which case the assistant attempts to readjust the configuration 
+% ⁃	Versius changes tools via joystick, whereas other systems can change arm via footpedals
+% ⁃	Proximie providing views of the da Vinci during live stream 
+
+\subsection{Robot Surgery Platforms}
+\label{in:sec:robot_surgery_platforms}
+The da Vinci\textsuperscript{\textregistered} robot by Intuitive (\figref{in:fig:da_vinci}) was launched in 1999 and Intuitive Surgical, Inc. filed multiple patents in the 1990s, which guarded market access from other companies. Patents in the US generally last for 20 years, which is why as of 2020 most of these critical patents ran out. Many other companies are thus trying to gain some of Intuitive's market share. This competition will ultimately benefit patients, as it might help drive down cost for robotic surgery in the future, increase accessibility, and lead to innovation in general. An non-exhaustive overview of current commercial systems is given in \tabref{in:fig:systems}. It can be seen that the competition has already brought innovation and a broader variety of systems. Multiple companies are adopting Intuitive's monolithic structure, that is all robotic arms are attached to a single instance. Many others, such as Medtronic and CMR Surgical, are taking a modular approach instead. The systems further differentiate themselves not only by their modularity, but also through their mechanical properties. The da Vinci\textsuperscript{\textregistered} robot has a mechanical remote center of motion (RCM), i.e. there are dedicated degrees of freedom (DOF) for achieving a zero translational velocity at the entry point to the patient. The RCM is also sometimes called fulcrum in the medical context. Having a mechanical RCM provides additional safety, but leads to highly dedicated systems that are hard to re-purpose. This is why recent systems are exploring programmable RCMS, in which an RCM is achieved through control theory. This has implications on safety, as sometimes the RCM may not be achieved, and thus extra care has to be taken, but can potentially provide multi-purpose systems. It is too early to tell which design will prevail, there might even be a future where in which multiple designs could coincide. 
 
 % left out:
     % \item Monarch by Johnson \& Johnson (not really laparoscopic, no RCM)
@@ -218,6 +214,8 @@ Through
 Positioning is vital for reach-ability \cite{zelechowski2023automatic}
 
 Workspace is crucial in laparoscopcy \cite{alhusseinawi2023validation}
+
+average 18.2 minutes docking time \cite{feng2020robot}
 
 Workspace optimization works \cite{hutzl2015knowledge}
 
