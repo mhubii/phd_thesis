@@ -174,76 +174,33 @@ The da Vinci\textsuperscript{\textregistered} robot by Intuitive (\figref{in:fig
 
 \subsection{Enhancing Current Systems}
 \label{in:sec:enhancing_current_systems}
-The previous two sections gave an explanation for the rise of robot assisted laparoscopy in \secref{in:sec:the_rise_of_robot_assisted_laparoscopy}, and introduced different commercial systems in \secref{in:sec:robot_surgery_platforms}. We identified surgeon side benefits as well as future prospects as the main driving factors for RMIS. Adoption is, however, slowed down by roadblocks such as surgery cost and additional operation time. Patient outcomes are just as good in RMIS as they are in MIS. This is to be expected as patient outcomes for MIS are already much better than for open surgery and the bar for further improvement is high. Consequentially, patient outcomes cannot be considered a limitation of current systems and are thus not of immediate relevance for research. Now, to enhance current systems, we argue that it is most efficient to work on the driving factors that made RMIS successful in the first place, as well as the road blocks. 
-
-
-
-and this should be possible due to their their sophistication
-
-modular systems
-
-to obey
-
-clarifies that the ultimate goal should still be camera motion automatoin
-
-As outlined in the previous .  So instead of investigating system limitations in the context of surgical outcomes, this thesis will mostly focus on:
-
-A clear downside of RMIS is the added cost. Robotic laparoscopy is estimated to add \$1000-4000 on average to the classical counterpart \cite{neumann2018qalys}. Another disadvantage of RMIS is the increased time. Robotic laparoscopic cholecystectomy e.g. takes 185 minutes, whereas laparoscopic cholecystectomy only takes 160 minutes on average \cite{kane2020robotic}. 
-
+The previous two sections gave an explanation for the rise of robot assisted laparoscopy in \secref{in:sec:the_rise_of_robot_assisted_laparoscopy}, and introduced different commercial systems in \secref{in:sec:robot_surgery_platforms}. We identified surgeon side benefits as well as future prospects as the main driving factors for RMIS. Adoption is, however, slowed down by roadblocks such as surgery cost, about $\$1000-4000$ of additional cost per procedure \cite{neumann2018qalys}, and additional operation time, about $25$ minutes of additional operation time for cholecystectomy (185 vs 160 minutes \cite{kane2020robotic}). Patient outcomes are just as good in RMIS as they are in MIS. This is to be expected as patient outcomes for MIS are already much better than for open surgery and the bar for further improvement is high. Consequentially, patient outcomes cannot be considered a limitation of current systems and are thus not of immediate relevance for research. Now, to enhance current systems, we argue that it is most efficient to work on the driving factors that made RMIS successful in the first place, as well as the roadblocks. The overarching goal of this thesis, laparoscopic camera motion automation, fits nicely into the clinically relevant enablers and challenges for RMIS, as shown in \figref{in:fig:advancing_robotic_laparoscopy}. A prerequisite for automating a robotic system in a pHRI environment, however, is spatial awareness. Spatial awareness comes with the additional benefit that it also contributes to operation time and surgeon convenience, as will be described in the next paragraph.
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{introduction/fig/main_goals.pdf}
-    \caption{Roadblocks and driving factors of RMIS and how the targets of this thesis contribute to them, refers to \secref{in:sec:enhancing_current_systems}.}
+    \caption{Roadblocks and driving factors of RMIS and how the targets of this thesis elevate and enhance them, respectively, refers to \secref{in:sec:enhancing_current_systems}.}
     \label{in:fig:advancing_robotic_laparoscopy}
 \end{figure}
 
-% 18 minutes of docking \cite{feng2020robot} adrenalectomy
+\paragraph{Spatial Awareness} Spatial awareness is likely the most underexplored domain in RMIS, and by spatial awareness we will be referring to highly precise localization necessary for surgery, that is in the order of $1\,\text{cm}$ or less. In the cluttered operating theater, containing an anesthesia machine, monitors, a C-arm, staff, the patient, the surgeon, and many other devices, refer \figref{in:fig:room_setup}, collisions are inevitable. A staggering amount of five arm-arm, and assistant-arm collisions occur on average in robotic colorectal surgery \cite{wong2023improving}. $20\%$ of assistants report pain or bruising from hindrance by the robot arm \cite{van2019ergonomic}. Training assistants could mitigate some of these issues, which, as many studies imply \cite{cimen2019does, mitsinikos2017does, kwon2020impact}, would lead to improved performance, hence surgeon convenience and operation time reduction. To this end we argue differently and assign the responsibility to the robotic system rather than the assistants or surgeons. These highly capable robotic systems should prevent collisions themselves and leave the clinical workflow unaltered. Some works therefore suggest image-based avoidance \cite{hameed2016towards} and 3D avoidance \cite{li2023three}, both of which could benefit from spatial awareness. Collision avoidance might even become more relevant with the adoption of modular systems, as outlined in \secref{in:sec:robot_surgery_platforms}. Spatial awareness would not only improve performance by reducing collisions, it would further contribute to workspace optimization works, such as \cite{hutzl2015knowledge, zelechowski2023automatic}, as these require accurate knowledge about the relative patient-robot position. Workspace optimization is not only crucial from a robotic point of view but for clinical aspects as well \cite{alhusseinawi2023validation}. As such, recent studies demonstrated that it takes an average of 18 minutes to perform proper docking in robotic adrenalectomy \cite{feng2020robot}.
 
-\begin{enumerate}
-    \item already good for patients
-    \item focus on surgeon side aspects
-    \item time, cost, future prospects \ref{in:sec:the_rise_of_robot_assisted_laparoscopy}
-    \item cost could be reduced a) competition b) multi-purpose systems \secref{in:sec:robot_surgery_platforms}
-    \item future aspects: camera motion automation \secref{in:sec:foreword}
-\end{enumerate}
-
-Despite their sophistication, 
-
-As outlined in the foreword \secref{in:sec:foreword}, most likely camera motion automation
+\paragraph{Automation} As already outlined in the foreword \secref{in:sec:foreword}, laparoscopic camera motion automation is likely the first milestone towards automated RMIS. Although, due to their sophistication, camera motion automation could be achieved on various systems, in this work, as explained in \secref{in:sec:robot_surgery_platforms}, the main focus will be put on systems with programmable RCM. Methods in this thesis should therefore also obey the principles of programmable RCMs. This is to deviate from the status-quo, the da Vinci\textsuperscript{\textregistered} robot with mechanical RCM, in order to boost competition and enable multi-purpose systems which may have a significant impact on reducing the cost of RMIS.
 
 
-da vinci system review \cite{ngu2017vinci}
+% da vinci system review \cite{ngu2017vinci}
 
-image based avoidance \cite{hameed2016towards}, 3d avoidance \cite{li2023three}
+% Without impacting clinical workflow
 
-Without impacting clinical workflow
+% Whilst current commercial systems are quite capable already 
 
-
-average of 5 collisions per colorectal procedure, propose process solutions: \cite{wong2023improving}
-several studies suggest improved assistant performance leads to enhanced performance \cite{cimen2019does, mitsinikos2017does, kwon2020impact}
-20\% of assistants reported bruising: \cite{van2019ergonomic}
-
-Whilst current commercial systems are quite capable already 
-
-cluttered workspace, anaesthesia, ekg, breathing, tools, staff, microscopes, tiny rooms, quick turn-around (in and out)
-
-explain limitations of current systems, missed opportunities given current robots (capable actuators)
+% explain limitations of current systems, missed opportunities given current robots (capable actuators)
 
 \section{Spatial Awareness in Robotic Laparoscopy}
 \label{in:sec:spatial_awareness}
 
-
-Positioning is vital for reach-ability \cite{zelechowski2023automatic}
-
-Workspace is crucial in laparoscopcy \cite{alhusseinawi2023validation}
-
-average 18.2 minutes docking time \cite{feng2020robot}
-
-Workspace optimization works \cite{hutzl2015knowledge}
-
 \subsection{Eye-in-hand and Eye-to-hand Calibration}
 \subsection{Clinical Workflow}
-\subsection{Unified Calibration}
+\subsection{Unified Calibration for Optimal Clinical Workflow}
 
 \section{Camera Motion Automation in Robotic Laparoscopy}
 \label{in:sec:camera_motion_automation}
