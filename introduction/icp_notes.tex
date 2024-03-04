@@ -1,0 +1,367 @@
+\subsection{Point-to-plane ICP: A Lie algebra formulation}
+\label{in:sec:p2plane}
+
+\paragraph{Basic formulation.}
+We first introduce the problem solved by the point-to-plane iterative closest point algorithm (point-to-plane ICP) \cite{Rusinkiewicz:IC3DIM:2001}.
+Let $p_i$ and $q_i$ be corresponding 3D points in homogeneous coordinates. Let $n_i$ be a normal vector associated with $q_i$. We search a rigid body transformation $\Theta$ in $SE(3)$ that minimises:
+\begin{equation}
+\sum_i ||n_i^T \cdot (\Theta \cdot p_i - q_i)||^2 = \sum_i (n_i^T \cdot \Theta \cdot p_i - n_i^T \cdot q_i)^2
+\end{equation}
+
+\paragraph{Iterative optimisation on the $SE(3)$ Lie group.}
+Let $\Theta_0$ be the current estimate. In a Lie group iterative optimisation approach \cite{Mahony:JGO:2002,Vercauteren:IPMI:2007}, we seek a perturbation $\delta\Theta \in \mathfrak{se}(3)$ composed with
+$\Theta_0$: $\Theta_1 = \Theta_0 \cdot \exp(\delta\Theta)$. We now seek to minimise:
+\begin{equation}
+\sum_i (n_i^T \cdot \Theta_0 \cdot \exp(\delta\Theta) \cdot p_i - n_i^T \cdot q_i)^2
+\end{equation}
+
+\paragraph{Mathematical preliminaries.}
+For convenience, we take advantage of the relationship between the 3D cross product, the Lie bracket on SO(3), and the skew-symmetric matrix operator.
+Let $\omega = [\omega_x, \omega_y, \omega_z]$ and $\eta = [\eta_x, \eta_y, \eta_z]$ be two 3D vectors, we have
+\begin{equation}
+[\omega, \eta] = \omega \times \eta = \omega_\times \eta
+\end{equation}
+where
+\begin{equation}
+\omega_\times =
+\begin{bmatrix}
+0         & -\omega_z & \omega_y \\
+\omega_z  & 0         & -\omega_x \\
+-\omega_y & \omega_x  & 0
+\end{bmatrix}
+\end{equation}
+
+It can be shown that the Lie group exponential in SO(3) admits a closed form through the Rodrigues’ formula. Let us consider $\omega$ as an element of $\mathfrak{so}(3)$, we now have
+\begin{equation}
+\expl(\omega) = \exp(\omega_\times) = \id + \frac{\sin(||\omega||)}{||\omega||}\omega_\times + \frac{1-\cos(||\omega||)}{||\omega||^2}\omega_\times^2
+\end{equation}
+which for small values of $||\omega||$ leads to the following numerically stable approximation
+\begin{equation}
+\expl(\omega) \approx \id
++ (1-\frac{||\omega||^2}{6}+\frac{||\omega||^4}{120})\omega_\times
++ (\frac{1}{2}-\frac{||\omega||^2}{24}+\frac{||\omega||^4}{720}))\omega_\times^2
+\end{equation}
+
+\iffalse
+For compatibility with the 3D cross product, we choose the following basis for the matrix representation of $\mathfrak{se}(3)$:
+\begin{align}
+e_1 &= 
+\begin{bmatrix}
+0 & 0 & 0  & 0 \\
+0 & 0 & -1 & 0 \\
+0 & 1 & 0  & 0 \\
+0 & 0 & 0  & 0
+\end{bmatrix}
+\\
+e_2 &=
+\begin{bmatrix}
+0  & 0 & 1 & 0 \\
+0  & 0 & 0 & 0 \\
+-1 & 0 & 0 & 0 \\
+0  & 0 & 0 & 0
+\end{bmatrix}
+\\
+e_3 &=
+\begin{bmatrix}
+0 & -1 & 0 & 0 \\
+1 & 0  & 0 & 0 \\
+0 & 0  & 0 & 0 \\
+0 & 0  & 0 & 0
+\end{bmatrix}
+\\
+e_4 &=
+\begin{bmatrix}
+0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{bmatrix}
+\\
+e_5 &=
+\begin{bmatrix}
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{bmatrix}
+\\
+e_6 &=
+\begin{bmatrix}
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0
+\end{bmatrix}
+\end{align}
+\fi
+
+Let us consider a 6D vector $u=[\omega;\tau]$ as an element of $\mathfrak{se}(3)$. Its matrix representation is provided by
+\begin{equation}
+u_\dagger =
+\begin{bmatrix}
+\omega_\times & \tau \\
+0  & 0
+\end{bmatrix}
+\end{equation}
+which leads to the following closed-form formula for the Lie group exponential for SE(3):
+\begin{equation}
+\expl(u) = \exp(u_\dagger) =
+\begin{bmatrix}
+\expl(\omega) & L(\omega)\tau \\
+0  & 1
+\end{bmatrix}
+\end{equation}
+where
+\begin{equation}
+L(\omega) = \id
++ \frac{1-\cos(||\omega||)}{||\omega||^2}\omega_\times
++ \frac{||\omega||-\sin(||\omega||)}{||\omega||^3}\omega_\times^2
+\end{equation}
+where a Taylor expansion should again be used for numerical stability if $||\omega||$ is small:
+\begin{equation}
+L(\omega) \approx \id
++ (\frac{1}{2}-\frac{||\omega||^2}{24}+\frac{||\omega||^4}{720})\omega_\times
++ (\frac{1}{6}-\frac{||\omega||^2}{120}+\frac{||\omega||^4}{5040})\omega_\times^2
+\end{equation}
+
+\paragraph{First-order linearisation of the action of the exponential in $\mathfrak{se}(3)$.}
+Let $p=[\tilde{p};1]$ be a 3D point in homogeneous coordinates. We consider an infinitesimal element $\delta u=[\delta \omega;\delta \tau]$ of $\mathfrak{se}(3)$ and consider the corresponding action on $p$:
+\begin{equation}
+\begin{split}
+\expl(\delta u)p &\approx (\id+\delta u_\dagger)p = p +
+\begin{bmatrix}
+\delta \omega_\times & \delta \tau \\
+0  & 0
+\end{bmatrix} p
+= p +
+\begin{bmatrix}
+\delta \omega_\times \tilde{p}+\delta \tau \\
+0
+\end{bmatrix} \\
+&= p +
+\begin{bmatrix}
+\delta \omega \times \tilde{p}+\delta \tau \\
+0
+\end{bmatrix}
+= p +
+\begin{bmatrix}
+-\tilde{p} \times \delta \omega + \delta \tau \\
+0
+\end{bmatrix} \\
+&= p +
+\begin{bmatrix}
+-\tilde{p}_\times & \id \\
+0 & 0
+\end{bmatrix} \delta u
+= p + D(p)\delta u
+\end{split}
+\end{equation}
+where
+\begin{equation}
+D(p) = 
+\begin{bmatrix}
+-\tilde{p}_\times & \id \\
+0 & 0
+\end{bmatrix}
+\end{equation}
+
+\paragraph{Lie algebra linearisation of the point-to-plane objective}
+Plugging this in the original cost function we get the following linearisation:
+\begin{equation}
+\begin{split}
+\sum_i & \Big(n_i^T \Theta_0 \big(p_i + D(p_i)\delta\Theta \big) - n_i^T q_i\Big)^2
+\\
+&= \sum_i \Big(n_i^T \Theta_0 D(p_i)\delta\Theta + n_i^T \Theta_0 p_i - n_i^T q_i\Big)^2
+\end{split}
+\end{equation}
+Denoting $a_i = n_i^T \Theta_0 D(p_i)$, $A=[a_0;\ldots;a_N]$,
+$b_i = n_i^T (q_i - \Theta_0 p_i)$, and $b=[b_0;\ldots;b_N]$, we end up with a standard linear least squares problem:
+\begin{equation}
+||A \delta\Theta - B||^2
+\end{equation}
+which can be expressed using the pseudo-inverse $A^{\dagger}$ of $A$:
+\begin{equation}
+\delta\Theta = A^{\dagger} B
+\end{equation}
+
+Given the dimensions of $A$, $b$ and $\delta\Theta$ is probably best solved by using the normal equations
+\begin{equation}
+(A^T A) \delta\Theta = A^T B
+\end{equation}
+and relying on a Cholesky decomposition:
+\begin{equation}
+\delta\Theta = \texttt{chol\_solve}(A^T A, A^T B)
+\end{equation}
+
+Note that by expressing A and B without homogeneous coordinates, we get:
+\begin{equation}
+a_i = [-\tilde{n}_i^T R_0 {{\tilde{p}}_{i}}_{\times}, \tilde{n}_i^T R_0]
+\end{equation}
+and
+\begin{equation}
+b_i = \tilde{n}_i^T (\tilde{q}_i - R_0 \tilde{p}_i - T_0)
+\end{equation}
+
+\paragraph{Robust formulation.}
+To reduce the influence of outliers on the solution, a typical approach is to introduce a
+loss function $\rho_\kappa$ parameterised by a scale parameter (a.k.a. soft margin or cut-off) $\kappa$ to scale the residuals. We then seek to minimise:
+\iffalse
+\begin{equation}
+\sum_i \rho\big(\frac{1}{C^2}(n_i^T \cdot \Theta \cdot p_i - n_i^T \cdot q_i)^2\big)
+\end{equation}
+
+Using the identity loss function $\rho(z)=z$ leads to the original least-squares problem. Classical robust alternatives include:
+\begin{description}
+  \item[Soft L1]:
+  $\rho(z) = 2 (\sqrt{1 + z} - 1)$.
+  The smooth approximation of l1 (absolute value) loss. Usually a good choice for robust least squares.
+
+  \item[Huber]:
+  $\rho(z) = z \texttt{ if } z <= 1 \texttt{ else } 2\sqrt{z} - 1$.
+  Works similarly to ``Soft L1".
+
+  \item[Cauchy]:
+  $\rho(z) = \ln(1 + z)$.
+  Severely weakens outliers influence, but may cause difficulties in optimisation process.
+
+   \item[Arctan]:
+   $\rho(z) = \arctan(z)$.
+   Limits a maximum loss on a single residual, has properties similar to ``Cauchy".
+\end{description}
+\fi
+\begin{equation}
+\sum_i \rho_k\Big(n_i^T \cdot \Theta \cdot p_i - n_i^T \cdot q_i\Big)
+\end{equation}
+or equivalently if we start from a given estimate in the above Lie group setting:
+\begin{equation}
+\sum_i \rho_k\Big(a_i \delta\Theta - b_i\Big)
+\end{equation}
+%
+Using the square loss function $\rho_\kappa(z)=z^2$ leads to the original least-squares problem. A classical robust alternatives is the Huber loss
+\begin{equation}
+\rho_\kappa(z) =
+\begin{cases}
+  z^2 &\texttt{ if } |z| <= \kappa \\
+  2|z|\kappa - \kappa^2  &\texttt{ otherwise }
+\end{cases}
+\end{equation}
+with $\kappa=1.345\sigma$ being advocated to provide robustness while retaining appropriate properties when the errors are Gaussian.
+
+This minimisation can be achieved by a standard Iteratively Reweighted Least Squares (IRLS) approach \cite{Green:JRSSB:1984} or by including a second order terms in a slightly more advanced reweighted Gauss-Newton approach as discussed in \cite{Triggs:VisAlg:2000}.
+The latter is referred to as the Triggs correction in \url{http://ceres-solver.org/nnls_modeling.html#theory}. While elegant, previous work has shown that the Triggs correction does not significantly improve on the standard IRLS \cite{Zach:ECCV:2014,Zach:ECCV:2018}.
+Here, for simplicity we thus restrict ourselves to standard IRLS.
+Given a choice of scaling factor $\kappa$ and an estimate of the parameters $\Theta$, the robust problem is converted to a weighted least-squares:
+\begin{equation}
+\sum_i \omega_\kappa(b_i) ||a_i \delta\Theta - b_i||^2
+\end{equation}
+with $\omega_\kappa(z) = \rho'_\kappa(z) / z$ being the weight function associated with the Huber loss:
+\begin{equation}
+\omega_\kappa(z) =
+\begin{cases}
+  1 &\texttt{ if } |z| <= \kappa \\
+  \kappa / |z|  &\texttt{ otherwise }
+\end{cases}
+\end{equation}
+
+This leads us to the following weighted normal equation:
+\begin{equation}
+(A^T W A) \delta\Theta = A^T W B
+\end{equation}
+where $W = \diag\big(\omega_\kappa(b_0), \ldots, \omega_\kappa(b_N)\big)$.
+
+One aspect we haven't addressed yet it the choice of $\kappa$ for the Huber loss. As mentioned earlier, a typical choice is to use $\kappa=1.345\sigma$. We are thus left with the need to robustly estimate the standard deviation of the residuals. This is typically done through a median absolute deviation (MAD):
+\begin{equation}
+\hat{\sigma} = \frac{\MAD(\{b_i\})}{0.6745} = \frac{\median(\{|b_i-\median(\{b_i\}|)\})}{0.6745}
+\end{equation}
+
+\paragraph{Summary of the algorithm.}
+See \algoref{in:alg:liep2plan}.
+
+\begin{algorithm}
+\caption{A recap of the robust Lie group formulation of the point-to-plane ICP}\label{in:alg:liep2plan}
+\begin{algorithmic}
+\State Let $\{p\}$ be points to match (the observations). We omit the indices for simplicity here
+\State Let $\{q,n\}$ be points with associated normals (the model)
+\State Let $t \gets 0$ be a counter for the outer iterations
+\State Let $\Theta_0 = \{R_0,T_0\}$ be an initial estimate of the transformation parameters
+\While{ICP not converged}
+  \State Compute the transformed points $\Theta_t p$
+  \State Perform an approximate nearest neighbour search to match $\Theta_t p$ and $q$ points
+  \State Discard point pairs associated with distances that are definitely outliers
+  \State We now use $i$ indices to indicated matching points
+  \State Compute the residuals: $b_i \gets \tilde{n}_i^T (\tilde{q}_i - R_t \tilde{p}_i - T_t)$
+  \State \Comment{Previous computation of $\Theta_t p$ should of course be re-used here}
+  \State Compute the robust standard deviation: $\sigma \gets \MAD(\{b_i\})/0.6745$
+  \State \Comment{Done once to avoid recomputing it in the inner iterations}
+  \State Let $\tau \gets 0$ be a counter for the inner iterations
+  \State Let $\Theta_{t,0} \gets \Theta_{t}$ be the current estimate of the transformation
+  \While{Gauss-Newton not converged}
+    \If{$\tau \neq 0$}
+      \State Compute the residuals: $b_i \gets \tilde{n}_i^T (\tilde{q}_i - R_{t,\tau} \tilde{p}_i - T_{t,\tau})$
+    \EndIf
+    \State Compute the robust weights: $\omega_i \gets \omega_{1.345\sigma}(b_i)$
+    \State Compute the linear coefficients: $a_i \gets [-\tilde{n}_i^T R_{t,\tau} {{\tilde{p}}_{i}}_{\times}, \tilde{n}_i^T R_{t,\tau}]$
+    \State Solve the weighted normal equation:
+    \State \quad $\delta\Theta \gets \texttt{chol\_solve}(A^T W A, A^T W B)$
+    \State Update the transformation: $\Theta_{t,\tau+1} \gets \Theta_{t,\tau} \cdot \exp(\delta\Theta)$
+    \State $\tau \gets \tau+1$
+  \EndWhile
+  \State Let $\Theta_{t+1} \gets \Theta_{t,\tau}$
+  \State $t \gets t+1$
+\EndWhile
+%\Require $n \geq 0$
+%\Ensure $y = x^n$
+%\State $y \gets 1$
+%\State $X \gets x$
+%\State $N \gets n$
+%\While{not converged}
+%\If{$N$ is even}
+%    \State $X \gets X \times X$
+%    \State $N \gets \frac{N}{2}$  \Comment{This is a comment}
+%\ElsIf{$N$ is odd}
+%    \State $y \gets y \times X$
+%    \State $N \gets N - 1$
+%\EndIf
+%\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+\FloatBarrier
+\subsection{Registration of a 3D point cloud with 2D stereo segmentations}
+%
+Let $q_i$ be 3D points associated to a model object as expressed in an object specific coordinate frame.
+Let $I_L$ and $I_R$ be a pair of stereo images with associated $M_L$ and $M_R$ camera matrices (including both extrinsic and intrinsic).
+We assume that the stereo images are observing the object in an unknown pose $\Theta$.
+We also assume that the object is relatively textureless and that we don't have a good means of extracting keypoints of interest from the images.
+We however assume that a segmentation of the object in each image can readily be computed, e.g. with the Segment Anything Model (SAM) \cite{Kirillov:arxiv:2023}.
+%
+While differentiable rendering could be used in this context \cite{Hannemose:SPIE:2019,Labbe:CVPR:2021,Chen:RAL:2023},
+we expect that a simpler algorithm can be designed given the segmentation availability by matching points from 3D to 2D.
+We also expect to potentially gain robustness against illumination and other factors that would impact the appearance of the object in the images.
+
+Let $S_L$ and $S_R$ be the object segmentation masks in the left and right image respectively.
+We here seek to recover the pose $\Theta$ such that the projected model points ${M_L \Theta q}$ match the observed segmentation $S_L$ (respectively ${M_R \Theta q}$ to match $S_R$).
+Let $\varphi$ be a function to transform from homogeneous to Cartesian coordinates.
+That is $\varphi([x,y,f])=[x/f,y/f]$ and similarly in 3D.
+We can write the objective as:
+\begin{equation}
+\arg\min_{\Theta} \sum_i
+\min_{p_L|S_L(p_L)=1}|| \varphi\big(M_L \Theta q_i\big) - p_L||^2
++ \min_{p_R|S_R(p_R)=1}|| \varphi\big(M_R \Theta q_i\big) - p_R||^2
+\end{equation}
+
+Similar to the approach in \cite{Fitzgibbon:IVC:2003}, this formulation can be substantially accelerated by taking advantage of the fact that the segmentations are defined on a regular grid. We can thus use a Euclidean Distance Transform (EDT) for which optimised algorithms exist on both CPU \cite{Felzenszwalb:TC:2012}\footnote{\url{https://github.com/cai4cai/distance_transform}} and GPU \cite{Cao:SIGGRAPH:2010}\footnote{\url{https://docs.rapids.ai/api/cucim/stable/api/\#cucim.core.operations.morphology.distance_transform_edt}}.
+Let $\mathcal{D}_{S_L}$ be the EDT computed from $S_L$ (respectively $\mathcal{D}_{S_R}$ for $S_R$).
+We can now write
+\begin{equation}\label{eq:dt3d2d}
+\arg\min_{\Theta} \sum_i \mathcal{D}_{S_L}^2\big( \varphi(M_L \Theta q_i) \big)
++ \mathcal{D}_{S_R}^2\big( \varphi(M_R \Theta q_i) \big)
+\end{equation}
+
+As in Section \ref{in:sec:p2plane}, the square loss terms could be replaced by robust alternatives.
+It should further be noted that the evaluation of a distance transform $\mathcal{D}_{S}$ at an arbitrary point $p$ requires the use of an interpolator.
+A typical choice is to rely on bilinear interpolation for which optimised implementations exist on both CPU and GPU\footnote{\url{https://pytorch.org/docs/stable/generated/torch.nn.functional.grid_sample.html}}.
+
+Solving for \eqref{eq:dt3d2d} can be done again by taking advantage of the Lie group structure of SE(3). For simplicity, a generic Lie group non-linear least-squares optimiser as found in Theseus\footnote{\url{https://github.com/facebookresearch/theseus}} \cite{Pineda:NeurIPS:2023} or Ceres\footnote{\url{https://github.com/ceres-solver/ceres-solver}} \cite{Agarwal:Ceres:2022} can be used.
+
+It is worth realising that even if a rigid body model is used, formulation \eqref{eq:dt3d2d} may have somewhat trivial solutions if configurations can be found where the projected 2D point set can fit completely inside of the object segmentation mask as this would lead to a zero loss. It may thus be advantageous to somewhat also consider points outside of the model and make sure that these stay outside of the segmentation mask.
