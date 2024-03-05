@@ -252,19 +252,108 @@ TODO:  explain the different approaches to automation their up and downsides
 
 \section{Spatial Awareness in Robotic Laparoscopy}
 \label{in:sec:spatial_awareness} 
-The previous \secref{in:sec:enhancing_current_systems} outlined the need for improved spatial awareness in robotic laparoscopy. It is a prerequisite for automation and facilitates improved clinical workflow for reduced surgery time and surgeon convenience but also adds clinically relevant workspace knowledge. Since we are interested in adding spatial awareness through low cost sensors, i.e. cameras, in this section we will initially introduce the concepts of eye-in-hand and eye-to-hand calibration in \secref{in:sec:eye_in_to_hand}, see \figref{in:fig:coordinate_frames}. Next, we will discuss the clinical workflow implications of these types of calibrations in \secref{in:sec:implications_clinical_workflow} and finally propose novel methods for marker-free calibration that leave the clinical workflow vastly unaltered in \secref{in:sec:unified_calibration}.
-
+The previous \secref{in:sec:enhancing_current_systems} outlined the need for improved spatial awareness in robotic laparoscopy, i.e. knowing the robot's and the laparoscope's locations. It is a prerequisite for automation and facilitates improved clinical workflow for reduced surgery time and surgeon convenience but also adds clinically relevant workspace knowledge. Since we are interested in adding spatial awareness through low cost sensors, i.e. cameras, in this section we will initially revisit camera intrinsic parameter calibration in \secref{in:sec:camera_intrinsic_calibration}, which is a prerequisite for all that follows. Then, the concepts of eye-in-hand and eye-to-hand calibration are discussed in \secref{in:sec:eye_in_to_hand}, see \figref{in:fig:coordinate_frames}. Next, we will evaluate the clinical workflow implications for these types of calibrations in \secref{in:sec:implications_clinical_workflow}, and finally we will propose novel methods for marker-free calibration that leave the clinical workflow vastly unaltered in \secref{in:sec:unified_calibration}.
+\label{in:sec:eye_in_to_hand}
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{introduction/fig/eye_in_to_hand.png}
-    \caption{Eye-to-hand (left), and eye-in-hand (right) setups for serial arm manipulators. Camera frames $C_i$, robot base-frames $R_i$, end-effector frame $E_1$ and world frame $W$. Real setups might consist of multiple robots. Refers to \secref{in:sec:spatial_awareness}.}
+    \caption{Eye-to-hand (left), and eye-in-hand (right) setups for serial arm manipulators. Camera frames $C_i$, robot base frames $B_i$, end-effector frame $E_1$ and world frame $W$. Real setups might consist of multiple robots. Refers to \secref{in:sec:spatial_awareness}.}
     \label{in:fig:coordinate_frames}
 \end{figure}
 
-\subsection{Eye-in-hand and Eye-to-hand Calibration}
-\label{in:sec:eye_in_to_hand}
+\subsection{Camera Intrinsic Parameter Calibration}
+\label{in:sec:camera_intrinsic_calibration}
+Camera intrinsic parameters describe how 3D points are projected onto the observed 2D image plane. This image formation process is crucial for relating 3D points to 2D observations and vice-versa. Let $p_{_W}$ be a 3D point expressed in homogeneous coordinates with respect to the world frame $W$, $p_{_W} = \begin{bmatrix}
+    x_{_W} & 1
+\end{bmatrix}^T$, $x_{_W} = \begin{pmatrix}
+    x_{_W} & y_{_W} & z_{_W}
+\end{pmatrix}^T$. It is projected into the camera coordinate frame $C$ via a homogeneous transform $\homogeneous{C}{W}$ as
 
-\subsubsection{Camera Calibration}
+\begin{equation}
+    p_{_C} = \homogeneous{C}{W} p_{_W}.
+\end{equation}
+
+Under the pinhole camera model, the point $p_{_C}$ is then projected onto the image plane via the intrinsic camera parameters $K$
+
+% e.g. https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html
+% https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html
+\begin{equation}
+    K = \begin{bmatrix}
+        f_x & 0 & c_x \\
+        0 & f_y & c_y \\
+        0 & 0 & 1 \\
+    \end{bmatrix},
+\end{equation}
+
+containing the focal lengths $f_{x/y}$, and the principal point $c_{x/y}$. Thus, the observed point in homogeneous image coordinates $u = \begin{pmatrix}
+    u & v & 1
+\end{pmatrix}^T$ is obtained through
+
+\begin{equation}
+    su = K P \homogeneous{C}{W} p_{_W},
+\end{equation}
+
+With $P = \begin{bmatrix}
+    I^{3\times3} &  0
+\end{bmatrix}$, simply being a projection matrix, and $s$ being a scalar usually set to $s = z_{_C}$ when $z_{_C} \neq 0$. Therefore yielding
+
+\begin{equation}
+    \begin{bmatrix}
+        u \\
+        v
+    \end{bmatrix} = \begin{bmatrix}
+        f_x x_c/z_c + c_x \\
+        f_y y_c/z_c + c_y
+    \end{bmatrix}.
+\end{equation}
+
+This projection assumes perfect optics, which is not the case in general. Real-world optics introduce radial and some tangential distortion. It is for this reason that distortion is accounted for via
+
+\begin{equation}
+    \begin{bmatrix}
+        u \\
+        v
+    \end{bmatrix} = \begin{bmatrix}
+        f_x x'' + c_x \\
+        f_y y'' + c_y
+    \end{bmatrix},
+\end{equation}
+
+with
+
+\begin{equation}
+    \begin{bmatrix}
+        x'' \\
+        y''
+    \end{bmatrix}=\begin{bmatrix}
+        x' \frac{1+k_1 r^2+k_2 r^4+k_3 r^6}{1+k_4 r^2+k_5 r^4+k_6 r^6}+2 p_1 x' y'+p_2\left(r^2+2 x^{\prime 2}\right)+s_1 r^2+s_2 r^4 \\
+        y' \frac{1+k_1 r^2+k_2 r^4+k_3 r^6}{1+k_4 r^2+k_5 r^4+k_6 r^6}+p_1\left(r^2+2 y^{\prime 2}\right)+2 p_2 x' y'+s_3 r^2+s_4 r^4
+    \end{bmatrix},
+\end{equation}
+
+\begin{equation}
+    r^2 = x'^2 + y'^2,
+\end{equation}
+
+and
+
+\begin{equation}
+    \begin{bmatrix}
+        x' \\
+        y'
+    \end{bmatrix} = \begin{bmatrix}
+        x_c/z_c \\
+        y_c/z_c
+    \end{bmatrix}.
+\end{equation}
+
+Therein, $k_i$ are radial distortion coefficients, $p_i$ tangential distortion coefficients, and $s_i$ then prism coefficients. A camera calibration is performed through observing a pattern of known dimensions, e.g. a checkerboard, from various angles and positions, and optimizing for the model parameters, i.e. camera intrinsic parameters and distortion coefficients, such that the known projected points equal the observed and undistorted points.
+
+\subsection{Eye-in-hand and Eye-to-hand Calibration}
+An overview of eye-in-hand and eye-to-hand setups is shown in \figref{in:fig:coordinate_frames}. Eye-in-hand calibration refers to the process of finding the camera frame $C$ to robot end-effector frame $E$ transformation $\homogeneous{E}{C}$ when the camera is attached to the robot's end-effector. Eye-to-hand calibration refers to finding the camera frame $C$ to robot base frame $B$ transformation $\homogeneous{B}{C}$ when the camera is statically placed next to the robot. A prerequisite for this type of calibration is a well known camera model, as was described in \secref{in:sec:camera_intrinsic_calibration}.
+
+
+% https://docs.opencv.org/4.5.4/d9/d0c/group__calib3d.html#gaebfc1c9f7434196a374c382abf43439b
 
 
 \begin{figure}
@@ -272,15 +361,15 @@ The previous \secref{in:sec:enhancing_current_systems} outlined the need for imp
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{introduction/img/aruco.png}
-        \caption{Rectified exoscope view of the ArUco marker target.}
+        \caption{Undistorted exoscope view of the ArUco marker target.}
     \end{subfigure}
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{introduction/img/aruco_world.png}
         \caption{Mesh visualization of robot state with estimated camera and target poses.}
     \end{subfigure}
-    \caption{Caption. Refers to \secref{in:sec:eye_in_to_hand}.}
-    \label{fig:enter-label}
+    \caption{Eye-in-hand calibration example in a realistic scenario. Used hardware includes: Storz VITOM Telescope $0^\circ$ w Integ. Illuminator., Storz TH 102 H3-Z FI camera head, and KUKA LBR Med7 R800. Refers to \secref{in:sec:eye_in_to_hand}.}
+    \label{in:fig:eye_in_hand_setup}
 \end{figure}
 
 % \subsubsection{Camera Intrinsic Parameters}
