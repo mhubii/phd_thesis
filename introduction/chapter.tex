@@ -253,13 +253,23 @@ TODO:  explain the different approaches to automation their up and downsides
 \section{Spatial Awareness in Robotic Laparoscopy}
 \label{in:sec:spatial_awareness} 
 
-The previous \secref{in:sec:enhancing_current_systems} outlined the need for improved spatial awareness in robotic laparoscopy, i.e. knowing the robot's and the laparoscope's locations. It is a prerequisite for automation and facilitates improved clinical workflow for reduced surgery time and surgeon convenience but also adds clinically relevant workspace knowledge. Since we are interested in adding spatial awareness through low cost sensors, i.e. cameras, in this section we will initially summarize camera intrinsic parameter calibration in \secref{in:sec:camera_intrinsic_calibration}, which is a prerequisite for all that follows. Then, the concepts of eye-in-hand and eye-to-hand calibration are discussed in \secref{in:sec:eye_in_to_hand}, see \figref{in:fig:coordinate_frames}. Next, we will evaluate the clinical workflow implications for these types of calibrations in \secref{in:sec:implications_clinical_workflow}, and finally we will propose novel methods for marker-free calibration that leave the clinical workflow vastly unaltered in \secref{in:sec:unified_calibration}.
+The previous \secref{in:sec:enhancing_current_systems} outlined the need for improved spatial awareness in robotic laparoscopy, i.e. knowing the robot's and the laparoscope's locations. It is a prerequisite for automation and facilitates improved clinical workflow for reduced surgery time and surgeon convenience but also adds clinically relevant workspace knowledge. Since we are interested in adding spatial awareness through low cost sensors, i.e. cameras, in this section we will initially summarize camera intrinsic parameter calibration in \secref{in:sec:camera_intrinsic_calibration}, which is a prerequisite for all that follows. Then, the concepts of eye-in-hand and eye-to-hand calibration are discussed in \secref{in:sec:eye_in_to_hand}, see \figref{in:fig:coordinate_frames}. Next, we will evaluate the clinical workflow implications for these types of calibrations in \secref{in:sec:unified_calibration}, and finally we will propose novel methods for marker-free calibration that leave the clinical workflow vastly unaltered in \secref{in:sec:unified_calibration}.
 \label{in:sec:eye_in_to_hand}
 
 \begin{figure}[tb]
     \centering
-    \includegraphics[width=\textwidth]{introduction/fig/eye_in_to_hand.png}
-    \caption{Eye-to-hand (left), and eye-in-hand (right) setups for serial arm manipulators. Camera frames $C_i$, robot base frames $B_i$, end-effector frame $E_1$ and world frame $W$. Real setups might consist of multiple robots. Refers to \secref{in:sec:spatial_awareness}.}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{introduction/fig/eye_to_hand.png}
+        \caption{Eye-to-hand setup.}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{introduction/fig/eye_in_hand.png}
+        \caption{Eye-in-hand setup.}
+    \end{subfigure}
+    % \includegraphics[width=\textwidth]{introduction/fig/eye_in_to_hand.png}
+    \caption{Eye-to-hand, and eye-in-hand setups for serial arm manipulators. Camera frames $C$, robot base frame $B$, end-effector frame $E$ and world frame $W$. Real setups might consist of multiple robots. Refers to \secref{in:sec:spatial_awareness}.}
     \label{in:fig:coordinate_frames}
 \end{figure}
 
@@ -422,6 +432,8 @@ Since we are mostly interested in estimating the robot pose in eye-to-hand scena
 \label{in:sec:camera_motion_automation}
 consider adding some paper introductions here already
 
+TODO: go ahead with 1.6 first
+
 % make the case for automation
 \subsection{Rule-based Approaches}
 Established research topic, dedicated review
@@ -440,12 +452,18 @@ In IRL the aim is to extract a reward function from a set of expert demonstratio
 \section{Imitation Learning for Camera Motion Automation}
 \label{in:sec:imitation_learning}
 
+
+
+
+
+
+
 \subsection{Search for Available Data}
-\begin{landscape}
 \begin{table}
 \centering
-\caption{Exhaustive overview of publicly available MIS datasets. All datasets were acquired and analyzed for task-appropriate metrics. in:tab:datasetsMetrics were marked with N/A, where datasets were not available or unreasonable to analyze.}
+\caption{Exhaustive overview of publicly available MIS and RMIS datasets. All datasets were acquired and analyzed for task-appropriate metrics. in:tab:datasetsMetrics were marked with N/A, where datasets were not available or unreasonable to analyze.}
 \label{in:tab:datasets}
+\begin{adjustbox}{angle=90, max height=0.9\textheight}
     \begin{tabular}{|c|c|c|r|c|c|c|c|}
         \hline
         \multirow{2}{*}{Collection} & \multicolumn{7}{c|}{Specifications} \\
@@ -487,8 +505,9 @@ In IRL the aim is to extract a reward function from a set of expert demonstratio
         &\href{https://cirl.lcsr.jhu.edu/research/hmm/datasets/jigsaws_release/}{JIGSAW} \cite{ahmidi2017dataset}&2016&$527491$&$30$&$480\times 640$&no& synthetic\\
         \hline
     \end{tabular}
+\end{adjustbox}
 \end{table}
-\end{landscape}
+
 
 \subsection{Supervised and Self-supervised Learning}
 
