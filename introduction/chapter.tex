@@ -252,9 +252,11 @@ TODO:  explain the different approaches to automation their up and downsides
 
 \section{Spatial Awareness in Robotic Laparoscopy}
 \label{in:sec:spatial_awareness} 
-The previous \secref{in:sec:enhancing_current_systems} outlined the need for improved spatial awareness in robotic laparoscopy, i.e. knowing the robot's and the laparoscope's locations. It is a prerequisite for automation and facilitates improved clinical workflow for reduced surgery time and surgeon convenience but also adds clinically relevant workspace knowledge. Since we are interested in adding spatial awareness through low cost sensors, i.e. cameras, in this section we will initially revisit camera intrinsic parameter calibration in \secref{in:sec:camera_intrinsic_calibration}, which is a prerequisite for all that follows. Then, the concepts of eye-in-hand and eye-to-hand calibration are discussed in \secref{in:sec:eye_in_to_hand}, see \figref{in:fig:coordinate_frames}. Next, we will evaluate the clinical workflow implications for these types of calibrations in \secref{in:sec:implications_clinical_workflow}, and finally we will propose novel methods for marker-free calibration that leave the clinical workflow vastly unaltered in \secref{in:sec:unified_calibration}.
+
+The previous \secref{in:sec:enhancing_current_systems} outlined the need for improved spatial awareness in robotic laparoscopy, i.e. knowing the robot's and the laparoscope's locations. It is a prerequisite for automation and facilitates improved clinical workflow for reduced surgery time and surgeon convenience but also adds clinically relevant workspace knowledge. Since we are interested in adding spatial awareness through low cost sensors, i.e. cameras, in this section we will initially summarize camera intrinsic parameter calibration in \secref{in:sec:camera_intrinsic_calibration}, which is a prerequisite for all that follows. Then, the concepts of eye-in-hand and eye-to-hand calibration are discussed in \secref{in:sec:eye_in_to_hand}, see \figref{in:fig:coordinate_frames}. Next, we will evaluate the clinical workflow implications for these types of calibrations in \secref{in:sec:implications_clinical_workflow}, and finally we will propose novel methods for marker-free calibration that leave the clinical workflow vastly unaltered in \secref{in:sec:unified_calibration}.
 \label{in:sec:eye_in_to_hand}
-\begin{figure}
+
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{introduction/fig/eye_in_to_hand.png}
     \caption{Eye-to-hand (left), and eye-in-hand (right) setups for serial arm manipulators. Camera frames $C_i$, robot base frames $B_i$, end-effector frame $E_1$ and world frame $W$. Real setups might consist of multiple robots. Refers to \secref{in:sec:spatial_awareness}.}
@@ -350,12 +352,10 @@ and
 Therein, $k_i$ are radial distortion coefficients, $p_i$ tangential distortion coefficients, and $s_i$ then prism coefficients. A camera calibration is performed through observing a pattern of known dimensions, e.g. a checkerboard, from various angles and positions, and optimizing for the model parameters, i.e. camera intrinsic parameters and distortion coefficients, such that the known projected points equal the observed and undistorted points.
 
 \subsection{Eye-in-hand and Eye-to-hand Calibration}
+\label{in:sec:eye_in_to_hand_calibration}
 An overview of eye-in-hand and eye-to-hand setups is shown in \figref{in:fig:coordinate_frames}. Eye-in-hand calibration refers to the process of finding the camera frame $C$ to robot end-effector frame $E$ transformation $\homogeneous{E}{C}$ when the camera is attached to the robot's end-effector. Eye-to-hand calibration refers to finding the camera frame $C$ to robot base frame $B$ transformation $\homogeneous{B}{C}$ when the camera is statically placed next to the robot. A prerequisite for this type of calibration is a well known camera model, as was described in \secref{in:sec:camera_intrinsic_calibration}.
 
-
-% https://docs.opencv.org/4.5.4/d9/d0c/group__calib3d.html#gaebfc1c9f7434196a374c382abf43439b
-
-
+The calibration is performed by collecting target to camera $\homogeneous{T}{C}$ and robot base to end-effector transformations $\homogeneous{E}{B}$. Given undistorted camera images, and the camera intrinsic parameters, refer \secref{in:sec:camera_intrinsic_calibration}, target to camera transforms $\homogeneous{T}{C}$ can e.g. be obtained through solving a perspective-n-point (PnP) problem, where points are commonly obtained through ArUco markers, see \figref{in:fig:eye_in_hand_setup}. The base to end-effector transformation $\homogeneous{E}{B}$ can be obtained through robot kinematics.
 \begin{figure}
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
@@ -368,22 +368,52 @@ An overview of eye-in-hand and eye-to-hand setups is shown in \figref{in:fig:coo
         \includegraphics[width=\textwidth]{introduction/img/aruco_world.png}
         \caption{Mesh visualization of robot state with estimated camera and target poses.}
     \end{subfigure}
-    \caption{Eye-in-hand calibration example in a realistic scenario. Used hardware includes: Storz VITOM Telescope $0^\circ$ w Integ. Illuminator., Storz TH 102 H3-Z FI camera head, and KUKA LBR Med7 R800. Refers to \secref{in:sec:eye_in_to_hand}.}
+    \caption{Eye-in-hand calibration example in a realistic scenario. Used hardware includes: Storz VITOM Telescope $0^\circ$ w Integ. Illuminator., Storz TH 102 H3-Z FI camera head, and KUKA LBR Med7 R800. Refers to \secref{in:sec:eye_in_to_hand_calibration}.}
     \label{in:fig:eye_in_hand_setup}
 \end{figure}
+In both, the eye-in-hand and eye-to-hand scenario, it is known that the transformation from end-effector to camera $\homogeneous{C}{E}$ and end-effector to target $\homogeneous{E}{T}$, respectively, remains unchanged. Therefore, recording transforms, e.g. for the eye-in-hand setup, in two configurations lets one determine
 
-% \subsubsection{Camera Intrinsic Parameters}
-% \subsection{}
-% aruco, pnp, distortion, ...
+\begin{equation}
+    \homogeneous{B}{E}^{1}\homogeneous{E}{C}\homogeneous{C}{T}^{1} = \homogeneous{B}{E}^{2}\homogeneous{E}{C}\homogeneous{C}{T}^{2},
+\end{equation}
 
+which can be re-arranged as
 
-\subsubsection{Implications for the Clinical Workflow}
-\label{in:sec:implications_clinical_workflow}
+\begin{equation}
+    \homogeneous{E}{B}^{2}\homogeneous{B}{E}^{1}\homogeneous{E}{C} = \homogeneous{E}{C}\homogeneous{C}{T}^{2}\homogeneous{T}{C}^{1},
+\end{equation}
 
+thus yielding an equation of the form $AX = XB$ with $A=\homogeneous{E}{B}^{2}\homogeneous{B}{E}^{1}$ and $B=\homogeneous{C}{T}^{2}\homogeneous{T}{C}^{1}$. Solving for $X=\homogeneous{E}{C}$ provides the desired eye-in-hand transformation. Similarly, a system of the form $AX = XB$ can be derived for the eye-to-hand setup. A system of this form can e.g. be solved using \cite{tsai1989new, park1994robot, horaud1995hand}.
+
+% good video: https://www.youtube.com/watch?v=xQ79ysnrzUk
+% https://docs.opencv.org/4.5.4/d9/d0c/group__calib3d.html#gaebfc1c9f7434196a374c382abf43439b
 
 \subsection{Unified Calibration for Optimal Clinical Workflow}
 \label{in:sec:unified_calibration}
-% cite different works, argue stereo adds value
+Having a solid understanding of the calibrations that are required for this thesis, we will now investigate the question of applicability within the clinical context. When applied within the clinical scenario, e.g. for collision avoidance or autonomous control, as was explained in \secref{in:sec:enhancing_current_systems}, it is of utmost importance that the clinical workflow must not be disturbed. In this section, implications of the different calibrations to the clinical workflow will be discussed. Following that, the idea of marker-free calibration is introduced, and it is explained how the introduced clinical workflow constraints could be resolved.
+
+\subsubsection{Implications of Calibrations to the Clinical Workflow}
+As discussed in the above, \secref{in:sec:camera_intrinsic_calibration} and \secref{in:sec:eye_in_to_hand_calibration}, calibrations require calibration targets. In current practise, the necessity of a calibration target would add overhead to the clinical workflow. Calibrations also depend on the type of camera used, which refers back to \secref{in:sec:enhancing_current_systems}, Automation - Robot-free Surgeries. Standard laparoscopic camera heads are detachable for sterilization of the laparoscope and provide an adjustable focus. Both of which potentially alter the camera intrinsic parameters and would make re-calibration necessary. For the remainder of this thesis, we will therefore assume that the focal length stays fixed in a range appropriate for surgery. Furthermore, we will assume that the camera head does not rotate about the optics. This assumption is, however, not as crucial for the camera intrinsic calibration, since surgery optics are of extremely high quality with very little distortion. It is more relevant for eye-in-hand calibrations, where the obtained camera pose is crucial for control. For any external camera, these assumptions do not need to be made and they are allowed to move freely.
+
+The implications of calibrations to the clinical workflow refer back to \figref{in:fig:advancing_robotic_laparoscopy}, where additional operation time and surgeon convenience were identified as vital aspects for the shortcomings and advantages of RMIS, respectively. An overview of the implications of the different calibrations is provided in \tabref{in:tab:calibrations}.
+\begin{table}[]
+\centering
+\caption{The implications of different calibrations to the clinical workflow. Refers to camera intrinsics calibration (\secref{in:sec:camera_intrinsic_calibration}), eye-in/to-hand calibration (\secref{in:sec:eye_in_to_hand_calibration}), and \secref{in:sec:unified_calibration}.}
+\label{in:tab:calibrations}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Calibration Type  & Offline       & Clinical Workflow Implications \\ \midrule
+Camera intrinsics & Cond.         & Camera head ideally static with fixed focus \\
+Eye-in-hand       & Cond. & Camera pose fixed and known, else re-calibrated \\
+Eye-to-hand       & No            &  Calibration online. Devices may not be moved \\ \bottomrule
+\end{tabular}
+\end{table}
+As can be seen, only the camera intrinsic parameter calibration, in principle, has very little impact on clinical workflow. This, again, is not always the case in classical laparoscopy, especially for the commonly used detachable camera heads, e.g. \figref{in:fig:eye_in_hand_setup}, which, depending on the mounting orientation and adjustable focal length, influence camera intrinsic parameters and eye-in-hand calibration parameters. For automation purposes, it should therefore be enforced that these parameters are known and remain unchanged. For spatial awareness, the constraints are less restricting, since an external camera suffices to estimate robot poses. The external camera's intrinsic parameters can fully be determined offline, therefore keeping the clinical workflow untouched. In this case, however, it is still necessary to use a calibration target, which introduces inconvenience and mental burden to the surgeon and clinical staff. We argue that it is for this reason that surgical robots are currently spatially unaware, which causes additional operating time and inconvenience, as was explained in \secref{in:sec:enhancing_current_systems} - Spatial Awareness. We will therefore introduce the idea of marker-free calibration for eye-to-hand setups, but also eye-in-hand setups to alleviate some of the shortcomings in the following section.
+
+\subsubsection{Marker-free Unified Calibration}
+Having the clinical workflow implications like the necessity for calibration targets in mind, it becomes apparent that alternative solutions for calibrations might be desirable. Recent works have, therefore, focused on utilizing the robot itself as calibration target. The idea is simple, the robot mesh, given the current robot configuration, see e.g. \figref{in:fig:eye_in_hand_setup}, is compared against the real robot, thus allowing to estimate camera position with respect to the robot. Initial work estimates joint positions from images and solves a PnP problem, given the robot kinematics to estimate poses \cite{labbe2021single}. Other work performs differentiable rendering for increased accuracy \cite{chen2023easy}, and some turn PnP and differentiable rendering into a self-supervised problem \cite{lu2023markerless}.
+
+Since we are mostly interested in estimating the robot pose in eye-to-hand scenarios, as was described in \secref{in:sec:enhancing_current_systems}, and due to the difficulties with eye-in-hand setups with laparoscopic cameras, as was explained in the above section, this work will mostly focus on using external cameras for pose estimation rather than the laparoscope itself. We will be assuming access to a stereo camera, therefore deviating from the above works and simplifying the registration task greatly. This should improve registration reliability, which is important for surgery. The following sections will explain an iterative closest point registration on Lie-algebra for said purpose in \secref{in:sec:p2plane}. Following that, image-based registration refinements, given a segmentation mask without the need for differentiable rendering are explained in \secref{in:sec:registration_of_3d_point_cloud}.
 
 % Tom's notes
 \input{introduction/icp_notes}
