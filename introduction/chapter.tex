@@ -242,7 +242,6 @@ Indeed, some companies, e.g. Moon Surgical (Maestro\textsuperscript{\textregiste
 
 
 
-TODO:  explain the different approaches to automation their up and downsides
 
 
 % da vinci system review \cite{ngu2017vinci}
@@ -430,16 +429,25 @@ Since we are mostly interested in estimating the robot pose in eye-to-hand scena
 
 \section{Camera Motion Automation in Robotic Laparoscopy}
 \label{in:sec:camera_motion_automation}
-Having established a proper understanding of the importance of spatial awareness for RMIS in general (\secref{in:sec:spatial_awareness}), and for automation in particular, see \figref{in:fig:advancing_robotic_laparoscopy}, this section will now investigate the different approaches for camera motion automation in robotic laparoscopy. First, current rule-based approaches to laparoscopic camera motion automation will be introduced in \secref{in:sec:rule_based_approaches}, including relevant auxiliary tasks and their solutions. Next, it will be explained that rule-based approaches make assumptions that generally do not hold in laparoscopic surgery. To find a potential solution, the focus is shifted towards data-driven methods. The data-driven methods include reinforcement learning (RL) and imitation learning (IL). Since data-driven methods are relatively new to laparoscopic camera motion automation, a broad review to RL is given in \secref{in:sec:reinforcement_learning}, followed by IL in \secref{in:sec:imitation_learning}.
+Having established a proper understanding of the importance of spatial awareness for RMIS in general (\secref{in:sec:spatial_awareness}), and for automation in particular, this section will investigate camera motion automation in robotic laparoscopy, which was identified as the second desired enhancement in RMIS, \secref{in:sec:enhancing_current_systems}, \figref{in:fig:advancing_robotic_laparoscopy}. Initially, several alternatives for laparoscopic camera motion automation will be discussed in \secref{in:sec:automation_approaches}. Of these methods, and due its promising properties, visual servoing will be investigated further. Starting with rule-based approaches to visual servoing and relevant auxiliary tasks like tool segmentation in \secref{in:sec:rule_based_approaches}, the reader will be introduced to limitations of such methods, that is assumptions to laparoscopy that generally do not hold in real surgery. To find a potential solution, the focus is shifted towards data-driven methods. The data-driven methods include reinforcement learning (RL) and imitation learning (IL). Since data-driven methods are relatively new to laparoscopic camera motion automation, a broad review to RL will be given in \secref{in:sec:reinforcement_learning}, followed by IL in \secref{in:sec:imitation_learning}.
 
-\subsection{Rule-based Approaches}
-\label{in:sec:rule_based_approaches}
+\subsection{Camera Motion Automation Approaches}
+\label{in:sec:automation_approaches}
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{introduction/fig/rule_based_approaches.png}
-    \caption{Visual servoing schematic and the commonly used CoM assumption for bringing tools in view. Laparoscopic view shows an image from a da Vinci\textsuperscript{\textregistered} system in the SurgVisDom\cite{zia2021surgical} dataset. Camera frame C, center of mass frame CoM. Refers to \secref{in:sec:rule_based_approaches}.}
+    \caption{Coordinate frames relevant for laparoscopic camera motion automation. Camera frame C, center of mass frame CoM, and RCM at trocar. The camera frame C is commonly obtained via eye-in-hand calibration, \secref{in:sec:eye_in_to_hand_calibration} and \figref{in:fig:eye_in_hand_setup}. For visual servoing, the CoM assumption as view center-point in commonly made. Laparoscopic view shows an image from a da Vinci\textsuperscript{\textregistered} system in the SurgVisDom\cite{zia2021surgical} dataset. . Refers to \secref{in:sec:rule_based_approaches}.}
     \label{in:fig:com}
 \end{figure}
+Laparoscopic camera motion can be automated in a plenitude of ways. A typical laparoscopic setup is shown in \figref{in:fig:com}. Therein, the ultimate goal is to control the pose of the camera frame C under the RCM constraint. The camera frame C, as was explained in 
+\secref{in:sec:camera_intrinsic_calibration}, and \secref{in:sec:eye_in_to_hand_calibration}, \figref{in:fig:eye_in_hand_setup}, can be obtained through camera intrinsic parameters plus eye-in-hand calibration.
+
+In fully robotic setups, a common approach to automation is to simply use the kinematic data that is available through the joint position encoders \cite{da2020scan}. The camera then follows some geometric point, like the center of mass between the tools, as shown in \figref{in:fig:com}. Without the kinematic data, these methods are not be applicable to hybrid setups, which are of particular interest to this work, as was mentioned in \secref{in:sec:enhancing_current_systems} - Automation, Robot-free surgeries. They further suffer some other shortfalls, such as the inability to obey by anatomic constraints and reliance on accurate multi-arm calibrations. Other, semi-autonomous techniques, aim to alleviate some of the model uncertainties by assigning the surgeons a greater responsibility to controlling the camera in a collaborative fashion. Gaze or voice control are among them \cite{taniguchi2010classification}. They, however, lead to eye strain, additional mental workload or communication failures, and do not satisfy the - level five: high autonomy - target that was set in \secref{in:sec:foreword}.
+
+Alongside automation via kinematic data, visual servoing, i.e. control through images, is considered a promising alternative, as it provides intra-operative feedback \cite{pandya2014review} and is less prone to errors from model mismatch \cite{azizian2014visual}. It is capable of understanding and interpreting the surgical scene. In the next section, we will thus review rule-based visual servoing approaches.
+
+\subsection{Rule-based Visual Servoing}
+\label{in:sec:rule_based_approaches}
 Rule-based approaches are a well established research field for laparoscopic camera motion automation. Due to the availability of kinematic data, and the immediate applicability to the system, refer \figref{in:fig:com}, a lot of the rule-based approaches focus heavily on fully robotic systems, and use the da Vinci\textsuperscript{\textregistered} robot, as will be shown in the following paragraphs. While purely robotic surgeries pose a special case and this thesis aims to find novel automation methodologies with transferability from MIS to RMIS, current rule-based approaches will be investigated regardless to better understand the shortcomings.
 
 % As explained in \secref{in:sec:enhancing_current_systems} - Automation, Robot-free surgeries
@@ -462,7 +470,7 @@ Where a mechanical RCM is not available, it can be achieved programmatically. As
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{introduction/fig/auxiliary_tasks.pdf}
-    \caption{Auxiliary tasks that could be used for laparoscopic camera automation. None of the data-driven methods directly tackles automation in realistic scenarios. Laparoscopic view shows an image from a da Vinci\textsuperscript{\textregistered} system in the SurgVisDom\cite{zia2021surgical} dataset. Monocular depth estimated using \cite{oquab2023dinov2}, segmentations generated through \cite{segment_anything}. Refers to \secref{in:sec:auxiliary_tasks}.}
+    \caption{Auxiliary tasks that could be used for laparoscopic camera automation but that are not used in practise. None of the data-driven methods directly attempts laparoscopic camera motion automation in realistic scenarios. The surgical phases refer e.g. back to \secref{in:sec:cholecystectomy_procedure}. Laparoscopic view shows an image from a da Vinci\textsuperscript{\textregistered} system in the SurgVisDom\cite{zia2021surgical} dataset. Monocular depth estimated using \cite{oquab2023dinov2}, segmentations generated through \cite{segment_anything}. Refers to \secref{in:sec:auxiliary_tasks}.}
     \label{in:fig:auxiliary_tasks}
 \end{figure}
 
@@ -471,6 +479,9 @@ Based on progress in segmentation tasks, using deep learning, but also with the 
 
 \subsection{Reinforcement Learning}
 \label{in:sec:reinforcement_learning}
+
+figure showing RL
+blabla simulation gap yadi yadi
 
 \subsection{Imitation Learning}
 \label{in:sec:imitation_learning}
