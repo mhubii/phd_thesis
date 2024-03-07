@@ -430,33 +430,66 @@ Since we are mostly interested in estimating the robot pose in eye-to-hand scena
 
 \section{Camera Motion Automation in Robotic Laparoscopy}
 \label{in:sec:camera_motion_automation}
-consider adding some paper introductions here already
+Having established a proper understanding of the importance of spatial awareness for RMIS in general (\secref{in:sec:spatial_awareness}), and for automation in particular, see \figref{in:fig:advancing_robotic_laparoscopy}, this section will now investigate the different approaches for camera motion automation in robotic laparoscopy. First, current rule-based approaches to laparoscopic camera motion automation will be introduced in \secref{in:sec:rule_based_approaches}, including relevant auxiliary tasks and their solutions. Next, it will be explained that rule-based approaches make assumptions that generally do not hold in laparoscopic surgery. To find a potential solution, the focus is shifted towards data-driven methods. The data-driven methods include reinforcement learning (RL) and imitation learning (IL). Since data-driven methods are relatively new to laparoscopic camera motion automation, a broad review to RL is given in \secref{in:sec:reinforcement_learning}, followed by IL in \secref{in:sec:imitation_learning}.
 
-TODO: go ahead with 1.6 first
-
-% make the case for automation
 \subsection{Rule-based Approaches}
-Established research topic, dedicated review
+\label{in:sec:rule_based_approaches}
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{introduction/fig/rule_based_approaches.png}
+    \caption{Visual servoing schematic and the commonly used CoM assumption for bringing tools in view. Laparoscopic view shows an image from a da Vinci\textsuperscript{\textregistered} system in the SurgVisDom\cite{zia2021surgical} dataset. Camera frame C, center of mass frame CoM. Refers to \secref{in:sec:rule_based_approaches}.}
+    \label{in:fig:com}
+\end{figure}
+Rule-based approaches are well established for laparoscopic camera motion automation. Due to the availability of kinematic data, and the immediate applicability to the system, refer \figref{in:fig:com}, a lot of the rule-based approaches focus heavily on fully robotic systems, and use the da Vinci\textsuperscript{\textregistered} robot, as will be shown in the following paragraphs. While, as already explained in \secref{in:sec:enhancing_current_systems} - Automation, Robot-free surgeries - purely robotic surgeries pose a special case, and this thesis aims to find automation methodologies in the broader sense with transferability from MIS to RMIS, 
+
+% \secref{in:sec:enhancing_current_systems} - Automation, System Considerations.
+
+\paragraph{Visual Servo with mechanical RCM}
+Approaches that use a mechanical RCM are \cite{omote1999self}, where a visual servo is implemented to control the center of mass of a colored marker on a forceps in image space. In \cite{agustinos2014visual, voros2007automatic}, the tool tip position is found in image space via kinematic knowledge over the tool entry points and a visual servo is applied to center the tool tip in image space. Another common scheme is to alter the camera's zoom based on the distance of the surgical tools, which was first presented in \cite{king2013towards}, where the authors use colored markers to track the surgical instruments.
+
+The authors in \cite{eslamian2020development, mariani2020experimental, dascan}, with pre-works in \cite{Eslamian2016TowardsTI, eslamian2017autonomous}, compute the center point in between two surgical tools via their respective positions and align the camera's optical axis with the line that spans from RCM to the tools' center point, which requires a complicated registration procedure. \cite{yu2016automatic} also relies on the positions of the surgical tools and adjusts the field of view's width based on the distance of them. \cite{abdelaal2020orientation} uses a similar approach as \cite{eslamian2020development}, in that they adjust the camera distance to the surgical scene based on the tool distance, however, they don't align the camera's optical axis with the line that spans from RCM to the camera, but rather with the scene's surface normal, which is made possible by their 6 DoF endoscope. In \cite{ma2019autonomous}, Ma et al. deploy a visual servo to center a green marker on a tool by incorporating depth information as extracted from camera and tool motion. In \cite{ma2020visual} they extend this work into a quadratic program in which they minimize joint velocities whilst constraining the camera's distance with respect to the tools and the average tool position in the image plane to be central, where they rely on stereoscopic images to extract depth information. 
+
+\paragraph{Visual Servo with programmable RCM}
+Where a mechanical RCM is not available, it can be achieved programmatically. As such, the authors in \cite{aghakhani2013task} design a composite Jacobian method that integrates a RCM objective with a task function that defines an error on points in image space. The authors in \cite{yang2019adaptive} also design a Jacobian gain controller that enforces the tip of a tool to reside within a defined region by computing the winding number of that region around the desired point. They additionally request the endoscope to extend the surgeon's natural line of sight. In \cite{li2020accelerated}, Li et al. introduce the RCM and a visual error via the image Jacobian as constraints to a quadratic problem that aims at satisfying these constraints whilst minimizing the joint velocities. 
+
+\subsubsection{Auxiliary Tasks}
+\subsubsection{The Tool Following Assumption}
+
 
 \subsection{Reinforcement Learning}
+\label{in:sec:reinforcement_learning}
 
 \subsection{Imitation Learning}
+\label{in:sec:imitation_learning}
 The goal of Imitation Learning (IL) is to copy the behavior of an expert demonstrator. Hence, IL aims to extract an expert policy $\pi_\text{E}: x_t \rightarrow a_t$ that maps a state $x_t$ to an action $a_t$, where the actions and states are drawn from a trajectory $\tau_i = \{x_t,a_t...,x_{t+T+1},a_{t+T+1}\}$, sampled from expert demonstrations $\tau_i \in D$. The underlying state $x_t$ might not always be fully observable, in which case one observes $y_t = f(x_t)$, where $f$ is the unknown mapping of the underlying state $x_t$ to the observed state $y_t$. IL without access to the underlying state if often referred to as Imitation from Observation (IfO) \cite{liu2018imitation}. Also, the embodiment of demonstrator and learner might not always be the same, e.g. if the demonstrator is a human and the learner is a robot, often referred to as domain shift. IL is usually achieved via either of two dominant approaches \cite{osa2018algorithmic}: Behavioral Cloning (BC) \cite{pomerleau1991efficient} and Inverse Reinforcement Learning (IRL) \cite{ng2000algorithms}. BC regresses the expert policy $\pi_\text{E}$ from sampled trajectories $\tau_t$ in a supervised fashion. IRL aims to recover the expert's hidden reward $r_t$ to later optimize a policy to also achieve the recovered reward. Neural networks have become the dominant approach for estimating the policy $\pi$, henceforth, the following sections will focus on them.
 
 \subsubsection{Behavioral Cloning}
 In a common BC setup that satisfies the Markov property one takes a current state and tries to predict future actions conditioned only on the current state. One can also condition actions on a set of past states \cite{xu2017end} but this is rather uncommon. In \cite{torabi2018behavioral}, Torabi et al. try to perform IfO by randomly exploring the action-state space. They learn a mapping from observations to actions and perform BC on newly obtained observations via this mapping. A general issue in BC is covariate shift, that is the inability to generalize on a small dataset. In \cite{ho2016generative}, Ho et al. address this issue by introducing generative adversarial learning which implicitly regularizes the policy to a bigger action-state space. \cite{torabi2018generative} extends \cite{ho2016generative} by working without immediate access to action but from observation only. Although generative adversarial imitation learning helps to generalize, a lot of the existing literature focusses on learning an underlying forward dynamics model to infer any policy once the forward dynamics model is known. As such, the authors in \cite{finn2016unsupervised, finn2017deep, nair2017combining} learn to predict future observations from actions via a dataset of randomly explored action-state space trajectories. They use this state transition model to infer actions that lead to desired states, which requires the user to define a desired state. Other attempts to learn arbitrary behaviors are one-shot and zero-shot imitation learning approaches. In one-shot \cite{finn2017one}, Finn et al. use Model-Agnostic Meta-Learning (MAML) to learn how to learn new tasks quickly. Once the network parameters are initialized via meta-learning, a few gradient steps from a demonstration allow to imitate that demonstration. In \cite{yu2018one}, Yu et al. extend this work across domain gaps, that is a robotic learner imitates a human demonstrator from a single demonstration only. Pathak et al. then introduce zero-shot learning in \cite{pathak2018zero}, which introduces a goal conditioned policy, that allows to immediately execute a policy from intermediate pre-defined goal states. In \cite{hausman2017multi}, Hausman et al. extend the work in \cite{ho2016generative} by conditioning the policy on the intention, which similarly to zero-shot imitation learning, allows to reach intermediate goals. The idea of learning a forward dynamics model is then extended into a compressed feature space by Srinivas et al. in Universal Planning Networks \cite{srinivas2018universal}. Their work conditions latent-space dynamics on actions from demonstrations and they define an optimization framework that finds actions conditioned on a goal state. Most recent approaches, such as \cite{lynch2020learning}, learn a latent state representation that categorically clusters different policies as to create interpretable behaviors.
 
+
 \subsubsection{Inverse Reinforcement Learning}
 In IRL the aim is to extract a reward function from a set of expert demonstrations $D$. In practise this can be achieved by embedding observations $y_t$ into a meaningful feature space and by enforcing that a newly obtained policy $\pi$ and an expert policy $\pi_\text{E}$ follow similar trajectory embeddings. Different methods for embedding exist. A triplet loss can be formulated to pull similar images closer to each other while repelling them from different ones. In \cite{wang2014learning, schroff2015facenet}, the authors achieve a triplet loss via a simple distance metric while Wang et al. formulate it as the angle between features \cite{wang2015unsupervised}. Another option is to use prediction as a proxy for meaningful embeddings \cite{vondrick2016anticipating, sermanet2016unsupervised, srivastava2015unsupervised, mathieu2015deep}, self-supervised clustering \cite{caron2018deep}, or, most recently, contrastive learning methods \cite{khosla2020supervised}, which similarly to \cite{wang2015unsupervised} aim to align features of samples with similar properties. Sermanet et al. in \cite{sermanet2018time} used for example a triplet loss on multi-view videos to learn a view-point invariant embedding that can be used to have a learner learn an expert demonstration. Aytar et al. in \cite{aytar2018playing} had an agent learn to reach checkpoints by sampling checkpoints from demonstrations on YouTube and by defining a reward on the alignment between the current state and the desired checkpoint. In few-shot, Xie et al. \cite{xie2018few} learn initial parameters for a network via MAML, a form of meta-learning, to infer goals in demonstrations from a single gradient-step. They then perform RL to replicate a policy that yields these goals. The idea of Universal Planning Networks by Srinivas et al. in \cite{srinivas2018universal} is further extended by Yu et al. in \cite{yu2019unsupervised}, which learns a goal metric for RL in an unsupervised manner.
 
-\section{Imitation Learning for Camera Motion Automation}
-\label{in:sec:imitation_learning}
+\section{Imitation Learning for Laparoscopic Camera Motion Automation}
+\label{in:sec:imitation_learning_for_camera_motion_automation}
 
 
 
+\secref{in:sec:enhancing_current_systems} indicated 3 main aspects:
+- continuous motion
+- robot-free surgeries
+- system considerations
 
+and concluded that these are best achieved through visual servoing and related 
 
+bla bla bla, all rule-based, essentially no tool following, related domains.
 
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{chapter_2/img/labeled_setup_compressed.png}
+	\caption{Robotic setup. A Storz Endocameleon Hopkins Telescope, which provides a light source port and a camera attachment point, is mounted to a KUKA LBR Med 7 R800 robot via a 3D printed clamp. The robotic system undergoes image-based control to reach desired views of the surgical scene and simultaneously pivots around a programmable RCM.}
+	\label{in:fig:experimental_setup}
+\end{figure}
 
 \subsection{Search for Available Data}
 \begin{table}
@@ -472,7 +505,7 @@ In IRL the aim is to extract a reward function from a set of expert demonstratio
         \hline
         \multirow{8}{*}{\href{https://endovis.grand-challenge.org/}{\shortstack{Endoscopic\\Vision\\Challenge}}} &\href{https://www.synapse.org/#!Synapse:syn21776936/wiki/601700}{MISAW} \cite{mitsuishi2013master}&2020&$128102$&$30$&$460\times 540$&no&synthetic \\
         \cline{2-8}
-        &\href{https://surgvisdom.grand-challenge.org/}{SurgVisDom}\cite{zia2021surgical}&2020&$185620$&$20$&$540\times960$&occasional&DaVinci \\
+        &\href{https://surgvisdom.grand-challenge.org/}{SurgVisDom}\cite{zia2021surgical}&2020&$185620$&$20$&$540\times960$&occasional&da Vinci\textsuperscript{\textregistered} \\
         \cline{2-8}
         &\href{https://robustmis2019.grand-challenge.org/}{ROBUST-MIS} \cite{maier2020heidelberg}\cite{ross2020robust}&2019&$7546968$&$25$&$540\times 960$&yes&laparoscopic \\
         \cline{2-8}
@@ -482,23 +515,23 @@ In IRL the aim is to extract a reward function from a set of expert demonstratio
         \cline{2-8}
         &\href{https://endovissub2017-workflow.grand-challenge.org/}{SWASA}&2018&N/A&N/A&N/A&yes& laparoscopic\\
         \cline{2-8}
-        &\href{https://endovissub2018-roboticscenesegmentation.grand-challenge.org/home/}{RSS} \cite{allan20202018}&2018&$2235$&$2$&$1024\times 1280$&occasional& DaVinci\\
+        &\href{https://endovissub2018-roboticscenesegmentation.grand-challenge.org/home/}{RSS} \cite{allan20202018}&2018&$2235$&$2$&$1024\times 1280$&occasional& da Vinci\textsuperscript{\textregistered}\\
         \cline{2-8}
-        &\href{https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/}{RIS} \cite{allan20192017}&2017&$3225$&$2$&$1024\times 1280$&occasional& DaVinci \\
+        &\href{https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/}{RIS} \cite{allan20192017}&2017&$3225$&$2$&$1024\times 1280$&occasional& da Vinci\textsuperscript{\textregistered} \\
         \cline{2-8}
-        &\href{https://endovissub2017-kidneyboundarydetection.grand-challenge.org/}{KBD}&2017&$3000$&$2$&$1024\times 1280$&occasional & DaVinci\\
+        &\href{https://endovissub2017-kidneyboundarydetection.grand-challenge.org/}{KBD}&2017&$3000$&$2$&$1024\times 1280$&occasional & da Vinci\textsuperscript{\textregistered}\\
         \cline{2-8}
         &\href{https://endovissub-instrument.grand-challenge.org/}{ISAT}&2015&$16243$&$25$&$480\times 640/576\times 720$& yes & laparoscopic \\
         \hline
-        \multirow{3}{*}{\href{http://hamlyn.doc.ic.ac.uk/vision/}{\shortstack{Hamlyn\\Center\\Datasets}}} &\href{http://hamlyn.doc.ic.ac.uk/vision/data/daVinci.zip}{Siamese}\cite{ye2017self}&2017&$34240$&$30$&$192\times 384$& occasional& DaVinci \\
+        \multirow{3}{*}{\href{http://hamlyn.doc.ic.ac.uk/vision/}{\shortstack{Hamlyn\\Center\\Datasets}}} &\href{http://hamlyn.doc.ic.ac.uk/vision/data/daVinci.zip}{Siamese}\cite{ye2017self}&2017&$34240$&$30$&$192\times 384$& occasional& da Vinci\textsuperscript{\textregistered} \\
         \cline{2-8}
-        &Giannarou \href{http://hamlyn.doc.ic.ac.uk/vision/data/Matina/Blur/capture1.avi}{left} / \href{http://hamlyn.doc.ic.ac.uk/vision/data/Matina/Blur/capture2.avi}{right} \cite{giannarou2012probabilistic}&2012&$8063$&$30$&$480\times 640$& occasional& DaVinci \\ 
+        &Giannarou \href{http://hamlyn.doc.ic.ac.uk/vision/data/Matina/Blur/capture1.avi}{left} / \href{http://hamlyn.doc.ic.ac.uk/vision/data/Matina/Blur/capture2.avi}{right} \cite{giannarou2012probabilistic}&2012&$8063$&$30$&$480\times 640$& occasional& da Vinci\textsuperscript{\textregistered} \\ 
         \cline{2-8}
-        &Mountney \href{http://hamlyn.doc.ic.ac.uk/vision/data/Dataset8/left.avi}{left} / \href{http://hamlyn.doc.ic.ac.uk/vision/data/Dataset8/right.avi}{right} \cite{mountney2010three}&2010&$14418$&$30$&$480\times 640$& occasional & DaVinci\\
+        &Mountney \href{http://hamlyn.doc.ic.ac.uk/vision/data/Dataset8/left.avi}{left} / \href{http://hamlyn.doc.ic.ac.uk/vision/data/Dataset8/right.avi}{right} \cite{mountney2010three}&2010&$14418$&$30$&$480\times 640$& occasional & da Vinci\textsuperscript{\textregistered}\\
         \hline
         \multirow{4}{*}{Other} &\href{https://www.youtube.com/}{YouTube}&N/A&N/A&N/A&N/A&N/A & N/A \\
         \cline{2-8}
-        &\href{https://saras-esad.grand-challenge.org/}{SARAS-ESAD} \cite{bawa2020esad}&2020&$18793$&$1$&$1080\times 1920$& occasional & DaVinci \\
+        &\href{https://saras-esad.grand-challenge.org/}{SARAS-ESAD} \cite{bawa2020esad}&2020&$18793$&$1$&$1080\times 1920$& occasional & da Vinci\textsuperscript{\textregistered} \\
         \cline{2-8}
         &\href{http://camma.u-strasbg.fr/datasets}{Cholec80} \cite{twinanda2016endonet}&2017&$4612530$&$25$&$480\times 854$&yes& laparoscopic\\
         \cline{2-8}
@@ -513,20 +546,7 @@ In IRL the aim is to extract a reward function from a set of expert demonstratio
 
 \subsection{Camera Motion Formulation}
 \subsection{Robot Laparoscope Control}
-\subsubsection{Visual Servo with mechanical RCM}
-Approaches that use a mechanical RCM are \cite{omote1999self}, where a visual servo is implemented to control the center of mass of a colored marker on a forceps in image space. In \cite{agustinos2014visual, voros2007automatic}, the tool tip position is found in image space via kinematic knowledge over the tool entry points and a visual servo is applied to center the tool tip in image space. Another common scheme is to alter the camera's zoom based on the distance of the surgical tools, which was first presented in \cite{king2013towards}, where the authors use colored markers to track the surgical instruments.
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\textwidth]{chapter_2/img/labeled_setup_compressed.png}
-	\caption{Experimental setup for the remote center of motion visual servo. We also created a simulated equivalent of this setup within the Gazebo simulator \cite{koenig2004design}.}
-	\label{in:fig:experimental_setup}
-\end{figure}
-
-The authors in \cite{eslamian2020development, mariani2020experimental, dascan}, with pre-works in \cite{Eslamian2016TowardsTI, eslamian2017autonomous}, compute the center point in between two surgical tools via their respective positions and align the camera's optical axis with the line that spans from RCM to the tools' center point, which requires a complicated registration procedure. \cite{yu2016automatic} also relies on the positions of the surgical tools and adjusts the field of view's width based on the distance of them. \cite{abdelaal2020orientation} uses a similar approach as \cite{eslamian2020development}, in that they adjust the camera distance to the surgical scene based on the tool distance, however, they don't align the camera's optical axis with the line that spans from RCM to the camera, but rather with the scene's surface normal, which is made possible by their 6 DoF endoscope. In \cite{ma2019autonomous}, Ma et al. deploy a visual servo to center a green marker on a tool by incorporating depth information as extracted from camera and tool motion. In \cite{ma2020visual} they extend this work into a quadratic program in which they minimize joint velocities whilst constraining the camera's distance with respect to the tools and the average tool position in the image plane to be central, where they rely on stereoscopic images to extract depth information. 
-
-\subsubsection{Visual Servo with programmable RCM}
-Where a mechanical RCM is not available, it can be achieved programmatically. As such, the authors in \cite{aghakhani2013task} design a composite Jacobian method that integrates a RCM objective with a task function that defines an error on points in image space. The authors in \cite{yang2019adaptive} also design a Jacobian gain controller that enforces the tip of a tool to reside within a defined region by computing the winding number of that region around the desired point. They additionally request the endoscope to extend the surgeon's natural line of sight. In \cite{li2020accelerated}, Li et al. introduce the RCM and a visual error via the image Jacobian as constraints to a quadratic problem that aims at satisfying these constraints whilst minimizing the joint velocities. 
 
 \begin{itemize}
     \item write contributions at beginning of each section
@@ -646,7 +666,7 @@ Where a mechanical RCM is not available, it can be achieved programmatically. As
 % \begin{figure}
 % 	\centering
 % 	\includegraphics[width=0.8\textwidth]{img/compresspng/augmentations.png}
-% 	\caption{Nine different sample variations of the same image from the DaVinci SurgVisDom dataset. Shown are random combinations of fog, grayscale, flip, blur, brightness, contrast and crop augmentations.} 	
+% 	\caption{Nine different sample variations of the same image from the da Vinci\textsuperscript{\textregistered} SurgVisDom dataset. Shown are random combinations of fog, grayscale, flip, blur, brightness, contrast and crop augmentations.} 	
 % 	\label{in:fig:data_augmentation}
 % \end{figure}
 
@@ -655,7 +675,7 @@ Where a mechanical RCM is not available, it can be achieved programmatically. As
 % In our experimental setup, see \figref{in:fig:experimental_setup}, we use a  KUKA LBR Med 7 R800 robot. To control it, we create a bridge to ROS by wrapping the Fast Robot Interface (FRI) \cite{schreiber2010fast} with ROS' Hardware Interface functionality. We mount the laparoscope to the LBR Med 7 robot with a custom designed 3D print. As the laparoscope, we use a Storz 7230 AA Telescope, from which we capture images using a Storz TH 102 H3-Z FI Camera. For illumination, we additionally connect a Storz TL 300 Power LED 300 light source to the laparoscope. The acquired images are sent to the Storz TC 300 Image1 S H3-Link, which links the camera via DP to the Storz TC 200 Image1 S Connect. From there on, the image feed is output to SDI, which we convert to HDMI with a SDI to HDMI converter. We then grab the HDMI signal with a DeckLink 4K Extreme 12G and stream it onto the ROS network.
 
 % \subsection{Data}
-% To facilitate imitation learning on laparoscopic surgery data, we extract and isolate camera motion from object motion. Therefore, we collect DaVinci surgery data, where the camera only moves occasionally and is mostly fixed in position, but objects are still moving. We isolate data without camera motion from data with camera motion. We additionally collect laparoscopic surgery data with camera motion to imitate it. An exhaustive overview of publicly available datasets is given in \tabref{in:tab:datasets}. We analyze the data for its length, frame rate, resolution and camera motion. We pre-process the laparoscopic data by searching for its center point and bounding circle. We do so by seeking a circle who's radius and center fit best to the edge filtered laparoscopic view with a random sample consensus (RANSAC) \cite{fischler1981random}, see \figref{in:fig:ransac_circle}.
+% To facilitate imitation learning on laparoscopic surgery data, we extract and isolate camera motion from object motion. Therefore, we collect da Vinci\textsuperscript{\textregistered} surgery data, where the camera only moves occasionally and is mostly fixed in position, but objects are still moving. We isolate data without camera motion from data with camera motion. We additionally collect laparoscopic surgery data with camera motion to imitate it. An exhaustive overview of publicly available datasets is given in \tabref{in:tab:datasets}. We analyze the data for its length, frame rate, resolution and camera motion. We pre-process the laparoscopic data by searching for its center point and bounding circle. We do so by seeking a circle who's radius and center fit best to the edge filtered laparoscopic view with a random sample consensus (RANSAC) \cite{fischler1981random}, see \figref{in:fig:ransac_circle}.
 
 % \begin{figure}
 % 	\centering
@@ -677,7 +697,7 @@ Where a mechanical RCM is not available, it can be achieved programmatically. As
 %         \hline
 %         \multirow{8}{*}{\href{https://endovis.grand-challenge.org/}{\shortstack{Endoscopic\\Vision\\Challenge}}} &\href{https://www.synapse.org/#!Synapse:syn21776936/wiki/601700}{MISAW} \cite{mitsuishi2013master}&2020&$128102$&$30$&$460\times 540$&no&synthetic \\
 %         \cline{2-8}
-%         &\href{https://surgvisdom.grand-challenge.org/}{SurgVisDom}\cite{zia2021surgical}&2020&$185620$&$20$&$540\times960$&occasional&DaVinci \\
+%         &\href{https://surgvisdom.grand-challenge.org/}{SurgVisDom}\cite{zia2021surgical}&2020&$185620$&$20$&$540\times960$&occasional&da Vinci\textsuperscript{\textregistered} \\
 %         \cline{2-8}
 %         &\href{https://robustmis2019.grand-challenge.org/}{ROBUST-MIS} \cite{maier2020heidelberg}\cite{ross2020robust}&2019&$7546968$&$25$&$540\times 960$&yes&laparoscopic \\
 %         \cline{2-8}
@@ -687,23 +707,23 @@ Where a mechanical RCM is not available, it can be achieved programmatically. As
 %         \cline{2-8}
 %         &\href{https://endovissub2017-workflow.grand-challenge.org/}{SWASA}&2018&N/A&N/A&N/A&yes& laparoscopic\\
 %         \cline{2-8}
-%         &\href{https://endovissub2018-roboticscenesegmentation.grand-challenge.org/home/}{RSS} \cite{allan20202018}&2018&$2235$&$2$&$1024\times 1280$&occasional& DaVinci\\
+%         &\href{https://endovissub2018-roboticscenesegmentation.grand-challenge.org/home/}{RSS} \cite{allan20202018}&2018&$2235$&$2$&$1024\times 1280$&occasional& da Vinci\textsuperscript{\textregistered}\\
 %         \cline{2-8}
-%         &\href{https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/}{RIS} \cite{allan20192017}&2017&$3225$&$2$&$1024\times 1280$&occasional& DaVinci \\
+%         &\href{https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/}{RIS} \cite{allan20192017}&2017&$3225$&$2$&$1024\times 1280$&occasional& da Vinci\textsuperscript{\textregistered} \\
 %         \cline{2-8}
-%         &\href{https://endovissub2017-kidneyboundarydetection.grand-challenge.org/}{KBD}&2017&$3000$&$2$&$1024\times 1280$&occasional & DaVinci\\
+%         &\href{https://endovissub2017-kidneyboundarydetection.grand-challenge.org/}{KBD}&2017&$3000$&$2$&$1024\times 1280$&occasional & da Vinci\textsuperscript{\textregistered}\\
 %         \cline{2-8}
 %         &\href{https://endovissub-instrument.grand-challenge.org/}{ISAT}&2015&$16243$&$25$&$480\times 640/576\times 720$& yes & laparoscopic \\
 %         \hline
-%         \multirow{3}{*}{\href{http://hamlyn.doc.ic.ac.uk/vision/}{\shortstack{Hamlyn\\Center\\Datasets}}} &\href{http://hamlyn.doc.ic.ac.uk/vision/data/daVinci.zip}{Siamese}\cite{ye2017self}&2017&$34240$&$30$&$192\times 384$& occasional& DaVinci \\
+%         \multirow{3}{*}{\href{http://hamlyn.doc.ic.ac.uk/vision/}{\shortstack{Hamlyn\\Center\\Datasets}}} &\href{http://hamlyn.doc.ic.ac.uk/vision/data/daVinci.zip}{Siamese}\cite{ye2017self}&2017&$34240$&$30$&$192\times 384$& occasional& da Vinci\textsuperscript{\textregistered} \\
 %         \cline{2-8}
-%         &Giannarou \href{http://hamlyn.doc.ic.ac.uk/vision/data/Matina/Blur/capture1.avi}{left} / \href{http://hamlyn.doc.ic.ac.uk/vision/data/Matina/Blur/capture2.avi}{right} \cite{giannarou2012probabilistic}&2012&$8063$&$30$&$480\times 640$& occasional& DaVinci \\ 
+%         &Giannarou \href{http://hamlyn.doc.ic.ac.uk/vision/data/Matina/Blur/capture1.avi}{left} / \href{http://hamlyn.doc.ic.ac.uk/vision/data/Matina/Blur/capture2.avi}{right} \cite{giannarou2012probabilistic}&2012&$8063$&$30$&$480\times 640$& occasional& da Vinci\textsuperscript{\textregistered} \\ 
 %         \cline{2-8}
-%         &Mountney \href{http://hamlyn.doc.ic.ac.uk/vision/data/Dataset8/left.avi}{left} / \href{http://hamlyn.doc.ic.ac.uk/vision/data/Dataset8/right.avi}{right} \cite{mountney2010three}&2010&$14418$&$30$&$480\times 640$& occasional & DaVinci\\
+%         &Mountney \href{http://hamlyn.doc.ic.ac.uk/vision/data/Dataset8/left.avi}{left} / \href{http://hamlyn.doc.ic.ac.uk/vision/data/Dataset8/right.avi}{right} \cite{mountney2010three}&2010&$14418$&$30$&$480\times 640$& occasional & da Vinci\textsuperscript{\textregistered}\\
 %         \hline
 %         \multirow{4}{*}{Other} &\href{https://www.youtube.com/}{YouTube}&N/A&N/A&N/A&N/A&N/A & N/A \\
 %         \cline{2-8}
-%         &\href{https://saras-esad.grand-challenge.org/}{SARAS-ESAD} \cite{bawa2020esad}&2020&$18793$&$1$&$1080\times 1920$& occasional & DaVinci \\
+%         &\href{https://saras-esad.grand-challenge.org/}{SARAS-ESAD} \cite{bawa2020esad}&2020&$18793$&$1$&$1080\times 1920$& occasional & da Vinci\textsuperscript{\textregistered} \\
 %         \cline{2-8}
 %         &\href{http://camma.u-strasbg.fr/datasets}{Cholec80} \cite{twinanda2016endonet}&2017&$4612530$&$25$&$480\times 854$&yes& laparoscopic\\
 %         \cline{2-8}
@@ -755,13 +775,13 @@ Where a mechanical RCM is not available, it can be achieved programmatically. As
 % 	\begin{subfigure}[b]{.45\textwidth}
 % 		\centering
 % 		\includegraphics[width=1.\linewidth]{fig/fig_da_vinci.pdf}
-% 		\caption{DaVinci surgery datasets modulo the Siamese dataset due to low resolution. The high frame rate datasets naturally cover $72.4\%$ of available data.}
+% 		\caption{da Vinci\textsuperscript{\textregistered} surgery datasets modulo the Siamese dataset due to low resolution. The high frame rate datasets naturally cover $72.4\%$ of available data.}
 % 		\label{in:fig:da_vinci}
 % 	\end{subfigure}\hspace{2em}
 % 	\begin{subfigure}[b]{.45\textwidth}
 % 		\centering
 % 		\includegraphics[width=1.\linewidth]{fig/fig_da_vinci_high_fps_laparoscopic.pdf}
-% 		\caption{Laparoscopic datasets and a concatenation of the DaVinci high frame rate datasets. The ISAT dataset can barely be seen in this visualization. The Cholec80 dataset corresponds to about $51\,\text{h}$ of video.}
+% 		\caption{Laparoscopic datasets and a concatenation of the da Vinci\textsuperscript{\textregistered} high frame rate datasets. The ISAT dataset can barely be seen in this visualization. The Cholec80 dataset corresponds to about $51\,\text{h}$ of video.}
 % 		\label{in:fig:da_vinci_laparoscopic}
 % 	\end{subfigure}
 % 	\caption{Dataset length visualizations for datasets listed in \tabref{in:tab:datasets}. Shown is the fraction of total number of images within a dataset.}
@@ -782,7 +802,7 @@ Where a mechanical RCM is not available, it can be achieved programmatically. As
 % Example augmentations are shown in \figref{in:fig:data_augmentation}. We train VGG-based networks and networks with a Resnet34 \cite{he2016deep} backbone. We use the Adam optimizer at a learning rate of $1\mathrm{e}{-4}$ and a momentum of $[0.9, 0.999]$. We set the batch size to $64$, the image crop shape to $480\times640$ and train for $20$ epochs on a train split with $80\%$ of the total data. The results are shown in \tabref{in:tab:train_results}. We excluded the results for the method from \cite{zhang2019content}, as it converged to the trivial solution.
 % \begin{table}
 % 	\centering
-% 	\caption{Test loss on high frame rate DaVinci dataset without camera motion.}
+% 	\caption{Test loss on high frame rate da Vinci\textsuperscript{\textregistered} dataset without camera motion.}
 % 	\begin{tabular}{ccc}
 % 		Architecture & Supervised & Mean Pairwise Distance / pixels\\
 % 		\hline
@@ -816,6 +836,6 @@ Where a mechanical RCM is not available, it can be achieved programmatically. As
 
 % \section{OUTLOOK}
 % \subsection{Conclusion}
-% In this work, we are the first to combine a homography-based visual servo task with a remote center of motion objective as an enabler for deep-learning based control in robotic laparoscopic surgery. We implement said controller as a ROS package for use on any robot and demonstrate its effectiveness in \secref{in:sec:results_visual_servo}. We observe task convergence but also tip position divergence, see \figref{in:fig:visual_servo_measurements}. This is caused by the homography extraction from a distant calibration pattern, which is unresponsive to change in distance. We then generate a new dataset of DaVinci surgeries from which we isolate camera motion. We train multiple deep homography regression approaches and list results in \tabref{in:tab:train_results}. We find that, other than proposed in \cite{detone2016deep}\cite{nguyen2018unsupervised}\cite{zhang2019content}, a Resnet34-backboned architecture performs the best. Based on this finding and on the dataset analysis in \figref{in:fig:da_vinci_laparoscopic}, we qualitatively evaluate the deep homography regression on the unseen dataset Cholec80 in \secref{in:sec:homography_imitation_learning}. We find central views within this data with a RANSAC method, see \figref{in:fig:ransac_circle}. We observe in \figref{in:fig:alpha_blend} that this method regresses camera motion well and isolates it from object motion. We also demonstrate the superiority over traditional SIFT feature-based homography estimation. Finally, we show in \figref{in:fig:homography_annotation_moving_average} that the homography regression can be used to reveal uncontinuous camera motion in video data, which aligns well with visual observation.
+% In this work, we are the first to combine a homography-based visual servo task with a remote center of motion objective as an enabler for deep-learning based control in robotic laparoscopic surgery. We implement said controller as a ROS package for use on any robot and demonstrate its effectiveness in \secref{in:sec:results_visual_servo}. We observe task convergence but also tip position divergence, see \figref{in:fig:visual_servo_measurements}. This is caused by the homography extraction from a distant calibration pattern, which is unresponsive to change in distance. We then generate a new dataset of da Vinci\textsuperscript{\textregistered} surgeries from which we isolate camera motion. We train multiple deep homography regression approaches and list results in \tabref{in:tab:train_results}. We find that, other than proposed in \cite{detone2016deep}\cite{nguyen2018unsupervised}\cite{zhang2019content}, a Resnet34-backboned architecture performs the best. Based on this finding and on the dataset analysis in \figref{in:fig:da_vinci_laparoscopic}, we qualitatively evaluate the deep homography regression on the unseen dataset Cholec80 in \secref{in:sec:homography_imitation_learning}. We find central views within this data with a RANSAC method, see \figref{in:fig:ransac_circle}. We observe in \figref{in:fig:alpha_blend} that this method regresses camera motion well and isolates it from object motion. We also demonstrate the superiority over traditional SIFT feature-based homography estimation. Finally, we show in \figref{in:fig:homography_annotation_moving_average} that the homography regression can be used to reveal uncontinuous camera motion in video data, which aligns well with visual observation.
 % \subsection{Shortcomings and Future Work}
 % Although we demonstrate future potential for the presented approach, there are still shortcomings that are yet to be addressed. The results for the visual servo were taken from simulation, the toy calibration pattern homography extraction does not yet run on the real setup. The toy homography extraction also showed diverging properties for the tip of the laparoscope in simulation, which will be addressed by replacing the type homography extraction in the future. We further note that many of the homography regression results are not yet backed by quantitative measures. This will be accounted for by creating a human-labelled ground truth data subset. To now achieve an autonomous robotic endoscope, we will extend the work starting from \figref{in:fig:homography_annotation_moving_average}, where the potential of a next best view planning was revealed from the data at hand. We will further implement a force control on the real robot for feedback to extend the pipeline into an active learning approach.
