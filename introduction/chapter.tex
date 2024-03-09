@@ -562,14 +562,16 @@ We took economical considerations into account for propagating the clinically be
 
 Following the clinical prospects of automation and the economically guided form-factor, we analyzed technical factors. We explained calibration prerequisites, \figref{in:fig:eye_in_hand_setup}, \figref{in:fig:com}, and derived novel means of registration for an improved clinical workflow in \secref{in:sec:unified_calibration}, which finally lead to automation itself. We discussed several automation approaches in \secref{in:sec:automation_approaches}, and concluded that learning complex policies, beyond tool following, would require data-driven methods. Crucially, among other reasons, we chose vision as a candidate domain, and thus visual servoing as a candidate for automation, since vision was identified as a shared domain between RMIS and MIS, \figref{in:fig:shared_domain}. We found, however, that vision is currently only used for solving auxiliary tasks, \figref{in:fig:auxiliary_tasks}. We evaluated the state of RL in \secref{in:sec:reinforcement_learning}, and concluded that it does not align with our goals of near term level five autonomy, and were thus left with imitation learning approaches in \secref{in:sec:imitation_learning}. With the robot-free surgery target in mind and the suggested imitation learning as substrate for automation, we impose embodiment-invariance onto the solution. That is, the expert demonstrator can be human, and the executing agent is a robot. Precisely speaking, we are, therefore, trying to solve imitation learning from observation, with only access to the partially observed environment state $\hat{s}_t$. The next sections will go into detail on how this could be achieved.
 
-\subsection{Hypothesizing an Approach}
+\subsection{Hypothesizing Embodiment-invariant Laparoscopic Camera Motion Automation}
 \label{in:sec:hypothesizing}
+
+how states 
+
 
 learning actions from videos of laparoscopic interventions... embodied human -> robot
 bridging the domain gap classically
 
-
-\subsection{Search for Available Data}
+\subsubsection{Search for available Data}
 the realization that there exists a da vinci dataset without camera motion
 \begin{table}
 \centering
@@ -621,9 +623,25 @@ the realization that there exists a da vinci dataset without camera motion
 \end{table}
 
 
-\subsection{Supervised and Self-supervised Learning}
+\subsubsection{Supervised and Self-supervised Learning}
+\label{in:sec:supervised_self_supervised}
+add figure explaining high level idea
 
-\subsection{Camera Motion Formulation}
+\begin{figure}[tb]
+    \centering
+    \includegraphics[width=\textwidth]{introduction/fig/camera_motion.pdf}
+    \caption{Caption. Refers to \secref{in:sec:supervised_self_supervised}.}
+    \label{in:fig:camera_motion}
+\end{figure}
+
+supervised: no camera motion but tool motion, adding synthetic camera motion would allow to learn
+self-supervised: learn to predict camera motion on these pseudo labels
+
+\subsubsection{Homography-based Camera Motion Formulation}
+introduce all the deep homography estimation
+
+needs to comply with image + robot
+
 deforemable... assuming the scene is a plane in the first instance, add the text that was writting but commented out above
 
 
@@ -631,8 +649,7 @@ embodying domain-irrelevant actions
 extracting actions
 predicting actions
 
-\subsection{Robot Laparoscope Control}
-
+\subsubsection{Robotic Laparoscope Control}
 
 
 \begin{itemize}
@@ -658,6 +675,7 @@ predicting actions
 % 	\item From the available data, neither the goal state nor the reward function are apparent. Simple BC under a noisy action estimation might be too difficult. To imitate a surgeon demonstrator, a proxy for good views has to be found.\\
 % \end{itemize}
 % In the following we address how to tackle the first and second challenge. We further identify pathways to solve the third task.
+
 % \section{METHODS}
 % In this section, we first introduce a composite Jacobian gain controller with RCM objective in \secref{in:sec:task_RCM}. We then introduce a homography-based visual servo task for the latter in \secref{in:sec:visual_servo}. Finally, in \secref{in:sec:homography_regression}, we describe different ways of extracting homographies from images.
 % \subsection{Task Control with Remote Center of Motion}
