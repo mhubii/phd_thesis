@@ -549,44 +549,24 @@ In the previous sections, several considerations that are relevant to achieving 
 
 \subsection{Revisiting Key Concepts}
 \label{in:sec:revisiting_key_concepts}
-\paragraph{The Case for Camera Motion Automation} In the Foreword, \secref{in:sec:foreword}, it was argued that the progressive nature of surgery will ultimately alleviate clinical staff of unfulfilling tasks through achieving level five autonomy, likely first for laparoscopic camera motion. We took the clinicians' perspective in the cholecystectomy procedure, the most common laparoscopic procedure, to investigate automation claims further. We found that the camera holder assistant, see \figref{in:fig:room_setup}, performs a relatively simple and unfulfilling task. This stays in contrast with the importance of the camera holder's role of establishing and maintaining a good view for highlighting critical anatomies to surgeons, \secref{in:sec:cholecystectomy_procedure}. We then analyzed the rise of RMIS in \secref{in:sec:the_rise_of_robot_assisted_laparoscopy}, and found first indicators that, in RMIS, the camera is moved more frequently when compared to MIS,suggesting that even more camera motion might be desirable. This stays is in line with the initial rise of RMIS. We concluded that camera motion automation might be beneficial for the surgeon, the patient, and the clinical staff in \secref{in:sec:enhancing_current_systems}, \figref{in:fig:advancing_robotic_laparoscopy}. We then took economical considerations into account for propagating these changes to the patients with minimal impact on cost. Resulting in the goal of delivering the automation endeavor through a system with programmable RCM to surgeries that are currently robot-free, \secref{in:sec:automation}.
+\paragraph{The Case for Camera Motion Automation} In the Foreword, \secref{in:sec:foreword}, it was argued that the progressive nature of surgery will ultimately alleviate clinical staff of unfulfilling tasks through achieving level five autonomy, likely first for laparoscopic camera motion. We took the clinicians' perspective in the cholecystectomy procedure, the most common laparoscopic procedure, to investigate automation claims further. We found that the camera holder assistant, see \figref{in:fig:room_setup}, performs a relatively simple and unfulfilling task. This stays in contrast with the importance of the camera holder's role of establishing and maintaining a good view for highlighting critical anatomies to surgeons, \secref{in:sec:cholecystectomy_procedure}. We then analyzed the rise of RMIS in \secref{in:sec:the_rise_of_robot_assisted_laparoscopy}, and found first indicators that, in RMIS, the camera is moved more frequently when compared to MIS, suggesting that even more camera motion might be desirable. This stays is in line with the initial rise of RMIS. We thus concluded that camera motion automation might be beneficial for the surgeon, the patient, and the clinical staff in \secref{in:sec:enhancing_current_systems}, \figref{in:fig:advancing_robotic_laparoscopy}.
 
 \paragraph{High-level Aspects of Camera Motion Automation}
-
-proposed
-how this can be achieved in convenient ways without impacting the surgeon
-\secref{in:sec:spatial_awareness}
-discussed calibrations
-\figref{in:fig:eye_in_hand_setup}
-\figref{in:fig:com}
-
-investigated serveral automation techniques and explained why visual servoing might be the best approach
-\secref{in:sec:automation_approaches}
-\figref{in:fig:shared_domain} identified the shared domain
-\figref{in:fig:auxiliary_tasks} highlighted only auxiliary tasks are being solved and proposed data-driven approaches
-\secref{in:sec:reinforcement_learning} analyzed the state of RL and that it doesnt align with the goal
-\secref{in:sec:imitation_learning} now in this section we will be investigating how this could be achieved more precisely
-different embodiment, yadi yadi
-
-\secref{in:sec:enhancing_current_systems} indicated 3 main aspects:
-- continuous motion
-- robot-free surgeries
-- system considerations
-
-and concluded that these are best achieved through visual servoing and related 
-
-bla bla bla, all rule-based, essentially no tool following, related domains.
-
-\subsection{Hypothesizing an Approach}
-\label{in:sec:hypothesizing}
-
 \begin{figure}
 	\centering
 	\includegraphics[width=0.8\textwidth]{chapter_2/img/labeled_setup_compressed.png}
 	\caption{Robotic setup. A Storz Endocameleon Hopkins Telescope, which provides a light source port and a camera attachment point, is mounted to a KUKA LBR Med 7 R800 robot via a 3D printed clamp. The robotic system undergoes image-based control to reach desired views of the surgical scene and simultaneously pivots around a programmable RCM.}
 	\label{in:fig:experimental_setup}
 \end{figure}
+We took economical considerations into account for propagating the clinically beneficial automation changes to the patients with minimal impact on cost. This resulted in the goal of delivering the automation endeavor through a system with programmable RCM to surgeries that are currently robot-free, \secref{in:sec:automation}. We thus propose a system design that will serve as foundation to this thesis, see \figref{in:fig:experimental_setup}.
 
+Following the clinical prospects of automation and the economically guided form-factor, we analyzed technical factors. We explained calibration prerequisites, \figref{in:fig:eye_in_hand_setup}, \figref{in:fig:com}, and derived novel means of registration for an improved clinical workflow in \secref{in:sec:unified_calibration}, which finally lead to automation itself. We discussed several automation approaches in \secref{in:sec:automation_approaches}, and concluded that learning complex policies, beyond tool following, would require data-driven methods. Crucially, among other reasons, we chose vision as a candidate domain, and thus visual servoing as a candidate for automation, since vision was identified as a shared domain between RMIS and MIS, \figref{in:fig:shared_domain}. We found, however, that vision is currently only used for solving auxiliary tasks, \figref{in:fig:auxiliary_tasks}. We evaluated the state of RL in \secref{in:sec:reinforcement_learning}, and concluded that it does not align with our goals of near term level five autonomy, and were thus left with imitation learning approaches in \secref{in:sec:imitation_learning}. With the robot-free surgery target in mind and the suggested imitation learning as substrate for automation, we impose embodiment-invariance onto the solution. That is, the expert demonstrator can be human, and the executing agent is a robot. Precisely speaking, we are, therefore, trying to solve imitation learning from observation, with only access to the partially observed environment state $\hat{s}_t$. The next sections will go into detail on how this could be achieved.
+
+\subsection{Hypothesizing an Approach}
+\label{in:sec:hypothesizing}
+
+learning actions from videos of laparoscopic interventions... embodied human -> robot
+bridging the domain gap classically
 
 
 \subsection{Search for Available Data}
