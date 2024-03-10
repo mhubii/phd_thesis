@@ -564,18 +564,44 @@ Following the clinical prospects of automation and the economically guided form-
 
 \subsection{Hypothesizing Embodiment-invariant Laparoscopic Camera Motion Automation}
 \label{in:sec:hypothesizing}
+\begin{figure}[tb]
+    \centering
+    \includegraphics[width=\textwidth]{introduction/fig/camera_motion_action.pdf}
+    \caption{The hypothesized approach for laparoscopic camera motion imitation learning. Actions are learned in the shared vision domain and executed via different embodiments, the human or the robot. Refers to \secref{in:sec:hypothesizing}.}
+    \label{in:fig:hypothesized_pipeline}
+\end{figure}
+Having outlined the scope for laparoscopic camera motion automation - embodiment-invariant imitation learning from observation - further referred to simply as imitation learning, this section will now hypothesize concrete means of achieving it. It will dissect the thought process for framing the path towards autonomy in this thesis rigorously.
 
-how states 
-
-
-learning actions from videos of laparoscopic interventions... embodied human -> robot
-bridging the domain gap classically
+IL requires large amounts of data for learning the tail-end, i.e. rare cases. Therefore, we will initially search for available data in \secref{in:sec:search_for_available_data}. Given the data, a mixture of supervised and self-supervised methods for learning to predict camera motion, and predicting can be considered imitating, will be suggested in \secref{in:sec:supervised_self_supervised}. Next, a camera motion formulation for the suggested supervised and self-supervised frameworks will be proposed in \secref{in:sec:homography_based_camera_motion_formulation}, keeping the constraint of embodiment-invariance in mind. Finally, \secref{in:sec:robotic_laparoscope_control} will explain classical and clinically applicable methods for controlling a robotic laparoscope under the camera motion prediction.  An overview of the proposed approach is already shown in \figref{in:fig:hypothesized_pipeline}.
 
 \subsubsection{Search for available Data}
-the realization that there exists a da vinci dataset without camera motion
+\label{in:sec:search_for_available_data}
+
+... data
+... 
+... no state action pairs (taken from paper prediction / estimation)
+... how pairs can be generated given this data
+
+% the realization that there exists a da vinci dataset without camera motion
+
+% learning actions from videos of laparoscopic interventions... embodied human -> robot
+% bridging the domain gap classically
+
+% lack of camera motion data (prediction paper) -> mock setups
+
+Given the advancements in deep learning and especially in IL, it seems surprising that no-one applied IL to automate camera motion in laparoscopic surgery. After having a closer look, it comes, however, at no wonder people have not tried. Three major challenges reside:
+\\
+\begin{itemize}
+	\item IL requires big data, but data collection is expensive, especially in realistic setups. The only two publicly available datasets that come with kinematic labels are MISAW \cite{mitsuishi2013master} and JIGSAW \cite{ahmidi2017dataset}, but both datasets are captured in a synthetic environment and without camera motion. This results in the challenge that all of the available data has no camera motion action labels, and reliably extracting camera motion in retrospect from dynamic surgical scenery is an unsolved task in itself.
+	\item There exists an unknown domain shift between laparoscopic surgery data and the robotic system. This domain shift could be gapped via Reinforcement Learning (RL) on top of IRL, but simple RL in the medical realm puts the patient at risk. We gap this domain shift by finding the greatest common divisor between human demonstrator and robotic learner with a novel optimal control formulation.
+	\item From the available data, neither the goal state nor the reward function are apparent. Simple BC under a noisy action estimation might be too difficult. To imitate a surgeon demonstrator, a proxy for good views has to be found.\\
+\end{itemize}
+In the following we address how to tackle the first and second challenge. We further identify pathways to solve the third task.
+
+
 \begin{table}
 \centering
-\caption{Exhaustive overview of publicly available MIS and RMIS datasets. All datasets were acquired and analyzed for task-appropriate metrics. in:tab:datasetsMetrics were marked with N/A, where datasets were not available or unreasonable to analyze.}
+\caption{Exhaustive overview of publicly available MIS and RMIS datasets. All datasets were acquired and analyzed for task-appropriate metrics. Datasets that were not available, or are unreasonable for evaluation, are marked with N/A, where datasets were not available or unreasonable to analyze.}
 \label{in:tab:datasets}
 \begin{adjustbox}{angle=90, max height=0.9\textheight}
     \begin{tabular}{|c|c|c|r|c|c|c|c|}
@@ -638,7 +664,11 @@ supervised: no camera motion but tool motion, adding synthetic camera motion wou
 self-supervised: learn to predict camera motion on these pseudo labels
 
 \subsubsection{Homography-based Camera Motion Formulation}
+\label{in:sec:homography_based_camera_motion_formulation}
+
 introduce all the deep homography estimation
+
+theoretical background homography estimation paper
 
 needs to comply with image + robot
 
@@ -650,7 +680,8 @@ extracting actions
 predicting actions
 
 \subsubsection{Robotic Laparoscope Control}
-
+\label{in:sec:robotic_laparoscope_control}
+theory of control paper up to merge, i.e. no including merge of two methods
 
 \begin{itemize}
     \item write contributions at beginning of each section
