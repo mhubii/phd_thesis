@@ -648,11 +648,7 @@ The missing state-action pairs for all of the available datasets are the major r
 % \end{itemize}
 % In the following we address how to tackle the first and second challenge. We further identify pathways to solve the third task.
 
-
-
-
-
-\subsubsection{Supervised and Self-supervised Learning}
+\subsubsection{Supervised Camera Motion Extraction and Self-supervised Camera Motion Prediction}
 \label{in:sec:supervised_self_supervised}
 \begin{figure}[tb]
     \centering
@@ -660,39 +656,12 @@ The missing state-action pairs for all of the available datasets are the major r
     \caption{The proposed isolation of camera motion, i.e. actions, and tool as well as object motion. The camera locking mechanism of the da Vinci\textsuperscript{\textregistered} robot allows for extraction of camera motion free image sequences, see \tabref{in:tab:datasets}. Synthetically added camera motion can be used for supervised training. Refers to \secref{in:sec:supervised_self_supervised}.}
     \label{in:fig:camera_motion}
 \end{figure}
+Paradoxically, camera motion is accessible and intrinsic to videos of laparoscopic interventions, the crux lies in extracting it reliably and isolating it from tool and object motion, for which, currently, no method exists. It is thus not surprising that existing literature on IL for camera motion automation still utilizes data from mock setups \cite{ji2018learning,wagner2021learning}. As was discussed in \secref{in:sec:auxiliary_tasks}, so far the existing data is mainly leveraged to solve auxiliary tasks that could at best contribute to camera motion automation. In this section, we will propose a clever trick to extract camera motion from laparoscopic interventions, refer \secref{in:sec:search_for_available_data}, as a means of generating state-action pairs.
 
+\paragraph{Extracting Camera Motion from Laparoscopic Interventions}
+The state of the system $\hat{s}_t$, although underdetermined with only access to the images, see \figref{in:fig:hypothesized_pipeline}, is already known. The remaining difficulty is to extract actions from the change between subsequent states, that is extracting camera motion $\hat{a}_t$ from the subsequent states $\hat{s}_t$ and $\hat{s}_{t+1}$. As a reminder, actions lead to a change in the state, nicely shown in \figref{in:fig:reinforcement_learning}. It is difficult because it is hard to differentiate between camera, tool, and object motion. Although their might be different methods for achieving this, in this work we propose to train a neural network in a supervised fashion on isolating camera from object and tool motion. A visualization for how we are planning to achieve this is shown in \figref{in:fig:camera_motion}. In summary, we propose to use all existing data from da Vinci\textsuperscript{\textregistered} surgeries with high frame rates, see \tabref{in:tab:datasets}. Next, and as hinted in \secref{in:sec:search_for_available_data}, we manually isolate sequences with camera motion from sequences without camera motion. This is made possible by the locking system of da Vinci\textsuperscript{\textregistered} robots. Keeping in mind that the sequences without camera motion still contain object and tool motion, we suggest to add camera motion synthetically. The synthetically added camera motion can then be used to as ground truth for a neural network. We will be hypothesizing that the learned camera motion extraction will function on videos of laparoscopic interventions to generate image-action pairs.
 
-
-It is thus not surprising that existing literature on IL for camera motion automation still utilizes data from mock setups \cite{ji2018learning,wagner2021learning}.
-
-As was discussed in \secref{in:sec:auxiliary_tasks}, so far this data is mainly leveraged to solve auxiliary tasks that could at best contribute to camera motion automation. 
-
-For camera motion automation specifically, however, there exist no publicly available
-image-action pairs. Some work, therefore, continues to focus on the tools to infer
-camera motion [15], or learns on a robotic setup altogether [17] where camera
-motion is accessible. The realization, however, that camera motion is intrinsic to
-the videos of laparoscopic interventions and that camera motion could be learned
-on harvested actions was first realized in [11], and later in [16]. This comes with
-the additional advantage that no robot is necessary to learn behaviors and that
-one can directly learn from human demonstrations.
-
-%% est:
-Non-rule-based, i.e. IL, attempts
-that consider both, tissue, and tools as source for camera motion are (Ji et al. 2018;
-Su et al. 2020; Wagner et al. 2021), but they utilize an oversimplified setup, require
-multiple cameras or tedious annotations
-
-While modern IL approaches could alleviate these issues, clinical
-data of laparoscopic surgeries remains unusable for IL. Therefore, SOTA IL attempts
-rely on artificially acquired data (Ji et al. 2018; Su et al. 2020; Wagner et al. 2021)
-
-
-
-
-
-supervised: no camera motion but tool motion, adding synthetic camera motion would allow to learn
-
-self-supervised: learn to predict camera motion on these pseudo labels
+\paragraph{Camera Motion Prediction} Assuming that a sufficiently accurate camera motion extractor can be provided through the above proposal, camera motion prediction should follow swiftly. One would simply take the extracted camera motion as a pseudo-label. This would lead to predicting image space actions $\hat{a}_t$, as these are invariant of the domain, refer \figref{in:fig:hypothesized_pipeline}, which was already proposed in \figref{in:fig:shared_domain}. The important part is that the extracted as well as the predicted camera motion should be executable on a robotic laparoscope holder. Appropriate means of describing the camera motion will be introduced in the next \secref{in:sec:homography_based_camera_motion_formulation}.
 
 \subsubsection{Homography-based Camera Motion Formulation}
 \label{in:sec:homography_based_camera_motion_formulation}
