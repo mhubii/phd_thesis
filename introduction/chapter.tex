@@ -576,29 +576,6 @@ IL requires large amounts of data for learning the tail-end, i.e. rare cases. Th
 
 \subsubsection{Search for available Data}
 \label{in:sec:search_for_available_data}
-
-... data
-... 
-... no state action pairs (taken from paper prediction / estimation)
-... how pairs can be generated given this data
-
-% the realization that there exists a da vinci dataset without camera motion
-
-% learning actions from videos of laparoscopic interventions... embodied human -> robot
-% bridging the domain gap classically
-
-% lack of camera motion data (prediction paper) -> mock setups
-
-Given the advancements in deep learning and especially in IL, it seems surprising that no-one applied IL to automate camera motion in laparoscopic surgery. After having a closer look, it comes, however, at no wonder people have not tried. Three major challenges reside:
-\\
-\begin{itemize}
-	\item IL requires big data, but data collection is expensive, especially in realistic setups. The only two publicly available datasets that come with kinematic labels are MISAW \cite{mitsuishi2013master} and JIGSAW \cite{ahmidi2017dataset}, but both datasets are captured in a synthetic environment and without camera motion. This results in the challenge that all of the available data has no camera motion action labels, and reliably extracting camera motion in retrospect from dynamic surgical scenery is an unsolved task in itself.
-	\item There exists an unknown domain shift between laparoscopic surgery data and the robotic system. This domain shift could be gapped via Reinforcement Learning (RL) on top of IRL, but simple RL in the medical realm puts the patient at risk. We gap this domain shift by finding the greatest common divisor between human demonstrator and robotic learner with a novel optimal control formulation.
-	\item From the available data, neither the goal state nor the reward function are apparent. Simple BC under a noisy action estimation might be too difficult. To imitate a surgeon demonstrator, a proxy for good views has to be found.\\
-\end{itemize}
-In the following we address how to tackle the first and second challenge. We further identify pathways to solve the third task.
-
-
 \begin{table}
 \centering
 \caption{Exhaustive overview of publicly available MIS and RMIS datasets. All datasets were acquired and analyzed for task-appropriate metrics. Datasets that were not available, or are unreasonable for evaluation, are marked with N/A, where datasets were not available or unreasonable to analyze.}
@@ -647,20 +624,74 @@ In the following we address how to tackle the first and second challenge. We fur
     \end{tabular}
 \end{adjustbox}
 \end{table}
+Given the advancements in deep learning and especially in IL, it is surprising that no one applied IL to automate camera motion in laparoscopic surgery. It appears trivial that camera motion could be learned from data of real surgeries, thereby implicitly tackling the domain-gap that e.g. RL methods face. After having a closer look, it comes, however, at no surprise researchers have not tried. The challenge is to collect sufficient data of high quality. In fact, there exists no dataset with state-action (image-camera motion) pairs. Many works agree and highlight that this lack of expert annotated data hinders progress towards camera motion automation in RMIS \cite{maier2022surgical,kassahun2016surgical,esteva2019guide}.
+
+Data collection is expensive, especially in realistic setups. Recent efforts to make vast amounts of laparoscopic intervention videos publicly available \cite{maier2022surgical} drastically change how IL for camera motion automation could be approached. An overview of the, by the time of this writing, available datasets is shown in \tabref{in:tab:datasets}. The two biggest datasets, by orders of magnitude, are Cholec80 \cite{twinanda2016endonet} and ROBUST-MIS \cite{maier2020heidelberg}, often referred to as Heichole, both are laparoscopic, which is exactly what we are looking for. Some of the datasets, since they come with hand-annotated segmentations, come at low frame rates, i.e. $1-2\,\text{Hz}$, and are, therefore, unusable for IL. As was already pointed out, none of the datasets come with state-action pairs. The only two publicly available datasets that come with kinematic labels are MISAW \cite{mitsuishi2013master} and JIGSAW \cite{ahmidi2017dataset}, but both datasets are captured in synthetic environments and without camera motion.
+
+The missing state-action pairs for all of the available datasets are the major roadblock for applying IL methods to them. Reliably extracting camera motion in retrospect from dynamic surgical scenery is an unsolved task in itself. Somewhat surprisingly, one of the da Vinci\textsuperscript{\textregistered} datasets, SurgVisDom \cite{zia2021surgical}, which was intentionally released for domain transfer, plays an important role in extracting camera motion from laparoscopic videos. How we propose to extract laparoscopic camera motion reliably and how the locking mechanism of the da Vinci\textsuperscript{\textregistered} robot, refer \secref{in:sec:automation}, plays a crucial role, will be explained in the following \secref{in:sec:supervised_self_supervised}.
+
+
+% with relatively many da vinci videos, althrough still small compared with cholec80 and heichole
+
+
+
+% the realization that there exists a da vinci dataset without camera motion
+% learning actions from videos of laparoscopic interventions... embodied human -> robot
+% bridging the domain gap classically
+% lack of camera motion data (prediction paper) -> mock setups
+
+
+
+% \begin{itemize}
+% 	\item There exists an unknown domain shift between laparoscopic surgery data and the robotic system. This domain shift could be gapped via Reinforcement Learning (RL) on top of IRL, but simple RL in the medical realm puts the patient at risk. We gap this domain shift by finding the greatest common divisor between human demonstrator and robotic learner with a novel optimal control formulation.
+% 	\item From the available data, neither the goal state nor the reward function are apparent. Simple BC under a noisy action estimation might be too difficult. To imitate a surgeon demonstrator, a proxy for good views has to be found.\\
+% \end{itemize}
+% In the following we address how to tackle the first and second challenge. We further identify pathways to solve the third task.
+
+
+
 
 
 \subsubsection{Supervised and Self-supervised Learning}
 \label{in:sec:supervised_self_supervised}
-add figure explaining high level idea
-
 \begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{introduction/fig/camera_motion.pdf}
-    \caption{Caption. Refers to \secref{in:sec:supervised_self_supervised}.}
+    \caption{The proposed isolation of camera motion, i.e. actions, and tool as well as object motion. The camera locking mechanism of the da Vinci\textsuperscript{\textregistered} robot allows for extraction of camera motion free image sequences, see \tabref{in:tab:datasets}. Synthetically added camera motion can be used for supervised training. Refers to \secref{in:sec:supervised_self_supervised}.}
     \label{in:fig:camera_motion}
 \end{figure}
 
+
+
+It is thus not surprising that existing literature on IL for camera motion automation still utilizes data from mock setups \cite{ji2018learning,wagner2021learning}.
+
+As was discussed in \secref{in:sec:auxiliary_tasks}, so far this data is mainly leveraged to solve auxiliary tasks that could at best contribute to camera motion automation. 
+
+For camera motion automation specifically, however, there exist no publicly available
+image-action pairs. Some work, therefore, continues to focus on the tools to infer
+camera motion [15], or learns on a robotic setup altogether [17] where camera
+motion is accessible. The realization, however, that camera motion is intrinsic to
+the videos of laparoscopic interventions and that camera motion could be learned
+on harvested actions was first realized in [11], and later in [16]. This comes with
+the additional advantage that no robot is necessary to learn behaviors and that
+one can directly learn from human demonstrations.
+
+%% est:
+Non-rule-based, i.e. IL, attempts
+that consider both, tissue, and tools as source for camera motion are (Ji et al. 2018;
+Su et al. 2020; Wagner et al. 2021), but they utilize an oversimplified setup, require
+multiple cameras or tedious annotations
+
+While modern IL approaches could alleviate these issues, clinical
+data of laparoscopic surgeries remains unusable for IL. Therefore, SOTA IL attempts
+rely on artificially acquired data (Ji et al. 2018; Su et al. 2020; Wagner et al. 2021)
+
+
+
+
+
 supervised: no camera motion but tool motion, adding synthetic camera motion would allow to learn
+
 self-supervised: learn to predict camera motion on these pseudo labels
 
 \subsubsection{Homography-based Camera Motion Formulation}
@@ -698,7 +729,7 @@ theory of control paper up to merge, i.e. no including merge of two methods
 
 
 % \subsection{Imitation Learning in this Work}
-% Given the advancements in deep learning and especially in IL, it seems surprising that no-one applied IL to automate camera motion in laparoscopic surgery. After having a closer look, it comes, however, at no wonder people have not tried. Three major challenges reside:
+% Given the advancements in deep learning and especially in IL, it seems surprising that no one applied IL to automate camera motion in laparoscopic surgery. After having a closer look, it comes, however, at no wonder people have not tried. Three major challenges reside:
 % \\
 % \begin{itemize}
 % 	\item IL requires big data, but data collection is expensive, especially in realistic setups. The only two publicly available datasets that come with kinematic labels are MISAW \cite{mitsuishi2013master} and JIGSAW \cite{ahmidi2017dataset}, but both datasets are captured in a synthetic environment and without camera motion. This results in the challenge that all of the available data has no camera motion action labels, and reliably extracting camera motion in retrospect from dynamic surgical scenery is an unsolved task in itself.
