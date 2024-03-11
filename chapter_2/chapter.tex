@@ -1,9 +1,10 @@
 \graphicspath{{chapter_2}}
-\chapter[Camera Motion Automation]{Robotic Endoscope Camera Motion Automation under Remote Center of Motion Constraint}
-\chaptermark{Short title for headers}
+\chapter[Visual Servoing]{Robotic Endoscope Camera Motion Automation under Remote Center of Motion Constraint}
+\chaptermark{Visual Servoing}
 \label{chap:robotic_endoscope}
 \minitoc
 
+TODO: we contributed yadi yadi
 This chapter ... the work introduced in Huber... 
 
 \newpage
@@ -11,28 +12,28 @@ This chapter ... the work introduced in Huber...
 % Contributes ...
 
 % \section{Introduction}
-When compared to open surgery, MIS takes place under endoscopic guidance and offers improved cosmetics, less blood loss, shorter recovery times and reduced cost \cite{vitiello2012emerging}. In a traditional MIS setup, the surgeon is supported by an assistant who guides the endoscope. Although this task is conceptually simple, it requires trained personnel, which introduces cost \cite{horgan2001robots}. The assistant surgeon exhibits tremor, suffers fatigue, and can be prone to communication failures \cite{horgan2001robots, palep2009robotic, li2020accelerated}. 
+% When compared to open surgery, MIS takes place under endoscopic guidance and offers improved cosmetics, less blood loss, shorter recovery times and reduced cost \cite{vitiello2012emerging}. In a traditional MIS setup, the surgeon is supported by an assistant who guides the endoscope. Although this task is conceptually simple, it requires trained personnel, which introduces cost \cite{horgan2001robots}. The assistant surgeon exhibits tremor, suffers fatigue, and can be prone to communication failures \cite{horgan2001robots, palep2009robotic, li2020accelerated}. 
 
-Several robotic endoscope holders, such as AESOP \cite{unger1994aesop}, ViKY \cite{long2007development}, and EndoAssist \cite{gilbert2009endoassist}, have been developed to address these shortcomings. Research in \cite{aiono2002controlled} and \cite{voros2010viky} showcased a reduction in the intervention time. While robotic endoscope holders can facilitate improvements, they introduce additional workload to the surgeon. With the advance of automated surgical systems this additional workload can be reduced \cite{moustris2011evolution}. Therefore, different methods to automate endoscopic camera motion were explored. 
+% Several robotic endoscope holders, such as AESOP \cite{unger1994aesop}, ViKY \cite{long2007development}, and EndoAssist \cite{gilbert2009endoassist}, have been developed to address these shortcomings. Research in \cite{aiono2002controlled} and \cite{voros2010viky} showcased a reduction in the intervention time. While robotic endoscope holders can facilitate improvements, they introduce additional workload to the surgeon. With the advance of automated surgical systems this additional workload can be reduced \cite{moustris2011evolution}. Therefore, different methods to automate endoscopic camera motion were explored. 
 
-Alongside automation via kinematic data, visual servoing, i.e. control through images, is considered a promising alternative, as it provides intra-operative feedback \cite{pandya2014review} and is less prone to errors from model mismatch \cite{azizian2014visual}. In semi-autonomous setups, such as gaze or voice control \cite{taniguchi2010classification}, visual servoing can robustly reflect a surgeon's intent and respect anatomical constraints or facilitate full autonomy.
+% Alongside automation via kinematic data, visual servoing, i.e. control through images, is considered a promising alternative, as it provides intra-operative feedback \cite{pandya2014review} and is less prone to errors from model mismatch \cite{azizian2014visual}. In semi-autonomous setups, such as gaze or voice control \cite{taniguchi2010classification}, visual servoing can robustly reflect a surgeon's intent and respect anatomical constraints or facilitate full autonomy.
 
-Visual servoing approaches that satisfy a RCM constraint can be split into methods that rely on a mechanical RCM and methods that rely on a programmable RCM. There has been less research on visual servoing with programmable RCM because of robot singularities and constraints on the robot positioning, however, in contrast to a mechanical RCM, a programmable RCM can be adapted in real-time, and the robot, with which the programmable RCM is achieved, can be used for multiple purposes \cite{kuo2012kinematic}, for example in open surgery. Existing methods with mechanical RCM, and programmable RCM, will be detailed in \secref{c2:sec:mech_rcm}, and \secref{c2:sec:prog_rcm}, respectively.
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{img/labeled_setup_compressed.png}
-    \caption{Robotic setup. A Storz Endocameleon Hopkins Telescope, which provides a light source port and a camera attachment point, is mounted to a KUKA LBR Med 7 R800 robot via a 3D printed clamp. The robotic system undergoes image-based control to reach desired views of the surgical scene and simultaneously pivots around a programmable RCM.}
-    \label{c2:fig:setup}
-\end{figure}
+% Visual servoing approaches that satisfy a RCM constraint can be split into methods that rely on a mechanical RCM and methods that rely on a programmable RCM. There has been less research on visual servoing with programmable RCM because of robot singularities and constraints on the robot positioning, however, in contrast to a mechanical RCM, a programmable RCM can be adapted in real-time, and the robot, with which the programmable RCM is achieved, can be used for multiple purposes \cite{kuo2012kinematic}, for example in open surgery. Existing methods with mechanical RCM, and programmable RCM, will be detailed in \secref{c2:sec:mech_rcm}, and \secref{c2:sec:prog_rcm}, respectively.
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=\textwidth]{img/labeled_setup_compressed.png}
+%    \caption{Robotic setup. A Storz Endocameleon Hopkins Telescope, which provides a light source port and a camera attachment point, is mounted to a KUKA LBR Med 7 R800 robot via a 3D printed clamp. The robotic system undergoes image-based control to reach desired views of the surgical scene and simultaneously pivots around a programmable RCM.}
+%    \label{c2:fig:setup}
+%\end{figure}
 
 %\subsection{with Mechanical RCM}
-\subsection{Visual Servoing with Mechanical RCM}
-\label{c2:sec:mech_rcm}
-Examples of approaches that use a mechanical RCM are~\cite{omote1999self}, where a visual servo controls the position of a marked forceps in image space. In \cite{agustinos2014visual, voros2007automatic}, the tool entry point is exploited to find the tool tip in image space and to center it via visual servoing. Another common scheme is to alter the camera's zoom based on the surgical tools' distance, which was first presented in \cite{king2013towards}, where the tools are tracked with markers. Research in \cite{eslamian2020development, mariani2020experimental, dascan}, based on  \cite{Eslamian2016TowardsTI, eslamian2017autonomous}, adjusts the camera's distance in this manner. They align the camera's optical axis with the line that spans from RCM to the tools' center point. Such an approach requires a complicated registration procedure. In~\cite{abdelaal2020orientation}, Abdelaal \emph{et al.} also adjust the camera's distance to the surgical scene based on the tool distance, but they align the camera's optical axis with the scene's surface normal, which is made possible by their 6 DOF endoscope. Yu \emph{et al.}~\cite{yu2016automatic} adjust the field of view's width based on tool distance. In~\cite{ma2019autonomous}, Ma \emph{et al.} deploy a visual servo to center a marked tool by incorporating depth information, which they extract from camera and tool motion. In \cite{ma2020visual}, they extend this work into a quadratic program in which they constrain the camera's distance with respect to the tools and the tool position in the image plane, whilst minimizing the joint velocities. They rely on stereoscopic images for depth information.
+%\subsection{Visual Servoing with Mechanical RCM}
+%\label{c2:sec:mech_rcm}
+%Examples of approaches that use a mechanical RCM are~\cite{omote1999self}, where a visual servo controls the position of a marked forceps in image space. In \cite{agustinos2014visual, voros2007automatic}, the tool entry point is exploited to find the tool tip in image space and to center it via visual servoing. Another common scheme is to alter the camera's zoom based on the surgical tools' distance, which was first presented in \cite{king2013towards}, where the tools are tracked with markers. Research in \cite{eslamian2020development, mariani2020experimental, dascan}, based on  \cite{Eslamian2016TowardsTI, eslamian2017autonomous}, adjusts the camera's distance in this manner. They align the camera's optical axis with the line that spans from RCM to the tools' center point. Such an approach requires a complicated registration procedure. In~\cite{abdelaal2020orientation}, Abdelaal \emph{et al.} also adjust the camera's distance to the surgical scene based on the tool distance, but they align the camera's optical axis with the scene's surface normal, which is made possible by their 6 DOF endoscope. Yu \emph{et al.}~\cite{yu2016automatic} adjust the field of view's width based on tool distance. In~\cite{ma2019autonomous}, Ma \emph{et al.} deploy a visual servo to center a marked tool by incorporating depth information, which they extract from camera and tool motion. In \cite{ma2020visual}, they extend this work into a quadratic program in which they constrain the camera's distance with respect to the tools and the tool position in the image plane, whilst minimizing the joint velocities. They rely on stereoscopic images for depth information.
 
-\subsection{Visual Servoing with Programmable RCM}
-\label{c2:sec:prog_rcm}
-Multi-purpose serial manipulators can achieve a RCM programmatically. In \cite{osa2010framework}, Osa \emph{et al.} adapt the interaction matrix to account for the RCM constraint, which they then use to control a point in image space. The authors in \cite{aghakhani2013task} design a composite Jacobian method that integrates a RCM objective with a task function that defines an error on points in image space. Yang \emph{et al.} in \cite{yang2019adaptive} also design a Jacobian gain controller that enforces the tip of a tool to reside within a defined region. They additionally request the endoscope to extend the surgeon's natural line of sight. In \cite{li2020accelerated}, Li \emph{et al.} introduce the RCM and a visual error via the image Jacobian as constraints to a quadratic problem that aims at satisfying these constraints whilst minimizing the joint velocities.
+%\subsection{Visual Servoing with Programmable RCM}
+%\label{c2:sec:prog_rcm}
+%Multi-purpose serial manipulators can achieve a RCM programmatically. In \cite{osa2010framework}, Osa \emph{et al.} adapt the interaction matrix to account for the RCM constraint, which they then use to control a point in image space. The authors in \cite{aghakhani2013task} design a composite Jacobian method that integrates a RCM objective with a task function that defines an error on points in image space. Yang \emph{et al.} in \cite{yang2019adaptive} also design a Jacobian gain controller that enforces the tip of a tool to reside within a defined region. They additionally request the endoscope to extend the surgeon's natural line of sight. In \cite{li2020accelerated}, Li \emph{et al.} introduce the RCM and a visual error via the image Jacobian as constraints to a quadratic problem that aims at satisfying these constraints whilst minimizing the joint velocities.
 
 % option A:
 % Automation in General
@@ -53,7 +54,8 @@ Multi-purpose serial manipulators can achieve a RCM programmatically. In \cite{o
 %\cite{sun2020adaptive}        % mechanical rcm, adjust angle based on fusion of kinematic and visual data (stereoscopic)
 %\cite{sun2020visual}          % (estimate depth based on laparoscopic motion)
 
-\subsection{Limitations of Current Approaches and Contributions}
+\section{Introduction}
+% \subsection{Limitations of Current Approaches and Contributions}
 The majority of existing methods rely on the tool distance to infer a control law. Only in \cite{ma2019autonomous, ma2020visual, aghakhani2013task, yang2019adaptive, li2020accelerated, osa2010framework}, the position of arbitrary points wrt. the camera frame is fed back to the robot. All of the existing methods rely on relative positions, which either requires tool and camera positions or depth images. Position data might only be accessible in a fully robotic setup and image depth is difficult to estimate in a dynamic surgical environment from a monocular camera. Stereoscopic images are usually not available in robotically assisted surgery.
 
 Our paper addresses the above limitations with the following contributions:
@@ -133,21 +135,21 @@ In the following section, we introduce a homography-based visual servoing task.
 \subsection{Homography-based Visual Servoing Task}
 \label{c2:sec:homography_task}
 
-\begin{figure}
+\begin{figure}[tb]
 \centering
-\includegraphics[width=0.8\textwidth]{img/h_rcm_vs_fig.pdf}
+\includegraphics[width=0.7\textwidth]{img/h_rcm_vs_fig.pdf}
 \caption{Schematic illustration of the setup: The axes' RGB coloring corresponds to XYZ, respectively. A serial manipulator is connected to the world frame W. The endoscope spans from $^\text{W}\mathbf{x}_i$ to $^\text{W}\mathbf{x}_{i+1}$ and it enters the trocar, which lies at $\mathbf{x}_\text{trocar}$. The camera rotates around the RCM $^\text{W}\mathbf{x}_\text{RCM}$ and its entry depth is proportional to $\lambda \geq 0$.  The camera observes the surgical scene (pink) from different frames $\text{C}$ and $\text{C}^*$.}
 \label{c2:fig:schematic}
 \end{figure}
 
-\begin{landscape}
-\begin{figure}
+% \begin{landscape}
+\begin{figure}[tb]
 \centering
 \includegraphics[width=\textwidth]{img/h_rcm_vs_pipeline_real_view.pdf}
 \caption{Processing pipeline. A surgeon manually controls the robot through a GUI, collecting desired views along the way. The images are pre-processed, and a graph of desired views is built in the background by the homography generation node. Once built, the surgeon selects desired views through the GUI, which triggers a shortest path finding from the current vertex (yellow), to the desired one (pink), and the execution of subsequent homography estimations that lead to the target.}
 \label{c2:fig:pipe}
 \end{figure}
-\end{landscape}
+% \end{landscape}
 
 Suppose point $^\text{W}\mathbf{X}$ is projected from a plane, i.e. the surgical scene, onto normalized coordinates $\mathbf{m}^*$ in camera frame $C^*$, see \figref{c2:fig:schematic}, via
 \begin{equation}
@@ -242,14 +244,14 @@ This section gives an overview of the robotic system and its components in \secr
 \subsection{Robotic System}
 \label{c2:sec:robotic_system}
 
-Our experimental setup, see \figref{c2:fig:setup}, uses a KUKA LBR Med 7 R800 robot. To control it, we created a bridge to ROS by wrapping the Fast Robot Interface (FRI) \cite{schreiber2010fast} with ROS' Hardware Interface functionality. We use a Storz Endocameleon Hopkins Telescope, from which we capture images using a Storz TH~102~H3-Z~FI camera head. The endoscope is mounted to the LBR Med 7 R800 robot with a custom designed 3D print. For illumination, we connect a Storz TL 300 Power LED 300 light source to the endoscope. The image feed is output to SDI, which we convert to HDMI with a Monoprice 3G SDI to HDMI converter. We then grab the HDMI signal with a DeckLink 4K Extreme 12G and stream it onto the ROS network.
+Our experimental setup, see \figref{in:fig:experimental_setup}, uses a KUKA LBR Med 7 R800 robot. To control it, we created a bridge to ROS by wrapping the Fast Robot Interface (FRI) \cite{schreiber2010fast} with ROS' Hardware Interface functionality. We use a Storz Endocameleon Hopkins Telescope, from which we capture images using a Storz TH~102~H3-Z~FI camera head. The endoscope is mounted to the LBR Med 7 R800 robot with a custom designed 3D print. For illumination, we connect a Storz TL 300 Power LED 300 light source to the endoscope. The image feed is output to SDI, which we convert to HDMI with a Monoprice 3G SDI to HDMI converter. We then grab the HDMI signal with a DeckLink 4K Extreme 12G and stream it onto the ROS network.
 
 % The acquired images are sent to the Storz TC 300 Image1 S H3-Link, which links the camera via DisplayPort to the Storz TC 200 Image1 S Connect. From there on, the image feed...
 
 \subsection{Clinical Scenario Evaluation Protocol}
 \label{c2:sec:clin_protocol}
 
-The proposed method is evaluated in the laparoscopic setup shown in \figref{c2:fig:setup}. We utilize a Szabo Pelvic Trainer to simulate a trocar. A Kyoto Kagaku colon rectum tube is inserted into the Szabo Pelvic Trainer to model a laparoscopic view of the abdomen. The clinical procedure is then modeled as follows. The robot initially drives the endoscope to the trocar and $\lambda$ in (\eqref{c2:eq:lambda}) is set to $1$. Following that, the user mounts the camera and the light source to the laparoscope. The user then drives the laparoscope through the trocar into the phantom.
+The proposed method is evaluated in the laparoscopic setup shown in \figref{in:fig:experimental_setup}. We utilize a Szabo Pelvic Trainer to simulate a trocar. A Kyoto Kagaku colon rectum tube is inserted into the Szabo Pelvic Trainer to model a laparoscopic view of the abdomen. The clinical procedure is then modeled as follows. The robot initially drives the endoscope to the trocar and $\lambda$ in (\eqref{c2:eq:lambda}) is set to $1$. Following that, the user mounts the camera and the light source to the laparoscope. The user then drives the laparoscope through the trocar into the phantom.
 
 In the phantom, we identify four clinically relevant views of the scene. These views include an overview of the scene, a view of the tool insertion area towards the abdominal wall, and two close-ups, one for further examination. For visual servoing between these views in a clinical scenario, these three objectives are of importance
 
@@ -315,14 +317,13 @@ In this section we investigate the trajectory from tool insertion view to close-
 
 \subsubsection{Servoing to target views under tool motion}
 \label{c2:sec:clin_res_tool}
-For this measurement, the visual servo navigates from the tool insertion area to the overview under tool motion, see \secref{c2:sec:clin_protocol_tool}. The trajectory with all intermediate and the final vertex/view is shown in \figref{c2:fig:tool_insertion_trajectory}. It can be seen that, despite tool motion, the visual servo converges at pixel accuracy towards the desired views. The final camera position deviates by $1.4\,\text{mm}$ to the desired one. The robot joint angles deviate on average by $1.1\pm1.1^\circ$ from the initial configuration. A video of this experiment is provided under\ \footnote{\label{foot:vid}\url{https://drive.google.com/file/d/1UCr__R2_7xit6TTq3T9pTIEg1fMsfT3j/view?usp=sharing}}.
-
-\begin{figure}
+\begin{figure}[tb]
     \centering
-    \includegraphics[width=\linewidth]{img/tool_insertion_trajectory.pdf}
+    \includegraphics[width=0.8\textwidth]{img/tool_insertion_trajectory.pdf}
     \caption{Servoing under tool motion, see \secref{c2:sec:clin_protocol_tool}. Initially, the graph is built in manual control mode (top row), yellow indicates the current vertex. The visual servo is then executed to navigate back from the tool insertion to the overview (bottom row). Pink indicates the target vertex.}
     \label{c2:fig:tool_insertion_trajectory}
 \end{figure}
+For this measurement, the visual servo navigates from the tool insertion area to the overview under tool motion, see \secref{c2:sec:clin_protocol_tool}. The trajectory with all intermediate and the final vertex/view is shown in \figref{c2:fig:tool_insertion_trajectory}. It can be seen that, despite tool motion, the visual servo converges at pixel accuracy towards the desired views. The final camera position deviates by $1.4\,\text{mm}$ to the desired one. The robot joint angles deviate on average by $1.1\pm1.1^\circ$ from the initial configuration. A video of this experiment is provided under\ \footnote{\label{foot:vid}\url{https://drive.google.com/file/d/1UCr__R2_7xit6TTq3T9pTIEg1fMsfT3j/view?usp=sharing}}.
 
 \subsubsection{Servoing to target views after phantom repositioning}
 \label{c2:sec:clin_res_re}

@@ -1,9 +1,10 @@
 \graphicspath{{chapter_4}}
 \chapter[Camera Motion Prediction]{Self-supervised Endoscopic Camera Motion Imitation Learning from Videos of Laparoscopic Interventions}
-\chaptermark{Short title for headers}
+\chaptermark{Camera Motion Prediction}
 \label{chap:camera_motion_extraction}
 \minitoc
-% \section{Introduction}
+TODO: we contributed yadi yadi
+\section{Introduction}
 Automation in robot-assisted minimally invasive surgery (RMIS) may reduce human error that is linked to fatigue, lack of attention and cognitive overload \cite{fiorini2022concepts}.
 It could help surgeons operate such systems by reducing the learning curve \cite{van2018learning}.
 And in an ageing society with shrinking workforce, it could help to retain accessibility to healthcare. It is therefore expected that parts of RMIS will be ultimately automated \cite{davenport2019potential,zidane2022robotics}. On the continuous transition towards different levels of autonomy, camera motion automation is likely to happen first \cite{kitaguchi2022artificial}.
@@ -45,14 +46,15 @@ In this work, we build on \cite{huber2022deep} for computationally efficient ima
 \section{Materials and Methods}
 The proposed approach to learning camera motion prediction is summarized in \figref{c4:fig:training_pipeline}. The following sections will describe its key components in more detail.
 
-\begin{landscape}
+% \begin{landscape}
 \begin{figure}
 \centering
-\includegraphics[width=0.7\paperheight]{fig/23_02_13_miccai_figures.drawio.pdf}
+%\includegraphics[width=0.7\paperheight]{fig/23_02_13_miccai_figures.drawio.pdf}
+\includegraphics[width=\textwidth]{fig/23_02_13_miccai_figures.drawio.pdf}
 \caption{Training pipeline, refer to  \secref{c4:sec:proposed_pipeline}. From left to right: Image sequences are importance sampled from the video database and random augmentations are applied per sequence online. The lower branch estimates camera motion between subsequent frames, which is taken as pseudo-ground-truth for the upper branch, which learns to predict camera motion on a preview horizon.}
 \label{c4:fig:training_pipeline}
 \end{figure}
-\end{landscape}
+% \end{landscape}
 
 
 \subsection{Theoretical Background}

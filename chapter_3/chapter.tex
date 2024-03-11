@@ -1,8 +1,9 @@
 \graphicspath{{chapter_3}}
-\chapter[Camera Motion Estimation]{Endoscopic Camera Motion Extraction from Dynamic Surgical Scenes}
-\chaptermark{Short title for headers}
+\chapter[Camera Motion Extraction]{Endoscopic Camera Motion Extraction from Dynamic Surgical Scenes}
+\chaptermark{Camera Motion Extraction}
 \label{chap:camera_motion_extraction}
 \minitoc
+TODO: we contributed yadi yadi
 \section{Introduction}
 % short introduction to deep learning in medical imaging
 % The advancement of dedicated chips unlocked the application of Deep Neural Networks (DNN) to vast datasets, and with it, the extraction of previously intangible information from them. As a result, DNNs lead to dramatic SOTA improvements in 
@@ -30,32 +31,32 @@ Only \cite{le2020deep} and \cite{zhang2020content} train DNNs on object motion i
 
 \section{Materials and Methods}
 
-\subsection{Theoretical Background}
-Two images are related by a homography if both images view the same plane from different angles and distances. Points on the plane, as observed by the camera from different angles in homogeneous coordinates $\mathbf{p}_i = \begin{bmatrix}u_i&v_i&1\end{bmatrix}^\text{T}$ are related by a projective homography $\mathbf{G}$ \cite{malis2007deeper}
-\begin{equation}
-    \alpha_g\mathbf{p}_i = \mathbf{G}\mathbf{p}_i^\prime.
-    \label{c3:eq:proj_hom}
-\end{equation}
-Since the points $\mathbf{p}_i$ and $\mathbf{p}_i^\prime$ are only observed in the 2D image, depth information is lost, and the projective homography $\mathbf{G}$ can only be determined up to scale $\alpha_g$. The distinction between projective homography $\mathbf{G}$ and homography in Euclidean coordinates $\mathbf{H} = \mathbf{K}^{-1}\mathbf{G}\mathbf{K}$, with the camera intrinsics $\mathbf{K}$, is often not made for simplicity, but is nonetheless important for control purposes. The eight unknown parameters of $\mathbf{G}$ can be obtained through a set of $N\geq4$ matching points $\mathbb{P} = \{(\mathbf{p}_i, \mathbf{p}^\prime_i), i\in[0,N-1]\}$ by rearranging \eqref{c3:eq:proj_hom} into
-\begin{equation}
-    \begin{bmatrix}
-        u^\prime_i & v^\prime_i & 1 & 0   &   0 & 0 & -u^\prime_i u_i & -v^\prime_i u_i & -u_i \\
-        0   &   0 & 0 & u^\prime_i & v^\prime_i & 1 & -u^\prime_i v_i & -v^\prime_i v_i & - v_i
-    \end{bmatrix}\mathbf{g}= \mathbf{0}\quad\forall i,
-    \label{c3:eq:hom_lin_sys}
-\end{equation}
-where $\mathbf{g}$ holds the entries of $\mathbf{G}$ as a column vector. The ninth constraint, by convention, is usually to set $||\mathbf{g}||_2 = 1$. Classically, $\mathbb{P}$ is obtained through feature detectors but it may also be used as a means to parameterise the spatial transformation.
-Recent deep approaches indeed set $\mathbb{P}$ as the corners of an image, and predict $\Delta \mathbf{p}_i = \mathbf{p}^\prime_i - \mathbf{p}_i$. This is also known as the four point homography $\mathbf{G}_{4\text{point}}$
-\begin{equation}
-    \mathbf{G}_{4\text{point}} = \begin{bmatrix}
-        \Delta u_0 & \Delta v_0 \\
-        \Delta u_1 & \Delta v_1 \\
-        \Delta u_2 & \Delta v_2 \\
-        \Delta u_3 & \Delta v_3
-    \end{bmatrix},
-    \label{c3:eq:4pt}
-\end{equation}
-which relates to $\mathbf{G}$ through \eqref{c3:eq:hom_lin_sys}, where $\mathbf{p}^\prime_i = \mathbf{p}_i + \Delta \mathbf{p}_i$.    
+%\subsection{Theoretical Background}
+%Two images are related by a homography if both images view the same plane from different angles and distances. Points on the plane, as observed by the camera from different angles in homogeneous coordinates $\mathbf{p}_i = \begin{bmatrix}u_i&v_i&1\end{bmatrix}^\text{T}$ are related by a projective homography $\mathbf{G}$ \cite{malis2007deeper}
+%\begin{equation}
+%    \alpha_g\mathbf{p}_i = \mathbf{G}\mathbf{p}_i^\prime.
+%    \label{c3:eq:proj_hom}
+%\end{equation}
+%Since the points $\mathbf{p}_i$ and $\mathbf{p}_i^\prime$ are only observed in the 2D image, depth information is lost, and the projective homography $\mathbf{G}$ can only be determined up to scale $\alpha_g$. The distinction between projective homography $\mathbf{G}$ and homography in Euclidean coordinates $\mathbf{H} = \mathbf{K}^{-1}\mathbf{G}\mathbf{K}$, with the camera intrinsics $\mathbf{K}$, is often not made for simplicity, but is nonetheless important for control purposes. The eight unknown parameters of $\mathbf{G}$ can be obtained through a set of $N\geq4$ matching points $\mathbb{P} = \{(\mathbf{p}_i, \mathbf{p}^\prime_i), i\in[0,N-1]\}$ by rearranging \eqref{c3:eq:proj_hom} into
+%\begin{equation}
+%    \begin{bmatrix}
+%        u^\prime_i & v^\prime_i & 1 & 0   &   0 & 0 & -u^\prime_i u_i & -v^\prime_i u_i & -u_i \\
+%        0   &   0 & 0 & u^\prime_i & v^\prime_i & 1 & -u^\prime_i v_i & -v^\prime_i v_i & - v_i
+%    \end{bmatrix}\mathbf{g}= \mathbf{0}\quad\forall i,
+%    \label{c3:eq:hom_lin_sys}
+%\end{equation}
+%where $\mathbf{g}$ holds the entries of $\mathbf{G}$ as a column vector. The ninth constraint, by convention, is usually to set $||\mathbf{g}||_2 = 1$. Classically, $\mathbb{P}$ is obtained through feature detectors but it may also be used as a means to parameterise the spatial transformation.
+%Recent deep approaches indeed set $\mathbb{P}$ as the corners of an image, and predict $\Delta \mathbf{p}_i = \mathbf{p}^\prime_i - \mathbf{p}_i$. This is also known as the four point homography $\mathbf{G}_{4\text{point}}$
+%\begin{equation}
+%    \mathbf{G}_{4\text{point}} = \begin{bmatrix}
+%        \Delta u_0 & \Delta v_0 \\
+%        \Delta u_1 & \Delta v_1 \\
+%        \Delta u_2 & \Delta v_2 \\
+%        \Delta u_3 & \Delta v_3
+%    \end{bmatrix},
+%    \label{c3:eq:4pt}
+%\end{equation}
+%which relates to $\mathbf{G}$ through \eqref{c3:eq:hom_lin_sys}, where $\mathbf{p}^\prime_i = \mathbf{p}_i + \Delta \mathbf{p}_i$.    
 
 %\section{Isolating Camera Motion from Surgical Scene Motion}
 
@@ -63,7 +64,7 @@ which relates to $\mathbf{G}$ through \eqref{c3:eq:hom_lin_sys}, where $\mathbf{
 
 Similar to \cite{le2020deep}, we initially find camera motion free image sequences, and synthetically add camera motion to them. In our work, we isolate camera motion free image sequences from da Vinci surgeries, and learn homography estimation supervisedly. We acquire publicly available laparoscopic, and da Vinci surgery videos. An overview of all datasets is shown in \figref{c3:fig:data}. Excluded are synthetic, and publicly unavailable datasets. Da Vinci surgery datasets, and laparoscopic surgery datasets require different pre-processing steps, which are described below.
 
-\begin{figure}
+\begin{figure}[tb]
 \centering
 \begin{subfigure}[b]{\textwidth}
     \centering
@@ -107,7 +108,7 @@ Laparoscopic images are typically observed through a Hopkins telescope, which ca
 \end{equation}
 where the circle's center is $(x_0, x_1)$, and its radius is $\sqrt{x_2 + x^2_0 + x^2_1}$. We then crop the view centrally around the circle's center, and scale it to a resolution of $240\times320$. An implementation is provided on GitHub\footnote[2]{\url{https://github.com/RViMLab/endoscopy}}.
 
-\begin{figure}
+\begin{figure}[tb]
 \centering
 \begin{subfigure}[b]{\textwidth}
     \centering
@@ -135,14 +136,14 @@ In this work we exploit the static camera in da Vinci surgeries, which allows us
 
 Image pairs are sampled from image sequences of the HFR da Vinci surgery dataset of \figref{c3:fig:data_a}. An image pair consists of an anchor image $\mathcal{I}_n$, and an offset image $\mathcal{I}_{n+t}$. The offset image is sampled uniformly from and interval $t\in[-T,T]$ around the anchor. The HFR da Vinci surgery dataset is relatively small, compared to the laparoscopic datasets, see \figref{c3:fig:data_b}. Therefore, we apply image augmentations to the sampled image pairs. They include transform to grayscale, horizontal, and vertical flipping, cropping, change in brightness, and contrast, Gaussian blur, fog simulation, and random combinations of those. Camera motion is then added synthetically to the augmented image $\mathcal{I}^\text{aug}_{n+t}$ via the \textit{homography generation algorithm} from \secref{c3:sec:hom_gen}. A DNN, with a backbone, then learns to predict the homography $\mathbf{G}_{4\text{point}}$ between the augmented image, and the augmented image with synthetic camera motion at time step $n+t$.
 
-\begin{landscape}
-\begin{figure}
+%\begin{landscape}
+\begin{figure}[tb]
     \centering
     \includegraphics[width=\linewidth]{img/pipeline.pdf}
     \caption{Deep homography estimation training pipeline. Image pairs are sampled from the HFR da Vinci surgery dataset. The \textit{homography generation algorithm} then adds synthetic camera motion to the augmented images, which is regressed through a backbone DNN.}
     \label{c3:fig:hom}
 \end{figure}
-\end{landscape}
+%\end{landscape}
 
 \subsection{Homography Generation Algorithm}
 \label{c3:sec:hom_gen}
@@ -244,7 +245,7 @@ The results are listed in Tab.\,\ref{c3:tab::results}. It can be seen that the d
 
 % Given the ResNet-34, which performs well on inference, and executes fast on the GPU, we run additional experiments to determine the effect of our method on homography estimation in dynamic surgical scenes. In this section, we train the ResNet-34 backbone for $100$ epochs, with a batch size of $256$, using the Adam optimizer with a learning rate of \num{1e-3}. Initially, we fix the sequence length $T$ to $25$, and train on different edge deviations $\varrho\in\{32,48,64\}$. Next, we fix the edge deviation $\varrho$ to $48$, and train on different sequence lengths $T\in\{1,25,50\}$, where a sequence length of $1$ corresponds to a static pair of images. The results are shown in \figref{c3:fig:resnet34}, and a qualitative example is presented in \figref{c3:fig:qualitative}.
 
-\begin{figure}
+\begin{figure}[tb]
 \centering
 \begin{subfigure}[b]{\textwidth}
     \centering
@@ -262,7 +263,7 @@ The results are listed in Tab.\,\ref{c3:tab::results}. It can be seen that the d
 \label{c3:fig:resnet34}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[tb]
 \centering
 \includegraphics[width=\textwidth]{fig/frac/cdf.pdf}
 \caption{CDF for SURF \& RANSAC, and ResNet-34, trained with a sequence length $T=25$, and edge deviation $\varrho=48$. The identity is added for reference. CDF thresholds for the SURF \& RANSAC are $t^\text{gt}_{1/10/30/50/70/90} = 0.51/0.80/1.09/1.48/2.07/3.53\,\text{pixels}$, and for the ResNet-34 $t^\text{gt}_{1/10/30/50/70/90} = 0.50/0.83/1.00/1.26/1.59/2.15\,\text{pixels}$. ResNet-34 generally performs better, and has no outliers.}
@@ -279,7 +280,7 @@ Given that ResNet-34 performs well on the ground truth set, and executes fast on
 % $\text{ResNet-34}$      - 0.50/0.83/1.00/1.26/1.59/2.15
 % $\text{SURF \& RANSAC}$ - 0.51/0.80/1.09/1.48/2.07/3.53
 
-%\begin{figure}
+%\begin{figure}[tb]
 %    \centering
 %    \resizebox{0.8\linewidth}{!}{
 %        \includegraphics{fig/frac/cdf.pdf}
@@ -291,7 +292,7 @@ Given that ResNet-34 performs well on the ground truth set, and executes fast on
 
 % qualitative classical tends to overestimate motion
 \begin{landscape}
-\begin{figure}
+\begin{figure}[tb]
 \centering
 \begin{subfigure}[b]{0.3\textwidth}
     \centering

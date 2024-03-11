@@ -483,7 +483,7 @@ Where a mechanical RCM is not available, it can be achieved programmatically. As
 \end{figure}
 Apparently, current visual servos oversimplify the automation task greatly. Only \cite{gruijthuijsen2021autonomous} incorporate neural networks for autonomous instrument tracking. What is generally lacking is an understanding for the surgical scene that could help overcome the simplifications that are currently made for visual servoing. Indeed, there exists plenty of research on solving auxiliary vision tasks through data-driven methods, see \figref{in:fig:auxiliary_tasks}. Some of which, will be highlighted below. 
 
-\paragraph{Automation Related Tasks} Based on progress in segmentation tasks, using deep learning, but also with the prospect of identifying tool tips for automating procedures, a vast body of literature on surgical tool segmentation evolved, including \cite{allan20192017, pakhomov2019deep}, and \cite{garcia2016real, garcia2017toolnet, shvets2018automatic, islam2019real, jin2018tool, sarikaya2017detection, da2019self, attia2017surgical, laina2017concurrent}. Some of these segmentation works help improve surgical tool pose estimation, as was shown in \cite{kurmann2017simultaneous, li2020super, hasan2021detection}, as does monocular depth estimation \cite{li2020unsupervised,huang2021self,xu2022self,li2023multi} and \cite{li2022geometric,bardozzo2022stasis,huang2022simultaneous,huang2022self}. Whilst these works could be fused with any of the visual servos from above, it wouldn't resolve the general assumption that camera motion only results from tool motion. Besides tool segmentation, research exists for surgical phase detection \cite{stauder2014random, lalys2014surgical, jin2016endorcn, dergachyova2016automatic,twinanda2016endonet,malpani2016system, jin2017sv, ross2018exploiting, yengera2018less, funke2018temporal, yu2018learning} as well as \cite{bodenstedt2019active, padoy2019machine, czempiel2020tecno, jin2020multi, kitaguchi2020real}. These could condition visual servos on the current phase of the surgery. Other self-supervised approaches, which could be integrated similarly, aim to estimate the remaining time of a surgical procedure \cite{twinanda2018rsdnet, bodenstedt2019prediction, rivoir2019unsupervised} or perform action recognition \cite{nwoye2021deep}.
+\paragraph{Automation Related Tasks} Based on progress in segmentation tasks, using deep learning, but also with the prospect of identifying tool tips for automating procedures, a vast body of literature on surgical tool segmentation evolved, including \cite{allan20192017, pakhomov2019deep}, and \cite{garcia2016real, garcia2017toolnet, shvets2018automatic, islam2019real, jin2018tool, sarikaya2017detection, da2019self, attia2017surgical, laina2017concurrent}. Some of these segmentation works help improve surgical tool pose estimation, as was shown in \cite{kurmann2017simultaneous, li2020super, hasan2021detection}, as does monocular depth estimation \cite{li2020unsupervised,huang2021self,xu2022self, shao2022self,li2023multi,lou2024wssfmlearner} and \cite{li2022geometric,bardozzo2022stasis,huang2022simultaneous,huang2022self}. Whilst these works could be fused with any of the visual servos from above, it wouldn't resolve the general assumption that camera motion only results from tool motion. Besides tool segmentation, research exists for surgical phase detection \cite{stauder2014random, lalys2014surgical, jin2016endorcn, dergachyova2016automatic,twinanda2016endonet,malpani2016system, jin2017sv, ross2018exploiting, yengera2018less, funke2018temporal, yu2018learning} as well as \cite{bodenstedt2019active, padoy2019machine, czempiel2020tecno, jin2020multi, kitaguchi2020real}. These could condition visual servos on the current phase of the surgery. Other self-supervised approaches, which could be integrated similarly, aim to estimate the remaining time of a surgical procedure \cite{twinanda2018rsdnet, bodenstedt2019prediction, rivoir2019unsupervised} or perform action recognition \cite{nwoye2021deep}.
 
 \paragraph{The Automation Task} Automation related tasks, as introduced in the previous paragraph, are often treated as prerequisite for autonomy, but could at present only contribute as input to a smarter visual servoing scheme. Given the success of data-driven methods for these auxiliary tasks, it might be reasonable to utilize them for laparoscopic camera motion automation as well. But instead of taking any of the auxiliary tasks as priors, one might consider learning automation directly, too. This is because, firstly, in deep learning, end-to-end approaches have proven to outperform methods that rely on hand-crafted inputs that may seem humanly logical, and, secondly, it is the simplest approach. So instead of extracting redundant information, such as tool tips, surgery phases, depth, or poses first, we suggest that it might make sense to apply data-driven methods to automating laparoscopic camera motion immediately. This sentiment is supported by related fields, where learning policies on vast amounts of data has demonstrated great success with the emergence of complex behaviors, far more complex than the tool following proxy. Interestingly, data-driven laparoscopic camera motion automation is an underexplored field. In spite of the underexploration of data-driven methods for laparosopic camera motion automation, we turn to a broader body of literature, and introduce several learning-based methods in the next sections \secref{in:sec:reinforcement_learning} and \secref{in:sec:imitation_learning}.
 
@@ -543,7 +543,7 @@ Different methods for embedding exist. A triplet loss can be formulated to pull 
 
 Sermanet et al. in \cite{sermanet2018time} used for example a triplet loss on multi-view videos to learn a view-point invariant embedding that can be used to have a learner learn an expert demonstration. Aytar et al. in \cite{aytar2018playing} had an agent learn to reach checkpoints by sampling checkpoints from demonstrations on YouTube and by defining a reward on the alignment between the current state and the desired checkpoint. In few-shot, Xie et al. \cite{xie2018few} learn initial parameters for a network via MAML, a form of meta-learning, to infer goals in demonstrations from a single gradient-step. They then perform RL to replicate a policy that yields these goals. The idea of Universal Planning Networks by Srinivas et al. in \cite{srinivas2018universal} is further extended by Yu et al. in \cite{yu2019unsupervised}, which learns a goal metric for RL in an unsupervised manner.
 
-\section{Imitation Learning for Laparoscopic Camera Motion Automation}
+\section[Imitation Learning for Robotic Laparoscopy]{Imitation Learning for Laparoscopic Camera Motion Automation}
 \label{in:sec:imitation_learning_for_camera_motion_automation}
 In the previous sections, several considerations that are relevant to achieving laparoscopic camera motion automation, including economical, clinical, and technical aspects, were introduced. Plenty arguments went into the decision making and some of which may have already been forgotten. Therefore, in this section, we will revisit the key-concepts in \secref{in:sec:revisiting_key_concepts}. Next, and given these critical considerations, we will hypothesize a method for laparoscopic camera motion automation in \secref{in:sec:hypothesizing}, followed by several sections on realizing the hypothesized approach.
 
@@ -554,7 +554,7 @@ In the previous sections, several considerations that are relevant to achieving 
 \paragraph{High-level Aspects of Camera Motion Automation}
 \begin{figure}
 	\centering
-	\includegraphics[width=0.8\textwidth]{chapter_2/img/labeled_setup_compressed.png}
+	\includegraphics[width=\textwidth]{chapter_2/img/labeled_setup_compressed.png}
 	\caption{Robotic setup. A Storz Endocameleon Hopkins Telescope, which provides a light source port and a camera attachment point, is mounted to a KUKA LBR Med 7 R800 robot via a 3D printed clamp. The robotic system undergoes image-based control to reach desired views of the surgical scene and simultaneously pivots around a programmable RCM.}
 	\label{in:fig:experimental_setup}
 \end{figure}
@@ -626,7 +626,7 @@ IL requires large amounts of data for learning the tail-end, i.e. rare cases. Th
 \end{table}
 Given the advancements in deep learning and especially in IL, it is surprising that no one applied IL to automate camera motion in laparoscopic surgery. It appears trivial that camera motion could be learned from data of real surgeries, thereby implicitly tackling the domain-gap that e.g. RL methods face. After having a closer look, it comes, however, at no surprise researchers have not tried. The challenge is to collect sufficient data of high quality. In fact, there exists no dataset with state-action (image-camera motion) pairs. Many works agree and highlight that this lack of expert annotated data hinders progress towards camera motion automation in RMIS \cite{maier2022surgical,kassahun2016surgical,esteva2019guide}.
 
-Data collection is expensive, especially in realistic setups. Recent efforts to make vast amounts of laparoscopic intervention videos publicly available \cite{maier2022surgical} drastically change how IL for camera motion automation could be approached. An overview of the, by the time of this writing, available datasets is shown in \tabref{in:tab:datasets}. The two biggest datasets, by orders of magnitude, are Cholec80 \cite{twinanda2016endonet} and ROBUST-MIS \cite{maier2020heidelberg}, often referred to as Heichole, both are laparoscopic, which is exactly what we are looking for. Some of the datasets, since they come with hand-annotated segmentations, come at low frame rates, i.e. $1-2\,\text{Hz}$, and are, therefore, unusable for IL. As was already pointed out, none of the datasets come with state-action pairs. The only two publicly available datasets that come with kinematic labels are MISAW \cite{mitsuishi2013master} and JIGSAW \cite{ahmidi2017dataset}, but both datasets are captured in synthetic environments and without camera motion.
+Data collection is expensive, especially in realistic setups. Recent efforts to make vast amounts of laparoscopic intervention videos publicly available \cite{maier2022surgical} drastically change how IL for camera motion automation could be approached. An overview of the, by the time of this writing, available datasets is shown in \tabref{in:tab:datasets}. The two biggest datasets, by orders of magnitude, are Cholec80 \cite{twinanda2016endonet} and ROBUST-MIS \cite{maier2020heidelberg}, often referred to as HeiChole, both are laparoscopic, which is exactly what we are looking for. Some of the datasets, since they come with hand-annotated segmentations, come at low frame rates, i.e. $1-2\,\text{Hz}$, and are, therefore, unusable for IL. As was already pointed out, none of the datasets come with state-action pairs. The only two publicly available datasets that come with kinematic labels are MISAW \cite{mitsuishi2013master} and JIGSAW \cite{ahmidi2017dataset}, but both datasets are captured in synthetic environments and without camera motion.
 
 The missing state-action pairs for all of the available datasets are the major roadblock for applying IL methods to them. Reliably extracting camera motion in retrospect from dynamic surgical scenery is an unsolved task in itself. Somewhat surprisingly, one of the da Vinci\textsuperscript{\textregistered} datasets, SurgVisDom \cite{zia2021surgical}, which was intentionally released for domain transfer, plays an important role in extracting camera motion from laparoscopic videos. How we propose to extract laparoscopic camera motion reliably and how the locking mechanism of the da Vinci\textsuperscript{\textregistered} robot, refer \secref{in:sec:automation}, plays a crucial role, will be explained in the following \secref{in:sec:supervised_self_supervised}.
 
@@ -665,30 +665,64 @@ The state of the system $\hat{s}_t$, although underdetermined with only access t
 
 \subsubsection{Homography-based Camera Motion Formulation}
 \label{in:sec:homography_based_camera_motion_formulation}
+Extracting camera motion from images is a well studied problem, but not so much in the surgical context, where an extremely dynamic and deformable environment with little texture hardens the task. Therefore, simplifying the problem is crucial. In its simplest form, one can model a surgical scene as a plane, the change in observed views, i.e. induced through camera motion, can then be described via homographies. Homographies are thus a good candidate for describing actions $\hat{a}^*_t$, necessary for \figref{in:fig:hypothesized_pipeline}. They additionally can be utiliezd to feedback a control signal to the robot. In this section, we will first describe homographies and their theoretical background. Next, we will explain how they can be used to control the velocity of a camera frame C. 
 
-introduce all the deep homography estimation
+% , camera motion can hence be described as a homography and recent advances in deep homography estimation have successfully extracted homographies from images with little texture \cite{detone2016deep, erlik2017homography, nguyen2018unsupervised}. These findings were further applied in the surgical realm by Gomes et al. in \cite{gomes2019unsupervised} and by Bano et al. in \cite{bano2020deep}. Bano et al. further refined their findings in \cite{bano2020vessel} by segmenting veins for the registration process. Yet, none of the above methods takes dynamic scenes into consideration. Most recent literature on deep homography estimation demonstrated how deep homography estimation can be applied to dynamic scenery \cite{le2020deep, zhang2019content}.
 
-theoretical background homography estimation paper
+\paragraph{Homographies and Four Point Representation} Two images are related by a homography if both images view the same plane from different angles and distances. Points on the plane, as observed by the camera from different angles in homogeneous coordinates $\mathbf{p}_i = \begin{bmatrix}u_i&v_i&1\end{bmatrix}^\text{T}$ are related by a projective homography $\mathbf{G}$ \cite{malis2007deeper}
+\begin{equation}
+    \alpha_g\mathbf{p}_i = \mathbf{G}\mathbf{p}_i^\prime.
+    \label{c3:eq:proj_hom}
+\end{equation}
+Since the points $\mathbf{p}_i$ and $\mathbf{p}_i^\prime$ are only observed in the 2D image, depth information is lost, and the projective homography $\mathbf{G}$ can only be determined up to scale $\alpha_g$. The distinction between projective homography $\mathbf{G}$ and homography in Euclidean coordinates $\mathbf{H} = \mathbf{K}^{-1}\mathbf{G}\mathbf{K}$, with the camera intrinsics $\mathbf{K}$, is often not made for simplicity, but is nonetheless important for control purposes. The eight unknown parameters of $\mathbf{G}$ can be obtained through a set of $N\geq4$ matching points $\mathbb{P} = \{(\mathbf{p}_i, \mathbf{p}^\prime_i), i\in[0,N-1]\}$ by rearranging \eqref{c3:eq:proj_hom} into
+\begin{equation}
+    \begin{bmatrix}
+        u^\prime_i & v^\prime_i & 1 & 0   &   0 & 0 & -u^\prime_i u_i & -v^\prime_i u_i & -u_i \\
+        0   &   0 & 0 & u^\prime_i & v^\prime_i & 1 & -u^\prime_i v_i & -v^\prime_i v_i & - v_i
+    \end{bmatrix}\mathbf{g}= \mathbf{0}\quad\forall i,
+    \label{c3:eq:hom_lin_sys}
+\end{equation}
+where $\mathbf{g}$ holds the entries of $\mathbf{G}$ as a column vector. The ninth constraint, by convention, is usually to set $||\mathbf{g}||_2 = 1$. Classically, $\mathbb{P}$ is obtained through feature detectors but it may also be used as a means to parameterise the spatial transformation.
+Recent deep approaches indeed set $\mathbb{P}$ as the corners of an image, and predict $\Delta \mathbf{p}_i = \mathbf{p}^\prime_i - \mathbf{p}_i$. This is also known as the four point homography $\mathbf{G}_{4\text{point}}$
+\begin{equation}
+    \mathbf{G}_{4\text{point}} = \begin{bmatrix}
+        \Delta u_0 & \Delta v_0 \\
+        \Delta u_1 & \Delta v_1 \\
+        \Delta u_2 & \Delta v_2 \\
+        \Delta u_3 & \Delta v_3
+    \end{bmatrix},
+    \label{c3:eq:4pt}
+\end{equation}
+which relates to $\mathbf{G}$ through \eqref{c3:eq:hom_lin_sys}, where $\mathbf{p}^\prime_i = \mathbf{p}_i + \Delta \mathbf{p}_i$.    
 
-needs to comply with image + robot
-
-deforemable... assuming the scene is a plane in the first instance, add the text that was writting but commented out above
+\paragraph{Relation to Camera Frame Velocity}
 
 
-embodying domain-irrelevant actions
-extracting actions
-predicting actions
+\cite{benhimane2006homography}
+
+
+% theoretical background homography estimation paper
+
+% create the bridge to execution on robot, refer to \secref{in:sec:camera_intrinsic_calibration} for intrinsics
+
+% introduce all the deep homography estimation here, that is related work??? maybe not hu, na dont introduce this crap here, as already in papers
+
+% needs to comply with image + robot
+
+% deformable... assuming the scene is a plane in the first instance, add the text that was writting but commented out above
+
+
+% embodying domain-irrelevant actions
+% extracting actions
+% predicting actions
 
 \subsubsection{Robotic Laparoscope Control}
 \label{in:sec:robotic_laparoscope_control}
+RCM ? maybe just jacobian should be fine
+
 theory of control paper up to merge, i.e. no including merge of two methods
 
-\begin{itemize}
-    \item write contributions at beginning of each section
-    \item follow why? -> why? -> why? approach to end up at methods
-    \item make it an interesting read
-    \item write, write, write! hammer it
-\end{itemize}
+
 
 
 % \subsection{Minimally Invasive Surgery}
