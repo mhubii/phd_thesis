@@ -1,10 +1,15 @@
 \graphicspath{{chapter_4}}
-\chapter[Camera Motion Prediction]{Self-supervised Endoscopic Camera Motion Imitation Learning from Videos of Laparoscopic Interventions}
+\chapter[Self-supervised Laparoscopic Camera Motion Prediction]{Self-supervised Laparoscopic Camera Motion Prediction for Imitation Learning}
 \chaptermark{Camera Motion Prediction}
-\label{chap:camera_motion_extraction}
+\label{chap:camera_motion_prediction}
 \minitoc
-TODO: we contributed yadi yadi
+
+\paragraph{Disclaimer} This \chapref{chap:camera_motion_prediction} is an \textit{in extenso} reproduction of \cite{huber2023deep}. Only \secref{c4:sec:introduction} was adapted to highlight additional context within the scope of this thesis.
+
+\newpage
+
 \section{Introduction}
+\label{c4:sec:introduction}
 Automation in robot-assisted minimally invasive surgery (RMIS) may reduce human error that is linked to fatigue, lack of attention and cognitive overload \cite{fiorini2022concepts}.
 It could help surgeons operate such systems by reducing the learning curve \cite{van2018learning}.
 And in an ageing society with shrinking workforce, it could help to retain accessibility to healthcare. It is therefore expected that parts of RMIS will be ultimately automated \cite{davenport2019potential,zidane2022robotics}. On the continuous transition towards different levels of autonomy, camera motion automation is likely to happen first \cite{kitaguchi2022artificial}.
@@ -368,5 +373,5 @@ by harvesting image-motion correspondences using a camera motion estimator, see 
 
 A current limitations of this work is the preview horizon $M$ of length $1$. One might want to extend it for model predictive control. Furthermore, to improve explainability to the surgeon, but also to improve the prediction in general, it would be beneficial to include auxiliary tasks, e.g. tool and organ segmentation, surgical phase recognition, and audio. There also exist limitations for the camera motion estimator. The utilized camera motion estimator is efficient and isolates object motion well from camera motion, but is limited to relatively small camera motions. Improving the camera motion estimator to large camera motions would help increase the preview horizon $M$.
 
-In future work, we will execute this model in a real setup for investigating transferability. This endeavor is backed by \cite{huber2021homography}, which demonstrates how the learned homography could immediately be deployed on a robotic laparoscope holder. It  might proof necessary to fine-tune the presented policy through reinforcement learning with human feedback.
+In future work, we will execute this model in a real setup for investigating transferability. This endeavor is backed by \cite{huber2021homographybased}, which demonstrates how the learned homography could immediately be deployed on a robotic laparoscope holder. It  might proof necessary to fine-tune the presented policy through reinforcement learning with human feedback.
 

@@ -1,11 +1,25 @@
 \graphicspath{{chapter_2}}
-\chapter[Visual Servoing]{Robotic Endoscope Camera Motion Automation under Remote Center of Motion Constraint}
+\chapter[Semi-autonomous Robotic Laparoscope]{Semi-autonomous Robotic Laparoscope under Remote Center of Motion Constraint}
 \chaptermark{Visual Servoing}
 \label{chap:robotic_endoscope}
 \minitoc
 
-TODO: we contributed yadi yadi
-This chapter ... the work introduced in Huber... 
+\paragraph{Disclaimer} This \chapref{chap:robotic_endoscope} is an \textit{in extenso} reproduction of \cite{huber2021homographybased}. Only \secref{c2:sec:introduction} was adapted to highlight additional context within the scope of this thesis.
+
+%published in \cite{huber2021homographybased}
+
+%% calibrations
+%\secref{in:sec:camera_intrinsic_calibration}
+%\secref{in:sec:eye_in_to_hand_calibration}
+
+%% according
+%\figref{in:fig:experimental_setup}
+
+%% action execution
+%\secref{in:sec:hypothesizing}
+%\figref{in:fig:hypothesized_pipeline} $\hat{a}^*_t$
+%\secref{in:sec:homography_based_camera_motion_formulation}
+
 
 \newpage
 
@@ -55,6 +69,7 @@ This chapter ... the work introduced in Huber...
 %\cite{sun2020visual}          % (estimate depth based on laparoscopic motion)
 
 \section{Introduction}
+\label{c2:sec:introduction}
 % \subsection{Limitations of Current Approaches and Contributions}
 The majority of existing methods rely on the tool distance to infer a control law. Only in \cite{ma2019autonomous, ma2020visual, aghakhani2013task, yang2019adaptive, li2020accelerated, osa2010framework}, the position of arbitrary points wrt. the camera frame is fed back to the robot. All of the existing methods rely on relative positions, which either requires tool and camera positions or depth images. Position data might only be accessible in a fully robotic setup and image depth is difficult to estimate in a dynamic surgical environment from a monocular camera. Stereoscopic images are usually not available in robotically assisted surgery.
 
@@ -372,4 +387,4 @@ In this work we introduced a visual servo that is independent of depth informati
 It was shown in \secref{c2:sec:clin_res_any} that the proposed composite Jacobian PID controller with homography-based task simultaneously minimizes the RCM and the visual servo objective. The integral term proved helpful to remove a steady state error in the image alignment. The homography estimation was noisy due to feature sparseness and required for average filtering. The graph representation allowed for visual servoing between images that were not relatable by a single homography transformation. In \secref{c2:sec:clin_res_tool}, tools were successfully introduced into the scene. It is to be noted that the tools were initially not present in the target views, which removed potential image misalignment. In \secref{c2:sec:clin_res_re} the phantom was repositioned significantly with a constant trocar position and image readjustment was successfully demonstrated. The MPD got close to perfect alignment, however, the trocar was possibly moved slightly during repositioning, which made perfect convergence not possible. The robot's joint angles did not always return to their initial configuration. The camera position converged in submillimeter range to its target.
 
 % future work
-We successfully demonstrated that our visual servo navigates the camera in submillimeter range without depth information or explicit tool and camera positions. This proves the future potential for safe patient application and it circumvents time-consuming registration procedures. As our setup has one redundant DOF, the robot did not always return to its initial configuration. This might be handled by introducing joint state objectives to the Jacobian's nullspace. While our visual servo is independent of registration procedures, the RCM requires initialization, and tracking. In future work, the controller might be updated as to incorporate force-torque sensing to update the RCM. Although the environment was mostly static, the homography estimation was noisy. In future research, one might, therefore, incorporate homography estimation that is invariant under object motion and robust under feature sparseness, using deep learning approaches, as shown in \cite{huber2021deep}.
+We successfully demonstrated that our visual servo navigates the camera in submillimeter range without depth information or explicit tool and camera positions. This proves the future potential for safe patient application and it circumvents time-consuming registration procedures. As our setup has one redundant DOF, the robot did not always return to its initial configuration. This might be handled by introducing joint state objectives to the Jacobian's nullspace. While our visual servo is independent of registration procedures, the RCM requires initialization, and tracking. In future work, the controller might be updated as to incorporate force-torque sensing to update the RCM. Although the environment was mostly static, the homography estimation was noisy. In future research, one might, therefore, incorporate homography estimation that is invariant under object motion and robust under feature sparseness, using deep learning approaches, as shown in \cite{huber2022deep}.
