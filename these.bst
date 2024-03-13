@@ -17,7 +17,7 @@
 	% (2) if you do make changes, you name it something other than
 	% btxbst.doc, plain.bst, unsrt.bst, alpha.bst, and abbrv.bst.
 	% This restriction helps ensure that all standard styles are identical.
- 
+
 ENTRY
   { address
     applicant
