@@ -10,6 +10,10 @@
 
 \section{Introduction}
 \label{c4:sec:introduction}
+
+
+
+
 Automation in robot-assisted minimally invasive surgery (RMIS) may reduce human error that is linked to fatigue, lack of attention and cognitive overload \cite{fiorini2022concepts}.
 It could help surgeons operate such systems by reducing the learning curve \cite{van2018learning}.
 And in an ageing society with shrinking workforce, it could help to retain accessibility to healthcare. It is therefore expected that parts of RMIS will be ultimately automated \cite{davenport2019potential,zidane2022robotics}. On the continuous transition towards different levels of autonomy, camera motion automation is likely to happen first \cite{kitaguchi2022artificial}.
@@ -25,7 +29,9 @@ It is thus not surprising that existing literature on IL for camera motion autom
 
 Recent efforts to make vast amounts of laparoscopic intervention videos publicly available \cite{maier2022surgical} drastically change how IL for camera motion automation can be approached. So far, this data is leveraged mainly to solve auxiliary tasks that could contribute to camera motion automation. As reviewed in \cite{loukas2018video}, these tasks include tool and organ segmentation, as well as surgical phase recognition. For camera motion automation specifically, however, there exist no publicly available image-action pairs. Some work, therefore, continues to focus on the tools to infer camera motion \cite{li2021data}, or learns on a robotic setup altogether \cite{li20223d} where camera motion is accessible. The realization, however, that camera motion is intrinsic to the videos of laparoscopic interventions and that camera motion could be learned on harvested actions was first realized in \cite{huber2022deep}, and later in \cite{li2022learning}. This comes with the additional advantage that no robot is necessary to learn behaviors and that one can directly learn from human demonstrations.
 
-In this work, we build on \cite{huber2022deep} for computationally efficient image-action pair extraction from publicly available datasets of laparoscopic interventions, which yields more than $20\times$ the amount of data that was used in the closed source data of \cite{li2022learning}. Contrary to \cite{li2022learning}, our camera motion extraction does not rely on image features, which are sparse in surgical videos, and is intrinsically capable to differentiate between camera and object motion. We further propose a novel importance sampling and data augmentation step for achieving camera motion automation IL.
+\subsection{Contributions}
+
+In this work, we build on \cite{huber2022deep} for computationally efficient state-action pair extraction from publicly available datasets of laparoscopic interventions, which yields more than $20\times$ the amount of data that was used in the closed source data of \cite{li2022learning}. Contrary to \cite{li2022learning}, our camera motion extraction does not rely on image features, which are sparse in surgical videos, and is intrinsically capable to differentiate between camera and object motion. We further propose a novel importance sampling and data augmentation step for achieving camera motion automation IL.
 
 %21x
 
