@@ -10,29 +10,35 @@
 
 \section{Introduction}
 \label{c3:sec:introduction}
+Having successfully established a homography-based visual servo under RCM constraint in the previous \chapref{chap:robotic_endoscope}, which is based on simple optimal control and, unlike end-to-end learned robot policies, inherently safe for clinical use, this chapter will now investigate the generation of large scale state-action pairs $(\hat{s}_t,\,\hat{a}^*_t)$. The generation of these state-action pairs is a prerequisite for extracting the human expert policy through IL methods, refer \secref{in:sec:imitation_learning}, which will be delved further into in \chapref{chap:camera_motion_prediction}. For now, the focus will solely lie on extracting actions to form state-action pairs.
+
+The slow transition of IL methods to laparoscopic camera motion automation can, indeed, be attributed to the lack of state-action pairs, as explained in \secref{in:sec:search_for_available_data}. This lack has historically lead to the emergence of rule-based approaches, see \secref{in:sec:rule_based_approaches}. In this publication, we argue that is possible to extract actions, i.e. camera motion, from videos of laparoscopic interventions, using deep neural networks (DNNs). This, however, is not a trivial endeavor, and hence other research vastly focuses on solving auxiliary vision tasks instead, as explained in \secref{in:sec:auxiliary_tasks}. Therefore, clinical data of laparoscopic surgeries, see \tabref{in:tab:datasets}, remains unusable for IL. Consequentially, SOTA IL attempts rely on artificially acquired data, as was reviewed in \secref{in:sec:supervised_self_supervised}.
+
+The main difficulty for extracting camera motion from videos of laparoscopic interventions is to distinguish it from tool and object motion. In \secref{in:sec:supervised_self_supervised}, we hypothesized that this might be possible through a supervised training procedure in which a DNN is regressed on isolating camera from object and tool motion. We suggested to exploit the clamping mechanism of the da Vinci\textsuperscript{\textregistered} robot for this purpose, see \figref{in:fig:camera_motion}. The camera motion formulation, therein, will align with actions introduced in the previous \chapref{chap:robotic_endoscope}, thus enabling the feedback loop, as shown in \figref{in:fig:hypothesized_pipeline}. The registration problem will thus be formulated via homographies, \secref{in:sec:homography_based_camera_motion_formulation}, \eqref{c3:eq:4pt}. Interestingly, this line of research has applications in multiple other domains where registration despite organ motion is of relevance.
+
 % short introduction to deep learning in medical imaging
 % The advancement of dedicated chips unlocked the application of Deep Neural Networks (DNN) to vast datasets, and with it, the extraction of previously intangible information from them. As a result, DNNs lead to dramatic SOTA improvements in 
-The goal in IL is to learn an expert policy from a set of expert demonstrations.
+%The goal in IL is to learn an expert policy from a set of expert demonstrations.
 % $\pi_\text{E}: s_t \rightarrow a_t$ that maps a state $s_t$ to an action $a_t$ at timestep $t$, with action-state pairs drawn from a trajectory $\tau_i = \{(s_t,a_t),...,(s_{t+T-1},a_{t+T-1})\}$, sampled from expert demonstrations $\tau_i \in D$.
-IL has been slow to transition to interventional imaging. In particular, the slow transition of modern IL methods into automating laparoscopic camera motion is due to a lack state-action-pair data \cite{kassahun2016surgical, esteva2019guide}. The need for automated laparoscopic camera motion \cite{pandya2014review, ellis2016task} has, therefore, historically sparked research in rule-based approaches that aim to reactively center surgical tools in the field of view \cite{agustinos2014visual, da2020scan}. DNNs could contribute to this work by facilitating SOTA tool segmentations and automated tool tracking \cite{garcia2017toolnet, garcia2021image, gruijthuijsen2021autonomous}.
+%IL has been slow to transition to interventional imaging. In particular, the slow transition of modern IL methods into automating laparoscopic camera motion is due to a lack state-action-pair data \cite{kassahun2016surgical, esteva2019guide}. The need for automated laparoscopic camera motion \cite{pandya2014review, ellis2016task} has, therefore, historically sparked research in rule-based approaches that aim to reactively center surgical tools in the field of view \cite{agustinos2014visual, da2020scan}. DNNs could contribute to this work by facilitating SOTA tool segmentations and automated tool tracking \cite{garcia2017toolnet, garcia2021image, gruijthuijsen2021autonomous}.
 
 % Widely available, and well curated datasets then quickly enabled the adaptation of DNNs to the medical imaging domain, facilitating assisted or fully automated image analysis, e.g. for diagnosis or segmentation. This progress, however, is slow to transition to the realm of interventional imaging, where automation faces dynamic environments and contextual dependencies \cite{vercauteren2019cai4cai}, in general. 
 
 % In particular, the slow transition of DNNs into automating laparoscopic camera motion in Minimally Invasive Surgery (MIS) can be accounted for by a lack of task-specific data \cite{kassahun2016surgical, esteva2019guide}. The need for automated laparoscopic camera motion \cite{pandya2014review, ellis2016task} has, therefore, historically sparked research in rule-based approaches that, in their simplest form, aim at reactively centering surgical tools in the field of view (TODO: add citations). DNNs contribute to this work by facilitating SOTA tool segmentations for the identification of tool tips. 
 
-Recent research contextualizes laparoscopic camera motion with respect to (w.r.t.) the user and the state of the surgery. DNNs could facilitate contextualization, as indicated by research in surgical phase and skill recognition \cite{kitaguchi2020real}. However, current contextualization is achieved through handcrafted rule-based approaches \cite{rivas2014towards, rivas2017smart}, or through stochastic modeling of camera positioning w.r.t. the tools \cite{weede2011intelligent, rivas2019transferring}. While the former do not scale well and are prone to nonlinear interventions, the latter only consider surgical tools. However, clinical evidence suggests camera motion is also caused by the surgeon's desire to observe tissue \cite{ellis2016task}. Non-rule-based, i.e. IL, attempts that consider both, tissue, and tools as source for camera motion are \cite{ji2018learning, su2020multicamera, wagner2021learning}, but they utilize an oversimplified setup, require multiple cameras or tedious annotations.
+ %Recent research contextualizes laparoscopic camera motion with respect to (w.r.t.) the user and the state of the surgery. DNNs could facilitate contextualization, as indicated by research in surgical phase and skill recognition \cite{kitaguchi2020real}. However, current contextualization is achieved through handcrafted rule-based approaches \cite{rivas2014towards, rivas2017smart}, or through stochastic modeling of camera positioning w.r.t. the tools \cite{weede2011intelligent, rivas2019transferring}. While the former do not scale well and are prone to nonlinear interventions, the latter only consider surgical tools. However, clinical evidence suggests camera motion is also caused by the surgeon's desire to observe tissue \cite{ellis2016task}. Non-rule-based, i.e. IL, attempts that consider both, tissue, and tools as source for camera motion are \cite{ji2018learning, su2020multicamera, wagner2021learning}, but they utilize an oversimplified setup, require multiple cameras or tedious annotations.
 
-In current laparoscopic camera motion automation, DNNs merely solve auxiliary tasks. Consequentially, current laparoscopic camera motion automation is rule-based, and disregards tissue. While modern IL approaches could alleviate these issues, clinical data of laparoscopic surgeries remains unusable for IL. Therefore, SOTA IL attempts rely on artificially acquired data \cite{ji2018learning, su2020multicamera, wagner2021learning}. 
+\subsection{Contributions}
 
-In this work, we aim to extract camera motion from videos of laparoscopic interventions, thereby creating state-action-pairs for IL. To this end, we introduce a method that isolates camera motion (actions) from object and tool motion by solely relying on observed images (states). To this end, DNNs are supervisedly trained to estimate camera motion while disregarding object, and tool motion. This is achieved by synthetically adding camera motion via a novel \textit{homography generation algorithm} to a newly acquired dataset of camera motion free da Vinci surgery image sequences. In this way, object, and tool motion reside within the image sequences, and the synthetically added camera motion can be regarded as the only source, and therefore ground truth, for camera motion estimation. Extensive experiments are carried out to identify modern network architectures that perform best at camera motion estimation. The DNNs that are trained in this manner are found to generalize well across domains, in that they transfer to vast laparoscopic datasets. They are further found to outperform classical camera motion estimators.
+In this work, we aim to extract camera motion from videos of laparoscopic interventions, thereby creating state-action-pairs for IL. To this end, we introduce a method that isolates camera motion (actions) from object and tool motion by solely relying on observed images (states). To this end, DNNs are supervisedly trained to estimate camera motion while disregarding object, and tool motion. This is achieved by synthetically adding camera motion via a novel \textit{homography generation algorithm} to a newly acquired dataset of camera motion free da Vinci\textsuperscript{\textregistered} surgery image sequences. In this way, object, and tool motion reside within the image sequences, and the synthetically added camera motion can be regarded as the only source, and therefore ground truth, for camera motion estimation. Extensive experiments are carried out to identify modern network architectures that perform best at camera motion estimation. The DNNs that are trained in this manner are found to generalize well across domains, in that they transfer to vast laparoscopic datasets. They are further found to outperform classical camera motion estimators.
 
 \section{Related Work}
 
 Supervised deep homography estimation was first introduced in \cite{detone2016deep} and got improved through a hierarchical homography estimation in \cite{erlik2017homography}. It got adopted in the medical field in \cite{bano2020deep}. All three approaches generate a limited set of homographies, only train on static images, and use non-SOTA VGG-based network architectures \cite{simonyan2014very}.
 
-Unsupervised deep homography estimation has the advantage to be applicable to unlabelled data, e.g. videos. It was first introduced in \cite{nguyen2018unsupervised}, and got applied to endoscopy in \cite{gomes2019unsupervised}. The loss in image space, however, can't account for object motion, and only static scenes are considered in their works. Consequentially, recent work seeks to isolate object motion from camera motion through unsupervised incentives. Closest to our work are \citet{le2020deep}, where the authors generate a dataset of camera motion free image sequences. However, due to tool, and object motion, their data generation method is not applicable to laparoscopic videos, since it relies on motion free image borders. \citet{zhang2020content} provide the first work that does not need a synthetically generated dataset. Their method works fully unsupervised, but constraining what the network minimizes, is difficult to achieve.
+Unsupervised deep homography estimation has the advantage to be applicable to unlabelled data, e.g. videos. It was first introduced in \cite{nguyen2018unsupervised}, and got applied to endoscopy in \cite{gomes2019unsupervised}. The loss in image space, however, can't account for object motion, and only static scenes are considered in their works. Consequentially, recent work seeks to isolate object motion from camera motion through unsupervised incentives. Closest to our work is \cite{le2020deep}, where the authors generate a dataset of camera motion free image sequences. However, due to tool, and object motion, their data generation method is not applicable to laparoscopic videos, since it relies on motion free image borders. The authors in \cite{zhang2020content}, provide the first work that does not need a synthetically generated dataset. Their method works fully unsupervised, but constraining what the network minimizes, is difficult to achieve.
 
-Only \cite{le2020deep} and \cite{zhang2020content} train DNNs on object motion invariant homography estimation. Contrary to their works, we train DNNs supervisedly. We do so by applying the data generation of \citet{detone2016deep} to image sequences rather than single images. We further improve their method by introducing a novel \textit{homography generation algorithm} that allows to continuously generate synthetic homographies at runtime, and by using SOTA DNNs.
+Only \cite{le2020deep} and \cite{zhang2020content} train DNNs on object motion invariant homography estimation. Contrary to their works, we train DNNs supervisedly. We do so by applying the data generation of \cite{detone2016deep} to image sequences rather than single images. We further improve their method by introducing a novel \textit{homography generation algorithm} that allows to continuously generate synthetic homographies at runtime, and by using SOTA DNNs.
 
 \section{Materials and Methods}
 
@@ -67,35 +73,35 @@ Only \cite{le2020deep} and \cite{zhang2020content} train DNNs on object motion i
 
 \subsection{Data Preparation}
 
-Similar to \cite{le2020deep}, we initially find camera motion free image sequences, and synthetically add camera motion to them. In our work, we isolate camera motion free image sequences from da Vinci surgeries, and learn homography estimation supervisedly. We acquire publicly available laparoscopic, and da Vinci surgery videos. An overview of all datasets is shown in \figref{c3:fig:data}. Excluded are synthetic, and publicly unavailable datasets. Da Vinci surgery datasets, and laparoscopic surgery datasets require different pre-processing steps, which are described below.
+Similar to \cite{le2020deep}, we initially find camera motion free image sequences, and synthetically add camera motion to them. In our work, we isolate camera motion free image sequences from da Vinci\textsuperscript{\textregistered} surgeries, and learn homography estimation supervisedly. We acquire publicly available laparoscopic, and da Vinci\textsuperscript{\textregistered} surgery videos. An overview of all datasets is shown in \figref{c3:fig:data}. Excluded are synthetic, and publicly unavailable datasets. da Vinci\textsuperscript{\textregistered} surgery datasets, and laparoscopic surgery datasets require different pre-processing steps, which are described below.
 
 \begin{figure}[tb]
 \centering
-\begin{subfigure}[b]{\textwidth}
+\begin{subfigure}[b]{0.49\textwidth}
     \centering
-    \includegraphics[width=0.8\textwidth]{fig/fig_da_vinci.pdf}
-    \caption{Da Vinci surgery datasets. Included are: \href{https://surgvisdom.grand-challenge.org/}{SurgVisDom} \cite{zia2021surgical}, \href{http://hamlyn.doc.ic.ac.uk/vision/}{GN} \cite{giannarou2012probabilistic}, \href{http://hamlyn.doc.ic.ac.uk/vision/}{MT} \cite{mountney2010three}, \href{https://saras-esad.grand-challenge.org/}{SARAS-ESAD} \cite{bawa2020esad}, \href{https://endovissub2017-kidneyboundarydetection.grand-challenge.org/}{KBD} \cite{hattab2020kidney}, \href{https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/}{RIS} \cite{allan20192017}, \href{https://endovissub2018-roboticscenesegmentation.grand-challenge.org/home/}{RSS} \cite{allan20202018}}
+    \includegraphics[width=\textwidth]{fig/fig_da_vinci.pdf}
+    \caption{da Vinci\textsuperscript{\textregistered} surgery datasets. Included are: \href{https://surgvisdom.grand-challenge.org/}{SurgVisDom} \cite{zia2021surgical}, \href{http://hamlyn.doc.ic.ac.uk/vision/}{GN} \cite{giannarou2012probabilistic}, \href{http://hamlyn.doc.ic.ac.uk/vision/}{MT} \cite{mountney2010three}, \href{https://saras-esad.grand-challenge.org/}{SARAS-ESAD} \cite{bawa2020esad}, \href{https://endovissub2017-kidneyboundarydetection.grand-challenge.org/}{KBD} \cite{hattab2020kidney}, \href{https://endovissub2017-roboticinstrumentsegmentation.grand-challenge.org/}{RIS} \cite{allan20192017}, \href{https://endovissub2018-roboticscenesegmentation.grand-challenge.org/home/}{RSS} \cite{allan20202018}}
     \label{c3:fig:data_a}
 \end{subfigure}
-\begin{subfigure}[b]{\textwidth}
+\begin{subfigure}[b]{0.49\textwidth}
     \centering
-    \includegraphics[width=0.8\textwidth]{fig/fig_da_vinci_high_fps_laparoscopic.pdf}
-    \caption{Laparoscopic datasets and HFR da Vinci dataset from (a) for comparison. Included are: \href{https://robustmis2019.grand-challenge.org/}{ROBUST-MIS} \cite{maier2020heidelberg}, \href{http://camma.u-strasbg.fr/datasets}{Cholec80} \cite{twinanda2016endonet}, \href{https://endovissub-instrument.grand-challenge.org/}{ISAT} \cite{bodenstedt2018comparative}.}
+    \includegraphics[width=\textwidth]{fig/fig_da_vinci_high_fps_laparoscopic.pdf}
+    \caption{Laparoscopic datasets and HFR da Vinci\textsuperscript{\textregistered} dataset from (a) for comparison. Included are: \href{https://robustmis2019.grand-challenge.org/}{ROBUST-MIS} \cite{maier2020heidelberg}, \href{http://camma.u-strasbg.fr/datasets}{Cholec80} \cite{twinanda2016endonet}, \href{https://endovissub-instrument.grand-challenge.org/}{ISAT} \cite{bodenstedt2018comparative}.}
     \label{c3:fig:data_b}
 \end{subfigure}    
-\caption{Da Vinci surgery and laparoscopic surgery datasets. Shown are relative sizes and the absolute number of frames. Da Vinci surgery datasets are often released at a low frame rate of $1\,\text{fps}$ for segmentation tasks (a). Much more laparoscopic surgery data is available (b).}
+\caption{da Vinci\textsuperscript{\textregistered} surgery and laparoscopic surgery datasets. Shown are relative sizes and the absolute number of frames. da Vinci\textsuperscript{\textregistered} surgery datasets are often released at a low frame rate of $1\,\text{fps}$ for segmentation tasks (a). Much more laparoscopic surgery data is available (b).}
 \label{c3:fig:data}
 \end{figure}
 
-\subsubsection{Da Vinci Surgery Data Pre-Processing}
+\subsubsection{da Vinci\textsuperscript{\textregistered} Surgery Data Pre-Processing}
 
-Many of the da Vinci surgery datasets are designed for tool or tissue segmentation tasks, therefore, they are published at a frame rate of $1\,\text{fps}$, see \figref{c3:fig:data_a}. We merge all high frame rate (HFR) datasets into a single dataset and manually remove image sequences with camera motion, which amount to $5\%$ of all
+Many of the da Vinci\textsuperscript{\textregistered} surgery datasets are designed for tool or tissue segmentation tasks, therefore, they are published at a frame rate of $1\,\text{fps}$, see \figref{c3:fig:data_a}. We merge all high frame rate (HFR) datasets into a single dataset and manually remove image sequences with camera motion, which amount to $5\%$ of all
 HFR data. We crop the remaining data to remove status indicators, and scale the images to $306\times408$ pixels, later to be cropped by the \textit{homography generation algorithm} to a resolution of $240\times320$.
 
 \subsubsection{Laparoscopic Surgery Data Pre-Processing}
 \label{c3:sec:lap_pre}
 
-Laparoscopic images are typically observed through a Hopkins telescope, which causes a black circular boundary in the view, see \figref{c3:fig:seg}. This boundary does not exist in da Vinci surgery recordings. For inference on the laparoscopic surgery image sequences, the most straightforward approach is to crop the view. To this purpose, we determine the center and radius of the circular boundary, which is only partially visible. We detect it by randomly sampling $N$ points $\mathbf{p}_i = (u_i,v_i)^\text{T}$ on the boundary. This is similar to work in \cite{munzer2013detection}, but instead of computing an analytical solution, we fit a circle by means of a least squares solution through inversion of
+Laparoscopic images are typically observed through a Hopkins telescope, which causes a black circular boundary in the view, see \figref{c3:fig:seg}. This boundary does not exist in da Vinci\textsuperscript{\textregistered} surgery recordings. For inference on the laparoscopic surgery image sequences, the most straightforward approach is to crop the view. To this purpose, we determine the center and radius of the circular boundary, which is only partially visible. We detect it by randomly sampling $N$ points $\mathbf{p}_i = (u_i,v_i)^\text{T}$ on the boundary. This is similar to work in \cite{munzer2013detection}, but instead of computing an analytical solution, we fit a circle by means of a least squares solution through inversion of
 \begin{equation}
     \begin{bmatrix}
         2u_0     & 2v_0     & 1 \\
@@ -112,19 +118,18 @@ Laparoscopic images are typically observed through a Hopkins telescope, which ca
     \end{bmatrix},
 \end{equation}
 where the circle's center is $(x_0, x_1)$, and its radius is $\sqrt{x_2 + x^2_0 + x^2_1}$. We then crop the view centrally around the circle's center, and scale it to a resolution of $240\times320$. An implementation is provided on GitHub\footnote[2]{\url{https://github.com/RViMLab/endoscopy}}.
-
 \begin{figure}[tb]
 \centering
-\begin{subfigure}[b]{\textwidth}
+\begin{subfigure}[b]{0.49\textwidth}
     \centering
-    \includegraphics[width=0.8\textwidth]{img/annotation/annotation_seg.png}
+    \includegraphics[width=\textwidth]{img/annotation/annotation_seg.png}
     \caption{Binary segmentation mask, obtained through thresholding the bilateral filtered image.}
     \label{c3:fig:seg_a}
 \end{subfigure}
-\begin{subfigure}[b]{\textwidth}
+\begin{subfigure}[b]{0.49\textwidth}
     \centering
-    \includegraphics[width=0.8\textwidth]{img/annotation/annotation_real.png}
-    \caption{Circular boundary detection and static landmarks (blue arrows).}
+    \includegraphics[width=\textwidth]{img/annotation/annotation_real.png}
+    \caption{Circular boundary detection and static landmarks (blue arrows). Landmarks are, e.g. identified at vein bifurcations.}
     \label{c3:fig:seg_b}
 \end{subfigure}
 \caption{Cholec80 dataset pre-processing, referring to \secref{c3:sec:lap_pre}. The black boundary circle is automatically detected. Landmarks are manually annotated and tracked over time (b).}
@@ -137,15 +142,15 @@ One can simply use the synthetically generated camera motion as ground truth at 
 
 \subsection{Deep Homography Estimation}
 
-In this work we exploit the static camera in da Vinci surgeries, which allows us to isolate camera motion free image sequences. The processing pipeline is shown in \figref{c3:fig:hom}.
+In this work we exploit the static camera in da Vinci\textsuperscript{\textregistered} surgeries, which allows us to isolate camera motion free image sequences. The processing pipeline is shown in \figref{c3:fig:hom}.
 
-Image pairs are sampled from image sequences of the HFR da Vinci surgery dataset of \figref{c3:fig:data_a}. An image pair consists of an anchor image $\mathcal{I}_n$, and an offset image $\mathcal{I}_{n+t}$. The offset image is sampled uniformly from and interval $t\in[-T,T]$ around the anchor. The HFR da Vinci surgery dataset is relatively small, compared to the laparoscopic datasets, see \figref{c3:fig:data_b}. Therefore, we apply image augmentations to the sampled image pairs. They include transform to grayscale, horizontal, and vertical flipping, cropping, change in brightness, and contrast, Gaussian blur, fog simulation, and random combinations of those. Camera motion is then added synthetically to the augmented image $\mathcal{I}^\text{aug}_{n+t}$ via the \textit{homography generation algorithm} from \secref{c3:sec:hom_gen}. A DNN, with a backbone, then learns to predict the homography $\mathbf{G}_{4\text{point}}$ between the augmented image, and the augmented image with synthetic camera motion at time step $n+t$.
+Image pairs are sampled from image sequences of the HFR da Vinci\textsuperscript{\textregistered} surgery dataset of \figref{c3:fig:data_a}. An image pair consists of an anchor image $\mathcal{I}_n$, and an offset image $\mathcal{I}_{n+t}$. The offset image is sampled uniformly from and interval $t\in[-T,T]$ around the anchor. The HFR da Vinci\textsuperscript{\textregistered} surgery dataset is relatively small, compared to the laparoscopic datasets, see \figref{c3:fig:data_b}. Therefore, we apply image augmentations to the sampled image pairs. They include transform to grayscale, horizontal, and vertical flipping, cropping, change in brightness, and contrast, Gaussian blur, fog simulation, and random combinations of those. Camera motion is then added synthetically to the augmented image $\mathcal{I}^\text{aug}_{n+t}$ via the \textit{homography generation algorithm} from \secref{c3:sec:hom_gen}. A DNN, with a backbone, then learns to predict the homography $\mathbf{G}_{4\text{point}}$ between the augmented image, and the augmented image with synthetic camera motion at time step $n+t$.
 
 %\begin{landscape}
 \begin{figure}[tb]
     \centering
     \includegraphics[width=\linewidth]{img/pipeline.pdf}
-    \caption{Deep homography estimation training pipeline. Image pairs are sampled from the HFR da Vinci surgery dataset. The \textit{homography generation algorithm} then adds synthetic camera motion to the augmented images, which is regressed through a backbone DNN.}
+    \caption{Deep homography estimation training pipeline. Image pairs are sampled from the HFR da Vinci\textsuperscript{\textregistered} surgery dataset. The \textit{homography generation algorithm} then adds synthetic camera motion to the augmented images, which is regressed through a backbone DNN.}
     \label{c3:fig:hom}
 \end{figure}
 %\end{landscape}
@@ -153,7 +158,7 @@ Image pairs are sampled from image sequences of the HFR da Vinci surgery dataset
 \subsection{Homography Generation Algorithm}
 \label{c3:sec:hom_gen}
 
-In its core, the \textit{homography generation algorithm} is based on the works of \cite{detone2016deep}. However, where \citeauthor{detone2016deep} crop the image with a safety margin, our method allows to sample image crops across the entire image. Additionally, our method computes feasible homographies at runtime. This allows us to continuously generate synthetic camera motion, rather then training on a fixed set of precomputed homographies. The \textit{homography generation algorithm} is summarized in Alg.\,\ref{alg::hom}, and visualized in \figref{c3:fig:hom}.
+In its core, the \textit{homography generation algorithm} is based on the works of \cite{detone2016deep}. However, where \cite{detone2016deep} crop the image with a safety margin, our method allows to sample image crops across the entire image. Additionally, our method computes feasible homographies at runtime. This allows us to continuously generate synthetic camera motion, rather then training on a fixed set of precomputed homographies. The \textit{homography generation algorithm} is summarized in Alg.\,\ref{alg::hom}, and visualized in \figref{c3:fig:hom}.
 
 Initially, a \textit{crop polygon} $\mathbb{P}_c$ is generated for the augmented image $\mathcal{I}^\text{aug}_n$. The \textit{crop polygon} is defined through a set of points in the augmented image $\mathbb{P}_c = \{\mathbf{p}^c_i,\,i\in \left[0,3\right]\}$, which span a rectangle. The top left corner $\mathbf{p}^c_0$ is randomly sampled such that the \textit{crop polygon} $\mathbb{P}_c$ resides within the image border polygon $\mathbb{P}_b$, hence $\mathbf{p}^c_0 \in ([0, h_b - h_c], [0, w_b - w_c])$, where $h$, and $w$ are the height and width of the \textit{crop}, and the \textit{border polygon}, respectively. Following that, a random four point homography $\mathbf{G}_{4\text{point}}$ \eqref{c3:eq:4pt} is generated by sampling edge deviations $\Delta u_i \land \Delta v_i \in [-\varrho, \varrho]$. The corresponding inverse homography $\mathbf{G}^{-1}$ is used to warp each point of the border polygon $\mathbb{P}_b$ to $\mathbb{P}^\prime_b$. Finally, the Dimensionally Extended 9-Intersection Model \cite{clementini1994modelling} is used to determine whether the warped polygon $\mathbb{P}^\prime_b$ contains $\mathbb{P}_c$, for which we utilize the Python library \textit{Shapely}\footnote[3]{\url{https://pypi.org/project/Shapely}}. If the thus found intersection matrix $\IM$ satisfies
 \begin{equation}
@@ -183,7 +188,7 @@ the homography $\mathbf{G}^{-1}$ is returned, otherwise a new four point homogra
 \end{algorithm}
 
 \section{Experiments}
-We train DNNs on a $80\%$ train split of the HFR da Vinci surgery dataset from \figref{c3:fig:data_a}. The $20\%$ test split is referred to as test set in the following. Inference is performed on the ground truth set from \secref{c3:sec:gt_gen}. We compute the Mean Pairwise Distance (MPD) of the predicted value for $\mathbf{G}_{4\text{point}}$ from the desired one. We then compute the Cumulative Distribution Function (CDF) of all MPDs. We evaluate the CDF at different thresholds $t_i,\,i\in\{30,50,70.90\}$, e.g. $30\%$ of all homography estimations are below a MPD of $t_{30}$. We additionally evaluate the compute time on a GeForce RTX 2070 GPU, and a Intel Core i7-9750H CPU.
+We train DNNs on a $80\%$ train split of the HFR da Vinci\textsuperscript{\textregistered} surgery dataset from \figref{c3:fig:data_a}. The $20\%$ test split is referred to as test set in the following. Inference is performed on the ground truth set from \secref{c3:sec:gt_gen}. We compute the Mean Pairwise Distance (MPD) of the predicted value for $\mathbf{G}_{4\text{point}}$ from the desired one. We then compute the Cumulative Distribution Function (CDF) of all MPDs. We evaluate the CDF at different thresholds $t_i,\,i\in\{30,50,70.90\}$, e.g. $30\%$ of all homography estimations are below a MPD of $t_{30}$. We additionally evaluate the compute time on a GeForce RTX 2070 GPU, and a Intel Core i7-9750H CPU.
 
 \subsection{Backbone Search}
 In this experiment, we aim to find the best performing backbone for homography estimation. Therefore, we run the same experiment repeatedly with fixed hyperparameters, and varying backbones. We train each network for $50$ epochs, with a batch size of $64$, using the Adam optimizer with a learning rate of $\num{2e-4}$. The edge devation $\varrho$ is set to $32$, and the sequence length $T$ to $25$.
@@ -197,13 +202,13 @@ In this experiment, we evaluate the \textit{homography generation algorithm}. Fo
 
 \section{Results}
 
-%In the following, the HFR da Vinci test set, and the Cholec80 annotated subset are referred to as test set, and inference set, respectively.   
+%In the following, the HFR da Vinci\textsuperscript{\textregistered} test set, and the Cholec80 annotated subset are referred to as test set, and inference set, respectively.   
 
 
-%For the experiments, we use the HFR da Vinci surgery dataset, shown in \figref{c3:fig:data_a}, for training, and 
+%For the experiments, we use the HFR da Vinci\textsuperscript{\textregistered} surgery dataset, shown in \figref{c3:fig:data_a}, for training, and 
 
 
-%We adjust the image resolution to $[240,\,320]$ for both datasets. We split the HFR da Vinci dataset into $20\%$ test, and $80\%$ training.
+%We adjust the image resolution to $[240,\,320]$ for both datasets. We split the HFR da Vinci\textsuperscript{\textregistered} dataset into $20\%$ test, and $80\%$ training.
 
 \subsection{Backbone Search}
 \label{c3:sec:backbone_search}
@@ -219,7 +224,7 @@ The results are listed in Tab.\,\ref{c3:tab::results}. It can be seen that the d
 
 \begin{table}
 \centering
-\caption{Results referring to \secref{c3:sec:backbone_search}. All methods are tested on the da Vinci HFR test set, indicated by $t^\text{test}_i$, and the Cholec80 inference set, indicated by $t^\text{gt}_i$. Best, and second best metrics are highlighted with bold character. Improvements in precision $t^\text{gt}_{90,\text{imp}}$ and compute time $\text{CPU}_\text{imp}$ are given w.r.t. SURF \& RANSAC. \label{c3:tab::results}}
+\caption{Results referring to \secref{c3:sec:backbone_search}. All methods are tested on the da Vinci\textsuperscript{\textregistered} HFR test set, indicated by $t^\text{test}_i$, and the Cholec80 inference set, indicated by $t^\text{gt}_i$. Best, and second best metrics are highlighted with bold character. Improvements in precision $t^\text{gt}_{90,\text{imp}}$ and compute time $\text{CPU}_\text{imp}$ are given w.r.t. SURF \& RANSAC. \label{c3:tab::results}}
 \begin{adjustbox}{angle=90, max height=0.9\textheight}
     \begin{tabular}{lrrrrrrrrrr} \toprule
         Name            & $t^\text{test}_{30}/t^\text{gt}_{30}\,[\text{pixels}]$ & $t^\text{test}_{50}/t^\text{gt}_{50}\,[\text{pixels}]$ & $t^\text{test}_{70}/t^\text{gt}_{70}\,[\text{pixels}]$ & $t^\text{test}_{90}/t^\text{gt}_{90}\,[\text{pixels}]$ & $t^\text{gt}_{90,\text{imp}}\,[\%]$ & $\text{params}\,[\text{M}]$ & $\text{flops}\,[\text{M}]$ & $\text{GPU}\,[\text{ms}]$ & $\text{CPU}\,[\text{ms}]$ & $\text{CPU}_\text{imp}\,[\%]$ \\ \midrule
@@ -252,15 +257,15 @@ The results are listed in Tab.\,\ref{c3:tab::results}. It can be seen that the d
 
 \begin{figure}[tb]
 \centering
-\begin{subfigure}[b]{\textwidth}
+\begin{subfigure}[b]{0.49\textwidth}
     \centering
-    \includegraphics[width=0.8\textwidth]{fig/frac/var_rho.pdf}
+    \includegraphics[width=\textwidth]{fig/frac/var_rho.pdf}
     \caption{Varying edge deviation $\varrho\in\{32,48,64\}$, and fixed sequence length $T=25$.}
     \label{c3:fig:resnet34_a}
 \end{subfigure}
-\begin{subfigure}[b]{\textwidth}
+\begin{subfigure}[b]{0.49\textwidth}
     \centering
-    \includegraphics[width=0.8\textwidth]{fig/frac/var_seq.pdf}
+    \includegraphics[width=\textwidth]{fig/frac/var_seq.pdf}
     \caption{Varying sequence length $T\in\{1,25,50\}$, and fixed edge deviation $\varrho=48$.}
     \label{c3:fig:resnet34_b}
 \end{subfigure}
@@ -296,38 +301,23 @@ Given that ResNet-34 performs well on the ground truth set, and executes fast on
 
 
 % qualitative classical tends to overestimate motion
-\begin{landscape}
+%\begin{landscape}
 \begin{figure}[tb]
-\centering
-\begin{subfigure}[b]{0.3\textwidth}
     \centering
-    \includegraphics[width=0.3\textwidth]{img/homography_blends/blend_identity_strong_motion.png}
-    \caption{Identity}
-\end{subfigure}
-\begin{subfigure}[b]{0.3\textwidth}
-    \centering
-    \includegraphics[width=0.3\textwidth]{img/homography_blends/blend_surf_strong_motion.png}
-    \caption{SURF \& RANSAC}
-\end{subfigure}
-\begin{subfigure}[b]{0.3\textwidth}
-    \centering
-    \includegraphics[width=0.3\textwidth]{img/homography_blends/blend_resnet_34_strong_motion.png}
-    \caption{ResNet-34}
-\end{subfigure}
-\begin{subfigure}[b]{0.5\textwidth}
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/homography_blends/blend_surf_zoom.png}
-    \caption{Object Motion - SURF \& RANSAC, zoom}
-\end{subfigure}
-\begin{subfigure}[b]{0.5\textwidth}
-    \centering
-    \includegraphics[width=0.5\textwidth]{img/homography_blends/blend_resnet_34_zoom.png}
-    \caption{Object Motion - ResNet-34, zoom}
-\end{subfigure}
-\caption{Classical homography estimation using a SURF feature detector under RANSAC outlier rejection, and the proposed deep homography estimation with a ResNet-34 backbone, referring to \secref{c3:sec:hom_opt}. Shown are blends of consecutive images from a $5\,\text{fps}$ resampled Cholec80 exemplary sequence \cite{twinanda2016endonet}. Decreasing the framerate from originally $25\,\text{fps}$ to $5\,\text{fps}$, increases the motion in between consecutive frames. (Top row) Homography estimation under predominantly camera motion. Both methods perform well. (Bottom row) Homography estimation under predominantly object motion. Especially in the zoomed images it can be seen that the classical method (d) misaligns the stationary parts of the image, whereas the proposed method (e) aligns the background well.}
-\label{c3:fig:qualitative}
+    \subfloat[Identity]{%
+    \resizebox*{0.25\linewidth}{!}{\includegraphics{img/homography_blends/blend_identity_strong_motion.png}}}\hspace{0.06\linewidth}
+    \subfloat[SURF \& RANSAC]{%
+    \resizebox*{0.25\linewidth}{!}{\includegraphics{img/homography_blends/blend_surf_strong_motion.png}}}\hspace{0.06\linewidth}
+    \subfloat[ResNet-34]{%
+    \resizebox*{0.25\linewidth}{!}{\includegraphics{img/homography_blends/blend_resnet_34_strong_motion.png}}}
+    \vspace{-0.01\linewidth}
+    \subfloat[Object Motion - SURF \& RANSAC, zoom]{%
+    \resizebox*{0.363125\linewidth}{!}{\includegraphics{img/homography_blends/blend_surf_zoom.png}}}\hspace{0.155\linewidth}
+    \subfloat[Object Motion - ResNet-34, zoom]{%
+    \resizebox*{0.363125\linewidth}{!}{\includegraphics{img/homography_blends/blend_resnet_34_zoom.png}}}
+    \caption{Classical homography estimation using a SURF feature detector under RANSAC outlier rejection, and the proposed deep homography estimation with a ResNet-34 backbone, referring to Sec.\,\ref{sec::hom_opt}. Shown are blends of consecutive images from a $5\,\text{fps}$ resampled Cholec80 exemplary sequence \cite{twinanda2016endonet}. Decreasing the framerate from originally $25\,\text{fps}$ to $5\,\text{fps}$, increases the motion in between consecutive frames. (Top row) Homography estimation under predominantly camera motion. Both methods perform well. (Bottom row) Homography estimation under predominantly object motion. Especially in the zoomed images it can be seen that the classical method (d) misaligns the stationary parts of the image, whereas the proposed method (e) aligns the background well.}
+    \label{c3:fig::qualitative}
 \end{figure}
-\end{landscape}
 
 %\url{https://drive.google.com/file/d/1totjHbhIMEL7a-QAiL7B1rT44wvWB6lO/view?usp=sharing} %<- submission
 %\url{https://drive.google.com/file/d/17fmhSsPq290PuLXmtO-aWwo3KN4QkZA8/view?usp=sharing}
@@ -337,16 +327,16 @@ Given that ResNet-34 performs well on the ground truth set, and executes fast on
 \section{Discussion}
 
 % summarize work
-In this work we supervisedly learn homography estimation in dynamic surgical scenes. We train our method on a newly acquired, synthetically modified da Vinci surgery dataset and successfully cross the domain gap to videos of laparoscopic surgeries. To do so, we introduce extensive data augmentation and continuously generate synthetic camera motion through a novel \textit{homography generation algorithm}.
+In this work we supervisedly learn homography estimation in dynamic surgical scenes. We train our method on a newly acquired, synthetically modified da Vinci\textsuperscript{\textregistered} surgery dataset and successfully cross the domain gap to videos of laparoscopic surgeries. To do so, we introduce extensive data augmentation and continuously generate synthetic camera motion through a novel \textit{homography generation algorithm}.
 
 % highlight results and draw conclusions
 In \secref{c3:sec:backbone_search}, we find that, despite the domain gap for the ground truth set, DNNs outperform classical methods, which is indicated in Tab.\,\ref{c3:tab::results}. The homography estimation performance proofs to be independent of the number of model parameters, which indicates an overfit to the test data. The independence of the number of parameters allows to optimize the backbone for computational requirements. E.g., a typical laparoscopic setup runs at $25-30\,\text{Hz}$, the classical method would thus already introduce a bottleneck at $20\,\text{Hz}$. On the other hand, EfficientNet-B0, with $36\,\text{Hz}$, and RegNetY-400MF, with $50\,\text{Hz}$, introduce no latency, and could be integrated into systems without GPU.
 
 % In \secref{c3:sec:backbone_search}, we evaluate SOTA DNNs on homography estimation in dynamic surgical scenes. Despite the domain gap, we find that DNNs outperform classical methods, which is indicated in Tab.\,\ref{c3:tab::results}. It can further be seen that the homography estimation performance is independent of the DNN's number of parameters. This allows to directly optimize the backbone for computational requirements. E.g. in the low compute regime, we find that EfficientNet-B0, and RegNetY-400MF run at $36\,\text{Hz}$, and $50\,\text{Hz}$ on a CPU, respectively. Both outperform SURF \& RANSAC in homography estimation, which runs at $20\,\text{Hz}$. Typical laparoscopic setups run at $25-30\,\text{Hz}$, the classical method would thus already introduce a bottleneck. EfficientNet-B0, and RegNetY-400MF, on the other hand, would not, and could be integrated into systems without GPU.
 
-In \secref{c3:sec:hom_opt}, we find that increasing the edge deviation has no effect on the homography estimation, see \figref{c3:fig:resnet34_a}. This is because the motion in the ground truth set does not exceed the motion in the training set. In \figref{c3:fig:resnet34_b}, we further find how training DNNs on synthetically modified da Vinci surgery image sequences enables our method to isolate camera from object and tool motion, validating our method. In \figref{c3:fig:resnet34_c}, it is demonstrated that ResNet-34 generally outperforms SURF \& RANSAC. This shows that generating camera motion synthetically through homographies, which approximates the surgical scene as a plane, does not pose an issue.
+In \secref{c3:sec:hom_opt}, we find that increasing the edge deviation has no effect on the homography estimation, see \figref{c3:fig:resnet34_a}. This is because the motion in the ground truth set does not exceed the motion in the training set. In \figref{c3:fig:resnet34_b}, we further find how training DNNs on synthetically modified da Vinci\textsuperscript{\textregistered} surgery image sequences enables our method to isolate camera from object and tool motion, validating our method. In \figref{c3:fig:resnet34_c}, it is demonstrated that ResNet-34 generally outperforms SURF \& RANSAC. This shows that generating camera motion synthetically through homographies, which approximates the surgical scene as a plane, does not pose an issue.
 
-% In \secref{c3:sec:hom_opt}, we evaluate hyperparameters for the synthetic camera motion generation. The assumption that the surgical scene transforms as a plane might only be locally correct. However, we find that this does not pose an issue, and that our method estimates homographies across the entire range of camera motions well, see Fig.\ref{c3:fig:qualitative}. In \figref{c3:fig:resnet34}, we further find how training DNNs on synthetically modified da Vinci surgery image sequences enables our method to isolate camera from object and tool motion.
+% In \secref{c3:sec:hom_opt}, we evaluate hyperparameters for the synthetic camera motion generation. The assumption that the surgical scene transforms as a plane might only be locally correct. However, we find that this does not pose an issue, and that our method estimates homographies across the entire range of camera motions well, see Fig.\ref{c3:fig:qualitative}. In \figref{c3:fig:resnet34}, we further find how training DNNs on synthetically modified da Vinci\textsuperscript{\textregistered} surgery image sequences enables our method to isolate camera from object and tool motion.
 
 The object, and tool motion invariant camera motion estimation allows one to extract a laparoscope holder's actions from videos of laparoscopic interventions, which enables the generation of image-action-pairs. In future work, we will generate image-action-pairs from laparoscopic datasets and apply IL to them. Describing camera motion (actions) by means of a homography is grounded in recent research for robotic control of laparoscopes \cite{huber2021homographybased}. This work will therefore support the transition towards robotic automation approaches. It might further improve augmented reality, and image mosaicing methods in dynamic surgical environments.
 
