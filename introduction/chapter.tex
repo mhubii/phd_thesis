@@ -209,9 +209,13 @@ To this end, we argue differently and assign the responsibility to the robotic s
 
 \subsubsection{Automation}
 \label{in:sec:automation}
-As already outlined in the foreword \secref{in:sec:foreword}, laparoscopic camera motion automation is likely the first milestone towards automated RMIS. The short-term benefits are less obvious than for improved spatial awareness, as discussed above, however, it is an achievable starting point and a foundational building block to delivery long-term benefits. As such, automation, shown in \figref{in:fig:advancing_robotic_laparoscopy}, could have positive implications on surgery cost, operation time, and surgeon convenience.
+As already outlined in the foreword \secref{in:sec:foreword}, laparoscopic camera motion automation is likely the first milestone towards automated RMIS. The short-term benefits of automation are less obvious than for improved spatial awareness, which was explained above, however, the long-term benefits and thus the future prospects justify investigation. Automation, shown in \figref{in:fig:advancing_robotic_laparoscopy}, could e.g. have positive implications on surgery cost, operation time, surgeon convenience.
 
-Some works argue that automation may reduce human error that is linked to fatigue, lack of attention and cognitive overload \cite{fiorini2022concepts}, therefore contribute to operation time and surgeon convenience. Similarly, automation could help surgeons operate robotic systems by reducing the learning curve \cite{van2018learning}. On a societal scale, and in an ageing society with shrinking workforce, automation could help to retain accessibility to healthcare and limit cost. This could e.g. be achieved through digital twins of surgeons \cite{zidane2023robotics} (CEO of Asensus Surgical, Senhance\textsuperscript{\texttrademark} surgical robot).
+% Automation in robot-assisted minimally invasive surgery (RMIS) may reduce human error that is linked to fatigue, lack of attention and cognitive overload \cite{fiorini2022concepts}.
+%It could help surgeons operate such systems by reducing the learning curve \cite{van2018learning}.
+%And in an ageing society with shrinking workforce, it could help to retain accessibility to healthcare. It is therefore expected that parts of RMIS will be ultimately automated \cite{davenport2019potential,zidane2022robotics}.
+
+Some works argue that automation may reduce human error that is linked to fatigue, lack of attention and cognitive overload \cite{fiorini2022concepts}, therefore contribute to operation time and surgeon convenience. Similarly, automation could help surgeons operate robotic systems by reducing the learning curve \cite{van2018learning}. On a societal scale, and in an ageing society with shrinking workforce, automation could help to retain accessibility to healthcare and limit cost. This could e.g. be achieved through digital twins of surgeons \cite{zidane2023robotics} (CEO of Asensus Surgical, Senhance\textsuperscript{\texttrademark} surgical robot). It is, therefore, expected that parts of RMIS will be ultimately automated \cite{davenport2019potential,zidane2022robotics}.
 
 In this work, and as will be discussed in the following paragraphs, we will be looking at concrete advantages of automation, like continuous camera motion, as well as strategies that are to be taken into consideration for successful automation of camera motion in laparoscopic surgery.
 
@@ -266,12 +270,12 @@ The previous \secref{in:sec:enhancing_current_systems} outlined the need for imp
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{introduction/fig/eye_to_hand.png}
+        \includegraphics[width=\textwidth]{introduction/fig/eye_to_hand.pdf}
         \caption{Eye-to-hand setup.}
     \end{subfigure}
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
-        \includegraphics[width=\textwidth]{introduction/fig/eye_in_hand.png}
+        \includegraphics[width=\textwidth]{introduction/fig/eye_in_hand.pdf}
         \caption{Eye-in-hand setup.}
     \end{subfigure}
     % \includegraphics[width=\textwidth]{introduction/fig/eye_in_to_hand.png}
@@ -442,7 +446,7 @@ Having established a proper understanding of the importance of spatial awareness
 \label{in:sec:automation_approaches}
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{introduction/fig/rule_based_approaches.png}
+    \includegraphics[width=\textwidth]{introduction/fig/rule_based_approaches.pdf}
     \caption{Coordinate frames relevant for laparoscopic camera motion automation. Camera frame C, center of mass frame CoM, and RCM at trocar. The camera frame C is commonly obtained via eye-in-hand calibration, \secref{in:sec:eye_in_to_hand_calibration} and \figref{in:fig:eye_in_hand_setup}. For visual servoing, the CoM assumption as view center-point in commonly made. Laparoscopic view shows an image from a da Vinci\textsuperscript{\textregistered} system in the SurgVisDom\cite{zia2021surgical} dataset. Refers to \secref{in:sec:rule_based_approaches}.}
     \label{in:fig:com}
 \end{figure}
@@ -470,6 +474,14 @@ Rule-based visual servoing approaches are a well established research field for 
 Approaches that use a mechanical RCM are \cite{omote1999self}, where a visual servo is implemented to control the center of mass of a colored marker on a forceps in image space. In \cite{agustinos2014visual, voros2007automatic}, the tool tip position is found in image space via kinematic knowledge over the tool entry points and a visual servo is applied to center the tool tip in image space. Another common scheme is to alter the camera's zoom based on the distance of the surgical tools, which was first presented in \cite{king2013towards}, where the authors use colored markers to track the surgical instruments.
 
 The authors in \cite{eslamian2020development, mariani2020experimental, da2020scan}, with related prior works in \cite{Eslamian2016TowardsTI, eslamian2017autonomous}, compute the center point in between two surgical tools via their respective positions and align the camera's optical axis with the line that spans from RCM to the tools' center point, which requires a complicated registration procedure. \cite{yu2016automatic} also relies on the positions of the surgical tools and adjusts the field of view's width based on the distance of them. \cite{abdelaal2020orientation} uses a similar approach as \cite{eslamian2020development}, in that they adjust the camera distance to the surgical scene based on the tool distance, however, they don't align the camera's optical axis with the line that spans from RCM to the camera, but rather with the scene's surface normal, which is made possible by their 6 DoF endoscope. In \cite{ma2019autonomous}, Ma et al. deploy a visual servo to center a green marker on a tool by incorporating depth information as extracted from camera and tool motion. In \cite{ma2020visual} they extend this work into a quadratic program in which they minimize joint velocities whilst constraining the camera's distance with respect to the tools and the average tool position in the image plane to be central, where they rely on stereoscopic images to extract depth information. \cite{gruijthuijsen2021autonomous} propose a framework for semantically rich collaborative control but effectively only track surgical tools.
+
+
+
+% Automation in robot-assisted minimally invasive surgery (RMIS) may reduce human error that is linked to fatigue, lack of attention and cognitive overload \cite{fiorini2022concepts}.
+%It could help surgeons operate such systems by reducing the learning curve \cite{van2018learning}.
+%And in an ageing society with shrinking workforce, it could help to retain accessibility to healthcare. It is therefore expected that parts of RMIS will be ultimately automated \cite{davenport2019potential,zidane2022robotics}. On the continuous transition towards different levels of autonomy, camera motion automation is likely to happen first \cite{kitaguchi2022artificial}.
+
+
 
 \paragraph{Visual Servoing with programmable RCM}
 Where a mechanical RCM is not available, it can be achieved programmatically. As such, \cite{aghakhani2013task} design a composite Jacobian method that integrates a RCM objective with a task function that defines an error on points in image space. The authors in \cite{yang2019adaptive} also design a Jacobian gain controller that enforces the tip of a tool to reside within a defined region by computing the winding number of that region around the desired point. They additionally request the endoscope to extend the surgeon's natural line of sight. In \cite{li2020accelerated}, Li et al. introduce the RCM and a visual error via the image Jacobian as constraints to a quadratic problem that aims at satisfying these constraints whilst minimizing the joint velocities. \cite{sandoval2021towards} propose a torque control framework that includes remote center of motion constraints, tool center point following and nullspace projects for arm-staff collisions.
