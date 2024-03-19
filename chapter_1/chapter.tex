@@ -146,7 +146,7 @@ Latin letters (e.g. $a, b$) to denote vectors,
 capital letters (e.g. $A, \Gamma$) to denote matrices, and 
 calligraphy and blackboard formats (e.g. $\mathcal{A}, \mathbb{B}$) to denote sets and spaces.
 
-A homogeneous transformation matrix, denoted $\homogeneous{B}{A}\in\mathbb{R}^{4 \times 4}$, represents the pose of frame $A$ with respect to $B$ (i.e. $B$, in this case, is the base frame).
+\paragraph{Coordinate Frame Transformations} A homogeneous transformation matrix, denoted $\homogeneous{B}{A}\in\mathbb{R}^{4 \times 4}$, represents the pose of frame $A$ with respect to $B$ (i.e. $B$, in this case, is the base frame).
 The matrix $\homogeneous{B}{A}$ can be expressed as
 \begin{equation}
 \homogeneous{B}{A} = 
@@ -157,15 +157,15 @@ The matrix $\homogeneous{B}{A}$ can be expressed as
 \end{equation}
 
 where ${}^{B}p_{_A}\in\mathbb{R}^3$ is a column vector representing the position, $R:\mathbb{R}^4\rightarrow\mathbb{R}^{3\times 3}$ is function that converts the unit-quaternion ${}^{B}q_{_A}\in\mathbb{R}^4$ to a rotation matrix, and $0_3$ is the three element row vector containing only zeros.
-With reference to the schematic of a robot arm in Figure \ref{in:fig:eye_in_hand}, the camera frame $C$ is expressed in the end-effector frame $E$ by $\homogeneous{E}{C}$,
-$E$ is expressed in the robot base frame $R$ by $\homogeneous{R}{E}$, and
-$R$ is expressed in the world frame $W$ by $\homogeneous{W}{R}$.
-Therefore, the camera frame $C$ expressed in the world frame $W$ is found using
-\begin{equation}
-    \homogeneous{W}{C} = \homogeneous{W}{R} \homogeneous{R}{E} \homogeneous{E}{C}.
-\end{equation}
+With reference to the schematic of a robot arm in \figref{in:fig:eye_in_hand}, the camera frame $C$ is expressed in the end-effector frame $E$ by $\homogeneous{E}{C}$, and $E$ is expressed in the robot base frame $R$ by $\homogeneous{R}{E}$. 
+%and
+%$R$ is expressed in the world frame $W$ by $\homogeneous{W}{R}$.
+%Therefore, the camera frame $C$ expressed in the world frame $W$ is found using
+%\begin{equation}
+%    \homogeneous{W}{C} = \homogeneous{W}{R} \homogeneous{R}{E} \homogeneous{E}{C}.
+%\end{equation}
 
-For an $N$-DoF robot manipulator, the joint positions are denoted $x\in\mathbb{R}^N$. In this work, we assume that the end-effector frame $E$ expressed in the robot base frame $R$, i.e. $\homogeneous{R}{E}$, can be computed accurately using the forward kinematics. We denote the relationship between the joint positions and end-effector pose by
+\paragraph{Forward Kinematics} For an $N$-DoF robot manipulator, the joint positions are denoted $x\in\mathbb{R}^N$. In this work, we assume that the end-effector frame $E$ expressed in the robot base frame $R$, i.e. $\homogeneous{R}{E}$, can be computed accurately using forward kinematics. We denote the relationship between the joint positions and end-effector pose by
 \begin{equation}
     \begin{pmatrix}
          {}^{R}p_{_E}\\
@@ -177,17 +177,16 @@ For an $N$-DoF robot manipulator, the joint positions are denoted $x\in\mathbb{R
 where $\phi: \mathbb{R}^N\rightarrow\mathbb{R}^{7}$ represents the forward kinematics function.
 Given a geometric description of the robot's joints and links (typically in the common URDF format), the forward kinematics $\phi(\cdot)$ is easily derived.
 
-Regarding the camera, that is either placed in the environment, as in \figref{c1:fig:base2base}, or mounted at the robot end-effector, as in \figref{in:fig:eye_in_hand}, we assume stereo or RGB-D. Finally, we assume access to the mesh files or CAD models for each of the robot arms.
+\paragraph{Modality Prerequisites} Regarding the camera, that is either placed in the environment, as in \figref{c1:fig:base2base}, or mounted at the robot end-effector, as in \figref{in:fig:eye_in_hand}, we assume stereo or RGB-D. Finally, we assume access to the mesh files or CAD models for each of the robot arms.
 
-\subsection{Robot Base-to-base Calibration}
+%\subsection{Robot Base-to-base Calibration}
 
-In this subsection, we primarily describe the problem associated with \figref{c1:fig:base2base}. As discussed above, several robots could be positioned at once in the operating theater. To enable automated approaches, these robot arms must be aware of the other's position and orientation. With reference to \figref{c1:fig:base2base}, the transforms $\homogeneous{{E_i}}{{R_i}}$ are assumed known for each $i\in[1, 2]$. The goal of this work is to utilize information from the camera located at frame $C$, and with the mesh files or CAD models to compute estimates for the transforms $\homogeneous{W}{{R_1}}$ and $\homogeneous{W}{{R_2}}$. Given estimates for these frames, we can thus compute one robot pose with respect to the other.
-This can be expressed by
+%In this subsection, we primarily describe the problem associated with \figref{c1:fig:base2base}. As discussed above, several robots could be positioned at once in the operating theater. To enable automated approaches, these robot arms must be aware of the other's position and orientation. With reference to \figref{c1:fig:base2base}, the transforms $\homogeneous{{E_i}}{{R_i}}$ are assumed known for each $i\in[1, 2]$. The goal of this work is to utilize information from the camera located at frame $C$, and with the mesh files or CAD models to compute estimates for the transforms $\homogeneous{C}{{B_1}}$ and $\homogeneous{C}{{B_2}}$. Given estimates for these frames, we can thus compute one robot pose with respect to the other. This can be expressed by
 
-\begin{equation}
-\homogeneous{{R_1}}{{R_2}} = \homogeneous{{R_1}}{W} \homogeneous{W}{{R_2}} = \homogeneous{{R_1}}{W} (\homogeneous{{R_2}}{W})^{-1}
-\end{equation}
-where superscript -1 denotes the matrix inverse. 
+%\begin{equation}
+    %\homogeneous{{B_1}}{{B_2}} = \homogeneous{{B_1}}{C} \homogeneous{C}{{B_2}} = \homogeneous{{B_1}}{C} (\homogeneous{{B_2}}{C})^{-1}
+%\end{equation}
+%where superscript -1 denotes the matrix inverse. 
 
 \subsection{Eye-in-hand calibration}
 
@@ -216,7 +215,7 @@ In our work, we remove the need for a marker affixed in the environment.
 Instead, we make use of the mesh files or CAD model for the robot arm.
 This requires a reformulation of \eqref{c1:eq:eyeinhand}, which we discuss in later sections.
 
-\section{Materials and methods}
+\section{Materials and Methods}
 \label{c1:sec:materials_and_methods}
 
 
@@ -231,7 +230,7 @@ This section introduces baseline calibration procedures in Section \ref{c1:sec:h
 
 In the following sections, homogeneous transforms, from the coordinate frame $\text{A}$ to $\text{B}$, are denoted by $$^\text{B}\Theta_\text{A}=\begin{bmatrix} ^\text{B}\mathbf{R}_\text{A} & ^\text{B}\textbf{t}_\text{A} \\ \mathbf{0} & 1 \end{bmatrix}$$ where the rotation matrix $^\text{B}\mathbf{R}_\text{A}$ and the translation vector $^\text{B}\textbf{t}_\text{A}$. The world coordinate frame is indicated by $\text{W}$. The world coordinate frame $\text{W}$ is considered to coincide with the robot base coordinate frame $\text{R}$. $\text{W}$ and \text{R} may be used interchangeably. The camera coordinate frame is highlighted through $\text{C}$. Furthermore, $\text{A}$ indicates the coordinate frame of an ArUco marker.
 
-\subsection{Handshake and eye-in-hand calibration baselines}
+\subsection{Handshake and Eye-in-hand Calibration Baselines}
 \label{c1:sec:handshake_and_eye_in_hand_calibration}
 For the handshake calibration procedure, the two robots are rigidly linked to one another at their end-effectors via a calibration fixture of known transform $^{\text{E}_1}\Theta_{\text{E}_2}$. The robots are then moved in admittance control mode and L base-to-end-effector samples are collected for both robots, i.e. $^{\text{R}_1}\Theta^l_{\text{E}_1}$ and $^{\text{E}_2}\Theta^l_{\text{R}_2}$. Since the system forms a closed kinematic chain, the base-to-base transform $^{\text{R}_2}\Theta_{\text{R}_1}$ can then be obtained by minimizing:
 %
@@ -244,7 +243,7 @@ where $\mathbf{I}$ is the $4\times4$ identity matrix. Therein, $^{\text{E}_1}\Th
 
 Classically, eye-in-hand calibration is conducted by collecting end-effector to base $^\text{R}\Theta_\text{E}$ and camera to ArUco marker transformations $^\text{A}\Theta_\text{C}$~\citep{eye_in_hand}. The correspondences are re-arranged into an equation of the form $\mathbf{A}\mathbf{X}=\mathbf{X}\mathbf{B}$, with $\mathbf{A}$ containing multiple $^{\text{E}_j}\Theta_{\text{E}_i}$ and $\mathbf{B}$ containing multiple $^{\text{C}_j}\Theta_{\text{C}_i}$. A 2-step regression is applied to solve for $\mathbf{X}=^\text{C}\Theta_\text{E}$.
 
-\subsection{Proposed registration procedure}
+\subsection{Proposed Registration Procedure}
 \label{c1:sec:proposed_calibration_procedure}
 An overview of the proposed method is shown in \figref{c1:fig:calibration_pipeline}. The method provides an efficient way to find the homogeneous transformation from the robot base frame to the camera frame $^\text{C}\Theta_\text{R}$. It aligns an unaligned robot model to an observed instance segmented point cloud through registration. Importantly, the instance segmented point cloud and unaligned robot model must be synchronized. The unaligned robot model and the instance segmentation are detailed in \secref{c1:sec:unaligned_robot_model_and_instance_segmented_point_cloud}. The registration procedure is explained in \secref{c1:sec:registration}. Crucially, a single snapshot is sufficient to find the transformation, which differentiates it from classical calibration procedures described in Section \ref{c1:sec:handshake_and_eye_in_hand_calibration}. In the case of a robot-mounted camera, i.e. eye-in-hand calibration illustrated in \figref{c1:fig:eye_in_hand}, the calibration can be used to determine the transformation from robot end effector to camera $^\text{C}\Theta_\text{E}$. In the case of an externally mounted camera, i.e. eye-to-hand calibration illustrated in \figref{c1:fig:eye_to_hand}, the calibration can be used to determine the robot base-to-base transformation $^{\text{R}_2}\Theta_{\text{R}_1}$ through $^{\text{R}_2}\Theta_{\text{R}_1} = ^C\Theta^{-1}_{\text{R}_2}\,^{C}\Theta_{\text{R}_1}$.
 
@@ -272,30 +271,32 @@ We then compute the instance segmented point cloud's center of mass for an initi
     \text{ICP} = \argmin_{^\text{C}\Theta_\text{R}} || ^\text{C}\Theta_\text{R}(\mathbf{V}_\tau) - \mathbf{P}_\tau||_2
 \end{equation}
 
-\begin{algorithm}
-\caption{Registration algorithm (refer to \secref{c1:sec:registration} for details). Joint positions $\mathbf{q}_t$, images $\mathbf{I}_t$, and depth map $\mathbf{D}_t$ all correspond to a single configuration, e.g. they are all synchronously observed at time $t=\tau$.}
-\label{alg:registration}
-\begin{algorithmic}
-    \Function{UnalignedRobotModel}{N, $\mathbf{q}$, $\mathcal{M}$}
-        \State $\Theta =$ \Call{ForwardKinematics}{$\mathbf{q}$} \Comment{get link transforms}
-        \State $\mathbf{V} =$ \Call{Extract}{$\mathcal{M}$} \Comment{extract vertices from mesh files} 
-        \State $\mathbf{V} =$ \Call{Transform}{$\Theta$, $\mathbf{V}$} \Comment{convert mesh vertices by link transforms}
-        \State $\mathbf{V} =$ \Call{Sample}{N, $\mathbf{V}$} \Comment{sample vertices on robot surface}
-        \State \Return $\mathbf{V}$
-    \EndFunction
-    \Function{Registration}{N, $\mathbf{q}_\tau$,   $\mathcal{M}$, $\mathbf{I}_\tau$, $\mathbf{D}_\tau$}
-        \State $\mathbf{V}_\tau =$ \Call{UnalignedRobotModel}{N, $\mathbf{q}_\tau$,   $\mathcal{M}$} \Comment{get unaligned robot model}
-        \State $\mathbf{f}_\tau =$ \Call{Detector}{$\mathbf{I}_\tau$} \Comment{detect robot instances}
-        \State $\mathbf{M}_\tau =$ \Call{Segmentor}{$\mathbf{I}_\tau$, $\mathbf{f}_\tau$} \Comment{segment robot instances}
-        \State $\mathbf{P}_\tau = \mathbf{M}_\tau \odot \mathbf{D}_\tau$ \Comment{compute Hadamard product}
-        \State $\Theta_\text{init} =$ \Call{CoM}{$\mathbf{P}_\tau$} \Comment{center of mass as initial transform}
-        \State $^\text{C}\Theta_\text{R} =$ \Call{ICP}{$\Theta_\text{init}$, $\mathbf{V}_\tau$, $\mathbf{P}_\tau$} \Comment{run iterative closest point}
-        \State \Return $^\text{C}\Theta_\text{R}$
-    \EndFunction
-\end{algorithmic}
-\end{algorithm}
+\input{introduction/icp_algorithm}
 
-\subsection{Experimental setup}
+%\begin{algorithm}
+%\caption{Registration algorithm (refer to \secref{c1:sec:registration} for details). Joint positions $\mathbf{q}_t$, images $\mathbf{I}_t$, and depth map $\mathbf{D}_t$ all correspond to a single configuration, e.g. they are all synchronously observed at time $t=\tau$.}
+%\label{alg:registration}
+%\begin{algorithmic}
+    %\Function{UnalignedRobotModel}{N, $\mathbf{q}$, $\mathcal{M}$}
+        %\State $\Theta =$ \Call{ForwardKinematics}{$\mathbf{q}$} \Comment{get link transforms}
+        %\State $\mathbf{V} =$ \Call{Extract}{$\mathcal{M}$} \Comment{extract vertices from mesh files} 
+        %\State $\mathbf{V} =$ \Call{Transform}{$\Theta$, $\mathbf{V}$} \Comment{convert mesh vertices by link transforms}
+        %\State $\mathbf{V} =$ \Call{Sample}{N, $\mathbf{V}$} \Comment{sample vertices on robot surface}
+        %\State \Return $\mathbf{V}$
+    %\EndFunction
+    %\Function{Registration}{N, $\mathbf{q}_\tau$,   $\mathcal{M}$, $\mathbf{I}_\tau$, $\mathbf{D}_\tau$}
+        %\State $\mathbf{V}_\tau =$ \Call{UnalignedRobotModel}{N, $\mathbf{q}_\tau$,   $\mathcal{M}$} \Comment{get unaligned robot model}
+        %\State $\mathbf{f}_\tau =$ \Call{Detector}{$\mathbf{I}_\tau$} %\Comment{detect robot instances}
+        %\State $\mathbf{M}_\tau =$ \Call{Segmentor}{$\mathbf{I}_\tau$, $\mathbf{f}_\tau$} \Comment{segment robot instances}
+        %\State $\mathbf{P}_\tau = \mathbf{M}_\tau \odot \mathbf{D}_\tau$ %\Comment{compute Hadamard product}
+        %\State $\Theta_\text{init} =$ \Call{CoM}{$\mathbf{P}_\tau$} %\Comment{center of mass as initial transform}
+        %\State $^\text{C}\Theta_\text{R} =$ \Call{ICP}{$\Theta_\text{init}$, $\mathbf{V}_\tau$, $\mathbf{P}_\tau$} \Comment{run iterative closest point}
+%        \State \Return $^\text{C}\Theta_\text{R}$
+%    \EndFunction
+%\end{algorithmic}
+%\end{algorithm}
+
+\subsection{Experimental Setup}
 \label{c1:sec:experimental_setup}
 \begin{figure}
      \centering

@@ -195,7 +195,7 @@ and relying on a Cholesky decomposition:
 
 Note that by expressing A and B without homogeneous coordinates, we get:
 \begin{equation}
-a_i = [-\tilde{n}_i^T R_0 {{\tilde{p}}_{i}}_{\times}, \tilde{n}_i^T R_0]
+a_i = [-\tilde{n}_i^T R_0 {{\tilde{p}}_{i\times}}, \tilde{n}_i^T R_0]
 \end{equation}
 and
 \begin{equation}
@@ -273,58 +273,6 @@ One aspect we haven't addressed yet it the choice of $\kappa$ for the Huber loss
 \begin{equation}
 \hat{\sigma} = \frac{\MAD(\{b_i\})}{0.6745} = \frac{\median(\{|b_i-\median(\{b_i\}|)\})}{0.6745}
 \end{equation}
-
-\paragraph{Summary of the algorithm.}
-See \algoref{in:alg:liep2plan}.
-
-\begin{algorithm}
-\caption{A recap of the robust Lie group formulation of the point-to-plane ICP}\label{in:alg:liep2plan}
-\begin{algorithmic}
-\State Let $\{p\}$ be points to match (the observations). We omit the indices for simplicity here
-\State Let $\{q,n\}$ be points with associated normals (the model)
-\State Let $t \gets 0$ be a counter for the outer iterations
-\State Let $\Theta_0 = \{R_0,T_0\}$ be an initial estimate of the transformation parameters
-\While{ICP not converged}
-  \State Compute the transformed points $\Theta_t p$
-  \State Perform an approximate nearest neighbour search to match $\Theta_t p$ and $q$ points
-  \State Discard point pairs associated with distances that are definitely outliers
-  \State We now use $i$ indices to indicated matching points
-  \State Compute the residuals: $b_i \gets \tilde{n}_i^T (\tilde{q}_i - R_t \tilde{p}_i - T_t)$
-  \State \Comment{Previous computation of $\Theta_t p$ should of course be re-used here}
-  \State Compute the robust standard deviation: $\sigma \gets \MAD(\{b_i\})/0.6745$
-  \State \Comment{Done once to avoid recomputing it in the inner iterations}
-  \State Let $\tau \gets 0$ be a counter for the inner iterations
-  \State Let $\Theta_{t,0} \gets \Theta_{t}$ be the current estimate of the transformation
-  \While{Gauss-Newton not converged}
-    \If{$\tau \neq 0$}
-      \State Compute the residuals: $b_i \gets \tilde{n}_i^T (\tilde{q}_i - R_{t,\tau} \tilde{p}_i - T_{t,\tau})$
-    \EndIf
-    \State Compute the robust weights: $\omega_i \gets \omega_{1.345\sigma}(b_i)$
-    \State Compute the linear coefficients: $a_i \gets [-\tilde{n}_i^T R_{t,\tau} {{\tilde{p}}_{i}}_{\times}, \tilde{n}_i^T R_{t,\tau}]$
-    \State Solve the weighted normal equation:
-    \State \quad $\delta\Theta \gets \texttt{chol\_solve}(A^T W A, A^T W B)$
-    \State Update the transformation: $\Theta_{t,\tau+1} \gets \Theta_{t,\tau} \cdot \exp(\delta\Theta)$
-    \State $\tau \gets \tau+1$
-  \EndWhile
-  \State Let $\Theta_{t+1} \gets \Theta_{t,\tau}$
-  \State $t \gets t+1$
-\EndWhile
-%\Require $n \geq 0$
-%\Ensure $y = x^n$
-%\State $y \gets 1$
-%\State $X \gets x$
-%\State $N \gets n$
-%\While{not converged}
-%\If{$N$ is even}
-%    \State $X \gets X \times X$
-%    \State $N \gets \frac{N}{2}$  \Comment{This is a comment}
-%\ElsIf{$N$ is odd}
-%    \State $y \gets y \times X$
-%    \State $N \gets N - 1$
-%\EndIf
-%\EndWhile
-\end{algorithmic}
-\end{algorithm}
 
 \subsection{Registration of a 3D point cloud with 2D stereo segmentations}
 \label{in:sec:registration_of_3d_point_cloud}
