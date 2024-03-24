@@ -161,6 +161,7 @@ Since the camera motion estimator is executed online, memory footprint and compu
 \subsection{Camera Motion Predictor}
 \label{c4:sec:camera_motion_predictor_experiments}
 \subsubsection{Model Architecture}
+\label{c4:sec:model_architecture}
 For all experiments, the camera motion predictor is a ResNet-18/34/50, with the number of input features equal to the recall horizon $\text{N}\times3$ (RGB), where $\text{N}=14$. We set the preview horizon $\text{M}=1$. The frame increment is set to $0.25\,\text{s}$, or $\Delta n = 5$ for the $25\,\text{fps}$ videos. The number of frames between clips is also set to $0.25\,\text{s}$, or $\Delta c = 5$.
 
 \subsubsection{Training Details}
