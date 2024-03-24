@@ -421,6 +421,7 @@ Base-to-base via eye-to-hand  & Proposed     & $^{\text{R}_2}\Theta_{\text{R}_1}
 \end{figure}
 
 \subsection{In-vivo Results}
+\label{c1:sec:in_vivo_results}
 \begin{figure}[tb]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
@@ -436,6 +437,51 @@ Base-to-base via eye-to-hand  & Proposed     & $^{\text{R}_2}\Theta_{\text{R}_1}
 Initially, we collect 12 measurements for the drilling robot, and 14 measurements for the hyperspecral camera robot. These measurements include joint state, image, and depth correspondences. The positioning of these robots are shown in \figref{c1:fig:in_vivo_setup}. Using these measurements, we perform a eye-to-hand calibration. A render of the drilling robot, given this calibration, as well as a sample instance segmentation, is shown in \figref{c1:fig:in_vivo_results}. 
 
 TODO: add some intersection over union or something here!
+
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{chapter_1/img/hsi_left_mask_2.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{chapter_1/img/hsi_left_render_mask_2.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{chapter_1/img/hsi_left_difference_2.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{chapter_1/img/drill_left_mask_1.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{chapter_1/img/drill_left_render_mask_1.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.32\textwidth}
+        \includegraphics[width=\textwidth]{chapter_1/img/drill_left_difference_1.png}
+    \end{subfigure}
+    \caption{Caption}
+    \label{fig:enter-label}
+\end{figure}
+
+\begin{table}[tb]
+\centering
+\label{}
+\caption{Intersetction over union scores. Refers to \secref{c1:sec:in_vivo_results}.}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Robot         & IoU {[}a.u{]}   \\ \midrule
+HSI (left)    & $0.84 \pm 0.01$ \\
+Drill (right) & $0.92 \pm 0.01$ \\ \bottomrule
+\end{tabular}
+\end{table}
+
+%Drill:
+%Average IoU: 0.8394461441870494
+%Std IoU: 0.013859811026686823
+%HSI:
+%Average IoU: 0.9234094580204967
+%Std IoU: 0.009454594255256406
+
 
 For both robots, we collect a total of $4588$ stereo frames and depth maps with corresponding joint states, corresponding to about $10$ minutes of data at an average recorded frame rate of $8\,\text{fps}$. We collect an additional $5611$ correspondences for only one robot, either the drilling or the hyperspectral camera robot. This corresponds to about $7$ minutes of data at an average recorded frame rate of $13\,\text{fps}$.
 
