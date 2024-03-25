@@ -431,7 +431,7 @@ Base-to-base via eye-to-hand  & Proposed     & $^{\text{R}_2}\Theta_{\text{R}_1}
     \begin{subfigure}[b]{0.49\textwidth}
         \includegraphics[width=\textwidth]{chapter_1/img/left_render_0_anonymized.png}
     \end{subfigure}
-    \caption{Segmented robot (left) and rendered robot given registration (right). Visually, the render shows good alignment with the robot, hinting to an accurate calibration.}
+    \caption{Segmented robot (left) and rendered robot given registration (right). Visually, the render shows good alignment with the robot, hinting to an accurate calibration. Refers to \secref{c1:sec:in_vivo_results}.}
     \label{c1:fig:in_vivo_results}
 \end{figure}
 Initially, we collect 12 measurements for the drilling robot, and 14 measurements for the hyperspecral camera robot. These measurements include joint state, image, and depth correspondences. The positioning of these robots are shown in \figref{c1:fig:in_vivo_setup}. Using these measurements, we perform a eye-to-hand calibration. A render of the drilling robot, given this calibration, as well as a sample instance segmentation, is shown in \figref{c1:fig:in_vivo_results}. 
@@ -443,30 +443,36 @@ TODO: add some intersection over union or something here!
     \centering
     \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{chapter_1/img/hsi_left_mask_2.png}
+        \caption{Camera robot: Segmentation.}
     \end{subfigure}
     \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{chapter_1/img/hsi_left_render_mask_2.png}
+        \caption{Camera robot: Rendered mask.}
     \end{subfigure}
     \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{chapter_1/img/hsi_left_difference_2.png}
+        \caption{Camera robot: L1-norm of segmentation and render.}
     \end{subfigure}
     \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{chapter_1/img/drill_left_mask_1.png}
+        \caption{Drilling robot: Segmentation}
     \end{subfigure}
     \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{chapter_1/img/drill_left_render_mask_1.png}
+        \caption{Drilling robot: Rendered mask.}
     \end{subfigure}
     \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{chapter_1/img/drill_left_difference_1.png}
+        \caption{Drilling robot: L1-norm of segmentation and render.}
     \end{subfigure}
-    \caption{Caption}
-    \label{fig:enter-label}
+    \caption{Example of segmented and rendered masks given the proposed registration procedure. Refer to \figref{c1:fig:in_vivo_setup} for nomenclature. Refers to \secref{c1:sec:in_vivo_results}.}
+    \label{c1:fig:masks}
 \end{figure}
 
 \begin{table}[tb]
 \centering
-\label{}
-\caption{Intersetction over union scores. Refers to \secref{c1:sec:in_vivo_results}.}
+\caption{Average intersection over union of segmented and rendered mask. Also compare to \figref{c1:fig:masks}. Refers to \secref{c1:sec:in_vivo_results}.}
+\label{c1:tab:iou}
 \begin{tabular}{@{}ll@{}}
 \toprule
 Robot         & IoU {[}a.u{]}   \\ \midrule
