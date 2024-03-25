@@ -715,12 +715,26 @@ Recent deep approaches indeed set $\mathbb{P}$ as the corners of an image, and p
 \end{equation}
 which relates to $\mathbf{G}$ through \eqref{c3:eq:hom_lin_sys}, where $\mathbf{p}^\prime_i = \mathbf{p}_i + \Delta \mathbf{p}_i$.    
 
-\paragraph{Relation to Camera Frame Velocity} Given a projective homography $\mathbf{G}$ in image space, a camera body frame velocity that seeks to minimize 
+\paragraph{Relation to Camera Frame Velocity} Given a projective homography $\mathbf{G}$ in image space, a camera body frame velocity that seeks to minimize $\Delta \mathbf{p}_i$ can be derived \`{a} la \cite{benhimane2006homography}. 
 
-
-
-\cite{benhimane2006homography} 
-
+Be $\mathbf{x}^\prime = \begin{bmatrix}
+    x^\prime & y^\prime & z^\prime
+\end{bmatrix}^T$ a point in 3D coordinates  and its observation under a homography transform $\mathbf{H}$:
+\begin{equation}
+    \mathbf{x} = \mathbf{H}\mathbf{x}^\prime. 
+\end{equation}
+In normalized coordinates $\mathbf{m}^\prime = \frac{1}{z^\prime} \mathbf{x}^\prime$ we get
+\begin{equation}
+    \frac{z}{z^\prime}\mathbf{m} = \mathbf{H} \mathbf{m}^\prime.
+\end{equation}
+It can then be shown that a translational error $^\text{C}\mathbf{e}_v$ and a rotational error $\left[^\text{C}\mathbf{e}_\omega\right]_\times$ exist that yield camera body frame velocities which locally converge $\mathbf{m} \rightarrow \mathbf{m}^\prime$. These can be expressed through
+ \begin{equation}
+    \begin{split}
+        ^\text{C}\mathbf{e}_v & = (\mathbf{H} - \mathbf{I})^{\text{C}^\prime}\mathbf{m}^\prime\\
+        \left[^\text{C}\mathbf{e}_\omega\right]_\times & = \mathbf{H} - \mathbf{H}^\text{T}.
+    \end{split}
+    \label{in:eq:dc}
+\end{equation}
 
 
 % theoretical background homography estimation paper
@@ -733,21 +747,30 @@ which relates to $\mathbf{G}$ through \eqref{c3:eq:hom_lin_sys}, where $\mathbf{
 
 % deformable... assuming the scene is a plane in the first instance, add the text that was writting but commented out above
 
-
 % embodying domain-irrelevant actions
 % extracting actions
 % predicting actions
 
 \subsubsection{Robotic Laparoscope Control}
 \label{in:sec:robotic_laparoscope_control}
-RCM ? maybe just jacobian should be fine
+Given the relation between image space action and camera frame velocity that was introduced in the above \secref{in:sec:homography_based_camera_motion_formulation}, only a mapping from camera frame velocity to joint space velocity $\dot{\mathbf{q}}$ is missing for controlling a robotic laparoscope holder. To this end we assume that the transformation from robot end-effector to camera frame $\homogeneous{E}{C}$ is accurately known. This can e.g. be achieved through the methods described in \secref{in:sec:camera_intrinsic_calibration} and \secref{in:sec:eye_in_to_hand_calibration}. Given the kinematics of the serial manipulator and the homogeneous transform end-effector to camera $\homogeneous{E}{C}$, a relation between joint velocties $\dot{\mathbf{q}}$ and camera frame velocity ${}^B\dot{\mathbf{x}}_C$ can be established through the Jacobian matrix $\mathbf{J}$ as follows
+\begin{equation}
+    {}^B\dot{\mathbf{x}}_C = \mathbf{J} \dot{\mathbf{q}}.
+\end{equation}
+The Jacobian therein can be determined analytically through geometrical considerations. Inverting this locally linear equation yields target joint velocities
+\begin{equation}
+    \dot{\mathbf{q}} = \mathbf{J}^{\dagger}{}^B\dot{\mathbf{x}}_C.
+    \label{in:eq:jacobian_inverse}
+\end{equation}
+This relation may e.g. be used in a PID control scheme. The exact use of \eqref{in:eq:jacobian_inverse} to control a camera frame body velocity through \eqref{in:eq:dc} with additional RCM constraint will further be contributed as part of \chapref{chap:robotic_endoscope} in \secref{c2:sec:methods}.
 
-give a good explanation for the relation of camera frame velocity with joint velocity mapping, camrea intrinsic parameters etc, so that the derivation of rcm can still be kept for chapter visual servoing
+% that is associated with blablablabla
 
-theory of control paper up to merge, i.e. no including merge of two methods
+%RCM ? maybe just jacobian should be fine
 
+% give a good explanation for the relation of camera frame velocity with joint velocity mapping, camrea intrinsic parameters etc, so that the derivation of rcm can still be kept for chapter visual servoing
 
-
+% theory of control paper up to merge, i.e. no including merge of two methods
 
 % \subsection{Minimally Invasive Surgery}
 % Minimally Invasive Surgery (MIS) minimizes blood loss, allows for faster recovery and leaves a patient with smaller scars. In traditional MIS, a main surgeon would usually be supported by an assistant to help move the endoscope. In this setup, the assistant surgeon often introduces tremor and suffers fatigue. To oveRCMe these, robotic endoscope holders like AESOP \cite{unger1994aesop} or EndoAssist \cite{gilbert2009endoassist} were developed. Different control schemes, such as gaze control, control via joystick, foot or voice were investigated. They, however, lead to eye strain, additional mental workload or communication failures, respectively. Therefore, attempts to automate the endoscope motion via visual servoing were explored. These can broadly by separated into approaches that rely on a mechanical remote center of motion (RCM) and approaches that cast the RCM as part of the optimal control, often referred to as programmable RCM. 

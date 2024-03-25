@@ -138,7 +138,7 @@ where $\dot{\mathbf{t}}$ is the task velocity with task dimension $n_\text{t}$ a
         \dot{\mathbf{q}}\\
         \dot{\lambda}
     \end{bmatrix} = 
-    \mathbf{J}_\text{cp}^\#
+    \mathbf{J}_\text{cp}^{\dagger}
     \left(
         \mathbf{K}^\text{p}
         \begin{bmatrix}
@@ -158,7 +158,7 @@ where $\dot{\mathbf{t}}$ is the task velocity with task dimension $n_\text{t}$ a
     \right),
     \label{c2:eq:pid}
 \end{equation}
-where $\mathbf{J}_\text{cp}^\#$ is the pseudo-inverse of the composite Jacobian from (\eqref{c2:eq:task_jac}), $\mathbf{e}^{\text{p}/\text{i}/\text{d}}_t$ and $^\text{W}\mathbf{e}^{\text{p}/\text{i}/\text{d}}_\text{RCM}$, are the proportional, integral, and differential errors for the task and the RCM, respectively, and $\mathbf{K}^{\text{p}/\text{i}/\text{d}}$ are the diagonal gain matrices. Therein, $^\text{W}\mathbf{e}_\text{RCM}^{\text{i}/\text{d}}$ are computed as the integral, and the differential of the proportional error $^\text{W}\mathbf{e}_\text{RCM}^\text{p} = ^\text{W}\mathbf{x}_\text{trocar} - ^\text{W}\mathbf{x}_\text{RCM}$. 
+where $\mathbf{J}_\text{cp}^{\dagger}$ is the pseudo-inverse of the composite Jacobian from (\eqref{c2:eq:task_jac}), $\mathbf{e}^{\text{p}/\text{i}/\text{d}}_t$ and $^\text{W}\mathbf{e}^{\text{p}/\text{i}/\text{d}}_\text{RCM}$, are the proportional, integral, and differential errors for the task and the RCM, respectively, and $\mathbf{K}^{\text{p}/\text{i}/\text{d}}$ are the diagonal gain matrices. Therein, $^\text{W}\mathbf{e}_\text{RCM}^{\text{i}/\text{d}}$ are computed as the integral, and the differential of the proportional error $^\text{W}\mathbf{e}_\text{RCM}^\text{p} = ^\text{W}\mathbf{x}_\text{trocar} - ^\text{W}\mathbf{x}_\text{RCM}$. 
 
 In the following section, we introduce a homography-based visual servoing task.
 
