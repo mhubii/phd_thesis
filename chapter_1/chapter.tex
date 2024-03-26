@@ -22,8 +22,7 @@ nuclear decommissioning~\cite{Mohamed07},
 disaster recovery~\cite{Kamezaki16}, and
 sub-sea robotics~\cite{Brantner21}.
 
-The da Vinci\textsuperscript{\textregistered} system by Intuitive Surgical Inc. is widely regarded as an example of a successful surgical robot system~\cite{yang2018grand, DEttorre2021} utilizing four robot arms (three for manipulation and one for imaging). However, due to its large size, incorporating the da Vinci system into the operating theater becomes arduous, restricting patient access, and making it cumbersome to remove in the event of manual intervention being required.
-Recently, alternative platforms have emerged that adopt a modular design where the robot arms are mounted on mobile platforms or the surgical table. 
+The da Vinci\textsuperscript{\textregistered} system by Intuitive Surgical Inc. is widely regarded as an example of a successful surgical robot system~\cite{yang2018grand, DEttorre2021} utilizing four robot arms (three for manipulation and one for imaging). However, due to its large size, incorporating the da Vinci system into the operating theater becomes arduous, restricting patient access, and making it cumbersome to remove in the event of manual intervention being required.Recently, alternative platforms have emerged that adopt a modular design where the robot arms are mounted on mobile platforms or the surgical table. 
 Examples include the 
 DLR MIRO research platform~\citep{miro}
 as well as commercial systems such as 
@@ -33,15 +32,12 @@ the Versius\textsuperscript{\textregistered} Surgical System by CMR Surgical, an
 the SSI Mantra by SS Innovations.
 
 Direct teleoperation, classified as level zero in the taxonomy proposed by Yang et al.~\cite{Yang2017}, is a control approach that maps signals from a surgeon-device interface onto robot motion~\cite{Niemeyer2008}, typically using position/velocity based commands.
-Currently, direct teleoperation is the gold-standard for the majority of surgical robotic systems in use today.
-This approach guarantees that the operating surgeon is solely responsible for the robot's motion, emphasizing the need for skilled training and practice~\cite{Liu15}. 
-As a result, the system integration forgoes the requirement for a collision model in these multi-arm setups.
-With the increasing automation of surgical procedures, e.g. see recent work by Saeidi et al~\cite{Saeidi2022}, the demand for localization strategies and collision models becomes more pronounced.
+Currently, direct teleoperation is the gold-standard for the majority of surgical robotic systems in use today. This approach guarantees that the operating surgeon is solely responsible for the robot's motion, emphasizing the need for skilled training and practice~\cite{Liu15}. 
+As a result, the system integration forgoes the requirement for a collision model in these multi-arm setups. With the increasing automation of surgical procedures, e.g. see recent work by Saeidi et al~\cite{Saeidi2022}, the demand for localization strategies and collision models becomes more pronounced.
 
 A key requirement for future automated systems is robot base-to-base localization, i.e. each robot arm must be aware of the other arm's position and orientation with respect to its own.
 This is needed in order to implement an effective collision model into the automated control system ensuring patient and the operating team's safety.
-In the case where multi-robot arm systems are deployed on a surgical table, base localization can be derived from CAD models, however, these measurements may not accurately reflect reality due to manufacturing inaccuracies.
-In the case of the modern modular systems, mentioned above, the arm setup may be different every time the theater is prepared.
+In the case where multi-robot arm systems are deployed on a surgical table, base localization can be derived from CAD models, however, these measurements may not accurately reflect reality due to manufacturing inaccuracies. In the case of the modern modular systems, mentioned above, the arm setup may be different every time the theater is prepared.
 Furthermore, robotic systems must also undergo localization in relation to other elements present in the operating theater, including patient anatomy, lighting fixtures, imaging systems (e.g. C-arm), etc.
 This motivates the need for a robot base calibration step introduced into the surgical workflow.
 Such a step, however, should be designed in a way that can be quickly and safely performed by non-robotics experts, i.e. the theater staff.
@@ -187,37 +183,35 @@ Given a geometric description of the robot's joints and links (typically in the 
 %\end{equation}
 %where superscript -1 denotes the matrix inverse. 
 
-\subsection{Eye-in-hand calibration}
+%\subsection{Eye-in-hand calibration}
 
-In this subsection we primarily describe the problem associated with \figref{in:fig:eye_in_hand}.
-Sensors, such as cameras, are often mounted at the robot end-effector in order to perform imaging tasks.
-Often, the transform between the camera frame $C$ and the robot end-effector $E$ is not known.
-Often CAD models are available for the mount which attaches the camera to the end-effector.
-However, the precise location of the camera imaging sensor is not known accurately, i.e. the camera extrinsic parameters.
+%In this subsection we primarily describe the problem associated with \figref{in:fig:eye_in_hand}.
+%Sensors, such as cameras, are often mounted at the robot end-effector in order to perform imaging tasks.
+%Often, the transform between the camera frame $C$ and the robot end-effector $E$ is not known.
+%Often CAD models are available for the mount which attaches the camera to the end-effector.
+%However, the precise location of the camera imaging sensor is not known accurately, i.e. the camera extrinsic parameters.
 
-Estimating the unknown static transformation frame $\Theta^E_C$ is a problem we address in this work as part of our unified approach.
-This is the so-called \textit{eye-in-hand}, or also known as \textit{hand-eye}, calibration problem~\cite{Horaud95}.
-An additional consideration regarding this problem, is that the static transform $\Theta^W_R$ is often also unknown.
-The majority of previous approaches in the literature attempt to solve the ill-posed problem $\Theta^W_C \Theta^R_W = \Theta^E_C \Theta^R_E$.
-Typically, a marker (e.g. checkerboard) of known geometry is affixed to the world frame $W$ that can be estimated and provide an estimate for the transformation frame $\Theta^C_W$ (assuming properly calibrated camera intrinsic parameters).
-As mentioned as an assumption above, the forward kinematics can provide an accurate estimate for the transformation $\Theta^R_E$.
-Multiple images from the camera at various joint positions are taken, and thus recording multiple measurements for $\Theta^C_W$ and $\Theta^R_E$.
-In order to simplify notation, let us denote the unknowns by $X=\Theta^R_W$ and $Y=\Theta^E_C$ and the known values $A_i=\Theta^W_C = (\Theta^C_W)^{-1}$ and $B_i=\Theta^R_E$ (the subscript $i$ refers to the fact that we take multiple measurements), thus the eye-in-hand problem can be re-written as $A_i X = Y B_i$.
+%Estimating the unknown static transformation frame $\Theta^E_C$ is a problem we address in this work as part of our unified approach.
+%This is the so-called \textit{eye-in-hand}, or also known as \textit{hand-eye}, calibration problem~\cite{Horaud95}.
+%An additional consideration regarding this problem, is that the static transform $\Theta^W_R$ is often also unknown.
+%The majority of previous approaches in the literature attempt to solve the ill-posed problem $\Theta^W_C \Theta^R_W = \Theta^E_C \Theta^R_E$.
+%Typically, a marker (e.g. checkerboard) of known geometry is affixed to the world frame $W$ that can be estimated and provide an estimate for the transformation frame $\Theta^C_W$ (assuming properly calibrated camera intrinsic parameters).
+%As mentioned as an assumption above, the forward kinematics can provide an accurate estimate for the transformation $\Theta^R_E$.
+%Multiple images from the camera at various joint positions are taken, and thus recording multiple measurements for $\Theta^C_W$ and $\Theta^R_E$.
+%In order to simplify notation, let us denote the unknowns by $X=\Theta^R_W$ and $Y=\Theta^E_C$ and the known values $A_i=\Theta^W_C = (\Theta^C_W)^{-1}$ and $B_i=\Theta^R_E$ (the subscript $i$ refers to the fact that we take multiple measurements), thus the eye-in-hand problem can be re-written as $A_i X = Y B_i$.
 
-The standard formulation of the eye-in-hand calibration problem is expressed by
-\begin{equation}
-\label{c1:eq:eyeinhand}
-    \widehat{X}, \widehat{Y} = \underset{X, Y\in\mathbb{R}^{4\times 4}}{\text{arg}\min}~\sum_i \| A_i X - Y B_i\|^2
-\end{equation}
-where $\widehat{X}, \widehat{Y}$ are the solution to the least squares problem and represent estimated homogeneous transformation matrices.
-In our work, we remove the need for a marker affixed in the environment.
-Instead, we make use of the mesh files or CAD model for the robot arm.
-This requires a reformulation of \eqref{c1:eq:eyeinhand}, which we discuss in later sections.
+%The standard formulation of the eye-in-hand %calibration problem is expressed by
+%\begin{equation}
+%\label{c1:eq:eyeinhand}
+%    \widehat{X}, \widehat{Y} = \underset{X, Y\in\mathbb{R}^{4\times 4}}{\text{arg}\min}~\sum_i \| A_i X - Y B_i\|^2
+%\end{equation}
+%where $\widehat{X}, \widehat{Y}$ are the solution to the least squares problem and represent estimated homogeneous transformation matrices.
+%In our work, we remove the need for a marker affixed in the environment.
+%Instead, we make use of the mesh files or CAD model for the robot arm.
+%This requires a reformulation of \eqref{c1:eq:eyeinhand}, which we discuss in later sections.
 
 \section{Materials and Methods}
 \label{c1:sec:materials_and_methods}
-
-
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{chapter_1/fig/hydra_registration.pdf}
@@ -475,8 +469,8 @@ TODO: add some intersection over union or something here!
 \begin{tabular}{@{}ll@{}}
 \toprule
 Robot         & IoU {[}a.u{]}   \\ \midrule
-HSI (left)    & $0.84 \pm 0.01$ \\
-Drill (right) & $0.92 \pm 0.01$ \\ \bottomrule
+Camera (left)    & $0.84 \pm 0.01$ \\
+Drilling (right) & $0.92 \pm 0.01$ \\ \bottomrule
 \end{tabular}
 \end{table}
 
