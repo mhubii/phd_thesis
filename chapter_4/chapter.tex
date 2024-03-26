@@ -4,7 +4,7 @@
 \label{chap:camera_motion_prediction}
 \minitoc
 
-\paragraph{Disclaimer} This \chapref{chap:camera_motion_prediction} is an \textit{in extenso} reproduction of \cite{huber2023deep}. Only \secref{c4:sec:introduction} was altered to highlight additional context within the scope of this thesis.
+\paragraph{Disclaimer} This \chapref{chap:camera_motion_prediction} is an \textit{in extenso} reproduction of~\cite{huber2023deep}. Only \secref{c4:sec:introduction} was altered to highlight additional context within the scope of this thesis.
 
 \newpage
 
@@ -12,26 +12,26 @@
 \label{c4:sec:introduction}
 In the previous \chapref{chap:camera_motion_extraction}, it was demonstrated that the hypothesized supervised laparoscopic camera motion extraction from \figref{in:fig:camera_motion} indeed outperforms classical means of extraction, see \figref{c3:fig:resnet34_c} and \figref{c3:fig:qualitative}. This was achieved through a novel data augmentation step, refer \figref{c3:fig:hom}. In fact, the introduced method proved so robust that it outperformed classical methods on MIS data, although it was trained on RMIS data. The extracted homography, i.e. action $\hat{a}^*_t$, refer \figref{in:fig:hypothesized_pipeline}, could already be combined with the proposed visual servo scheme from \chapref{chap:robotic_endoscope}, however, this would not yet solve the temporality assumption that was mentioned in \secref{c2:sec:introduction}.
 
-In this chapter \chapref{chap:camera_motion_prediction}, we will finally investigate how the extracted homographies can be utilized in a self-supervised training scheme to implement the imitation learning for predicting desired actions $\hat{a}^*_t$ from image states $\hat{s}_t$, see \figref{in:fig:hypothesized_pipeline}. This builds on the realization that camera motion is intrinsic to videos of laparoscopic interventions and that camera motion can be harvested from them, as was already discussed in \secref{in:sec:supervised_self_supervised}. Since no public dataset exists for state-action pairs, some work continues to focus on the tools to infer camera motion \cite{li2021data}, or learns on a robotic setup altogether \cite{li20223d} where camera motion is accessible. In this publication, we address those shortcomings, to enable IL on large scale datasets of retrospective laparoscopic surgery videos.
+In this chapter \chapref{chap:camera_motion_prediction}, we will finally investigate how the extracted homographies can be utilized in a self-supervised training scheme to implement the imitation learning for predicting desired actions $\hat{a}^*_t$ from image states $\hat{s}_t$, see \figref{in:fig:hypothesized_pipeline}. This builds on the realization that camera motion is intrinsic to videos of laparoscopic interventions and that camera motion can be harvested from them, as was already discussed in \secref{in:sec:supervised_self_supervised}. Since no public dataset exists for state-action pairs, some work continues to focus on the tools to infer camera motion~\cite{li2021data}, or learns on a robotic setup altogether~\cite{li20223d} where camera motion is accessible. In this publication, we address those shortcomings, to enable IL on large scale datasets of retrospective laparoscopic surgery videos.
 
-% Automation in robot-assisted minimally invasive surgery (RMIS) may reduce human error that is linked to fatigue, lack of attention and cognitive overload \cite{fiorini2022concepts}.
-% It could help surgeons operate such systems by reducing the learning curve \cite{van2018learning}.
-% And in an ageing society with shrinking workforce, it could help to retain accessibility to healthcare. It is therefore expected that parts of RMIS will be ultimately automated \cite{davenport2019potential,zidane2022robotics}. On the continuous transition towards different levels of autonomy, camera motion automation is likely to happen first \cite{kitaguchi2022artificial}.
+% Automation in robot-assisted minimally invasive surgery (RMIS) may reduce human error that is linked to fatigue, lack of attention and cognitive overload~\cite{fiorini2022concepts}.
+% It could help surgeons operate such systems by reducing the learning curve~\cite{van2018learning}.
+% And in an ageing society with shrinking workforce, it could help to retain accessibility to healthcare. It is therefore expected that parts of RMIS will be ultimately automated~\cite{davenport2019potential,zidane2022robotics}. On the continuous transition towards different levels of autonomy, camera motion automation is likely to happen first~\cite{kitaguchi2022artificial}.
 
-% Initial attempts to automate camera motion in RMIS include rule-based approaches that keep surgical tools in the center of the field of view \cite{da2020scan,garcia2022robotic,sandoval2021towards}. The assumption that surgical tools remain centrally is, however, simplistic, as in many cases the surgeon may want to observe the surrounding anatomy to decide their next course of action. 
+% Initial attempts to automate camera motion in RMIS include rule-based approaches that keep surgical tools in the center of the field of view~\cite{da2020scan,garcia2022robotic,sandoval2021towards}. The assumption that surgical tools remain centrally is, however, simplistic, as in many cases the surgeon may want to observe the surrounding anatomy to decide their next course of action. 
 
 % Contrary to rule-based approaches, data-driven methods are capable to capture more complex control 
 %modes.
 %policies.
-%Example data-driven methods suitable for camera motion automation include reinforcement learning (RL) and imitation learning (IL). The sample inefficiency and potential harm to the patient currently restrict RL approaches to simulation \cite{su2021multicamera,scheikl2023lapgym,agrawal2018automating}, where a domain gap remains. Work to bridge the domain gap and make RL algorithms deployable in real setups have been proposed \cite{cartucho2021visionblender,marzullo2021towards}, but clinical translation has not yet been achieved. For IL, on the other hand, camera motion automation could be learned from real data, thereby implicitly tackling the domain-gap challenge. The downside is that sufficient data may be difficult to collect. Many works highlight that lack of expert annotated data hinders progress towards camera motion automation in RMIS \cite{maier2022surgical,kassahun2016surgical,esteva2019guide}.
+%Example data-driven methods suitable for camera motion automation include reinforcement learning (RL) and imitation learning (IL). The sample inefficiency and potential harm to the patient currently restrict RL approaches to simulation~\cite{su2021multicamera,scheikl2023lapgym,agrawal2018automating}, where a domain gap remains. Work to bridge the domain gap and make RL algorithms deployable in real setups have been proposed~\cite{cartucho2021visionblender,marzullo2021towards}, but clinical translation has not yet been achieved. For IL, on the other hand, camera motion automation could be learned from real data, thereby implicitly tackling the domain-gap challenge. The downside is that sufficient data may be difficult to collect. Many works highlight that lack of expert annotated data hinders progress towards camera motion automation in RMIS~\cite{maier2022surgical,kassahun2016surgical,esteva2019guide}.
 %To this end, it 
-% It is thus not surprising that existing literature on IL for camera motion automation utilizes data from mock setups \cite{ji2018learning,wagner2021learning}.
+% It is thus not surprising that existing literature on IL for camera motion automation utilizes data from mock setups~\cite{ji2018learning,wagner2021learning}.
 
-% Recent efforts to make vast amounts of laparoscopic intervention videos publicly available \cite{maier2022surgical} drastically change how IL for camera motion automation can be approached. So far, this data is leveraged mainly to solve auxiliary tasks that could contribute to camera motion automation. As reviewed in \cite{loukas2018video}, these tasks include tool and organ segmentation, as well as surgical phase recognition. 
+% Recent efforts to make vast amounts of laparoscopic intervention videos publicly available~\cite{maier2022surgical} drastically change how IL for camera motion automation can be approached. So far, this data is leveraged mainly to solve auxiliary tasks that could contribute to camera motion automation. As reviewed in~\cite{loukas2018video}, these tasks include tool and organ segmentation, as well as surgical phase recognition. 
 
 
 \subsection{Contributions}
-We build on \cite{huber2022deep} for computationally efficient state-action pair extraction from publicly available datasets of laparoscopic interventions, which yields more than $20\times$ the amount of data that was used in the closed source data of \cite{li2022learning}. To our best knowledge, this dataset marks the largest and only state-action pair dataset for laparoscopic camera motion imitation learning. On top of the sheer amount of additional data, we extract homography estimates at runtime, de facto generating data on the fly. Contrary to \cite{li2022learning}, our camera motion extraction does not rely on image features, which are sparse in surgical videos, and is intrinsically capable to differentiate between camera and object motion. We further propose a novel importance sampling and data augmentation step for achieving camera motion automation IL in this publication. It is indeed the importance sampling, which renders learning to predict motion feasible.
+We build on~\cite{huber2022deep} for computationally efficient state-action pair extraction from publicly available datasets of laparoscopic interventions, which yields more than $20\times$ the amount of data that was used in the closed source data of~\cite{li2022learning}. To our best knowledge, this dataset marks the largest and only state-action pair dataset for laparoscopic camera motion imitation learning. On top of the sheer amount of additional data, we extract homography estimates at runtime, de facto generating data on the fly. Contrary to~\cite{li2022learning}, our camera motion extraction does not rely on image features, which are sparse in surgical videos, and is intrinsically capable to differentiate between camera and object motion. We further propose a novel importance sampling and data augmentation step for achieving camera motion automation IL in this publication. It is indeed the importance sampling, which renders learning to predict motion feasible.
 
 %21x
 
@@ -39,14 +39,14 @@ We build on \cite{huber2022deep} for computationally efficient state-action pair
 %~2950 minutes cholec80
 %~630 minutes heichole
 
-%  \cite{huber2022deep}
-%  \cite{huber2021homography}
+% ~\cite{huber2022deep}
+% ~\cite{huber2021homography}
 
-% Minimally invasive robot assisted surgery leads to reduced patient pain, reduced blood loss, shorter recovery times, less scarring, and reduced risk of infection  \cite{}. Additionally, it offers surgeons better ergonomics that lead to reduced fatigue, greater precision, and less physical exertion  \cite{}. On the downside, however, it requires additional training.
+% Minimally invasive robot assisted surgery leads to reduced patient pain, reduced blood loss, shorter recovery times, less scarring, and reduced risk of infection ~\cite{}. Additionally, it offers surgeons better ergonomics that lead to reduced fatigue, greater precision, and less physical exertion ~\cite{}. On the downside, however, it requires additional training.
 
 % make clear that camera motion is the target
 
-% Efforts have been made to reduce training requirements for surgeons by improved human-machine interfaces, e.g. through voice, gaze, or the introduction of haptic devices  \cite{}. The effort is to essentially relieve surgeons of some of their tasks, similar to what an assistant would do, through robot autonomy.
+% Efforts have been made to reduce training requirements for surgeons by improved human-machine interfaces, e.g. through voice, gaze, or the introduction of haptic devices ~\cite{}. The effort is to essentially relieve surgeons of some of their tasks, similar to what an assistant would do, through robot autonomy.
 
 
 %\textbf{This is all a bit too sudden. I think you need to make the case for autonomous endoscope motion, how you will extract motion, and why this is important. Also, what have others done on the topic? Your introduction is a bit too general. Keep what you have, but slowly narrow it down to something more specific. You are solving a very specific problem, not the full imitation learning problem}
@@ -72,7 +72,7 @@ The proposed approach to learning camera motion prediction is summarized in \fig
 \label{c4:sec:theoretical_background}
 Points on a plane, as observed from a moving camera, transform by means of the $3\times3$ projective homography matrix $\mathbf{G}$ in image space, see \secref{in:sec:homography_based_camera_motion_formulation}. Thus, predicting future camera motion (up to scale) may be equivalently treated as predicting future projective homographies.
 
-It has been shown in \cite{DeTone2016DeepEstimation} that the four point representation of the projective homography, \emph{i.e.,}  taking the difference between four points in homogeneous coordinates $\Delta\mathbf{uv} = \{\mathbf{p}_i - \mathbf{p}^\prime_i\,|\,i \in [0, 4)\} \in \mathbb{R}^{4\times2}$ that are related by $\mathbf{G}\mathbf{p}_i \sim \mathbf{p}^\prime_i\,\,\forall i$, is better behaved for deep learning applications than the $3\times3$ matrix representation of a homography.
+It has been shown in~\cite{DeTone2016DeepEstimation} that the four point representation of the projective homography, \emph{i.e.,}  taking the difference between four points in homogeneous coordinates $\Delta\mathbf{uv} = \{\mathbf{p}_i - \mathbf{p}^\prime_i\,|\,i \in [0, 4)\} \in \mathbb{R}^{4\times2}$ that are related by $\mathbf{G}\mathbf{p}_i \sim \mathbf{p}^\prime_i\,\,\forall i$, is better behaved for deep learning applications than the $3\times3$ matrix representation of a homography.
 %
 Therefore, in this work, we treat camera motion $\mathcal{C}$ as a sequence of four point homographies on a time horizon $[T_0, T_{N+M})$, $N$ being the recall horizon's length, $M$ being the preview horizon's length. Time points 
 %$T_i$
@@ -87,11 +87,11 @@ four point homography sequences $\mathcal{C}=\{\Delta\mathbf{uv}_t \,|\, t\in[T_
 Three datasets are
 %acquired
 curated
-to train and evaluate the proposed method: two cholecystectomy datasets (laparoscopic gallbladder removal), namely Cholec80 \cite{twinanda2016endonet} and HeiChole \cite{wagner2023comparative}, and one hysterectomy dataset (laparoscopic uterus removal), namely AutoLaparo \cite{wang2022autolaparo}.
+to train and evaluate the proposed method: two cholecystectomy datasets (laparoscopic gallbladder removal), namely Cholec80~\cite{twinanda2016endonet} and HeiChole~\cite{wagner2023comparative}, and one hysterectomy dataset (laparoscopic uterus removal), namely AutoLaparo~\cite{wang2022autolaparo}.
 
 % The laparoscope typically captures a circular field of view, with status indicators often displayed on the image borders. Further, reflected light frequently exposes parts of the covered regions. 
 
-To remove status indicator overlays from the laparoscopic videos, which may hinder the camera motion estimator, we identify the bounding circle of the circular field of view using \cite{Budd2022RapidDataset}. We crop the view about the center point of the bounding circle to a shape of $240\times320$, so that no black regions are prominent in the images.
+To remove status indicator overlays from the laparoscopic videos, which may hinder the camera motion estimator, we identify the bounding circle of the circular field of view using~\cite{Budd2022RapidDataset}. We crop the view about the center point of the bounding circle to a shape of $240\times320$, so that no black regions are prominent in the images.
 
 % The split is done on a video basis, \emph{e.g.,} be dataset $\text{A} = \{\text{vid}_0, \text{vid}_1, \text{vid}_2, \text{vid}_3\}$, then a possible split is $\text{A}_\text{training} = \{\text{vid}_0, \text{vid}_1\}$, $\text{A}_\text{validation} = \{\text{vid}_2\}$, and $\text{A}_\text{testing} = \{\text{vid}_3\}$. In other words, there is never an overlap. 
 
@@ -144,19 +144,19 @@ The predictor takes as input a photometrically and geometrically transformed rec
 
 \section{Experiments and Evaluation Methodology}
 The following two sections elaborate the experiments we conduct to investigate the proposed pipeline from \figref{c4:fig:training_pipeline} in \secref{c4:sec:proposed_pipeline}. First the camera motion estimator is investigated, followed by the camera motion predictor.
-%Since the camera motion estimator was studied in detail in \cite{huber2022deep}, the main focus of this work shall lie on the camera motion predictor. However, since there exists no data on camera motion distribution in videos of laparoscopic interventions, 
+%Since the camera motion estimator was studied in detail in~\cite{huber2022deep}, the main focus of this work shall lie on the camera motion predictor. However, since there exists no data on camera motion distribution in videos of laparoscopic interventions, 
 % a brief experiment is dedicated to determine camera motion distribution in videos of laparoscopic interventions.
 %This section shall also probe the camera motion estimator for the purpose of online camera motion estimation.
 
 \subsection{Camera Motion Estimator}
 \label{c4:sec:camera_motion_estimator}
 \subsubsection{Camera Motion Distribution} 
-To extract the camera motion distribution, we run the camera motion estimator from \cite{huber2022deep} with a ResNet-34 backbone over all datasets from \secref{c4:sec:data_and_data_preparation}. We map the estimated four point homographies to up/down/left/right/zoom-in/zoom-out for interpretability. Left/right/up/down corresponds to all four point displacements $\Delta\mathbf{uv}$ consistently pointing left/right/{\allowbreak}up/down respectively.
+To extract the camera motion distribution, we run the camera motion estimator from~\cite{huber2022deep} with a ResNet-34 backbone over all datasets from \secref{c4:sec:data_and_data_preparation}. We map the estimated four point homographies to up/down/left/right/zoom-in/zoom-out for interpretability. Left/right/up/down corresponds to all four point displacements $\Delta\mathbf{uv}$ consistently pointing left/right/{\allowbreak}up/down respectively.
 Zoom-in/out corresponds to all four point displacements $\Delta\mathbf{uv}$ consistently pointing inwards/outwards. Rotation left corresponds to all four point displacements pointing up right, bottom right, and so on. Same for rotation right. Camera motion is defined static if it lies below the standard deviation in the dataset. The frame increment is set to $0.25\,\text{s}$, corresponding to $\Delta n = 5$ for the $25\,\text{fps}$ videos.
 
 \subsubsection{Online Camera Motion Estimation}
 \label{c4:sec:online_camera_motion_estimation}
-Since the camera motion estimator is executed online, memory footprint and computational efficiency are of importance. Therefore, we evaluate the estimator from \cite{huber2022deep} with a ResNet-34 backbone, SURF \& RANSAC, and LoFTR \cite{sun2021loftr} \& RANSAC. Each estimator is run 1000 times on a single image sequence of length $N+M=15$ with an NVIDIA GeForce RTX 2070 GPU and an Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz.
+Since the camera motion estimator is executed online, memory footprint and computational efficiency are of importance. Therefore, we evaluate the estimator from~\cite{huber2022deep} with a ResNet-34 backbone, SURF \& RANSAC, and LoFTR~\cite{sun2021loftr} \& RANSAC. Each estimator is run 1000 times on a single image sequence of length $N+M=15$ with an NVIDIA GeForce RTX 2070 GPU and an Intel(R) Core(TM) i7-9750H CPU @ 2.60GHz.
 
 \subsection{Camera Motion Predictor}
 \label{c4:sec:camera_motion_predictor_experiments}
@@ -380,5 +380,5 @@ by harvesting image-motion correspondences using a camera motion estimator, see 
 
 A current limitations of this work is the preview horizon $M$ of length $1$. One might want to extend it for model predictive control. Furthermore, to improve explainability to the surgeon, but also to improve the prediction in general, it would be beneficial to include auxiliary tasks, e.g. tool and organ segmentation, surgical phase recognition, and audio. There also exist limitations for the camera motion estimator. The utilized camera motion estimator is efficient and isolates object motion well from camera motion, but is limited to relatively small camera motions. Improving the camera motion estimator to large camera motions would help increase the preview horizon $M$.
 
-In future work, we will execute this model in a real setup for investigating transferability. This endeavor is backed by \cite{huber2021homographybased}, which demonstrates how the learned homography could immediately be deployed on a robotic laparoscope holder. It  might proof necessary to fine-tune the presented policy through reinforcement learning with human feedback.
+In future work, we will execute this model in a real setup for investigating transferability. This endeavor is backed by~\cite{huber2021homographybased}, which demonstrates how the learned homography could immediately be deployed on a robotic laparoscope holder. It  might proof necessary to fine-tune the presented policy through reinforcement learning with human feedback.
 

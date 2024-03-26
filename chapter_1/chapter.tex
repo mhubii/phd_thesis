@@ -22,8 +22,7 @@ nuclear decommissioning~\cite{Mohamed07},
 disaster recovery~\cite{Kamezaki16}, and
 sub-sea robotics~\cite{Brantner21}.
 
-The da Vinci\textsuperscript{\textregistered} system by Intuitive Surgical is widely regarded as an example of a successful surgical robot system~\cite{yang2018grand, DEttorre2021} utilizing four robot arms (three for manipulation and one for imaging).
-However, due to its large size, incorporating the da Vinci system into the operating theater becomes arduous, restricting patient access, and making it cumbersome to remove in the event of manual intervention being required.
+The da Vinci\textsuperscript{\textregistered} system by Intuitive Surgical Inc. is widely regarded as an example of a successful surgical robot system~\cite{yang2018grand, DEttorre2021} utilizing four robot arms (three for manipulation and one for imaging). However, due to its large size, incorporating the da Vinci system into the operating theater becomes arduous, restricting patient access, and making it cumbersome to remove in the event of manual intervention being required.
 Recently, alternative platforms have emerged that adopt a modular design where the robot arms are mounted on mobile platforms or the surgical table. 
 Examples include the 
 DLR MIRO research platform~\citep{miro}
@@ -33,7 +32,7 @@ the Hugo\textsuperscript{\texttrademark} RAS System by Medtronic,
 the Versius\textsuperscript{\textregistered} Surgical System by CMR Surgical, and 
 the SSI Mantra by SS Innovations.
 
-Direct teleoperation, classified as ``Level 0'' in the taxonomy proposed by Yang et al.~\cite{Yang2017}, is a control approach that maps signals from a surgeon-device interface onto robot motion~\cite{Niemeyer2008}, typically using position/velocity based commands.
+Direct teleoperation, classified as level zero in the taxonomy proposed by Yang et al.~\cite{Yang2017}, is a control approach that maps signals from a surgeon-device interface onto robot motion~\cite{Niemeyer2008}, typically using position/velocity based commands.
 Currently, direct teleoperation is the gold-standard for the majority of surgical robotic systems in use today.
 This approach guarantees that the operating surgeon is solely responsible for the robot's motion, emphasizing the need for skilled training and practice~\cite{Liu15}. 
 As a result, the system integration forgoes the requirement for a collision model in these multi-arm setups.
@@ -125,7 +124,7 @@ Prior work on the eye-in-hand problem~\cite{Horaud95, Strobl06} require the user
 Instead, we make use of the mesh files or CAD models provided by the manufacturer.
 
 \subsection{Marker-free Registration}
-Marker-free eye-to-hand calibration is an active research field with new developments being lead by differentiable rendering frameworks, such as PyTorch3D \cite{ravi2020pytorch3d} and Kaolin \cite{KaolinLibrary}. Consequentially, some works utilize these frameworks to optimize for camera poses such that mesh renders match image segmentations \cite{chen2023easyhec}. Further work proposes a fully self-supervised procedure that learns both, to segment and to estimate the eye-to-hand transformation \cite{lu2023markerless}. These works require tailoring to dedicated robot models and depend on fully-blown differentiable rendering pipelines, which makes them difficult to use in practise. Other work that doesn't use differentiable rendering but rendering is \cite{labbe2021single}, where the authors also predict joint states on top of the eye-to-hand registration. This work also requires training to dedicated systems. Simpler approaches suggest to predict robot joint positions and extract eye-to-hand registrations through solving a PnP problem \cite{lee2020camera}. In this work, we suggest a conceptually much simpler approach that works for any robot, but uses RGB-D images, and, as some of the other methods, robot joint states.
+Marker-free eye-to-hand calibration is an active research field with new developments being lead by differentiable rendering frameworks, such as PyTorch3D~\cite{ravi2020pytorch3d} and Kaolin~\cite{KaolinLibrary}. Consequentially, some works utilize these frameworks to optimize for camera poses such that mesh renders match image segmentations~\cite{chen2023easyhec}. Further work proposes a fully self-supervised procedure that learns both, to segment and to estimate the eye-to-hand transformation~\cite{lu2023markerless}. These works require tailoring to dedicated robot models and depend on fully-blown differentiable rendering pipelines, which makes them difficult to use in practise. Other work that doesn't use differentiable rendering but rendering is~\cite{labbe2021single}, where the authors also predict joint states on top of the eye-to-hand registration. This work also requires training to dedicated systems. Simpler approaches suggest to predict robot joint positions and extract eye-to-hand registrations through solving a PnP problem~\cite{lee2020camera}. In this work, we suggest a conceptually much simpler approach that works for any robot, but uses RGB-D images, and, as some of the other methods, robot joint states.
 
 \section{Problem Formulation}
 \begin{figure}[tb]
@@ -310,14 +309,14 @@ We then compute the instance segmented point cloud's center of mass for an initi
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[width=\textwidth]{fig/eye_in_hand.png}
-         \caption{Eye-in-hand calibration obtained through self-observation, where the serial manipulator observes itself.}
+         \caption{Eye-in-hand calibration obtained through self-observation, where the serial manipulator observes itself.\\}
          \label{c1:fig:eye_in_hand}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[width=\textwidth]{fig/eye_to_hand.png}
-         \caption{Eye-to-hand calibration in a dual serial manipulator setup to obtain base-to-base calibration.}
+         \caption{Eye-to-hand calibration in a dual serial manipulator setup to obtain base-to-base calibration.\\\\}
          \label{c1:fig:eye_to_hand}
      \end{subfigure}
     \caption{Calibration procedures, refer to \secref{c1:sec:proposed_calibration_procedure} and \secref{c1:sec:experimental_setup}. The proposed registration procedure, see \figref{c1:fig:calibration_pipeline}, is evaluated against alternative calibrations. The base-to-base calibration via eye-to-hand registration in (c) is compared against a handshake calibration in (a). The eye-in-hand calibration in (b) is compared against a classical calibration via an ArUco marker target, also (b).}
@@ -325,7 +324,7 @@ We then compute the instance segmented point cloud's center of mass for an initi
 \end{figure}
 
 \subsection{Ex-vivo Experiments}
-The experimental setup is shown in \figref{c1:fig:handshake}-\figref{c1:fig:eye_to_hand}. We utilize two KUKA LBR Med 7 robots and control them via the LBR-Stack \cite{huber2023lbr} at a control rate of $100\,\text{Hz}$. For the handshake calibration, we deploy them in impedance control mode, see \secref{c1:sec:handshake_and_eye_in_hand_calibration}, for all other calibrations we use position control mode. The robots are mounted on a table and are fixed with respect to each other. By construction, their distance is $38\,\text{cm}$. For the camera we use a ZED 2i (Stereolabs, USA). We collect images and depth maps with a resolution of $448 \times 256$ at a frame rate of $15\,\text{Hz}$. For the depth estimation, we utilize the camera in neural depth perception mode.
+The experimental setup is shown in \figref{c1:fig:handshake}-\figref{c1:fig:eye_to_hand}. We utilize two KUKA LBR Med 7 robots and control them via the LBR-Stack~\cite{huber2023lbr} at a control rate of $100\,\text{Hz}$. For the handshake calibration, we deploy them in impedance control mode, see \secref{c1:sec:handshake_and_eye_in_hand_calibration}, for all other calibrations we use position control mode. The robots are mounted on a table and are fixed with respect to each other. By construction, their distance is $38\,\text{cm}$. For the camera we use a ZED 2i (Stereolabs, USA). We collect images and depth maps with a resolution of $448 \times 256$ at a frame rate of $15\,\text{Hz}$. For the depth estimation, we utilize the camera in neural depth perception mode.
 
 Four experiments are conducted, two regarding eye-in-hand and two regarding eye-to-hand calibration. For the eye-in-hand calibration, the camera is mounted to the robot via a GRIP G-SHW063 tool connector, see \figref{c1:fig:eye_in_hand}. For the baseline calibration experiments, see \secref{c1:sec:handshake_and_eye_in_hand_calibration}, we use a $3\times4$ ArUco marker target of square size $15.77\,\text{mm}$. $1259$ image-joint position correspondences are collected. For the proposed method, see \secref{c1:sec:registration}, we have the robot observe itself through the camera. We collect $1272$ image-joint position correspondences, but only use one. For the eye-to-hand calibration, the camera is put on an external tripod, see \figref{c1:fig:eye_to_hand}. $790$ image-joint position correspondences are collected, again only one is used. Robot 1 and robot 2 are calibrated and the base-to-base calibration is extracted, see \secref{c1:sec:proposed_calibration_procedure}. The base-to-base calibration is compared to a handshake calibration, see \figref{c1:fig:handshake} and \secref{c1:sec:handshake_and_eye_in_hand_calibration}. For the handshake, the robots are rigidly connected via a calibration fixture. $27700$ data points are collected of which $277$ are used for the calibration.
 
