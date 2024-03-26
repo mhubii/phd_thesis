@@ -22,27 +22,23 @@ nuclear decommissioning~\cite{Mohamed07},
 disaster recovery~\cite{Kamezaki16}, and
 sub-sea robotics~\cite{Brantner21}.
 
-The da Vinci\textsuperscript{\textregistered} system by Intuitive Surgical Inc. is widely regarded as an example of a successful surgical robot system~\cite{yang2018grand, DEttorre2021} utilizing four robot arms (three for manipulation and one for imaging). However, due to its large size, incorporating the da Vinci system into the operating theater becomes arduous, restricting patient access, and making it cumbersome to remove in the event of manual intervention being required.Recently, alternative platforms have emerged that adopt a modular design where the robot arms are mounted on mobile platforms or the surgical table. 
-Examples include the 
-DLR MIRO research platform~\citep{miro}
-as well as commercial systems such as 
-the Senhance\textsuperscript{\texttrademark} Surgical System by Asensus Surgical, 
-the Hugo\textsuperscript{\texttrademark} RAS System by Medtronic, 
-the Versius\textsuperscript{\textregistered} Surgical System by CMR Surgical, and 
-the SSI Mantra by SS Innovations.
+%The da Vinci\textsuperscript{\textregistered} system by Intuitive Surgical Inc. is widely regarded as an example of a successful surgical robot system~\cite{yang2018grand, DEttorre2021} utilizing four robot arms (three for manipulation and one for imaging). However, due to its large size, incorporating the da Vinci system into the operating theater becomes arduous, restricting patient access, and making it cumbersome to remove in the event of manual intervention being required.Recently, alternative platforms have emerged that adopt a modular design where the robot arms are mounted on mobile platforms or the surgical table. 
+%Examples include the 
+%DLR MIRO research platform~\citep{miro}
+%as well as commercial systems such as 
+%the Senhance\textsuperscript{\texttrademark} Surgical System by Asensus Surgical, 
+%the Hugo\textsuperscript{\texttrademark} RAS System by Medtronic, 
+%the Versius\textsuperscript{\textregistered} Surgical System by CMR Surgical, and 
+%the SSI Mantra by SS Innovations.
 
 Direct teleoperation, classified as level zero in the taxonomy proposed by Yang et al.~\cite{Yang2017}, is a control approach that maps signals from a surgeon-device interface onto robot motion~\cite{Niemeyer2008}, typically using position/velocity based commands.
-Currently, direct teleoperation is the gold-standard for the majority of surgical robotic systems in use today. This approach guarantees that the operating surgeon is solely responsible for the robot's motion, emphasizing the need for skilled training and practice~\cite{Liu15}. 
-As a result, the system integration forgoes the requirement for a collision model in these multi-arm setups. With the increasing automation of surgical procedures, e.g. see recent work by Saeidi et al~\cite{Saeidi2022}, the demand for localization strategies and collision models becomes more pronounced.
+Currently, direct teleoperation is the gold-standard for the majority of surgical robotic systems in use today. This approach guarantees that the operating surgeon is solely responsible for the robot's motion, emphasizing the need for skilled training and practice~\cite{Liu15}. Lack of training, as explained in the introductory \secref{in:sec:spatial_awareness}, may lead to severe surgical workflow interruptions. Collision models and collision avoidant control is thus desirable. A prerequisite to collision avoidant control, however, is precise localization. With the increasing automation of surgical procedures, e.g. see recent work by Saeidi et al~\cite{Saeidi2022}, the demand for localization strategies and collision models becomes even more pronounced.
 
-A key requirement for future automated systems is robot base-to-base localization, i.e. each robot arm must be aware of the other arm's position and orientation with respect to its own.
-This is needed in order to implement an effective collision model into the automated control system ensuring patient and the operating team's safety.
-In the case where multi-robot arm systems are deployed on a surgical table, base localization can be derived from CAD models, however, these measurements may not accurately reflect reality due to manufacturing inaccuracies. In the case of the modern modular systems, mentioned above, the arm setup may be different every time the theater is prepared.
-Furthermore, robotic systems must also undergo localization in relation to other elements present in the operating theater, including patient anatomy, lighting fixtures, imaging systems (e.g. C-arm), etc.
-This motivates the need for a robot base calibration step introduced into the surgical workflow.
-Such a step, however, should be designed in a way that can be quickly and safely performed by non-robotics experts, i.e. the theater staff.
+% As a result, the system integration forgoes the requirement for a collision model in these multi-arm setups. 
 
-The development of commercialized RGBD camera devices has been  
+A key requirement for future automated systems is robot base-to-base localization, i.e. each robot arm must be aware of the other arm's position and orientation with respect to its own. This is needed in order to implement an effective collision model into the automated control system ensuring patient and the operating team's safety. In the case where multi-robot arm systems are deployed on a surgical table, base localization can be derived from CAD models, however, these measurements may not accurately reflect reality due to manufacturing inaccuracies. In the case of the increasingly popular modular systems, mentioned in \secref{in:sec:robot_surgery_platforms}, the arm setup may be different every time the theater is prepared. Furthermore, robotic systems must also undergo localization in relation to other elements present in the operating theater, including patient anatomy, lighting fixtures, imaging systems (e.g. C-arm), and so on, see \figref{in:fig:room_setup}. This motivates the need for a robot base calibration step introduced into the surgical workflow. Such a step, however, should be designed in a way that can be quickly and safely performed by non-robotics experts, i.e. the theater staff.
+
+% The development of commercialized RGBD camera devices has been  
 
 % Knowledge of the robot base-to-base localization is especially important in the case of the modern modular systems mentioned above.
 % However, it can also be important for systems mounted on the surgical table since the measurements from CAD models may not reflect reality due to .
@@ -62,25 +58,20 @@ The development of commercialized RGBD camera devices has been
 
 % To improve flexibility, other surgical robotics platforms have adopted a new modular design paradigm where the robot arms are mounted on individual mobile platforms or the surgical table. Examples are the  DLR MIRO~\citep{miro} research platform as well as commercial systems such as the Senhance\textsuperscript{\texttrademark} Surgical System by Asensus Surgical, the Hugo\textsuperscript{\texttrademark} RAS System by Medtronic, the Versius\textsuperscript{\textregistered} Surgical System by CMR Surgical, and the SSI Mantra by SS Innovations.
 
-While providing numerous benefits, the distributed paradigm brings its own issues, primarily the unknown location of the robots with respect to each other and with respect to the surgical setup. 
+%While providing numerous benefits, the distributed paradigm brings its own issues, primarily the unknown location of the robots with respect to each other and with respect to the surgical setup. 
 
-- spine to robot registration
-- camera to robot registration
-- greatly simplifying setup
-- building a world map (providing a better world model)
-- robot to whatever registration for collision free path
+%- spine to robot registration
+%- camera to robot registration
+%- greatly simplifying setup
+%- building a world map (providing a better world model)
+%- robot to whatever registration for collision free path
 
-WHAT TASKS IN HUMAN CONTROLLED ROBOTIC SURGERY REQUIRE GOOD BASE-TO-BASE REGISTRATION?
+%WHAT TASKS IN HUMAN CONTROLLED ROBOTIC SURGERY REQUIRE GOOD BASE-TO-BASE REGISTRATION?
 
-Autonomous surgery needs accurate base-to-base.
+%Autonomous surgery needs accurate base-to-base.
 
-This paper focuses on solving this problem
+%This paper focuses on solving this problem
 
-
-\cite{optas} % for control of dual system
-
-\cite{point_cloud_based_robot_cell_calib}
-\cite{hand_eye_calibration_robotic_assisted}
 
 
 %\begin{figure}[tbh]
@@ -104,7 +95,9 @@ In this work we make the following contributions:
 \begin{itemize}
     \item A unified approach for eye-in-hand and eye-to-hand calibration of multiple surgical robots with no need for any calibration targets since the robot itself is used instead. Our proposed method uses a novel robust Iterative Closest Point (ICP) formulation of a point-to-plane objective on a Lie algebra. Only RGB-D images, the robots' joint positions, and their respective mesh files or CAD models are used.
     \item We conduct several benchmarks comparing our methods against classical approaches. Our method ensures safety and, based on the comparisons, demonstrates faster execution and better outcomes when compared to other options.
-    \item Hardware realization of the approach on a dual robot arm system. Furthermore, we showcase a human-robot collaboration task where the collision model for the two robots relies on the measurements generated by our proposed method. Upon acceptance of this manuscript, our intention is to make the code-base publicly available as an open-source contribution. This will encompass both the proposed method itself and the pHRI controller, that includes integrated collision avoidance functionality.
+    \item Hardware realization of the approach on a dual robot arm system. Furthermore, we showcase a human-robot collaboration through admittance control with arm-arm collision avoidance. The collision model for the two robots relies on the measurements generated by our proposed method.
+    %The two robots are controlled in a collision avoidant manner.
+    % Upon acceptance of this manuscript, our intention is to make the code-base publicly available as an open-source contribution. This will encompass both the proposed method itself and the pHRI controller, that includes integrated collision avoidance functionality.
     \item We conduct an in-vivo experiment in a clinically relevant dual-arm setup for spine surgery.
 \end{itemize}
 
@@ -120,7 +113,11 @@ Prior work on the eye-in-hand problem~\cite{Horaud95, Strobl06} require the user
 Instead, we make use of the mesh files or CAD models provided by the manufacturer.
 
 \subsection{Marker-free Registration}
-Marker-free eye-to-hand calibration is an active research field with new developments being lead by differentiable rendering frameworks, such as PyTorch3D~\cite{ravi2020pytorch3d} and Kaolin~\cite{KaolinLibrary}. Consequentially, some works utilize these frameworks to optimize for camera poses such that mesh renders match image segmentations~\cite{chen2023easyhec}. Further work proposes a fully self-supervised procedure that learns both, to segment and to estimate the eye-to-hand transformation~\cite{lu2023markerless}. These works require tailoring to dedicated robot models and depend on fully-blown differentiable rendering pipelines, which makes them difficult to use in practise. Other work that doesn't use differentiable rendering but rendering is~\cite{labbe2021single}, where the authors also predict joint states on top of the eye-to-hand registration. This work also requires training to dedicated systems. Simpler approaches suggest to predict robot joint positions and extract eye-to-hand registrations through solving a PnP problem~\cite{lee2020camera}. In this work, we suggest a conceptually much simpler approach that works for any robot, but uses RGB-D images, and, as some of the other methods, robot joint states.
+Marker-free eye-to-hand calibration is an active research field with new developments being lead by differentiable rendering frameworks, such as PyTorch3D~\cite{ravi2020pytorch3d} and Kaolin~\cite{KaolinLibrary}. Consequentially, some works utilize these frameworks to optimize for camera poses such that mesh renders match image segmentations~\cite{chen2023easyhec}. Further work proposes a fully self-supervised procedure that learns both, to segment and to estimate the eye-to-hand transformation~\cite{lu2023markerless}. These works require tailoring to dedicated robot models and depend on fully-blown differentiable rendering pipelines, which makes them difficult to use in practise. Other work that doesn't use differentiable rendering but rendering is~\cite{labbe2021single}, where the authors also predict joint states on top of the eye-to-hand registration. This work also requires training to dedicated systems. Simpler approaches suggest to predict robot joint positions and extract eye-to-hand registrations through solving a PnP problem~\cite{lee2020camera}. In this work, we suggest a conceptually much simpler approach that works for any robot, but uses RGB-D images, and, as some of the other methods, robot joint states. Closest to our work comes~\cite{point_cloud_based_robot_cell_calib}, where the authors also perform point cloud registration. Their method, however, only registers a single configuration and performs complex clustering of the observed point cloud. The only marker-free work on a surgical system is presented in~\cite{hand_eye_calibration_robotic_assisted}, where the authors utilize the surgical tools as calibration target. Whilst being quite appealing, this method does not allows for external collision avoidance nor hybrid setups.
+
+% TODO: \cite{point_cloud_based_robot_cell_calib} highly complex point cloud pre-processing 
+
+% TODO: \cite{hand_eye_calibration_robotic_assisted}: requires inserted tools, uses tools as calibration target, does not allows for external tracking collision avoidance etc... 
 
 \section{Problem Formulation}
 \begin{figure}[tb]
@@ -333,6 +330,9 @@ To qualitatively verify the proposed method in a clinically relevant scenario, a
 
 \section{Results}
 \label{c1:sec:results}
+TODO: cite optas  \cite{optas} % for control of dual system
+
+
 \subsection{Ex-vivo Results}
 \paragraph{Qualitative} results are shown in \figref{c1:fig:registration_results}. It can be observed that in both scenarios, i.e. eye-in-hand (\figref{c1:fig:self_registration} and base-to-base via eye-to-hand (\figref{c1:fig:double_registration}), the segmentation via initial detection works well. The detections $\mathbf{f}_\tau$ are indicated through stars. Robot one and two can be clearly separated. This precise segmentation mask $\mathbf{M}_\tau$ results in an instance segmented point cloud without outliers. The registration of the unaligned robot models $\mathbf{V}_\tau$ onto the instance segmented point clouds $\mathbf{P}_\tau$ results in a visually compelling alignment (\figref{c1:fig:self_registration} - right - and \figref{c1:fig:double_registration} - right). Therein, the instance segmented point clouds are visualized in yellow and the aligned robot models are shown in purple.
 
