@@ -88,7 +88,7 @@ A key requirement for future automated systems is robot base-to-base localizatio
 \begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{chapter_1/fig/approach_refined.pdf}
-    \caption{Proposed registration procedure. The pipeline takes joint positions and corresponding stereo or RGB-D images as input and yields eye-to-hand transformations. Upper half: Joint positions from the robot(s) are used to transform the link mesh files into an unaligned robot model. Lower half: Stereo (or RGB-D) images are fed through a depth estimator to obtain a depth map. A monocular image is taken from the stereo image and is used to detect and instance segment the robot. The depth map and instance segmentation are fused to obtain an instance segmented point cloud. The instance segmented point cloud is registered to the unaligned robot model to obtain a robot model that is aligned with the observed image. The transform from unaligned to aligned robot model describes the robot to camera homogeneous transform $^\text{C}\Theta_\text{R}$. Refers to \secref{c1:sec:proposed_calibration_procedure}.}
+    \caption{Proposed registration procedure. The pipeline takes joint positions and corresponding stereo or RGB-D images as input and yields eye-to-hand transformations. Upper half: Joint positions from the robot(s) are used to transform the link mesh files into an unaligned robot model. Lower half: Stereo (or RGB-D) images are fed through a depth estimator to obtain a depth map. A monocular image is taken from the stereo image and is used to detect and instance segment the robot. The depth map and instance segmentation are fused to obtain an instance segmented point cloud. The instance segmented point cloud is registered to the unaligned robot model to obtain a robot model that is aligned with the observed image. The transform from unaligned to aligned robot model describes the robot to camera homogeneous transform $\homogeneous{C}{B}$. Refers to \secref{c1:sec:proposed_calibration_procedure}.}
     \label{c1:fig:calibration_pipeline}
 \end{figure}
 In this work we make the following contributions:
@@ -188,7 +188,7 @@ Given a geometric description of the robot's joints and links (typically in the 
 %Often CAD models are available for the mount which attaches the camera to the end-effector.
 %However, the precise location of the camera imaging sensor is not known accurately, i.e. the camera extrinsic parameters.
 
-%Estimating the unknown static transformation frame $\Theta^E_C$ is a problem we address in this work as part of our unified approach.
+%Estimating the unknown static transformation frame $\homogeneous{E}{C}$ is a problem we address in this work as part of our unified approach.
 %This is the so-called \textit{eye-in-hand}, or also known as \textit{hand-eye}, calibration problem~\cite{Horaud95}.
 %An additional consideration regarding this problem, is that the static transform $\Theta^W_R$ is often also unknown.
 %The majority of previous approaches in the literature attempt to solve the ill-posed problem $\Theta^W_C \Theta^R_W = \Theta^E_C \Theta^R_E$.
@@ -218,30 +218,30 @@ Given a geometric description of the robot's joints and links (typically in the 
 
 This section introduces baseline calibration procedures in \secref{c1:sec:handshake_and_eye_in_hand_calibration}. The baseline calibration procedures are considered the reference for the proposed calibration method. The proposed calibration method is explained in \secref{c1:sec:proposed_calibration_procedure} and an overview is given in \figref{c1:fig:calibration_pipeline}. Finally, an overview of the experimental setup, including data collection and utilized hardware, is provided in \secref{c1:sec:experimental_setup} and \figref{c1:fig:calibrations}.
 
-In the following sections, homogeneous transforms, from the coordinate frame $\text{A}$ to $\text{B}$, are denoted by $$^\text{B}\Theta_\text{A}=\begin{bmatrix} ^\text{B}\mathbf{R}_\text{A} & ^\text{B}\textbf{t}_\text{A} \\ \mathbf{0} & 1 \end{bmatrix}$$ where the rotation matrix $^\text{B}\mathbf{R}_\text{A}$ and the translation vector $^\text{B}\textbf{t}_\text{A}$. The world coordinate frame is indicated by $\text{W}$. The world coordinate frame $\text{W}$ is considered to coincide with the robot base coordinate frame $\text{R}$. $\text{W}$ and \text{R} may be used interchangeably. The camera coordinate frame is highlighted through $\text{C}$. Furthermore, $\text{A}$ indicates the coordinate frame of an ArUco marker.
+In the following sections, homogeneous transforms, from the coordinate frame $\text{A}$ to $\text{B}$, are denoted by $$^\text{B}\homogeneous{{}}{A}=\begin{bmatrix} ^\text{B}\mathbf{R}_\text{A} & ^\text{B}\textbf{t}_\text{A} \\ \mathbf{0} & 1 \end{bmatrix}$$ where the rotation matrix $^\text{B}\mathbf{R}_\text{A}$ and the translation vector $^\text{B}\textbf{t}_\text{A}$. The world coordinate frame is indicated by $\text{W}$. The world coordinate frame $\text{W}$ is considered to coincide with the robot base coordinate frame $B$. $\text{W}$ and B may be used interchangeably. The camera coordinate frame is highlighted through $C$. Furthermore, $\text{A}$ indicates the coordinate frame of an ArUco marker.
 
 \subsection{Handshake and Eye-in-hand Calibration Baselines}
 \label{c1:sec:handshake_and_eye_in_hand_calibration}
-For the handshake calibration procedure, the two robots are rigidly linked to one another at their end-effectors via a calibration fixture of known transform $^{\text{E}_1}\Theta_{\text{E}_2}$. The robots are then moved in admittance control mode and L base-to-end-effector samples are collected for both robots, i.e. $^{\text{R}_1}\Theta^l_{\text{E}_1}$ and $^{\text{E}_2}\Theta^l_{\text{R}_2}$. Since the system forms a closed kinematic chain, the base-to-base transform $^{\text{R}_2}\Theta_{\text{R}_1}$ can then be obtained by minimizing:
+For the handshake calibration procedure, the two robots are rigidly linked to one another at their end-effectors via a calibration fixture of known transform $\homogeneous{{E_1}}{{E_2}}$. The robots are then moved in admittance control mode and $L$ base-to-end-effector samples are collected for both robots, i.e. $\homogeneous{{B_1}}{{E_1}}^l$ and $\homogeneous{{E_2}}{{B_2}}^l$. Since the system forms a closed kinematic chain, the base-to-base transform $\homogeneous{{B_2}}{{B_1}}$ can then be obtained by minimizing:
 %
 \begin{equation}
     \label{c1:eq:handsake}
-    \min_{^{\text{E}_1}\Theta_{\text{E}_2}, ^{\text{R}_2}\Theta_{\text{R}_1}} \sum_{l=0}^{L-1}\,^{\text{R}_1}\Theta^l_{\text{E}_1}\,^{\text{E}_1}\Theta_{\text{E}_2}\,^{\text{E}_2}\Theta^l_{\text{R}_2}\,^{\text{R}_2}\Theta_{\text{R}_1} - \mathbf{I},
+    \min_{\homogeneous{{E_1}}{{E_2}}, \homogeneous{{B_2}}{{B_1}}} \sum_{l=0}^{L-1}\,\homogeneous{{B_1}}{{E_1}}^l\,\homogeneous{{E_1}}{{E_2}}\,\homogeneous{{E_2}}{{B_2}}^l\,\homogeneous{{B_2}}{{B_1}} - \mathbf{I},
 \end{equation}
 %
-where $\mathbf{I}$ is the $4\times4$ identity matrix. Therein, $^{\text{E}_1}\Theta_{\text{E}_2}$ is part of the optimization to correct for manufacturing errors.
+where $\mathbf{I}$ is the $4\times4$ identity matrix. Therein, $\homogeneous{{E_1}}{{E_2}}$ is part of the optimization to correct for manufacturing errors.
 
-Classically, eye-in-hand calibration is conducted by collecting end-effector to base $^\text{R}\Theta_\text{E}$ and camera to ArUco marker transformations $^\text{A}\Theta_\text{C}$~\citep{eye_in_hand}. The correspondences are re-arranged into an equation of the form $\mathbf{A}\mathbf{X}=\mathbf{X}\mathbf{B}$, with $\mathbf{A}$ containing multiple $^{\text{E}_j}\Theta_{\text{E}_i}$ and $\mathbf{B}$ containing multiple $^{\text{C}_j}\Theta_{\text{C}_i}$. A 2-step regression is applied to solve for $\mathbf{X}=^\text{C}\Theta_\text{E}$.
+Classically, eye-in-hand calibration is conducted by collecting end-effector to base $\homogeneous{B}{E}$ and camera to ArUco marker transformations $\homogeneous{A}{C}$~\citep{eye_in_hand}. The correspondences are re-arranged into an equation of the form $\mathbf{A}\mathbf{X}=\mathbf{X}\mathbf{B}$, with $\mathbf{A}$ containing multiple $\homogeneous{{E_j}}{{E_i}}$ and $\mathbf{B}$ containing multiple $\homogeneous{{C_j}}{{C_i}}$. A 2-step regression is applied to solve for $\mathbf{X}=\homogeneous{C}{E}$.
 
 \subsection{Proposed Registration Procedure}
 \label{c1:sec:proposed_calibration_procedure}
-An overview of the proposed method is shown in \figref{c1:fig:calibration_pipeline}. The method provides an efficient way to find the homogeneous transformation from the robot base frame to the camera frame $^\text{C}\Theta_\text{R}$. It aligns an unaligned robot model to an observed instance segmented point cloud through registration. Importantly, the instance segmented point cloud and unaligned robot model must be synchronized. The unaligned robot model and the instance segmentation are detailed in \secref{c1:sec:unaligned_robot_model_and_instance_segmented_point_cloud}. The registration procedure is explained in \secref{c1:sec:registration}. Crucially, a single snapshot is sufficient to find the transformation, which differentiates it from classical calibration procedures described in \secref{c1:sec:handshake_and_eye_in_hand_calibration}. In the case of a robot-mounted camera, i.e. eye-in-hand calibration illustrated in \figref{c1:fig:eye_in_hand}, the calibration can be used to determine the transformation from robot end effector to camera $^\text{C}\Theta_\text{E}$. In the case of an externally mounted camera, i.e. eye-to-hand calibration illustrated in \figref{c1:fig:eye_to_hand}, the calibration can be used to determine the robot base-to-base transformation $^{\text{R}_2}\Theta_{\text{R}_1}$ through $^{\text{R}_2}\Theta_{\text{R}_1} = ^C\Theta^{-1}_{\text{R}_2}\,^{C}\Theta_{\text{R}_1}$.
+An overview of the proposed method is shown in \figref{c1:fig:calibration_pipeline}. The method provides an efficient way to find the homogeneous transformation from the robot base frame to the camera frame $\homogeneous{C}{B}$. It aligns an unaligned robot model to an observed instance segmented point cloud through registration. Importantly, the instance segmented point cloud and unaligned robot model must be synchronized. The unaligned robot model and the instance segmentation are detailed in \secref{c1:sec:unaligned_robot_model_and_instance_segmented_point_cloud}. The registration procedure is explained in \secref{c1:sec:registration}. Crucially, a single snapshot is sufficient to find the transformation, which differentiates it from classical calibration procedures described in \secref{c1:sec:handshake_and_eye_in_hand_calibration}. In the case of a robot-mounted camera, i.e. eye-in-hand calibration illustrated in \figref{c1:fig:eye_in_hand}, the calibration can be used to determine the transformation from robot end effector to camera $\homogeneous{C}{E}$. In the case of an externally mounted camera, i.e. eye-to-hand calibration illustrated in \figref{c1:fig:eye_to_hand}, the calibration can be used to determine the robot base-to-base transformation $\homogeneous{{B_2}}{{B_1}}$ through $\homogeneous{{B_2}}{{B_1}} = \homogeneous{C}{{B_2}}^{-1}\,\homogeneous{C}{{B_1}}$.
 
 \subsubsection{Unaligned robot model and instance segmented point cloud}
 \label{c1:sec:unaligned_robot_model_and_instance_segmented_point_cloud}
 \paragraph{Unaligned robot model}
 \label{c1:sec:unaligned_robot_model}
-To obtain an unaligned robot model, the proposed registration procedure takes as input measured joint positions $\mathbf{q}_t$ and link mesh files $\mathcal{M}_{\text{L}_i}$ as shown in \figref{c1:fig:calibration_pipeline}. Since we only aim to perform point cloud registration with the robot model, only the mesh vertices $\mathbf{V}_{\text{L}_i}$ are extracted from the meshes and everything else is discarded. The joint positions are utilized to transform the individual link mesh files by $^{\text{L}_i}\Theta_\text{W}$ through forward kinematics $\text{FK}(\mathbf{q}) = ^{\text{L}_i}\Theta_\text{W}$. Mesh files usually contain interior points, which cannot be observed by the stereo or RGB-D camera.
+To obtain an unaligned robot model, the proposed registration procedure takes as input measured joint positions $\mathbf{q}_t$ and link mesh files $\mathcal{M}_{\text{L}_i}$ as shown in \figref{c1:fig:calibration_pipeline}. Since we only aim to perform point cloud registration with the robot model, only the mesh vertices $\mathbf{V}_{\text{L}_i}$ are extracted from the meshes and everything else is discarded. The joint positions are utilized to transform the individual link mesh files by $\homogeneous{{L_i}}{W}$ through forward kinematics $\text{FK}(\mathbf{q}) = \homogeneous{{L_i}}{W}$. Mesh files usually contain interior points, which cannot be observed by the stereo or RGB-D camera.
 Interopr points would indeed confuse the registration discussed in \secref{c1:sec:registration}. To obtain only points that lie on the alpha shape of the mesh, sometimes referred to as the concave hull, we utilize a simple sampling strategy. We specify a bounding box that has the meshes' center of mass at the center. We then uniformly sample N points on the bounding box and for each find the closest point on the mesh. These steps result in in the unaligned robot model, that is the robot model's base frame coincides with the camera coordinate frame.
 
 \paragraph{Instance segmented point cloud}
@@ -250,15 +250,15 @@ The instance segmented point cloud is generated by fusing an instance segmentati
 
 \subsubsection{Registration}
 \label{c1:sec:registration}
-In the registration step, shown in \figref{c1:fig:calibration_pipeline}, the goal is to align the unaligned robot model (as detailled in \secref{c1:sec:unaligned_robot_model}), with the instance segmented point cloud (as detailled in \secref{c1:sec:instance_segmented_point_cloud}), through finding the transform $^\text{C}\Theta_\text{R}$. Pseudo-code for the proposed algorithm is given in \algoref{c1:alg:liep2plan}.
+In the registration step, shown in \figref{c1:fig:calibration_pipeline}, the goal is to align the unaligned robot model (as detailled in \secref{c1:sec:unaligned_robot_model}), with the instance segmented point cloud (as detailled in \secref{c1:sec:instance_segmented_point_cloud}), through finding the transform $\homogeneous{C}{B}$. Pseudo-code for the proposed algorithm is given in \algoref{c1:alg:liep2plan}.
 First, the unaligned robot model is generated through extracting and transforming superficial mesh vertices $\mathbf{V}_\tau$ (as detailled in \secref{c1:sec:unaligned_robot_model}).
 Next, robot instances are detected and segmented in the observed image $\mathbf{I}_\tau$, which yields a mask $\mathbf{M}_\tau$.
 The mask is utilized to isolate the target robot instance in the depth map $\mathbf{D}_\tau$ via a simple Hadamard product, which results in the instance segmented point cloud $\mathbf{P}_\tau$.
-We then compute the instance segmented point cloud's center of mass for an initial guess of the transform $\Theta_\text{init}$. Finally, we run an ICP~\citep{simple_icp} algorithm between vertices $\mathbf{V}_\tau$ and point cloud $\mathbf{P}_\tau$, see \eqref{c1:eq:icp}. In contrast to ~\citep{simple_icp}, we only consider vertices from $\mathbf{V}_\tau$ whose surface normals point towards the camera. That is, they should be visible to the camera.
+We then compute the instance segmented point cloud's center of mass for an initial guess of the transform $\homogeneous{{}}{\text{init}}$. Finally, we run an ICP~\citep{simple_icp} algorithm between vertices $\mathbf{V}_\tau$ and point cloud $\mathbf{P}_\tau$, see \eqref{c1:eq:icp}. In contrast to ~\citep{simple_icp}, we only consider vertices from $\mathbf{V}_\tau$ whose surface normals point towards the camera. That is, they should be visible to the camera.
 
 \begin{equation}
     \label{c1:eq:icp}
-    \text{ICP} = \argmin_{^\text{C}\Theta_\text{R}} || ^\text{C}\Theta_\text{R}(\mathbf{V}_\tau) - \mathbf{P}_\tau||_2
+    \text{ICP} = \argmin_{\homogeneous{C}{B}} || \homogeneous{C}{B}(\mathbf{V}_\tau) - \mathbf{P}_\tau||_2
 \end{equation}
 
 \input{introduction/icp_algorithm}
@@ -279,9 +279,9 @@ We then compute the instance segmented point cloud's center of mass for an initi
         %\State $\mathbf{f}_\tau =$ \Call{Detector}{$\mathbf{I}_\tau$} %\Comment{detect robot instances}
         %\State $\mathbf{M}_\tau =$ \Call{Segmentor}{$\mathbf{I}_\tau$, $\mathbf{f}_\tau$} \Comment{segment robot instances}
         %\State $\mathbf{P}_\tau = \mathbf{M}_\tau \odot \mathbf{D}_\tau$ %\Comment{compute Hadamard product}
-        %\State $\Theta_\text{init} =$ \Call{CoM}{$\mathbf{P}_\tau$} %\Comment{center of mass as initial transform}
-        %\State $^\text{C}\Theta_\text{R} =$ \Call{ICP}{$\Theta_\text{init}$, $\mathbf{V}_\tau$, $\mathbf{P}_\tau$} \Comment{run iterative closest point}
-%        \State \Return $^\text{C}\Theta_\text{R}$
+        %\State $\homogeneous{{}}{\text{init}} =$ \Call{CoM}{$\mathbf{P}_\tau$} %\Comment{center of mass as initial transform}
+        %\State $\homogeneous{C}{B} =$ \Call{ICP}{$\homogeneous{{}}{\text{init}}$, $\mathbf{V}_\tau$, $\mathbf{P}_\tau$} \Comment{run iterative closest point}
+%        \State \Return $\homogeneous{C}{B}$
 %    \EndFunction
 %\end{algorithmic}
 %\end{algorithm}
@@ -350,12 +350,12 @@ TODO: cite optas  \cite{optas} % for control of dual system
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
 \hline
 Calibration Class             & Method       & Transform                                                                                                        & $t_x\,[\text{m}]$ & $t_y\,[\text{m}]$ & $t_z\,[\text{m}]$ & $r_x\,[^\circ]$ & $r_y\,[^\circ]$ & $r_z\,[^\circ]$ \\ \hline
-\multirow{3}{*}{Eye-in-hand}  & Manufactured & $^\text{C}\Theta_\text{E}$                                                                                  & $ 0.0$            & $-0.06$           & $-0.06$           & $ 0.0$          & $-2.9$          & $-145.0$        \\ \cline{2-9} 
-                              & ArUco        & $^\text{C}\Theta_\text{E}$                                                                                  & $ 0.0$            & $-0.04$           & $ 0.03$           & $-1.1$          & $-15.0$         & $-167.7$        \\ \cline{2-9} 
-                              & Proposed     & $^\text{C}\Theta_\text{E}$                                                                                  & $ 0.0$            & $-0.07$           & $-0.08$           & $ 1.6$          & $ 1.6$          & $-146.7$        \\ \hline
-\multirow{2}{*}{Base-to-base} & Manufactured & $^{\text{R}_2}\Theta_{\text{R}_1}$                                                                           & $ 0.0$            & $-0.38$           & $ 0.0$            & $0.0$           & $0.0$           & $ 0.0$          \\ \cline{2-9}
-                              & Handshake    & $^{\text{R}_2}\Theta_{\text{R}_1}$                                                                           & $-0.01$           & $-0.37$           & $ 0.0$            & $1.3$           & $0.3$           & $-0.6$          \\ \hline
-Base-to-base via eye-to-hand  & Proposed     & $^{\text{R}_2}\Theta_{\text{R}_1} = ^\text{C}\Theta^{-1}_{\text{R}_2}\,^\text{C}\Theta_{\text{R}_1}$ & $-0.01$           & $-0.38$           & $-0.01$           & $1.7$           & $2.2$           & $-5.1$          \\ \hline
+\multirow{3}{*}{Eye-in-hand}  & Manufactured & $\homogeneous{C}{E}$                                                                                  & $ 0.0$            & $-0.06$           & $-0.06$           & $ 0.0$          & $-2.9$          & $-145.0$        \\ \cline{2-9} 
+                              & ArUco        & $\homogeneous{C}{E}$                                                                                  & $ 0.0$            & $-0.04$           & $ 0.03$           & $-1.1$          & $-15.0$         & $-167.7$        \\ \cline{2-9} 
+                              & Proposed     & $\homogeneous{C}{E}$                                                                                  & $ 0.0$            & $-0.07$           & $-0.08$           & $ 1.6$          & $ 1.6$          & $-146.7$        \\ \hline
+\multirow{2}{*}{Base-to-base} & Manufactured & $\homogeneous{{B_2}}{{B_1}}$                                                                           & $ 0.0$            & $-0.38$           & $ 0.0$            & $0.0$           & $0.0$           & $ 0.0$          \\ \cline{2-9}
+                              & Handshake    & $\homogeneous{{B_2}}{{B_1}}$                                                                           & $-0.01$           & $-0.37$           & $ 0.0$            & $1.3$           & $0.3$           & $-0.6$          \\ \hline
+Base-to-base via eye-to-hand  & Proposed     & $\homogeneous{{B_2}}{{B_1}} = \homogeneous{C}{{B_2}}^{-1}\,\homogeneous{C}{{B_1}}$ & $-0.01$           & $-0.38$           & $-0.01$           & $1.7$           & $2.2$           & $-5.1$          \\ \hline
 \end{tabular}
 \end{table}
 \end{landscape}
@@ -406,7 +406,7 @@ Base-to-base via eye-to-hand  & Proposed     & $^{\text{R}_2}\Theta_{\text{R}_1}
      \begin{subfigure}[b]{\textwidth}
          \centering
          \includegraphics[width=0.8\textwidth]{img/visual_calibration/double_registration_combined_white.png}
-         \caption{Eye-to-hand calibration, corresponding to \figref{c1:fig:eye_to_hand}. Left: Instance segmentation. The camera is mounted externally and observes robot one (blue mask) and robot two (orange mask). Right: Point cloud to robot model registration. Note that first the robot to camera calibration $^\text{C}\Theta_{\text{R}_1}$ and $^\text{C}\Theta_{\text{R}_2}$ are obtained. These are fused to obtain the robot base-to-base calibration $^{\text{R}_2}\Theta_{\text{R}_1}$, refer to \secref{c1:sec:materials_and_methods}.}
+         \caption{Eye-to-hand calibration, corresponding to \figref{c1:fig:eye_to_hand}. Left: Instance segmentation. The camera is mounted externally and observes robot one (blue mask) and robot two (orange mask). Right: Point cloud to robot model registration. Note that first the robot to camera calibration $\homogeneous{C}{{B_1}}$ and $\homogeneous{C}{{B_2}}$ are obtained. These are fused to obtain the robot base-to-base calibration $\homogeneous{{B_2}}{{B_1}}$, refer to \secref{c1:sec:materials_and_methods}.}
          \label{c1:fig:double_registration}
      \end{subfigure}
      \caption{Eye-in-hand (a) and eye-to-hand (b) calibration results, refer to \secref{c1:sec:results}. The instance segmentations are obtained through Segment Anything~\citep{segment_anything}. A human detector selects points on the robots, as indicated through stars. These points are used as a prior for the segmentation and fused with a depth map to obtain an instance segmented point cloud, see \figref{c1:fig:calibration_pipeline}. It can be seen that the observed instance segmented point clouds align well with the robot model for both (a) and (b).}
