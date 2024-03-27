@@ -350,9 +350,28 @@ To qualitatively verify the proposed method in a clinically relevant scenario, a
 % TODO: cite optas  \cite{optas} % for control of dual system
 
 \subsection{Ex-vivo Results}
-\paragraph{Qualitative} results are shown in \figref{c1:fig:registration_results}. It can be observed that in both scenarios, i.e. eye-in-hand (\figref{c1:fig:self_registration} and base-to-base via eye-to-hand (\figref{c1:fig:double_registration}), the segmentation via initial detection works well. The detections $\mathcal{F}_\tau$ are indicated through stars. Robot one and two can be clearly separated. This precise segmentation $S_\tau$ results in an instance-segmented point cloud with very little outliers. The registration of the unaligned robot models $\mathcal{V}_\tau$ onto the instance-segmented point clouds $P_\tau$ results in a visually compelling alignment (\figref{c1:fig:self_registration} - right - and \figref{c1:fig:double_registration} - right). Therein, the instance-segmented point clouds are visualized in yellow and the aligned robot models are shown in purple.
+\label{c1:sec:ex_vivo_results}
+\begin{figure}[tb]
+     \centering
+     \begin{subfigure}[b]{\textwidth}
+         \centering
+         \includegraphics[width=0.6\textwidth]{img/visual_calibration/self_registration_combined_white.png}
+         \caption{Eye-in-hand calibration, corresponding to \figref{c1:fig:eye_in_hand}. Left: Instance segmentation. The camera is mounted to robot one, highlighted through the blue mask. For visualization purposes, the image is rotated by $180^{\circ}$. Right: Point cloud to robot model registration.}
+         \label{c1:fig:self_registration}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{\textwidth}
+         \centering
+         \includegraphics[width=0.6\textwidth]{img/visual_calibration/double_registration_combined_white.png}
+         \caption{Eye-to-hand calibration, corresponding to \figref{c1:fig:eye_to_hand}. Left: Instance segmentation. The camera is mounted externally and observes robot one (blue mask) and robot two (orange mask). Right: Point cloud to robot model registration.}
+         \label{c1:fig:double_registration}
+     \end{subfigure}
+     \caption{Ex-vivo eye-in-hand and eye-to-hand registrations. The instance-segmented point clouds $P_\tau$ align well with the robot model $\mathcal{V}_\tau$. Refers to \secref{c1:sec:ex_vivo_results}.}
+     \label{c1:fig:registration_results}
+\end{figure}
+\paragraph{Qualitative Results} The registrations are shown in \figref{c1:fig:registration_results}. It can be observed that in both scenarios, i.e. eye-in-hand (\figref{c1:fig:self_registration}) and base-to-base via eye-to-hand (\figref{c1:fig:double_registration}), the segmentation via initial detection works well. The detections $\mathcal{F}_\tau$ are indicated through stars. Robot one and two can be clearly separated. This precise segmentation $S_\tau$ results in an instance-segmented point cloud with very little outliers. The registration of the unaligned robot models $\mathcal{V}_\tau$ onto the instance-segmented point clouds $P_\tau$ results in a visually compelling alignment (\figref{c1:fig:self_registration} - right - and \figref{c1:fig:double_registration} - right). Therein, the instance-segmented point clouds are visualized in yellow and the aligned robot models are shown in purple.
 
-\paragraph{Quantitative} results summarized in \tabref{c1:tab:calibration_results}. For the eye-in-hand calibrations, it can be seen that the classical calibration procedure via ArUco markers deviates significantly from the manufactured values. This is most likely caused by noisy samples. In contrast, the proposed method, although single-shot, compares better with the expected manufactured values, which aligns well with the qualitative results in \figref{c1:fig:self_registration}. For the base-to-base calibration, it should be noted that the robots are fixed on a plain surface. The manufactured values can, therefore, be considered accurate. The proposed method yields precise results along the y-axis (distance between the robots), whereas the handshake deviates by $1\,\text{cm}$. The proposed method deviates $1\,\text{cm}$ along the z-axis from the manufactured and the handshake values. This dimension is the perpendicular offset to the surface plane. It can further be seen that the proposed method deviates slightly from the orientations of the handshake calibrations when compared to the manufactured values. The deviations might be caused by insufficiently synchronized images and joint states.
+\paragraph{Quantitative Results} Quantitative results are summarized in \tabref{c1:tab:calibration_results}. For the eye-in-hand calibrations, it can be seen that the classical calibration procedure via ArUco markers deviates significantly from the manufactured values. This is most likely caused by noisy samples. In contrast, the proposed method, although single-shot, compares better with the expected manufactured values, which aligns well with the qualitative results in \figref{c1:fig:self_registration}. For the base-to-base calibration, it should be noted that the robots are fixed on a plain surface. The manufactured values can, therefore, be considered accurate. The proposed method yields precise results along the y-axis (distance between the robots), whereas the handshake deviates by $1\,\text{cm}$. The proposed method deviates $1\,\text{cm}$ along the z-axis from the manufactured and the handshake values. This dimension is the perpendicular offset to the surface plane. It can further be seen that the proposed method deviates slightly from the orientations of the handshake calibrations when compared to the manufactured values. The deviations might be caused by insufficiently synchronized images and joint states.
 
 % NOTE TO SELF:
 % classical eye-in-hand calibration seems odd. Only 5 samples were used for registration
@@ -410,25 +429,6 @@ Base-to-base via eye-to-hand  & Proposed     & $\homogeneous{{B_2}}{{B_1}} = \ho
 % euler_inv:
 %  [ 0.    -2.865  -156.000 ]
 
-\begin{figure}
-     \centering
-     \begin{subfigure}[b]{\textwidth}
-         \centering
-         \includegraphics[width=0.8\textwidth]{img/visual_calibration/self_registration_combined_white.png}
-         \caption{Eye-in-hand calibration, corresponding to \figref{c1:fig:eye_in_hand}. Left: Instance segmentation. The camera is mounted to robot one, highlighted through the blue mask. For visualization purposes, the image is rotated by $180^{\circ}$. Right: Point cloud to robot model registration.}
-         \label{c1:fig:self_registration}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{\textwidth}
-         \centering
-         \includegraphics[width=0.8\textwidth]{img/visual_calibration/double_registration_combined_white.png}
-         \caption{Eye-to-hand calibration, corresponding to \figref{c1:fig:eye_to_hand}. Left: Instance segmentation. The camera is mounted externally and observes robot one (blue mask) and robot two (orange mask). Right: Point cloud to robot model registration. Note that first the robot to camera calibration $\homogeneous{C}{{B_1}}$ and $\homogeneous{C}{{B_2}}$ are obtained. These are fused to obtain the robot base-to-base calibration $\homogeneous{{B_2}}{{B_1}}$, refer to \secref{c1:sec:materials_and_methods}.}
-         \label{c1:fig:double_registration}
-     \end{subfigure}
-     \caption{Eye-in-hand (a) and eye-to-hand (b) calibration results, refer to \secref{c1:sec:results}. The instance segmentations are obtained through Segment Anything~\citep{segment_anything}. A human detector selects points on the robots, as indicated through stars. These points are used as a prior for the segmentation and fused with a depth map to obtain an instance-segmented point cloud, see \figref{c1:fig:calibration_pipeline}. It can be seen that the observed instance-segmented point clouds align well with the robot model for both (a) and (b).}
-     \label{c1:fig:registration_results}
-\end{figure}
-
 \subsection{In-vivo Results}
 \label{c1:sec:in_vivo_results}
 \begin{figure}[tb]
@@ -443,12 +443,12 @@ Base-to-base via eye-to-hand  & Proposed     & $\homogeneous{{B_2}}{{B_1}} = \ho
     \caption{Segmented robot (left) and rendered robot given registration (right). Visually, the render shows good alignment with the robot, hinting to an accurate calibration. Refers to \secref{c1:sec:in_vivo_results}.}
     \label{c1:fig:in_vivo_results}
 \end{figure}
-Initially, we collect 12 measurements for the drilling robot, and 14 measurements for the hyperspecral camera robot. These measurements include joint state, image, and depth correspondences. The positioning of these robots are shown in \figref{c1:fig:in_vivo_setup}. Using these measurements, we perform a eye-to-hand calibration. A render of the drilling robot, given this calibration, as well as a sample instance segmentation, is shown in \figref{c1:fig:in_vivo_results}. 
+Initially, we collect 12 measurements for the drilling robot, and 14 measurements for the hyperspecral camera robot. These measurements include joint state, image, and depth correspondences. The positioning of both robots with respect to the camera is shown in \figref{c1:fig:in_vivo_setup}. Using these measurements, we perform a eye-to-hand calibration via the robust point-to-plane ICP, refer \secref{c1:sec:robust_icp}. 
 
-TODO: add some intersection over union or something here!
+For both robots, we collect a total of $4588$ stereo frames and depth maps with corresponding joint states, corresponding to about $10$ minutes of data at an average recorded frame rate of $8\,\text{fps}$. We collect an additional $5611$ correspondences for only one robot, either the drilling or the hyperspectral camera robot. This corresponds to about $7$ minutes of data at an average recorded frame rate of $13\,\text{fps}$.
 
-
-\begin{figure}
+Qualitative results of the registration for the drilling robot are shown in \figref{c1:fig:in_vivo_results}. Therein, and given the registration, we render the robot's meshes into the observed image. The render aligns well with the robot. It should be noted that the segmentation, \figref{c1:fig:in_vivo_results} - left, does not cover the entire robot but misses the bottom left bit. This was the case for all observed drilling robot mask and could be corrected through proper selection of points $\mathcal{F}_t$. For the camera robot on the other hand, we obtain close to perfect instance segmentations $\{S_t\}$. Further exemplary segmentation masks and rendered masks, as well as difference images between segmentation and render, for both, the drilling robot and the camera robot, are shown in \figref{c1:fig:masks}.
+\begin{figure}[tb]
     \centering
     \begin{subfigure}[b]{0.32\textwidth}
         \includegraphics[width=\textwidth]{chapter_1/img/hsi_left_mask_2.png}
@@ -478,15 +478,20 @@ TODO: add some intersection over union or something here!
     \label{c1:fig:masks}
 \end{figure}
 
+For the total set of collected samples, we determine the average Intersection over Union (IoU) between instance segmentations $S_t$ and renders $R_t$. Therein, the IoU is expressed through
+\begin{equation}
+    IoU = \frac{|S_t \cup R_t|}{|S_t \cap R_t|}
+\end{equation}
+The results are summarized in \tabref{c1:tab:iou}. As can be see, and as already visually observed in \figref{c1:fig:masks}, we find close to perfect average IoU. For the drilling robot, the average IoU is slightly worse than for the camera robot. This is because the instance segmentations $S_t$ are systematically off by human annotator.
 \begin{table}[tb]
 \centering
-\caption{Average intersection over union of segmented and rendered mask. Also compare to \figref{c1:fig:masks}. Refers to \secref{c1:sec:in_vivo_results}.}
+\caption{Average IoU of segmented and rendered mask. Also compare to \figref{c1:fig:masks}. Refers to \secref{c1:sec:in_vivo_results}.}
 \label{c1:tab:iou}
 \begin{tabular}{@{}ll@{}}
 \toprule
 Robot         & IoU {[}a.u{]}   \\ \midrule
-Camera (left)    & $0.84 \pm 0.01$ \\
-Drilling (right) & $0.92 \pm 0.01$ \\ \bottomrule
+Camera (left)    & $0.92 \pm 0.01$ \\
+Drilling (right) & $0.84 \pm 0.01$ \\ \bottomrule
 \end{tabular}
 \end{table}
 
@@ -496,9 +501,6 @@ Drilling (right) & $0.92 \pm 0.01$ \\ \bottomrule
 %HSI:
 %Average IoU: 0.9234094580204967
 %Std IoU: 0.009454594255256406
-
-
-For both robots, we collect a total of $4588$ stereo frames and depth maps with corresponding joint states, corresponding to about $10$ minutes of data at an average recorded frame rate of $8\,\text{fps}$. We collect an additional $5611$ correspondences for only one robot, either the drilling or the hyperspectral camera robot. This corresponds to about $7$ minutes of data at an average recorded frame rate of $13\,\text{fps}$.
 
 \section{Conclusion and Future Work}% and outlook}
 In this work we present a novel vision-based robot calibration procedure that unifies eye-in-hand and eye-to-hand calibration through casting them the same problem formulation. This is achieved by treating the robot as calibration target itself. In the eye-in-hand calibration scenario, the robot simply observes itself whilst in the eye-to-hand scenario the camera observes the robot from an external stand. The introduced formulation can further be used for rapid robot base-to-base calibrations.
