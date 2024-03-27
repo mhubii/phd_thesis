@@ -273,6 +273,8 @@ In the case of the simple ICP we perform single instance registration. The goal 
 \subsubsection{Robust Point-to-plane ICP Registration}
 \label{c1:sec:robust_icp}
 \input{introduction/icp_algorithm}
+In the case of the robust point-to-plane ICP, we capture multiple configurations of the robot. An overview of the method is provided in \figref{c1:fig:hydra_registration}. Deviating from the simple ICP, \secref{c1:sec:simple_icp_registration}, we dilate the instance segmentations $S_t$ and only keep the boundary regions. Consequentially, we also only keep the boundary regions of the instance segmented point clouds $\mathcal{P} = \{P_t\}$. Similarly to the simple ICP, we compute the centroids for the instance segmented point clouds $\{P_t\}$ as well as for each robot model $\{\mathcal{V}_t\}$. We then use the Kabsch algorithm to find an initial estimate for the camera to base homogeneous transformation through centroid alignment. Given the initial alignment, we then perform a robust point-to-plane registration on a Lie algebra. We follow the derivation of \chapref{chap:introduction}, \secref{in:sec:p2plane}. A summary for which is provided in \algoref{c1:alg:liep2plan}.
+
 
 %\begin{algorithm}
 %\caption{Registration algorithm (refer to \secref{c1:sec:simple_icp_registration} for details). Joint positions $x_t$, images $I_t$, and depth map $D_t$ all correspond to a single configuration, e.g. they are all synchronously observed at time $t=\tau$.}
@@ -298,14 +300,12 @@ In the case of the simple ICP we perform single instance registration. The goal 
 %\end{algorithm}
 
 \section{Experimental Setup}
-Finally, an overview of the experimental setups, including data collection and utilized hardware, is provided in \secref{c1:sec:experimental_setup}. The 
-
-\figref{c1:fig:in_vivo_setup}
-
-and \figref{c1:fig:calibrations}.
-
 \label{c1:sec:experimental_setup}
-\begin{figure}
+Two experiments are considered. First, we perform ex-vivo experiments for the simple ICP algorithm from \secref{c1:sec:simple_icp_registration} in \secref{c1:sec:ex_vivo_experiments}. An overview for the different ex-vivo calibration baselines is given in \figref{c1:fig:calibrations}. Next, we perform in-vivo experiments for the robust point-to-plane ICP algorithm from \secref{c1:sec:robust_icp} in \secref{c1:sec:in_vivo_experiments}. The in-vivo experimental setup is presented in \figref{c1:fig:in_vivo_setup}.
+
+\subsection{Ex-vivo Experiments}
+\label{c1:sec:ex_vivo_experiments}
+\begin{figure}[tb]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -327,31 +327,30 @@ and \figref{c1:fig:calibrations}.
          \caption{Eye-to-hand calibration in a dual serial manipulator setup to obtain base-to-base calibration.\\\\}
          \label{c1:fig:eye_to_hand}
      \end{subfigure}
-    \caption{Calibration procedures, refer to \secref{c1:sec:proposed_calibration_procedure} and \secref{c1:sec:experimental_setup}. The proposed registration procedure, see \figref{c1:fig:calibration_pipeline}, is evaluated against alternative calibrations. The base-to-base calibration via eye-to-hand registration in (c) is compared against a handshake calibration in (a). The eye-in-hand calibration in (b) is compared against a classical calibration via an ArUco marker target, also (b).}
+    \caption{Calibration procedures. The proposed registration procedure, see \figref{c1:fig:calibration_pipeline}, is evaluated against alternative calibrations. The base-to-base calibration via eye-to-hand registration in (c) is compared against a handshake calibration in (a). The eye-in-hand calibration in (b) is compared against a classical calibration via an ArUco marker target, also (b). Refers to \secref{c1:sec:ex_vivo_experiments}.}
     \label{c1:fig:calibrations}
 \end{figure}
 
-\subsection{Ex-vivo Experiments}
 The experimental setup is shown in \figref{c1:fig:handshake}-\figref{c1:fig:eye_to_hand}. We utilize two KUKA LBR Med 7 robots and control them via the LBR-Stack~\cite{huber2023lbr} at a control rate of $100\,\text{Hz}$. For the handshake calibration, we deploy them in impedance control mode, see \secref{c1:sec:handshake_calibration}, for all other calibrations we use position control mode. The robots are mounted on a table and are fixed with respect to each other. By construction, their distance is $38\,\text{cm}$. For the camera we use a ZED 2i (Stereolabs, USA). We collect images and depth maps with a resolution of $448 \times 256$ at a frame rate of $15\,\text{Hz}$. For the depth estimation, we utilize the camera in neural depth perception mode.
 
 Four experiments are conducted, two regarding eye-in-hand and two regarding eye-to-hand calibration. For the eye-in-hand calibration, the camera is mounted to the robot via a GRIP G-SHW063 tool connector, see \figref{c1:fig:eye_in_hand}. For the baseline calibration experiments, see \secref{c1:sec:handshake_calibration}, we use a $3\times4$ ArUco marker target of square size $15.77\,\text{mm}$. $1259$ image-joint position correspondences are collected. For the proposed method, see \secref{c1:sec:simple_icp_registration}, we have the robot observe itself through the camera. We collect $1272$ image-joint position correspondences, but only use one. For the eye-to-hand calibration, the camera is put on an external tripod, see \figref{c1:fig:eye_to_hand}. $790$ image-joint position correspondences are collected, again only one is used. Robot 1 and robot 2 are calibrated and the base-to-base calibration is extracted, see \secref{c1:sec:proposed_calibration_procedure}. The base-to-base calibration is compared to a handshake calibration, see \figref{c1:fig:handshake} and \secref{c1:sec:handshake_calibration}. For the handshake, the robots are rigidly connected via a calibration fixture. $27700$ data points are collected of which $277$ are used for the calibration.
 
 \subsection{In-vivo Experiment}
+\label{c1:sec:in_vivo_experiments}
 \begin{figure}[tb]
     \centering
     \includegraphics[width=0.8\textwidth]{chapter_1/img/in_vivo_setup.pdf}
-    \caption{Clinical setup. A camera is mounted against a wall and both robots are registered using the proposed method. Notably, the registration is performed prior to draping.}
+    \caption{Clinical setup. A camera is mounted against a wall and both robots are registered using the proposed method of \secref{c1:sec:robust_icp}. Notably, the registration is performed prior to draping. Refers to \secref{c1:sec:in_vivo_experiments}.}
     \label{c1:fig:in_vivo_setup}
 \end{figure}
 To qualitatively verify the proposed method in a clinically relevant scenario, and to collect data, we conduct an in-vivo study. The primary goal of this experiment, however, is data collection. Given the registration, the recorded data can serve as ground truth for further marker-free registration despite draping. In the study, spine surgery is investigated, and in particular, robot-assisted pedicle screw placement. The pig is put under general anesthesia at all times. An overview of the setup is shown in \figref{c1:fig:in_vivo_setup}. Two KUKA LBR Med7 R800 are deployed. Notably, both robots are draped, turning the proposed registration procedure unfeasible. Thus, registration is performed prior to draping, and neither the robots, nor the camera are moved thereafter. A ZED 2i stereo camera (Stereolabs, USA) is wall-mounted, so both robots and the surgical scene are in sight. We record stereo images and depth maps at a resolution of $540 \times 960$. Both robots are put into admittance control mode and are hand-guided into different configurations for sample collection.
 
 \section{Results}
 \label{c1:sec:results}
-TODO: cite optas  \cite{optas} % for control of dual system
-
+% TODO: cite optas  \cite{optas} % for control of dual system
 
 \subsection{Ex-vivo Results}
-\paragraph{Qualitative} results are shown in \figref{c1:fig:registration_results}. It can be observed that in both scenarios, i.e. eye-in-hand (\figref{c1:fig:self_registration} and base-to-base via eye-to-hand (\figref{c1:fig:double_registration}), the segmentation via initial detection works well. The detections $\mathcal{F}_\tau$ are indicated through stars. Robot one and two can be clearly separated. This precise segmentation mask $\mathbf{M}_\tau$ results in an instance-segmented point cloud without outliers. The registration of the unaligned robot models $\mathcal{V}_\tau$ onto the instance-segmented point clouds $P_\tau$ results in a visually compelling alignment (\figref{c1:fig:self_registration} - right - and \figref{c1:fig:double_registration} - right). Therein, the instance-segmented point clouds are visualized in yellow and the aligned robot models are shown in purple.
+\paragraph{Qualitative} results are shown in \figref{c1:fig:registration_results}. It can be observed that in both scenarios, i.e. eye-in-hand (\figref{c1:fig:self_registration} and base-to-base via eye-to-hand (\figref{c1:fig:double_registration}), the segmentation via initial detection works well. The detections $\mathcal{F}_\tau$ are indicated through stars. Robot one and two can be clearly separated. This precise segmentation $S_\tau$ results in an instance-segmented point cloud with very little outliers. The registration of the unaligned robot models $\mathcal{V}_\tau$ onto the instance-segmented point clouds $P_\tau$ results in a visually compelling alignment (\figref{c1:fig:self_registration} - right - and \figref{c1:fig:double_registration} - right). Therein, the instance-segmented point clouds are visualized in yellow and the aligned robot models are shown in purple.
 
 \paragraph{Quantitative} results summarized in \tabref{c1:tab:calibration_results}. For the eye-in-hand calibrations, it can be seen that the classical calibration procedure via ArUco markers deviates significantly from the manufactured values. This is most likely caused by noisy samples. In contrast, the proposed method, although single-shot, compares better with the expected manufactured values, which aligns well with the qualitative results in \figref{c1:fig:self_registration}. For the base-to-base calibration, it should be noted that the robots are fixed on a plain surface. The manufactured values can, therefore, be considered accurate. The proposed method yields precise results along the y-axis (distance between the robots), whereas the handshake deviates by $1\,\text{cm}$. The proposed method deviates $1\,\text{cm}$ along the z-axis from the manufactured and the handshake values. This dimension is the perpendicular offset to the surface plane. It can further be seen that the proposed method deviates slightly from the orientations of the handshake calibrations when compared to the manufactured values. The deviations might be caused by insufficiently synchronized images and joint states.
 
