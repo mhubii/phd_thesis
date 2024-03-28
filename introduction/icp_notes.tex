@@ -298,7 +298,7 @@ We can write the objective as:
 + \min_{p_R|S_R(p_R)=1}|| \varphi\big(M_R \Theta q_i\big) - p_R||^2
 \end{equation}
 
-Similar to the approach in~\cite{Fitzgibbon:IVC:2003}, this formulation can be substantially accelerated by taking advantage of the fact that the segmentations are defined on a regular grid. We can thus use a Euclidean Distance Transform (EDT) for which optimized algorithms exist on both CPU~\cite{Felzenszwalb:TC:2012}\footnote{\url{https://github.com/cai4cai/distance_transform}} and GPU~\cite{Cao:SIGGRAPH:2010}\footnote{\url{https://docs.rapids.ai/api/cucim/stable/api/\#cucim.core.operations.morphology.distance_transform_edt}}.
+Similar to the approach in~\cite{Fitzgibbon:IVC:2003}, this formulation can be substantially accelerated by taking advantage of the fact that the segmentations are defined on a regular grid. We can thus use a Euclidean Distance Transform (EDT) for which optimized algorithms exist on both \acrfull{cpu}~\cite{Felzenszwalb:TC:2012}\footnote{\url{https://github.com/cai4cai/distance_transform}} and \acrshort{gpu}~\cite{Cao:SIGGRAPH:2010}\footnote{\url{https://docs.rapids.ai/api/cucim/stable/api/\#cucim.core.operations.morphology.distance_transform_edt}}.
 Let $\mathcal{D}_{S_L}$ be the EDT computed from $S_L$ (respectively $\mathcal{D}_{S_R}$ for $S_R$).
 We can now write
 \begin{equation}\label{eq:dt3d2d}
@@ -308,7 +308,7 @@ We can now write
 
 As in Section \ref{in:sec:p2plane}, the square loss terms could be replaced by robust alternatives.
 It should further be noted that the evaluation of a distance transform $\mathcal{D}_{S}$ at an arbitrary point $p$ requires the use of an interpolator.
-A typical choice is to rely on bilinear interpolation for which optimized implementations exist on both CPU and GPU\footnote{\url{https://pytorch.org/docs/stable/generated/torch.nn.functional.grid_sample.html}}.
+A typical choice is to rely on bilinear interpolation for which optimized implementations exist on both \acrshort{cpu} and \acrshort{gpu}\footnote{\url{https://pytorch.org/docs/stable/generated/torch.nn.functional.grid_sample.html}}.
 
 Solving for \eqref{eq:dt3d2d} can be done again by taking advantage of the Lie group structure of SE(3). For simplicity, a generic Lie group non-linear least-squares optimizer as found in Theseus\footnote{\url{https://github.com/facebookresearch/theseus}}~\cite{Pineda:NeurIPS:2023} or Ceres\footnote{\url{https://github.com/ceres-solver/ceres-solver}}~\cite{Agarwal:Ceres:2022} can be used.
 
