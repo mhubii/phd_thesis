@@ -247,9 +247,9 @@ Using the square loss function $\rho_\kappa(z)=z^2$ leads to the original least-
 \end{equation}
 with $\kappa=1.345\sigma$ being advocated to provide robustness while retaining appropriate properties when the errors are Gaussian.
 
-This minimisation can be achieved by a standard Iteratively Reweighted Least Squares (IRLS) approach~\cite{Green:JRSSB:1984} or by including a second order terms in a slightly more advanced reweighted Gauss-Newton approach as discussed in~\cite{Triggs:VisAlg:2000}.
-The latter is referred to as the Triggs correction in \url{http://ceres-solver.org/nnls_modeling.html#theory}. While elegant, previous work has shown that the Triggs correction does not significantly improve on the standard IRLS~\cite{Zach:ECCV:2014,Zach:ECCV:2018}.
-Here, for simplicity we thus restrict ourselves to standard IRLS.
+This minimisation can be achieved by a standard \acrfull{irls} approach~\cite{Green:JRSSB:1984} or by including a second order terms in a slightly more advanced reweighted Gauss-Newton approach as discussed in~\cite{Triggs:VisAlg:2000}.
+The latter is referred to as the Triggs correction in \url{http://ceres-solver.org/nnls_modeling.html#theory}. While elegant, previous work has shown that the Triggs correction does not significantly improve on the standard \acrshort{irls}~\cite{Zach:ECCV:2014,Zach:ECCV:2018}.
+Here, for simplicity we thus restrict ourselves to standard \acrshort{irls}.
 Given a choice of scaling factor $\kappa$ and an estimate of the parameters $\Theta$, the robust problem is converted to a weighted least-squares:
 \begin{equation}
 \sum_i \omega_\kappa(b_i) ||a_i \delta\Theta - b_i||^2
@@ -281,7 +281,7 @@ Let $q_i$ be 3D points associated to a model object as expressed in an object sp
 Let $I_L$ and $I_R$ be a pair of stereo images with associated $M_L$ and $M_R$ camera matrices (including both extrinsic and intrinsic).
 We assume that the stereo images are observing the object in an unknown pose $\Theta$.
 We also assume that the object is relatively textureless and that we don't have a good means of extracting keypoints of interest from the images.
-We however assume that a segmentation of the object in each image can readily be computed, e.g. with the Segment Anything Model (SAM)~\cite{Kirillov:arxiv:2023}.
+We however assume that a segmentation of the object in each image can readily be computed, e.g. with the \acrshort{sam}~\cite{Kirillov:arxiv:2023}.
 %
 While differentiable rendering could be used in this context~\cite{Hannemose:SPIE:2019,Labbe:CVPR:2021,Chen:RAL:2023},
 we expect that a simpler algorithm can be designed given the segmentation availability by matching points from 3D to 2D.
