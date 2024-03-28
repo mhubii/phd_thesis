@@ -16,11 +16,11 @@
 \author{Martin Huber}\let\theauthor\@author
 \makeatother
 
-\include{FormatAndDefsBasic}
+\input{FormatAndDefsBasic}
 
 % Do we want a draft note? Uncomment if not
 \newcommand{\draftnote}{\textcolor[gray]{0.5}{\textbf{DRAFT -- \today}}}
-\include{FormatAndDefsThesisExtra}
+\input{FormatAndDefsThesisExtra}
 
 \begin{document}
 
@@ -62,8 +62,12 @@
 
 % KCL and UCL want a list of tables and figures
 \clearpage
+\phantomsection
+\mtcaddchapter[\listtablename]
 \listoftables
 \clearpage
+\phantomsection
+\mtcaddchapter[\listfigurename]
 \listoffigures
 
 \mainmatter

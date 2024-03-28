@@ -93,7 +93,7 @@ Similar to~\cite{le2020deep}, we initially find camera motion free image sequenc
 \label{c3:fig:data}
 \end{figure}
 
-\subsubsection{da Vinci\textsuperscript{\textregistered} Surgery Data Pre-Processing}
+\subsubsection{da Vinci\texorpdfstring{\textsuperscript{\textregistered}}{} Surgery Data Pre-Processing}
 
 Many of the da Vinci\textsuperscript{\textregistered} surgery datasets are designed for tool or tissue segmentation tasks, therefore, they are published at a frame rate of $1\,\text{fps}$, see \figref{c3:fig:data_a}. We merge all high frame rate (HFR) datasets into a single dataset and manually remove image sequences with camera motion, which amount to $5\%$ of all
 HFR data. We crop the remaining data to remove status indicators, and scale the images to $306\times408$ pixels, later to be cropped by the \textit{homography generation algorithm} to a resolution of $240\times320$.

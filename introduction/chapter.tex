@@ -5,7 +5,7 @@
 %And Schmidhuber said, Let there be backpropagation, and there was backpropagation.
 \minitoc
 
-\paragraph{Disclaimer} While vast parts in this \chapref{chap:introduction} are novel, and references were added otherwise, some parts were re-utilized from~\cite{huber2021homographybased, huber2022deep, huber2023deep} to remove redundancy from the introduction and methods sections.
+\paragraph{Disclaimer} While vast parts in this \chapref{chap:introduction} are novel, and references were added otherwise, some parts were re-utilized from~\cite{huber2021homographybased, huber2022deep, huber2023deep} to remove redundancy from the introduction and methods sections of the chapters largely based on these publications.
 
 \section{Foreword}
 \label{in:sec:foreword}
@@ -378,7 +378,7 @@ Therein, $k_i$ are radial distortion coefficients, $p_i$ tangential distortion c
 An overview of eye-in-hand and eye-to-hand setups is shown in \figref{in:fig:coordinate_frames}. Eye-in-hand calibration refers to the process of finding the camera frame $C$ to robot end-effector frame $E$ transformation $\homogeneous{E}{C}$ when the camera is attached to the robot's end-effector. Eye-to-hand calibration refers to finding the camera frame $C$ to robot base frame $B$ transformation $\homogeneous{B}{C}$ when the camera is statically placed next to the robot. A prerequisite for this type of calibration is a well known camera model, as was described in \secref{in:sec:camera_intrinsic_calibration}.
 
 The calibration is performed by collecting target to camera $\homogeneous{T}{C}$ and robot base to end-effector transformations $\homogeneous{E}{B}$. Given undistorted camera images, and the camera intrinsic parameters, refer \secref{in:sec:camera_intrinsic_calibration}, target to camera transforms $\homogeneous{T}{C}$ can e.g. be obtained through solving a perspective-n-point (PnP) problem, where points are commonly obtained through ArUco markers, see \figref{in:fig:eye_in_hand_setup}. The base to end-effector transformation $\homogeneous{E}{B}$ can be obtained through robot kinematics.
-\begin{figure}
+\begin{figure}[htb]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
@@ -418,7 +418,7 @@ Having a solid understanding of the calibrations that are required for this thes
 As discussed in the above, \secref{in:sec:camera_intrinsic_calibration} and \secref{in:sec:eye_in_to_hand_calibration}, calibrations require calibration targets. In current practise, the necessity of a calibration target would add overhead to the clinical workflow. Calibrations also depend on the type of camera used, which refers back to \secref{in:sec:automation} - Robot-free Surgeries. Standard laparoscopic camera heads are detachable for sterilization of the laparoscope and provide an adjustable focus. Both of which potentially alter the camera intrinsic parameters and would make re-calibration necessary. For the remainder of this thesis, we will therefore assume that the focal length stays fixed in a range appropriate for surgery. Furthermore, we will assume that the camera head does not rotate about the optics. This assumption is, however, not as crucial for the camera intrinsic calibration, since surgery optics are of extremely high quality with very little distortion. It is more relevant for eye-in-hand calibrations, where the obtained camera pose is crucial for control. For any external camera, these assumptions do not need to be made and they are allowed to move freely.
 
 The implications of calibrations to the clinical workflow refer back to \figref{in:fig:advancing_robotic_laparoscopy}, where additional operation time and surgeon convenience were identified as vital aspects for the shortcomings and advantages of RMIS, respectively. An overview of the implications of the different calibrations is provided in \tabref{in:tab:calibrations}.
-\begin{table}[]
+\begin{table}[htb]
 \centering
 \caption{The implications of different calibrations to the clinical workflow. Refers to camera intrinsics calibration (\secref{in:sec:camera_intrinsic_calibration}), eye-in/to-hand calibration (\secref{in:sec:eye_in_to_hand_calibration}), and \secref{in:sec:unified_calibration}.}
 \label{in:tab:calibrations}
@@ -447,7 +447,7 @@ Having established a proper understanding of the importance of spatial awareness
 
 \subsection{Camera Motion Automation Approaches}
 \label{in:sec:automation_approaches}
-\begin{figure}
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{introduction/fig/rule_based_approaches.pdf}
     \caption{Coordinate frames relevant for laparoscopic camera motion automation. Camera frame C, center of mass frame CoM, and RCM at trocar. The camera frame C is commonly obtained via eye-in-hand calibration, \secref{in:sec:eye_in_to_hand_calibration} and \figref{in:fig:eye_in_hand_setup}. For visual servoing, the CoM assumption as view center-point in commonly made. Laparoscopic view shows an image from a da Vinci\textsuperscript{\textregistered} system in the SurgVisDom\cite{zia2021surgical} dataset. Refers to \secref{in:sec:rule_based_approaches}.}
@@ -461,7 +461,7 @@ In fully robotic setups, a common approach to automation is to simply use the ki
 % ji2018learning, su2020multicamera, wagner2021learning
 
 Alongside automation via kinematic data, visual servoing, i.e. control through images, is considered a promising alternative, as it provides intra-operative feedback~\cite{pandya2014review} and is less prone to errors from model mismatch~\cite{azizian2014visual}. It is capable of understanding and interpreting the surgical scene, thus potentially enabling level five autonomy and above, the overarching goal of this work, \secref{in:sec:foreword}. Visual servoing, in itself, is of special interest to this work for one additional reason.
-\begin{figure}
+\begin{figure}[htb]
     \centering
     \includegraphics{introduction/fig/shared_domain.pdf}
     \caption{The vision domain is a shared domain between MIS and RMIS procedures. Laparoscopic views taken from Cholec80~\cite{twinanda2016endonet}, and SurgVisDom.~\cite{zia2021surgical}. Refers to \secref{in:sec:automation_approaches}.}
@@ -522,7 +522,7 @@ Apparently, current visual servos oversimplify the automation task greatly. Only
 
 \subsection{Reinforcement Learning}
 \label{in:sec:reinforcement_learning}
-\begin{figure}
+\begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{introduction/fig/reinforcement_learning.pdf}
     \caption{A procedural diagram of reinforcement learning. Given the environment state $s_t$, an agent performs an action $a_t$ and observes the resulting state $s_{t+1}$ and reward $r_{t+1}$. Refers to \secref{in:sec:reinforcement_learning}.}
@@ -572,7 +572,7 @@ In the previous sections, several considerations that are relevant to achieving 
 \paragraph{The Case for Camera Motion Automation} In the Foreword, \secref{in:sec:foreword}, it was argued that the progressive nature of surgery will ultimately alleviate clinical staff of unfulfilling tasks through achieving level five autonomy, likely first for laparoscopic camera motion. We took the clinicians' perspective in the cholecystectomy procedure, the most common laparoscopic procedure, to investigate automation claims further. We found that the camera holder assistant, see \figref{in:fig:room_setup}, performs a relatively simple and unfulfilling task. This stays in contrast with the importance of the camera holder's role of establishing and maintaining a good view for highlighting critical anatomies to surgeons, \secref{in:sec:cholecystectomy_procedure}. We then analyzed the rise of RMIS in \secref{in:sec:the_rise_of_robot_assisted_laparoscopy}, and found first indicators that, in RMIS, the camera is moved more frequently when compared to MIS, suggesting that even more camera motion might be desirable. This stays is in line with the initial rise of RMIS. We thus concluded that camera motion automation might be beneficial for the surgeon, the patient, and the clinical staff in \secref{in:sec:enhancing_current_systems}, \figref{in:fig:advancing_robotic_laparoscopy}.
 
 \paragraph{High-level Aspects of Camera Motion Automation}
-\begin{figure}
+\begin{figure}[htb]
 	\centering
 	\includegraphics[width=\textwidth]{chapter_2/img/labeled_setup_compressed.png}
 	\caption{Robotic setup. A Storz Endocameleon Hopkins Telescope, which provides a light source port and a camera attachment point, is mounted to a KUKA LBR Med 7 R800 robot via a 3D printed clamp. The robotic system undergoes image-based control to reach desired views of the surgical scene and simultaneously pivots around a programmable RCM.}
@@ -596,7 +596,7 @@ IL requires large amounts of data for learning the tail-end, i.e. rare cases. Th
 
 \subsubsection{Search for available Data}
 \label{in:sec:search_for_available_data}
-\begin{table}
+\begin{table}[htb]
 \centering
 \caption{Exhaustive overview of publicly available MIS and RMIS datasets. All datasets were acquired and analyzed for task-appropriate metrics. Datasets that were not available, or are unreasonable for evaluation, are marked with N/A, where datasets were not available or unreasonable to analyze.}
 \label{in:tab:datasets}
@@ -873,7 +873,7 @@ This relation may e.g. be used in a PID control scheme. The exact use of \eqref{
 % \label{in:sec:implementation_homography_regression}
 % We synthetically generate image data. Therefore, we randomly augment fog, grayscale, flipping (horizontally and vertically), blurring, brightness and contrast operations.
 
-% \begin{figure}
+% \begin{figure}[htb]
 % 	\centering
 % 	\includegraphics[width=0.8\textwidth]{img/compresspng/augmentations.png}
 % 	\caption{Nine different sample variations of the same image from the da Vinci\textsuperscript{\textregistered} SurgVisDom dataset. Shown are random combinations of fog, grayscale, flip, blur, brightness, contrast and crop augmentations.} 	
@@ -887,7 +887,7 @@ This relation may e.g. be used in a PID control scheme. The exact use of \eqref{
 % \subsection{Data}
 % To facilitate imitation learning on laparoscopic surgery data, we extract and isolate camera motion from object motion. Therefore, we collect da Vinci\textsuperscript{\textregistered} surgery data, where the camera only moves occasionally and is mostly fixed in position, but objects are still moving. We isolate data without camera motion from data with camera motion. We additionally collect laparoscopic surgery data with camera motion to imitate it. An exhaustive overview of publicly available datasets is given in \tabref{in:tab:datasets}. We analyze the data for its length, frame rate, resolution and camera motion. We pre-process the laparoscopic data by searching for its center point and bounding circle. We do so by seeking a circle who's radius and center fit best to the edge filtered laparoscopic view with a random sample consensus (RANSAC)~\cite{fischler1981random}, see \figref{in:fig:ransac_circle}.
 
-% \begin{figure}
+% \begin{figure}[htb]
 % 	\centering
 % 	\includegraphics[width=0.8\textwidth]{img/compresspng/ransac_0.png}
 % 	\caption{RANSAC detection of the circular boundary of the laparoscopic image from Cholec80~\cite{twinanda2016endonet} (yellow). The turquoise rectangle is the maximum sized rectangle of a given aspect ratio that fits around the circle's center point. An example \href{https://drive.google.com/file/d/1aY7jnBoKNwKyMlSthjzgsRldkHEK1OKw/view?usp=sharing}{video} is provided.}
@@ -895,7 +895,7 @@ This relation may e.g. be used in a PID control scheme. The exact use of \eqref{
 % \end{figure}
 
 % \begin{landscape}
-% \begin{table}
+% \begin{table}[htb]
 % \centering
 % \caption{Exhaustive overview of publicly available MIS datasets. All datasets were acquired and analyzed for task-appropriate metrics. in:tab:datasetsMetrics were marked with N/A, where datasets were not available or unreasonable to analyze.}
 % \label{in:tab:datasets}
@@ -950,7 +950,7 @@ This relation may e.g. be used in a PID control scheme. The exact use of \eqref{
 % To demonstrate the effectiveness of the proposed visual servo, we implement an example, where the desired homography $\mathbf{H}$ is computed as a least squares solution with OpenCV's \textit{findHomography} function~\cite{bradski2000opencv}. We extract key points from a calibration pattern, perturb the endoscope's position randomly and then iterate \eqref{in:eq:gain_controller} to minimize the task error $\mathbf{e}_\text{t}$ in \eqref{in:eq:error}, which is supposed to move the endoscope to the initial position. We set the task gain parameters $\mathbf{K}_\text{t} = \text{diag}(1.0,1.0,1.0,0.04,0.04,0.04)$ and the RCM gain parameters $\mathbf{K}_\text{RCM} = \text{diag}(100.0, 100.0, 100.0)$. We set the damping factor for the damped least squares inverse of the Jacobian matrix to $\gamma = 0.05$.
 % An exemplary \href{https://drive.google.com/file/d/1xrPTe7FdxZiUFySA3CxLsW-lJGgMdrcS/view?usp=sharing}{video} is available on Google Drive. We evaluated the convergence of the task error $\mathbf{e}_\text{t}$, the deviation of the RCM $\mathbf{p}_\text{RCM}$ from the desired trocar position $\mathbf{p}_\text{trocar}$, as well as a visual error that we define as the mean pairwise distance of the key points found on the calibration board and the deviation of the tip position from the initial pose. Results are shown in \figref{in:fig:visual_servo_measurements}.
 
-% \begin{figure}
+% \begin{figure}[htb]
 % 	\centering
 % 	\begin{subfigure}[b]{.4\textwidth}
 % 		\centering
@@ -980,7 +980,7 @@ This relation may e.g. be used in a PID control scheme. The exact use of \eqref{
 % \label{in:sec:results_homography_regression}
 % As visualized in \figref{in:fig:datasets_sizes}, the datasets SurgVisDom, Giannarou and Mountney account for $72.4\%$ of data with occasional camera motion. 
 
-% \begin{figure}
+% \begin{figure}[htb]
 % 	\centering
 % 	\begin{subfigure}[b]{.45\textwidth}
 % 		\centering
@@ -1010,7 +1010,7 @@ This relation may e.g. be used in a PID control scheme. The exact use of \eqref{
 % 	\item Contrast: $20\%$
 % \end{itemize}
 % Example augmentations are shown in \figref{in:fig:data_augmentation}. We train VGG-based networks and networks with a Resnet34~\cite{he2016deep} backbone. We use the Adam optimizer at a learning rate of $1\mathrm{e}{-4}$ and a momentum of $[0.9, 0.999]$. We set the batch size to $64$, the image crop shape to $480\times640$ and train for $20$ epochs on a train split with $80\%$ of the total data. The results are shown in \tabref{in:tab:train_results}. We excluded the results for the method from~\cite{zhang2019content}, as it converged to the trivial solution.
-% \begin{table}
+% \begin{table}[htb]
 % 	\centering
 % 	\caption{Test loss on high frame rate da Vinci\textsuperscript{\textregistered} dataset without camera motion.}
 % 	\begin{tabular}{ccc}
@@ -1028,7 +1028,7 @@ This relation may e.g. be used in a PID control scheme. The exact use of \eqref{
 % \label{in:sec:homography_imitation_learning}
 % To qualitatively assess the homography estimation capability of the Resnet34-backboned network, we perform inference on the unseen Cholec80 dataset. We do so as the Cholec80 dataset accounts for about $37\%$ of available laparoscopic data, see \figref{in:fig:da_vinci_laparoscopic}, and consists of continuous video, whereas the ROBUST-MIS dataset only comprises short video clips of length $10\,\text{s}$. We compare the deep method against a SIFT feature-based homography estimation method. Exemplary alpha blends are shown in \figref{in:fig:alpha_blend}. Example videos of the alignment with \href{https://drive.google.com/file/d/1SpUtSVgwo_PAwAjULF-Ky_5CxRuhMYlm/view?usp=sharing}{stride 1} and \href{https://drive.google.com/file/d/17fmhSsPq290PuLXmtO-aWwo3KN4QkZA8/view?usp=sharing}{stride 10} are also provided on Google Drive.
 
-% \begin{figure}
+% \begin{figure}[htb]
 % 	\centering
 % 	\includegraphics[width=.5\textwidth]{img/compresspng/blend_joint.png}
 % 	\caption{Alpha blend of consecutive images from Cholec80 with stride $10$, corresponding to a $\Delta t$ of $0.4\,\text{s}$. Top row: The raw blend (none) shows severe camera and tool motion. The feature-based alignment breaks. The deep approach aligns both images well. Bottom row: The surgeon deforms the gallbladder while the camera is moving, the deep approach aligns the non-moving background well and ignores the deformation of the gallbladder, as can especially be seen in the zoom. Example videos of the alignment with \href{https://drive.google.com/file/d/1SpUtSVgwo_PAwAjULF-Ky_5CxRuhMYlm/view?usp=sharing}{stride 1} and \href{https://drive.google.com/file/d/17fmhSsPq290PuLXmtO-aWwo3KN4QkZA8/view?usp=sharing}{stride 10} are provided.}
@@ -1037,7 +1037,7 @@ This relation may e.g. be used in a PID control scheme. The exact use of \eqref{
 
 % Following the visual servo of \eqref{in:eq:twist}, we measure the severance of camera motion in a sequence of images by plotting the deviation of the estimated homography from the identity matrix against time, see \figref{in:fig:homography_annotation_moving_average}.
 
-% \begin{figure}
+% \begin{figure}[htb]
 % 	\centering
 % 	\includegraphics[width=.5\textwidth]{fig/homography_annotation_moving_average.pdf}
 % 	\caption{Moving average of L2-norm of homography matrix identity deviation, similar to \eqref{in:eq:twist}. The homography was regressed in between consecutive images with stride 1 from Cholec80 using a Resnet34 backbone. The chosen metric reveals uncontinuous camera motion, as can be seen through alternating minima and maxima. This aligns well with the visual observation from video.}

@@ -58,7 +58,7 @@ We build on~\cite{huber2022deep} for computationally efficient state-action pair
 The proposed approach to learning camera motion prediction is summarized in \figref{c4:fig:training_pipeline}. The following sections will describe its key components in more detail.
 
 % \begin{landscape}
-\begin{figure}
+\begin{figure}[htb]
 \centering
 %\includegraphics[width=0.7\paperheight]{fig/23_02_13_miccai_figures.drawio.pdf}
 \includegraphics[width=\textwidth]{fig/23_02_13_miccai_figures.drawio.pdf}
@@ -72,7 +72,7 @@ The proposed approach to learning camera motion prediction is summarized in \fig
 \label{c4:sec:theoretical_background}
 Points on a plane, as observed from a moving camera, transform by means of the $3\times3$ projective homography matrix $\mathbf{G}$ in image space, see \secref{in:sec:homography_based_camera_motion_formulation}. Thus, predicting future camera motion (up to scale) may be equivalently treated as predicting future projective homographies.
 
-It has been shown in~\cite{DeTone2016DeepEstimation} that the four point representation of the projective homography, \emph{i.e.,}  taking the difference between four points in homogeneous coordinates $\Delta\mathbf{uv} = \{\mathbf{p}_i - \mathbf{p}^\prime_i\,|\,i \in [0, 4)\} \in \mathbb{R}^{4\times2}$ that are related by $\mathbf{G}\mathbf{p}_i \sim \mathbf{p}^\prime_i\,\,\forall i$, is better behaved for deep learning applications than the $3\times3$ matrix representation of a homography.
+It has been shown in~\cite{detone2016deep} that the four point representation of the projective homography, \emph{i.e.,}  taking the difference between four points in homogeneous coordinates $\Delta\mathbf{uv} = \{\mathbf{p}_i - \mathbf{p}^\prime_i\,|\,i \in [0, 4)\} \in \mathbb{R}^{4\times2}$ that are related by $\mathbf{G}\mathbf{p}_i \sim \mathbf{p}^\prime_i\,\,\forall i$, is better behaved for deep learning applications than the $3\times3$ matrix representation of a homography.
 %
 Therefore, in this work, we treat camera motion $\mathcal{C}$ as a sequence of four point homographies on a time horizon $[T_0, T_{N+M})$, $N$ being the recall horizon's length, $M$ being the preview horizon's length. Time points 
 %$T_i$
@@ -176,7 +176,7 @@ For evaluation we compute the mean pairwise distance between estimated and predi
 The camera motion distributions for all datasets are shown in \figref{c4:fig:camera_motion_distribution}. It is observed that for a large fraction of the sequences there is no significant camera motion (Cholec80 $76.21\%$, HeiChole $76.2\%$, AutoLaparo $71.29\%$). This finding supports the importance sampling that was introduced in \secref{c4:sec:video_database_and_importance_sampling}. It can further be seen that e.g. left/right and up/down motions are equally distributed.
 
 % TODO: add explanation for labels
-\begin{figure}
+\begin{figure}[htb]
     \centering
     \begin{subfigure}[b]{\textwidth}
         \centering
@@ -231,7 +231,7 @@ The displacement of the image center point under the predicted camera motion for
 
 % TODO: update cholec80 results here!
 % TODO: move more sample to the appendix
-\begin{table}[]
+\begin{table}[htb]
 \caption{Camera motion predictor performance, refer to \secref{c4:sec:camera_motion_predictor_experiments}. Taylor baselines predict based on previous estimated motion, ResNets based on images.}
 \label{c4:tab:camera_motion_prediction}
 \centering
@@ -316,7 +316,7 @@ AutoLaparo               & $5.9e4$                                              
 %$14.1 \pm 10.1$
 %$4.0 \pm 1.6$
 
-\begin{figure}
+\begin{figure}[htb]
 \centering
 \begin{subfigure}[b]{\textwidth}
     \centering
@@ -334,7 +334,7 @@ AutoLaparo               & $5.9e4$                                              
 \label{c4:fig:autolapato_results}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[htb]
 \centering
 \includegraphics[width=\linewidth]{fig/23_03_09_blends_drawio_update.drawio.pdf}
 \caption{Exemplary camera motion prediction, refer to \secref{c4:sec:camera_motion_predictor_experiments}. In the image sequence, the attention changes from the right to the left tool. We warp the past view (yellow) by the predicted homography and overlay the current view (blue). Good alignment corresponds to good camera motion prediction. Contrary to the baseline, the proposed method predicts the motion well. Data taken from HeiChole test set, ResNet-50 backbone trained on Cholec80, refer \tabref{c4:tab:camera_motion_prediction}.}
@@ -347,7 +347,7 @@ AutoLaparo               & $5.9e4$                                              
 
 
 %Show a train / eval correlation matrix for every dataset, showing the improvements over baseline (motion continuation)
-%\begin{table}[]
+%\begin{table}[htb]
 %    \caption{Figure showing the improvements over baseline. Trained / evaluated on different datasets.}
 %    \label{c4:tab:my_label}
 %    \centering
