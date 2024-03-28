@@ -480,36 +480,36 @@ Qualitative results of the registration for the drilling robot are shown in \fig
     \label{c1:fig:masks}
 \end{figure}
 
-For the total set of collected samples, we determine the average Intersection over Union (IoU) between instance segmentations $S_t$ and renders $R_t$. Therein, the IoU is expressed through
+For the total set of collected samples, we determine the average \acrfull{iou} between instance segmentations $S_t$ and renders $R_t$. Therein, the \acrshort{iou} is expressed through
 \begin{equation}
     \text{IoU} = \frac{|S_t \cup R_t|}{|S_t \cap R_t|}
 \end{equation}
-The results are summarized in \tabref{c1:tab:iou}. As can be see, and as already visually observed in \figref{c1:fig:masks}, we find close to perfect average IoU. For the drilling robot, the average IoU is slightly worse than for the camera robot. This is because the instance segmentations $S_t$ are systematically off by human annotator.
+The results are summarized in \tabref{c1:tab:iou}. As can be see, and as already visually observed in \figref{c1:fig:masks}, we find close to perfect average \acrshort{iou}. For the drilling robot, the average \acrshort{iou} is slightly worse than for the camera robot. This is because the instance segmentations $S_t$ are systematically off by human annotator.
 \begin{table}[tb]
 \centering
-\caption{Average IoU of segmented and rendered mask. Also compare to \figref{c1:fig:masks}. Refers to \secref{c1:sec:in_vivo_results}.}
+\caption{Average \acrshort{iou} of segmented and rendered mask. Also compare to \figref{c1:fig:masks}. Refers to \secref{c1:sec:in_vivo_results}.}
 \label{c1:tab:iou}
 \begin{tabular}{@{}ll@{}}
 \toprule
-Robot         & IoU {[}a.u{]}   \\ \midrule
+Robot         & \acrshort{iou} {[}a.u{]}   \\ \midrule
 Camera (left)    & $0.92 \pm 0.01$ \\
 Drilling (right) & $0.84 \pm 0.01$ \\ \bottomrule
 \end{tabular}
 \end{table}
 
 %Drill:
-%Average IoU: 0.8394461441870494
-%Std IoU: 0.013859811026686823
+%Average \acrshort{iou}: 0.8394461441870494
+%Std \acrshort{iou}: 0.013859811026686823
 %HSI:
-%Average IoU: 0.9234094580204967
-%Std IoU: 0.009454594255256406
+%Average \acrshort{iou}: 0.9234094580204967
+%Std \acrshort{iou}: 0.009454594255256406
 
 \section{Conclusion and Future Work}% and outlook}
 In this work we present a novel vision-based robot calibration procedure that unifies eye-in-hand and eye-to-hand calibration through casting them the same problem formulation. This is achieved by treating the robot as calibration target itself. In the eye-in-hand calibration scenario, the robot simply observes itself whilst in the eye-to-hand scenario the camera observes the robot from an external stand. The introduced formulation can further be used for rapid robot base-to-base calibrations.
 
 \paragraph{Ex-vivo Summary} Promising qualitative results for the simple \acrshort{icp} (\secref{c1:sec:simple_icp_registration}) are presented in \figref{c1:fig:registration_results}. For both, eye-in-hand \figref{c1:fig:self_registration} and eye-to-hand \figref{c1:fig:double_registration}, the instance-segmented point cloud, as well as the robot model align well after registration. These qualitative observations also solidify through our quantitative comparisons against baselines, which are summarized in \tabref{c1:tab:calibration_results}. Whilst an error remains, the proposed method is much quicker, as it is single shot, is much safer to use, as opposed to the handshake calibration, and does not require any calibration targets, as opposed to the eye-in-hand calibration with ArUco target.
 
-\paragraph{In-vivo Summary} For the in-vivo experiments \secref{c1:sec:in_vivo_experiments}, we deploy an improved version of the registration algorithm, see \secref{c1:sec:robust_icp}. Applicability to a clinical scenario was demonstrated, see \figref{c1:fig:in_vivo_setup}. Visually, we find close to pixel-perfect registrations, see \figref{c1:fig:in_vivo_results}. These visual observations are further confirmed through the measured average IoU, see \tabref{c1:tab:iou}.
+\paragraph{In-vivo Summary} For the in-vivo experiments \secref{c1:sec:in_vivo_experiments}, we deploy an improved version of the registration algorithm, see \secref{c1:sec:robust_icp}. Applicability to a clinical scenario was demonstrated, see \figref{c1:fig:in_vivo_setup}. Visually, we find close to pixel-perfect registrations, see \figref{c1:fig:in_vivo_results}. These visual observations are further confirmed through the measured average \acrshort{iou}, see \tabref{c1:tab:iou}.
 % Given the vast amount of collected data and precise localization, see \secref{c1:sec:in_vivo_results}
 
 \paragraph{Limitations} Shortcomings of this work are that a sufficient view of the robot is required to perform the calibration. In a surgical scenario, draping would cause an insufficient view. Consequentially, the calibration would have to be carried out as initialization and the robots would not be allowed to move afterwards. Clinically, however, it is necessary to drape the robots prior to moving them into position, i.e. prior to moving them into the sterile field.
