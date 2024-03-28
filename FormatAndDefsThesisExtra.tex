@@ -42,7 +42,7 @@
 % except for indented quotations or footnotes where single spacing may
 % be used."
 \usepackage{setspace}
-\onehalfspace
+\onehalfspacing
 
 % Draft note
 % No draft note (empty one) by default
@@ -173,6 +173,10 @@ has been indicated in the thesis.
 
 \usepackage{wallpaper}
 
+\renewcommand{\contentsname}{Table of contents}
+\renewcommand{\listfigurename}{List of figures}
+\renewcommand{\listtablename}{List of tables}
+
 % load monitoc with nohints to shut down
 % unusefull warnings about hyperref
 \usepackage[nohints]{minitoc}
@@ -206,7 +210,35 @@ has been indicated in the thesis.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Bibliography
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\bibliographystyle{these}
+\usepackage[style=alphabetic,maxnames=99,maxcitenames=1,giveninits=false,uniquename=init,backref=true]{biblatex}
+% Make parenthical citations the default
+\renewcommand\cite{\parencite}
+
+\DeclareCiteCommand{\citet}
+  {\boolfalse{citetracker}%
+   \boolfalse{pagetracker}%
+   \usebibmacro{prenote}}
+  {\ifciteindex
+     {\indexnames{labelname}}
+     {}%
+   \printtext[bibhyperref]{\printnames{labelname}~[\printfield{year}]}}
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+\renewcommand*{\labelalphaothers}{}
+\DeclareLabelalphaTemplate{
+  \labelelement{
+    \field[final]{shorthand}
+    \field[names=1]{labelname}
+    \field{label}
+  }
+  \labelelement{
+    \literal{\addhighpenspace}
+  }
+  \labelelement{
+    \field{year}
+  }
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Hyperreferences
@@ -222,11 +254,9 @@ has been indicated in the thesis.
 \definecolor{citecol}{rgb}{0,0,0}
 
 \ifpdf
- \usepackage[backref=page,pdfusetitle,pdfpagelabels=true]
-{hyperref}
+\usepackage[pdfusetitle,pdfpagelabels=true]{hyperref}
 \else
- \usepackage[backref=page,dvips,pdfusetitle,pdfpagelabels=true]
-{hyperref}
+\usepackage[dvips,pdfusetitle,pdfpagelabels=true]{hyperref}
 \fi
 
 \hypersetup
