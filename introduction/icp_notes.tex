@@ -1,21 +1,21 @@
-\subsection{Point-to-plane ICP: A Lie algebra formulation}
+\subsection{Point-to-plane ICP: A Lie Algebra Formulation}
 \label{in:sec:p2plane}
 
-\paragraph{Basic formulation.}
+\paragraph{Basic Formulation}
 We first introduce the problem solved by the point-to-plane iterative closest point algorithm (point-to-plane \acrshort{icp})~\cite{Rusinkiewicz:IC3DIM:2001}.
 Let $p_i$ and $q_i$ be corresponding 3D points in homogeneous coordinates. Let $n_i$ be a normal vector associated with $q_i$. We search a rigid body transformation $\Theta$ in $SE(3)$ that minimizes:
 \begin{equation}
 \sum_i ||n_i^T \cdot (\Theta \cdot p_i - q_i)||^2 = \sum_i (n_i^T \cdot \Theta \cdot p_i - n_i^T \cdot q_i)^2
 \end{equation}
 
-\paragraph{Iterative optimization on the $SE(3)$ Lie group.}
+\paragraph{Iterative Optimization on the $SE(3)$ Lie Group}
 Let $\Theta_0$ be the current estimate. In a Lie group iterative optimization approach~\cite{Mahony:JGO:2002,Vercauteren:IPMI:2007}, we seek a perturbation $\delta\Theta \in \mathfrak{se}(3)$ composed with
 $\Theta_0$: $\Theta_1 = \Theta_0 \cdot \exp(\delta\Theta)$. We now seek to minimize:
 \begin{equation}
 \sum_i (n_i^T \cdot \Theta_0 \cdot \exp(\delta\Theta) \cdot p_i - n_i^T \cdot q_i)^2
 \end{equation}
 
-\paragraph{Mathematical preliminaries.}
+\paragraph{Mathematical Preliminaries}
 For convenience, we take advantage of the relationship between the 3D cross product, the Lie bracket on SO(3), and the skew-symmetric matrix operator.
 Let $\omega = [\omega_x, \omega_y, \omega_z]$ and $\eta = [\eta_x, \eta_y, \eta_z]$ be two 3D vectors, we have
 \begin{equation}
@@ -124,7 +124,7 @@ L(\omega) \approx \id
 + (\frac{1}{6}-\frac{||\omega||^2}{120}+\frac{||\omega||^4}{5040})\omega_\times^2
 \end{equation}
 
-\paragraph{First-order linearization of the action of the exponential in $\mathfrak{se}(3)$.}
+\paragraph{First-order Linearization of the Action of the Exponential in $\mathfrak{se}(3)$}
 Let $p=[\tilde{p};1]$ be a 3D point in homogeneous coordinates. We consider an infinitesimal element $\delta u=[\delta \omega;\delta \tau]$ of $\mathfrak{se}(3)$ and consider the corresponding action on $p$:
 \begin{equation}
 \begin{split}
@@ -165,7 +165,7 @@ D(p) =
 \end{bmatrix}
 \end{equation}
 
-\paragraph{Lie algebra linearization of the point-to-plane objective}
+\paragraph{Lie Algebra Linearization of the Point-to-plane Objective}
 Plugging this in the original cost function we get the following linearization:
 \begin{equation}
 \begin{split}
@@ -202,7 +202,7 @@ and
 b_i = \tilde{n}_i^T (\tilde{q}_i - R_0 \tilde{p}_i - T_0)
 \end{equation}
 
-\paragraph{Robust formulation.}
+\paragraph{Robust Formulation}
 To reduce the influence of outliers on the solution, a typical approach is to introduce a
 loss function $\rho_\kappa$ parameterized by a scale parameter (a.k.a. soft margin or cut-off) $\kappa$ to scale the residuals. We then seek to minimize:
 \iffalse
@@ -274,7 +274,7 @@ One aspect we haven't addressed yet it the choice of $\kappa$ for the Huber loss
 \hat{\sigma} = \frac{\MAD(\{b_i\})}{0.6745} = \frac{\median(\{|b_i-\median(\{b_i\}|)\})}{0.6745}
 \end{equation}
 
-\subsection{Registration of a 3D point cloud with 2D stereo segmentations}
+\subsection{Registration of a 3D Point Cloud with 2D Stereo Segmentations}
 \label{in:sec:registration_of_3d_point_cloud}
 %
 Let $q_i$ be 3D points associated to a model object as expressed in an object specific coordinate frame.
