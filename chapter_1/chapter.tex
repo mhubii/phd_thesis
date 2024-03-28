@@ -36,16 +36,16 @@ Currently, direct teleoperation is the gold-standard for the majority of surgica
 
 % As a result, the system integration forgoes the requirement for a collision model in these multi-arm setups. 
 
-A key requirement for future automated systems is robot base-to-base localization, i.e. each robot arm must be aware of the other arm's position and orientation with respect to its own. This is needed in order to implement an effective collision model into the automated control system ensuring patient and the operating team's safety. In the case where multi-robot arm systems are deployed on a surgical table, base localization can be derived from CAD models, however, these measurements may not accurately reflect reality due to manufacturing inaccuracies. In the case of the increasingly popular modular systems, mentioned in \secref{in:sec:robot_surgery_platforms}, the arm setup may be different every time the theater is prepared. Furthermore, robotic systems must also undergo localization in relation to other elements present in the operating theater, including patient anatomy, lighting fixtures, imaging systems (e.g. C-arm), and so on, see \figref{in:fig:room_setup}. This motivates the need for a robot base calibration step introduced into the surgical workflow. Such a step, however, should be designed in a way that can be quickly and safely performed by non-robotics experts, i.e. the theater staff.
+A key requirement for future automated systems is robot base-to-base localization, i.e. each robot arm must be aware of the other arm's position and orientation with respect to its own. This is needed in order to implement an effective collision model into the automated control system ensuring patient and the operating team's safety. In the case where multi-robot arm systems are deployed on a surgical table, base localization can be derived from \acrfull{cad} models, however, these measurements may not accurately reflect reality due to manufacturing inaccuracies. In the case of the increasingly popular modular systems, mentioned in \secref{in:sec:robot_surgery_platforms}, the arm setup may be different every time the theater is prepared. Furthermore, robotic systems must also undergo localization in relation to other elements present in the operating theater, including patient anatomy, lighting fixtures, imaging systems (e.g. C-arm), and so on, see \figref{in:fig:room_setup}. This motivates the need for a robot base calibration step introduced into the surgical workflow. Such a step, however, should be designed in a way that can be quickly and safely performed by non-robotics experts, i.e. the theater staff.
 
 % The development of commercialized RGBD camera devices has been  
 
 % Knowledge of the robot base-to-base localization is especially important in the case of the modern modular systems mentioned above.
-% However, it can also be important for systems mounted on the surgical table since the measurements from CAD models may not reflect reality due to .
+% However, it can also be important for systems mounted on the surgical table since the measurements from \acrshort{cad} models may not reflect reality due to .
 % need to recalibrate for modern modular systems 
 % especially in the case of the modern modular systems mentioned above
 % furthermore, the calibration process needs to be simplified so that it can be performed quickly by non-robotics experts
-% even in case of robots being deployed on a surgical table, the CAD models may need not fully reflect reality
+% even in case of robots being deployed on a surgical table, the \acrshort{cad} models may need not fully reflect reality
 
 % Surgical robotics has become a key tool for improving patient outcomes.
 
@@ -93,7 +93,7 @@ A key requirement for future automated systems is robot base-to-base localizatio
 \end{figure}
 In this work we make the following contributions:
 \begin{itemize}
-    \item A unified approach for eye-in-hand and eye-to-hand calibration of multiple surgical robots with no need for any calibration targets since the robot itself is used instead. Our proposed method uses a novel robust \acrfull{icp} formulation of a point-to-plane objective on a Lie algebra. Only RGB-D images, the robots' joint positions, and their respective mesh files or CAD models are used.
+    \item A unified approach for eye-in-hand and eye-to-hand calibration of multiple surgical robots with no need for any calibration targets since the robot itself is used instead. Our proposed method uses a novel robust \acrfull{icp} formulation of a point-to-plane objective on a Lie algebra. Only RGB-D images, the robots' joint positions, and their respective mesh files or \acrshort{cad} models are used.
     \item We conduct several benchmarks comparing our methods against classical approaches. Our method ensures safety and, based on the comparisons, demonstrates faster execution and better outcomes when compared to other options.
     \item Hardware realization of the approach on a dual robot arm system. Furthermore, we showcase a human-robot collaboration through admittance control with arm-arm collision avoidance. The collision model for the two robots relies on the measurements generated by our proposed method.
     %The two robots are controlled in a collision avoidant manner.
@@ -110,7 +110,7 @@ In this work we make the following contributions:
 \section{Related Work}
 \subsection{Eye-in-hand Calibration}
 Prior work on the eye-in-hand problem~\cite{Horaud95, Strobl06} require the user to fabricate a marker (e.g. checkerboard or AprilTag\cite{Olson11}) with known geometry making it easy to extract a pose from images. In our work, we do not require the user to create such a marker.
-Instead, we make use of the mesh files or CAD models provided by the manufacturer.
+Instead, we make use of the mesh files or \acrshort{cad} models provided by the manufacturer.
 
 \subsection{Marker-free Registration}
 Marker-free eye-to-hand calibration is an active research field with new developments being lead by differentiable rendering frameworks, such as PyTorch3D~\cite{ravi2020pytorch3d} and Kaolin~\cite{KaolinLibrary}. Consequentially, some works utilize these frameworks to optimize for camera poses such that mesh renders match image segmentations~\cite{chen2023easyhec}. Further work proposes a fully self-supervised procedure that learns both, to segment and to estimate the eye-to-hand transformation~\cite{lu2023markerless}. These works require tailoring to dedicated robot models and depend on fully-blown differentiable rendering pipelines, which makes them difficult to use in practise. Other work that doesn't use differentiable rendering but rendering is~\cite{labbe2021single}, where the authors also predict joint states on top of the eye-to-hand registration. This work also requires training to dedicated systems. Simpler approaches suggest to predict robot joint positions and extract eye-to-hand registrations through solving a PnP problem~\cite{lee2020camera}. In this work, we suggest a conceptually much simpler approach that works for any robot, but uses RGB-D images, and, as some of the other methods, robot joint states. Closest to our work comes~\cite{point_cloud_based_robot_cell_calib}, where the authors also perform point cloud registration. Their method, however, only registers a single configuration and performs complex clustering of the observed point cloud. The only marker-free work on a surgical system is presented in~\cite{hand_eye_calibration_robotic_assisted}, where the authors utilize the surgical tools as calibration target. Whilst being quite appealing, this method does not allows for external collision avoidance nor hybrid setups.
@@ -170,11 +170,11 @@ With reference to the schematic of a robot arm in \figref{in:fig:eye_in_hand}, t
 
 where $\phi: \mathbb{R}^N\rightarrow\mathbb{R}^{7}$ represents the forward kinematics function. Given a geometric description of the robot's joints and links (typically in the common URDF format), the forward kinematics $\phi(\cdot)$ is easily derived.
 
-\paragraph{Modality Prerequisites} Regarding the camera, that is either placed in the environment, as in \figref{c1:fig:base2base}, or mounted at the robot end-effector, as in \figref{in:fig:eye_in_hand}, we assume stereo or RGB-D. Finally, we assume access to the mesh files or CAD models for each of the robot arms.
+\paragraph{Modality Prerequisites} Regarding the camera, that is either placed in the environment, as in \figref{c1:fig:base2base}, or mounted at the robot end-effector, as in \figref{in:fig:eye_in_hand}, we assume stereo or RGB-D. Finally, we assume access to the mesh files or \acrshort{cad} models for each of the robot arms.
 
 %\subsection{Robot Base-to-base Calibration}
 
-%In this subsection, we primarily describe the problem associated with \figref{c1:fig:base2base}. As discussed above, several robots could be positioned at once in the operating theater. To enable automated approaches, these robot arms must be aware of the other's position and orientation. With reference to \figref{c1:fig:base2base}, the transforms $\homogeneous{{E_i}}{{R_i}}$ are assumed known for each $i\in[1, 2]$. The goal of this work is to utilize information from the camera located at frame $C$, and with the mesh files or CAD models to compute estimates for the transforms $\homogeneous{C}{{B_1}}$ and $\homogeneous{C}{{B_2}}$. Given estimates for these frames, we can thus compute one robot pose with respect to the other. This can be expressed by
+%In this subsection, we primarily describe the problem associated with \figref{c1:fig:base2base}. As discussed above, several robots could be positioned at once in the operating theater. To enable automated approaches, these robot arms must be aware of the other's position and orientation. With reference to \figref{c1:fig:base2base}, the transforms $\homogeneous{{E_i}}{{R_i}}$ are assumed known for each $i\in[1, 2]$. The goal of this work is to utilize information from the camera located at frame $C$, and with the mesh files or \acrshort{cad} models to compute estimates for the transforms $\homogeneous{C}{{B_1}}$ and $\homogeneous{C}{{B_2}}$. Given estimates for these frames, we can thus compute one robot pose with respect to the other. This can be expressed by
 
 %\begin{equation}
     %\homogeneous{{B_1}}{{B_2}} = \homogeneous{{B_1}}{C} \homogeneous{C}{{B_2}} = \homogeneous{{B_1}}{C} (\homogeneous{{B_2}}{C})^{-1}
@@ -186,7 +186,7 @@ where $\phi: \mathbb{R}^N\rightarrow\mathbb{R}^{7}$ represents the forward kinem
 %In this subsection we primarily describe the problem associated with \figref{in:fig:eye_in_hand}.
 %Sensors, such as cameras, are often mounted at the robot end-effector in order to perform imaging tasks.
 %Often, the transform between the camera frame $C$ and the robot end-effector $E$ is not known.
-%Often CAD models are available for the mount which attaches the camera to the end-effector.
+%Often \acrshort{cad} models are available for the mount which attaches the camera to the end-effector.
 %However, the precise location of the camera imaging sensor is not known accurately, i.e. the camera extrinsic parameters.
 
 %Estimating the unknown static transformation frame $\homogeneous{E}{C}$ is a problem we address in this work as part of our unified approach.
@@ -205,7 +205,7 @@ where $\phi: \mathbb{R}^N\rightarrow\mathbb{R}^{7}$ represents the forward kinem
 %\end{equation}
 %where $\widehat{X}, \widehat{Y}$ are the solution to the least squares problem and represent estimated homogeneous transformation matrices.
 %In our work, we remove the need for a marker affixed in the environment.
-%Instead, we make use of the mesh files or CAD model for the robot arm.
+%Instead, we make use of the mesh files or \acrshort{cad} model for the robot arm.
 %This requires a reformulation of Equation~\ref{c1:eq:eyeinhand}, which we discuss in later sections.
 
 \section{Materials and Methods}
