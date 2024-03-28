@@ -269,7 +269,7 @@ This leads us to the following weighted normal equation:
 \end{equation}
 where $W = \diag\big(\omega_\kappa(b_0), \ldots, \omega_\kappa(b_N)\big)$.
 
-One aspect we haven't addressed yet it the choice of $\kappa$ for the Huber loss. As mentioned earlier, a typical choice is to use $\kappa=1.345\sigma$. We are thus left with the need to robustly estimate the standard deviation of the residuals. This is typically done through a median absolute deviation (MAD):
+One aspect we haven't addressed yet it the choice of $\kappa$ for the Huber loss. As mentioned earlier, a typical choice is to use $\kappa=1.345\sigma$. We are thus left with the need to robustly estimate the standard deviation of the residuals. This is typically done through a \acrfull{mad}:
 \begin{equation}
 \hat{\sigma} = \frac{\MAD(\{b_i\})}{0.6745} = \frac{\median(\{|b_i-\median(\{b_i\}|)\})}{0.6745}
 \end{equation}
