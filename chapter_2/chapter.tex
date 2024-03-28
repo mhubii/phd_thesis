@@ -291,7 +291,7 @@ In the phantom, we identify four clinically relevant views of the scene. These v
     \item Servoing to target views after phantom repositioning.
 \end{itemize}
 
-To address these scenarios, we design three experiments. For all experiments, after the laparoscope insertion, the user moves to the overview of the surgical scene, where the first image is taken through the GUI, which corresponds to the graph's root view/vertex, see \figref{c2:fig:pipe}. We measure the deviation of the \acrshort{rcm} from the trocar position, record the Mean Pairwise Distance (MPD) of SURF features from the current to the desired view, the task error, execution time, joint angles, and the camera tip position.
+To address these scenarios, we design three experiments. For all experiments, after the laparoscope insertion, the user moves to the overview of the surgical scene, where the first image is taken through the GUI, which corresponds to the graph's root view/vertex, see \figref{c2:fig:pipe}. We measure the deviation of the \acrshort{rcm} from the trocar position, record the \acrfull{mpd} of SURF features from the current to the desired view, the task error, execution time, joint angles, and the camera tip position.
 
 \subsubsection{Servoing from any current view to any target view}
 \label{c2:sec:clin_protocol_any}
@@ -336,7 +336,7 @@ In practice we found that controlling the camera frame's rotational \acrshort{do
         \mathbf{K}^\text{d} &= \diag(6\mathrm{e}{-2}, 5\mathrm{e}{-2}, 5\mathrm{e}{-2}, 3\mathrm{e}{-2}, 0, 0, 0).
     \end{split}
 \end{equation*}
-The integral term therein helped remove a steady state error in the homography-based image alignments. The desired homography extraction proved noisy but correct on average, so we introduced a moving average filter on the task error $^\text{C}\mathbf{e}_\text{t}$ with a buffer length of $10$ at a frame rate of $30\,\text{fps}$. The sequential execution of desired views was greatly sped up by calling early convergence for intermediate vertices/views at a MPD of $5\,\text{pixels}$ and a final convergence at a MPD of $1.5\,\text{pixels}$. 
+The integral term therein helped remove a steady state error in the homography-based image alignments. The desired homography extraction proved noisy but correct on average, so we introduced a moving average filter on the task error $^\text{C}\mathbf{e}_\text{t}$ with a buffer length of $10$ at a frame rate of $30\,\text{fps}$. The sequential execution of desired views was greatly sped up by calling early convergence for intermediate vertices/views at a \acrshort{mpd} of $5\,\text{pixels}$ and a final convergence at a \acrshort{mpd} of $1.5\,\text{pixels}$. 
 
 \subsection{Clinical Scenario Results}
 \label{c2:sec:clin_res}
@@ -357,11 +357,11 @@ For this measurement, the visual servo navigates from the tool insertion area to
 
 \subsubsection{Servoing to target views after phantom repositioning}
 \label{c2:sec:clin_res_re}
-In this section we investigate the convergence of the visual error after phantom repositioning, see \secref{c2:sec:clin_protocol_re}. We perform clockwise and counterclockwise repositioning as well as phantom tilting. We keep the trocar at the initial position. The camera frame then rotates and translates towards a position that minimizes the visual error. The translation $\Delta\mathbf{x}_{i+1}$ and the angle axis rotation angle $\alpha$ are listed in \tabref{c2:tab:repositioning}. It can be seen that the robotic laparoscope performs significant motion to readjust the view. The MPD is minimized to pixel range and the final deviation from the trocar remains in the submillimeter scale for all cases. 
+In this section we investigate the convergence of the visual error after phantom repositioning, see \secref{c2:sec:clin_protocol_re}. We perform clockwise and counterclockwise repositioning as well as phantom tilting. We keep the trocar at the initial position. The camera frame then rotates and translates towards a position that minimizes the visual error. The translation $\Delta\mathbf{x}_{i+1}$ and the angle axis rotation angle $\alpha$ are listed in \tabref{c2:tab:repositioning}. It can be seen that the robotic laparoscope performs significant motion to readjust the view. The \acrshort{mpd} is minimized to pixel range and the final deviation from the trocar remains in the submillimeter scale for all cases. 
 
 \begin{table}
 \centering
-\caption{Clockwise (CW), and counterclockwise (CCW) repositioning, and phantom tilting, corresponding to the protocol in \secref{c2:sec:clin_protocol_re}. $\Delta\mathbf{x}_{i+1}$ indicates the camera motion, $\alpha$ the angle axis rotation angle from initial to final camera rotation, $\Delta\mathbf{q}$ the joint angle position change, $\mathbf{e}_\text{RCM}$ the final deviation of the \acrshort{rcm} from the trocar, and MPD the final visual error.}
+\caption{Clockwise (CW), and counterclockwise (CCW) repositioning, and phantom tilting, corresponding to the protocol in \secref{c2:sec:clin_protocol_re}. $\Delta\mathbf{x}_{i+1}$ indicates the camera motion, $\alpha$ the angle axis rotation angle from initial to final camera rotation, $\Delta\mathbf{q}$ the joint angle position change, $\mathbf{e}_\text{RCM}$ the final deviation of the \acrshort{rcm} from the trocar, and \acrshort{mpd} the final visual error.}
 \begin{tabular}{lccc}
     \toprule
      Metric & CW & CCW & Tilt \\
@@ -374,17 +374,17 @@ In this section we investigate the convergence of the visual error after phantom
      \hline
      $^\text{W}\mathbf{e}^\text{p}_\text{RCM}\,/\,\text{mm}$& $0.1$ & $0.2$ & $0.07$ \\
      \hline
-     MPD / pixel & $3.2\pm2.5$ & $2.0\pm1.0$ & $1.4\pm1.2$ \\
+     \acrshort{mpd} / pixel & $3.2\pm2.5$ & $2.0\pm1.0$ & $1.4\pm1.2$ \\
      \bottomrule
 \end{tabular}
 \label{c2:tab:repositioning}
 \end{table}
 %\begin{table}[]
 %    \centering
-%    \caption{Clockwise (CW), counterclockwise (CCW), and tilt patient repositioning. $\Delta\mathbf{x}_{i+1}$ indicates the camera motion, $\Delta\mathbf{q}$ the joint angle position change, $\mathbf{e}_\text{RCM}$ the final deviation of the \acrshort{rcm} from the trocar, and MPD the final visual error.}
+%    \caption{Clockwise (CW), counterclockwise (CCW), and tilt patient repositioning. $\Delta\mathbf{x}_{i+1}$ indicates the camera motion, $\Delta\mathbf{q}$ the joint angle position change, $\mathbf{e}_\text{RCM}$ the final deviation of the \acrshort{rcm} from the trocar, and \acrshort{mpd} the final visual error.}
 %    \begin{tabular}{l|c|c|c|c|c}
 %    
-%         Type & $\Delta\mathbf{x}_{i+1}\,/\,\text{mm}$ & $\alpha\,/\,^\circ$ & $\Delta\mathbf{q}\,/\,^\circ$ & $\mathbf{e}_\text{RCM}\,/\,\text{mm}$ & MPD / pixel \\
+%         Type & $\Delta\mathbf{x}_{i+1}\,/\,\text{mm}$ & $\alpha\,/\,^\circ$ & $\Delta\mathbf{q}\,/\,^\circ$ & $\mathbf{e}_\text{RCM}\,/\,\text{mm}$ & \acrshort{mpd} / pixel \\
 %         \hline
 %         CW   & $10.4$ & $16.6$ & $20.5\pm12.0$ & $0.1$  & $3.2\pm2.5$ \\
 %         CCW  & $6.7$ & $10.2$ & $17.4\pm13.4$ & $0.2$  & $2.0\pm1.0$ \\
@@ -399,7 +399,7 @@ In this section we investigate the convergence of the visual error after phantom
 In this work we introduced a visual servo that is independent of depth information and explicit tool and camera positions. The introduced method simultaneously respects a programmable \acrshort{rcm}. Our method was successfully integrated into a robotic setup and clinically relevant scenarios were investigated on an abdominal phantom.
 
 % results discussion
-It was shown in \secref{c2:sec:clin_res_any} that the proposed composite Jacobian PID controller with homography-based task simultaneously minimizes the \acrshort{rcm} and the visual servo objective. The integral term proved helpful to remove a steady state error in the image alignment. The homography estimation was noisy due to feature sparseness and required for average filtering. The graph representation allowed for visual servoing between images that were not relatable by a single homography transformation. In \secref{c2:sec:clin_res_tool}, tools were successfully introduced into the scene. It is to be noted that the tools were initially not present in the target views, which removed potential image misalignment. In \secref{c2:sec:clin_res_re} the phantom was repositioned significantly with a constant trocar position and image readjustment was successfully demonstrated. The MPD got close to perfect alignment, however, the trocar was possibly moved slightly during repositioning, which made perfect convergence not possible. The robot's joint angles did not always return to their initial configuration. The camera position converged in submillimeter range to its target.
+It was shown in \secref{c2:sec:clin_res_any} that the proposed composite Jacobian PID controller with homography-based task simultaneously minimizes the \acrshort{rcm} and the visual servo objective. The integral term proved helpful to remove a steady state error in the image alignment. The homography estimation was noisy due to feature sparseness and required for average filtering. The graph representation allowed for visual servoing between images that were not relatable by a single homography transformation. In \secref{c2:sec:clin_res_tool}, tools were successfully introduced into the scene. It is to be noted that the tools were initially not present in the target views, which removed potential image misalignment. In \secref{c2:sec:clin_res_re} the phantom was repositioned significantly with a constant trocar position and image readjustment was successfully demonstrated. The \acrshort{mpd} got close to perfect alignment, however, the trocar was possibly moved slightly during repositioning, which made perfect convergence not possible. The robot's joint angles did not always return to their initial configuration. The camera position converged in submillimeter range to its target.
 
 % future work
 We successfully demonstrated that our visual servo navigates the camera in submillimeter range without depth information or explicit tool and camera positions. This proves the future potential for safe patient application and it circumvents time-consuming registration procedures. As our setup has one redundant \acrshort{dof}, the robot did not always return to its initial configuration. This might be handled by introducing joint state objectives to the Jacobian's nullspace. While our visual servo is independent of registration procedures, the \acrshort{rcm} requires initialization, and tracking. In future work, the controller might be updated as to incorporate force-torque sensing to update the \acrshort{rcm}. Although the environment was mostly static, the homography estimation was noisy. In future research, one might, therefore, incorporate homography estimation that is invariant under object motion and robust under feature sparseness, using deep learning approaches, as shown in~\cite{huber2022deep}.
