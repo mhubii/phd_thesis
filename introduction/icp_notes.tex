@@ -2,7 +2,7 @@
 \label{in:sec:p2plane}
 
 \paragraph{Basic Formulation}
-We first introduce the problem solved by the point-to-plane iterative closest point algorithm (point-to-plane \acrshort{icp})~\cite{Rusinkiewicz:IC3DIM:2001}.
+We first introduce the problem solved by the point-to-plane iterative closest point algorithm (point-to-plane \gls{icp})~\cite{Rusinkiewicz:IC3DIM:2001}.
 Let $p_i$ and $q_i$ be corresponding 3D points in homogeneous coordinates. Let $n_i$ be a normal vector associated with $q_i$. We search a rigid body transformation $\Theta$ in $SE(3)$ that minimizes:
 \begin{equation}
 \sum_i ||n_i^T \cdot (\Theta \cdot p_i - q_i)||^2 = \sum_i (n_i^T \cdot \Theta \cdot p_i - n_i^T \cdot q_i)^2
@@ -247,9 +247,9 @@ Using the square loss function $\rho_\kappa(z)=z^2$ leads to the original least-
 \end{equation}
 with $\kappa=1.345\sigma$ being advocated to provide robustness while retaining appropriate properties when the errors are Gaussian.
 
-This minimisation can be achieved by a standard \acrfull{irls} approach~\cite{Green:JRSSB:1984} or by including a second order terms in a slightly more advanced reweighted Gauss-Newton approach as discussed in~\cite{Triggs:VisAlg:2000}.
-The latter is referred to as the Triggs correction in \url{http://ceres-solver.org/nnls_modeling.html#theory}. While elegant, previous work has shown that the Triggs correction does not significantly improve on the standard \acrshort{irls}~\cite{Zach:ECCV:2014,Zach:ECCV:2018}.
-Here, for simplicity we thus restrict ourselves to standard \acrshort{irls}.
+This minimisation can be achieved by a standard \gls{irls} approach~\cite{Green:JRSSB:1984} or by including a second order terms in a slightly more advanced reweighted Gauss-Newton approach as discussed in~\cite{Triggs:VisAlg:2000}.
+The latter is referred to as the Triggs correction in \url{http://ceres-solver.org/nnls_modeling.html#theory}. While elegant, previous work has shown that the Triggs correction does not significantly improve on the standard \gls{irls}~\cite{Zach:ECCV:2014,Zach:ECCV:2018}.
+Here, for simplicity we thus restrict ourselves to standard \gls{irls}.
 Given a choice of scaling factor $\kappa$ and an estimate of the parameters $\Theta$, the robust problem is converted to a weighted least-squares:
 \begin{equation}
 \sum_i \omega_\kappa(b_i) ||a_i \delta\Theta - b_i||^2
@@ -269,7 +269,7 @@ This leads us to the following weighted normal equation:
 \end{equation}
 where $W = \diag\big(\omega_\kappa(b_0), \ldots, \omega_\kappa(b_N)\big)$.
 
-One aspect we haven't addressed yet it the choice of $\kappa$ for the Huber loss. As mentioned earlier, a typical choice is to use $\kappa=1.345\sigma$. We are thus left with the need to robustly estimate the standard deviation of the residuals. This is typically done through a \acrfull{mad}:
+One aspect we haven't addressed yet it the choice of $\kappa$ for the Huber loss. As mentioned earlier, a typical choice is to use $\kappa=1.345\sigma$. We are thus left with the need to robustly estimate the standard deviation of the residuals. This is typically done through a \gls{mad}:
 \begin{equation}
 \hat{\sigma} = \frac{\MAD(\{b_i\})}{0.6745} = \frac{\median(\{|b_i-\median(\{b_i\}|)\})}{0.6745}
 \end{equation}
@@ -281,7 +281,7 @@ Let $q_i$ be 3D points associated to a model object as expressed in an object sp
 Let $I_L$ and $I_R$ be a pair of stereo images with associated $M_L$ and $M_R$ camera matrices (including both extrinsic and intrinsic).
 We assume that the stereo images are observing the object in an unknown pose $\Theta$.
 We also assume that the object is relatively textureless and that we don't have a good means of extracting keypoints of interest from the images.
-We however assume that a segmentation of the object in each image can readily be computed, e.g. with the \acrshort{sam}~\cite{Kirillov:arxiv:2023}.
+We however assume that a segmentation of the object in each image can readily be computed, e.g. with the \gls{sam}~\cite{Kirillov:arxiv:2023}.
 %
 While differentiable rendering could be used in this context~\cite{Hannemose:SPIE:2019,Labbe:CVPR:2021,Chen:RAL:2023},
 we expect that a simpler algorithm can be designed given the segmentation availability by matching points from 3D to 2D.
@@ -298,8 +298,8 @@ We can write the objective as:
 + \min_{p_R|S_R(p_R)=1}|| \varphi\big(M_R \Theta q_i\big) - p_R||^2
 \end{equation}
 
-Similar to the approach in~\cite{Fitzgibbon:IVC:2003}, this formulation can be substantially accelerated by taking advantage of the fact that the segmentations are defined on a regular grid. We can thus use a \acrfull{edt} for which optimized algorithms exist on both \acrfull{cpu}~\cite{Felzenszwalb:TC:2012}\footnote{\url{https://github.com/cai4cai/distance_transform}} and \acrshort{gpu}~\cite{Cao:SIGGRAPH:2010}\footnote{\url{https://docs.rapids.ai/api/cucim/stable/api/\#cucim.core.operations.morphology.distance_transform_edt}}.
-Let $\mathcal{D}_{S_L}$ be the \acrshort{edt} computed from $S_L$ (respectively $\mathcal{D}_{S_R}$ for $S_R$).
+Similar to the approach in~\cite{Fitzgibbon:IVC:2003}, this formulation can be substantially accelerated by taking advantage of the fact that the segmentations are defined on a regular grid. We can thus use a \gls{edt} for which optimized algorithms exist on both \gls{cpu}~\cite{Felzenszwalb:TC:2012}\footnote{\url{https://github.com/cai4cai/distance_transform}} and \gls{gpu}~\cite{Cao:SIGGRAPH:2010}\footnote{\url{https://docs.rapids.ai/api/cucim/stable/api/\#cucim.core.operations.morphology.distance_transform_edt}}.
+Let $\mathcal{D}_{S_L}$ be the \gls{edt} computed from $S_L$ (respectively $\mathcal{D}_{S_R}$ for $S_R$).
 We can now write
 \begin{equation}\label{eq:dt3d2d}
 \arg\min_{\Theta} \sum_i \mathcal{D}_{S_L}^2\big( \varphi(M_L \Theta q_i) \big)
@@ -308,7 +308,7 @@ We can now write
 
 As in Section \ref{in:sec:p2plane}, the square loss terms could be replaced by robust alternatives.
 It should further be noted that the evaluation of a distance transform $\mathcal{D}_{S}$ at an arbitrary point $p$ requires the use of an interpolator.
-A typical choice is to rely on bilinear interpolation for which optimized implementations exist on both \acrshort{cpu} and \acrshort{gpu}\footnote{\url{https://pytorch.org/docs/stable/generated/torch.nn.functional.grid_sample.html}}.
+A typical choice is to rely on bilinear interpolation for which optimized implementations exist on both \gls{cpu} and \gls{gpu}\footnote{\url{https://pytorch.org/docs/stable/generated/torch.nn.functional.grid_sample.html}}.
 
 Solving for \eqref{eq:dt3d2d} can be done again by taking advantage of the Lie group structure of SE(3). For simplicity, a generic Lie group non-linear least-squares optimizer as found in Theseus\footnote{\url{https://github.com/facebookresearch/theseus}}~\cite{Pineda:NeurIPS:2023} or Ceres\footnote{\url{https://github.com/ceres-solver/ceres-solver}}~\cite{Agarwal:Ceres:2022} can be used.
 

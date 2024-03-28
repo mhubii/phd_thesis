@@ -26,38 +26,38 @@
 % Contributes ...
 
 % \section{Introduction}
-% When compared to open surgery, \acrshort{mis} takes place under endoscopic guidance and offers improved cosmetics, less blood loss, shorter recovery times and reduced cost~\cite{vitiello2012emerging}. In a traditional \acrshort{mis} setup, the surgeon is supported by an assistant who guides the endoscope. Although this task is conceptually simple, it requires trained personnel, which introduces cost~\cite{horgan2001robots}. The assistant surgeon exhibits tremor, suffers fatigue, and can be prone to communication failures~\cite{horgan2001robots, palep2009robotic, li2020accelerated}. 
+% When compared to open surgery, \gls{mis} takes place under endoscopic guidance and offers improved cosmetics, less blood loss, shorter recovery times and reduced cost~\cite{vitiello2012emerging}. In a traditional \gls{mis} setup, the surgeon is supported by an assistant who guides the endoscope. Although this task is conceptually simple, it requires trained personnel, which introduces cost~\cite{horgan2001robots}. The assistant surgeon exhibits tremor, suffers fatigue, and can be prone to communication failures~\cite{horgan2001robots, palep2009robotic, li2020accelerated}. 
 
 % Several robotic endoscope holders, such as AESOP~\cite{unger1994aesop}, ViKY~\cite{long2007development}, and EndoAssist~\cite{gilbert2009endoassist}, have been developed to address these shortcomings. Research in~\cite{aiono2002controlled} and~\cite{voros2010viky} showcased a reduction in the intervention time. While robotic endoscope holders can facilitate improvements, they introduce additional workload to the surgeon. With the advance of automated surgical systems this additional workload can be reduced~\cite{moustris2011evolution}. Therefore, different methods to automate endoscopic camera motion were explored. 
 
 % Alongside automation via kinematic data, visual servoing, i.e. control through images, is considered a promising alternative, as it provides intra-operative feedback~\cite{pandya2014review} and is less prone to errors from model mismatch~\cite{azizian2014visual}. In semi-autonomous setups, such as gaze or voice control~\cite{taniguchi2010classification}, visual servoing can robustly reflect a surgeon's intent and respect anatomical constraints or facilitate full autonomy.
 
-% Visual servoing approaches that satisfy a \acrshort{rcm} constraint can be split into methods that rely on a mechanical \acrshort{rcm} and methods that rely on a programmable \acrshort{rcm}. There has been less research on visual servoing with programmable \acrshort{rcm} because of robot singularities and constraints on the robot positioning, however, in contrast to a mechanical \acrshort{rcm}, a programmable \acrshort{rcm} can be adapted in real-time, and the robot, with which the programmable \acrshort{rcm} is achieved, can be used for multiple purposes~\cite{kuo2012kinematic}, for example in open surgery. Existing methods with mechanical \acrshort{rcm}, and programmable \acrshort{rcm}, will be detailed in \secref{c2:sec:mech_rcm}, and \secref{c2:sec:prog_rcm}, respectively.
+% Visual servoing approaches that satisfy a \gls{rcm} constraint can be split into methods that rely on a mechanical \gls{rcm} and methods that rely on a programmable \gls{rcm}. There has been less research on visual servoing with programmable \gls{rcm} because of robot singularities and constraints on the robot positioning, however, in contrast to a mechanical \gls{rcm}, a programmable \gls{rcm} can be adapted in real-time, and the robot, with which the programmable \gls{rcm} is achieved, can be used for multiple purposes~\cite{kuo2012kinematic}, for example in open surgery. Existing methods with mechanical \gls{rcm}, and programmable \gls{rcm}, will be detailed in \secref{c2:sec:mech_rcm}, and \secref{c2:sec:prog_rcm}, respectively.
 %\begin{figure}
 %    \centering
 %    \includegraphics[width=\textwidth]{img/labeled_setup_compressed.png}
-%    \caption{Robotic setup. A Storz Endocameleon Hopkins Telescope, which provides a light source port and a camera attachment point, is mounted to a KUKA \acrshort{lbr} Med 7 R800 robot via a 3D printed clamp. The robotic system undergoes image-based control to reach desired views of the surgical scene and simultaneously pivots around a programmable \acrshort{rcm}.}
+%    \caption{Robotic setup. A Storz Endocameleon Hopkins Telescope, which provides a light source port and a camera attachment point, is mounted to a KUKA \gls{lbr} Med 7 R800 robot via a 3D printed clamp. The robotic system undergoes image-based control to reach desired views of the surgical scene and simultaneously pivots around a programmable \gls{rcm}.}
 %    \label{c2:fig:setup}
 %\end{figure}
 
-%\subsection{with Mechanical \acrshort{rcm}}
-%\subsection{Visual Servoing with Mechanical \acrshort{rcm}}
+%\subsection{with Mechanical \gls{rcm}}
+%\subsection{Visual Servoing with Mechanical \gls{rcm}}
 %\label{c2:sec:mech_rcm}
-%Examples of approaches that use a mechanical \acrshort{rcm} are~\cite{omote1999self}, where a visual servo controls the position of a marked forceps in image space. In~\cite{agustinos2014visual, voros2007automatic}, the tool entry point is exploited to find the tool tip in image space and to center it via visual servoing. Another common scheme is to alter the camera's zoom based on the surgical tools' distance, which was first presented in~\cite{king2013towards}, where the tools are tracked with markers. Research in~\cite{eslamian2020development, mariani2020experimental, dascan}, based on ~\cite{Eslamian2016TowardsTI, eslamian2017autonomous}, adjusts the camera's distance in this manner. They align the camera's optical axis with the line that spans from \acrshort{rcm} to the tools' center point. Such an approach requires a complicated registration procedure. In~\cite{abdelaal2020orientation}, Abdelaal \emph{et al.} also adjust the camera's distance to the surgical scene based on the tool distance, but they align the camera's optical axis with the scene's surface normal, which is made possible by their 6 \acrshort{dof} endoscope. Yu \emph{et al.}~\cite{yu2016automatic} adjust the field of view's width based on tool distance. In~\cite{ma2019autonomous}, Ma \emph{et al.} deploy a visual servo to center a marked tool by incorporating depth information, which they extract from camera and tool motion. In~\cite{ma2020visual}, they extend this work into a quadratic program in which they constrain the camera's distance with respect to the tools and the tool position in the image plane, whilst minimizing the joint velocities. They rely on stereoscopic images for depth information.
+%Examples of approaches that use a mechanical \gls{rcm} are~\cite{omote1999self}, where a visual servo controls the position of a marked forceps in image space. In~\cite{agustinos2014visual, voros2007automatic}, the tool entry point is exploited to find the tool tip in image space and to center it via visual servoing. Another common scheme is to alter the camera's zoom based on the surgical tools' distance, which was first presented in~\cite{king2013towards}, where the tools are tracked with markers. Research in~\cite{eslamian2020development, mariani2020experimental, dascan}, based on ~\cite{Eslamian2016TowardsTI, eslamian2017autonomous}, adjusts the camera's distance in this manner. They align the camera's optical axis with the line that spans from \gls{rcm} to the tools' center point. Such an approach requires a complicated registration procedure. In~\cite{abdelaal2020orientation}, Abdelaal \emph{et al.} also adjust the camera's distance to the surgical scene based on the tool distance, but they align the camera's optical axis with the scene's surface normal, which is made possible by their 6 \gls{dof} endoscope. Yu \emph{et al.}~\cite{yu2016automatic} adjust the field of view's width based on tool distance. In~\cite{ma2019autonomous}, Ma \emph{et al.} deploy a visual servo to center a marked tool by incorporating depth information, which they extract from camera and tool motion. In~\cite{ma2020visual}, they extend this work into a quadratic program in which they constrain the camera's distance with respect to the tools and the tool position in the image plane, whilst minimizing the joint velocities. They rely on stereoscopic images for depth information.
 
-%\subsection{Visual Servoing with Programmable \acrshort{rcm}}
+%\subsection{Visual Servoing with Programmable \gls{rcm}}
 %\label{c2:sec:prog_rcm}
-%Multi-purpose serial manipulators can achieve a \acrshort{rcm} programmatically. In~\cite{osa2010framework}, Osa \emph{et al.} adapt the interaction matrix to account for the \acrshort{rcm} constraint, which they then use to control a point in image space. The authors in~\cite{aghakhani2013task} design a composite Jacobian method that integrates a \acrshort{rcm} objective with a task function that defines an error on points in image space. Yang \emph{et al.} in~\cite{yang2019adaptive} also design a Jacobian gain controller that enforces the tip of a tool to reside within a defined region. They additionally request the endoscope to extend the surgeon's natural line of sight. In~\cite{li2020accelerated}, Li \emph{et al.} introduce the \acrshort{rcm} and a visual error via the image Jacobian as constraints to a quadratic problem that aims at satisfying these constraints whilst minimizing the joint velocities.
+%Multi-purpose serial manipulators can achieve a \gls{rcm} programmatically. In~\cite{osa2010framework}, Osa \emph{et al.} adapt the interaction matrix to account for the \gls{rcm} constraint, which they then use to control a point in image space. The authors in~\cite{aghakhani2013task} design a composite Jacobian method that integrates a \gls{rcm} objective with a task function that defines an error on points in image space. Yang \emph{et al.} in~\cite{yang2019adaptive} also design a Jacobian gain controller that enforces the tip of a tool to reside within a defined region. They additionally request the endoscope to extend the surgeon's natural line of sight. In~\cite{li2020accelerated}, Li \emph{et al.} introduce the \gls{rcm} and a visual error via the image Jacobian as constraints to a quadratic problem that aims at satisfying these constraints whilst minimizing the joint velocities.
 
 % option A:
 % Automation in General
-% Automation with mechanical \acrshort{rcm}, Automation with programmable \acrshort{rcm}
+% Automation with mechanical \gls{rcm}, Automation with programmable \gls{rcm}
 % Add other kinematic papers (\cite{weede2011intelligent})
 % Add sun
 % Move kinematic shortcomings to "Limitations of current approaches"
 
 % option B:
-% Remove "kinematic" VS from Mech \acrshort{rcm}
+% Remove "kinematic" VS from Mech \gls{rcm}
 % Add short list of kinematic approaches
 % Add collection of visual servo with mechanical rcm
 % Add sun
@@ -70,15 +70,15 @@
 
 \section{Introduction}
 \label{c2:sec:introduction}
-As was discussed in \secref{in:sec:automation_approaches}, vision-based automation offers a shared domain between \acrshort{mis} and \acrshort{rmis}, see \figref{in:fig:shared_domain}. The shared domain is essential for the realization of the proposed imitation learning pipeline, see \figref{in:fig:hypothesized_pipeline}, without which imitating human experts with a robot might be difficult. Many other works for laparoscopic camera motion automation in the image domain exist, and were reviewed in \secref{in:sec:rule_based_approaches}, yet most of them adhere to the tool following assumption, which we evidently rejected therein. It is, however, a priori not obvious how else one could formulate a visual servo instead. In this publication, we argue that previous works are missing the bigger picture. We take a step back and attempt to shift the focus from tools to organs by treating the visual servoing task as a registration problem.
+As was discussed in \secref{in:sec:automation_approaches}, vision-based automation offers a shared domain between \gls{mis} and \gls{rmis}, see \figref{in:fig:shared_domain}. The shared domain is essential for the realization of the proposed imitation learning pipeline, see \figref{in:fig:hypothesized_pipeline}, without which imitating human experts with a robot might be difficult. Many other works for laparoscopic camera motion automation in the image domain exist, and were reviewed in \secref{in:sec:rule_based_approaches}, yet most of them adhere to the tool following assumption, which we evidently rejected therein. It is, however, a priori not obvious how else one could formulate a visual servo instead. In this publication, we argue that previous works are missing the bigger picture. We take a step back and attempt to shift the focus from tools to organs by treating the visual servoing task as a registration problem.
 
-Arguably, registration might not seem a good automation paradigm, since surgical scenes are dynamic and change over time, which is likely why no one attempted it. Therefore, it is important to understand the context within this work. We are ultimately not interested in global registration but registration of temporal changes from $\hat{s}_t$ to $\hat{s}_{t+1}$, i.e. desired image space actions $\hat{a}^*_t$, that is the human expert policy. Now, prior to predicting actions through imitation learning, \chapref{chap:camera_motion_extraction}, and \chapref{chap:camera_motion_prediction}, thus deviating from learning auxiliary tasks, refer \secref{in:sec:auxiliary_tasks}, we choose to proof that, indeed, the hypothesized actions, i.e. homographies, refer \secref{in:sec:homography_based_camera_motion_formulation}, may be executed under the \acrshort{rcm} constraint. In this work, we contribute exactly that. We formulate an image-based visual servo for executing the embodiment-invariant action $\hat{a}^*_t$. Deviating from the dominant methods, the proposed image-based visual servo requires neither explicit tool and camera positions nor any explicit image depth information, whilst satisfying a \acrshort{rcm} constraint on a serial arm manipulator, see \figref{in:fig:experimental_setup}, thereby obeying \secref{in:sec:automation} - System Considerations.
+Arguably, registration might not seem a good automation paradigm, since surgical scenes are dynamic and change over time, which is likely why no one attempted it. Therefore, it is important to understand the context within this work. We are ultimately not interested in global registration but registration of temporal changes from $\hat{s}_t$ to $\hat{s}_{t+1}$, i.e. desired image space actions $\hat{a}^*_t$, that is the human expert policy. Now, prior to predicting actions through imitation learning, \chapref{chap:camera_motion_extraction}, and \chapref{chap:camera_motion_prediction}, thus deviating from learning auxiliary tasks, refer \secref{in:sec:auxiliary_tasks}, we choose to proof that, indeed, the hypothesized actions, i.e. homographies, refer \secref{in:sec:homography_based_camera_motion_formulation}, may be executed under the \gls{rcm} constraint. In this work, we contribute exactly that. We formulate an image-based visual servo for executing the embodiment-invariant action $\hat{a}^*_t$. Deviating from the dominant methods, the proposed image-based visual servo requires neither explicit tool and camera positions nor any explicit image depth information, whilst satisfying a \gls{rcm} constraint on a serial arm manipulator, see \figref{in:fig:experimental_setup}, thereby obeying \secref{in:sec:automation} - System Considerations.
 
 Built on top of the image-based visual servo, we propose a semi-autonomous scheme, where actions $\hat{a}^*_t$ are generated by the user through selecting target views. The approach allows a user to build a graph of desired views, from which, once built, views can be manually chosen and automatically servoed to irrespective of robot-patient frame transformation changes. This scheme targets level three autonomy, refer \secref{in:sec:foreword}, as we gradually pave the way towards level five autonomy in the remainder of this thesis.
 
-%The proposed method relies on homography-based image registration, which changes the automation paradigm from point-centric towards surgical-scene-centric approach. It simultaneously respects a programmable Remote Center of Motion (\acrshort{rcm}). 
+%The proposed method relies on homography-based image registration, which changes the automation paradigm from point-centric towards surgical-scene-centric approach. It simultaneously respects a programmable Remote Center of Motion (\gls{rcm}). 
 
-%We evaluate our method on an abdominal phantom and provide an open source \acrshort{ros} Moveit integration for use with any serial manipulator\footnote[3]{ \url{https://github.com/RViMLab/h_rcm_vs_ws.git}}. A video is provided\footnote[4]{\label{foot:vid}\url{https://drive.google.com/file/d/1UCr__R2_7xit6TTq3T9pTIEg1fMsfT3j/view?usp=sharing}}.
+%We evaluate our method on an abdominal phantom and provide an open source \gls{ros} Moveit integration for use with any serial manipulator\footnote[3]{ \url{https://github.com/RViMLab/h_rcm_vs_ws.git}}. A video is provided\footnote[4]{\label{foot:vid}\url{https://drive.google.com/file/d/1UCr__R2_7xit6TTq3T9pTIEg1fMsfT3j/view?usp=sharing}}.
 %\end{abstract}
 
 %\begin{abstract}
@@ -93,7 +93,7 @@ Our paper addresses the above limitations with the following contributions:
     \item We introduce a visual servo that navigates towards desired images rather than towards points.
     \item We formulate a visual servo control law that depends neither on explicit tool and camera positions nor on depth information.
 \end{itemize} 
-These are achieved with a programmable \acrshort{rcm}, as it, in contrast to a mechanical \acrshort{rcm}, is more flexible. 
+These are achieved with a programmable \gls{rcm}, as it, in contrast to a mechanical \gls{rcm}, is more flexible. 
 
 This paper is structured as follows. In \secref{c2:sec:methods}, we introduce the necessary theoretical background and the derivation of the proposed visual servoing task. In \secref{c2:sec:experimental_setup}, we explain implementation details and the robotic setup. Results are provided in \secref{c2:sec:results}, and conclusions in \secref{c2:sec:conclusions}.
 
@@ -104,7 +104,7 @@ Here, we first introduce the composite Jacobian for control in \secref{c2:sec:ta
 
 \subsection{Task Control with Remote Center of Motion Objective}
 \label{c2:sec:task_rcm}
-For the task control with \acrshort{rcm} objective, we follow the derivation of Aghakhani \emph{et al.} ~\cite{aghakhani2013task}. Therefore, as schematically shown in \figref{c2:fig:schematic}, an open kinematic chain is attached to reference frame W. An endoscope is attached to the chain. It originates at position $^\text{W}\mathbf{x}_i$ and has its camera frame at position $^\text{W}\mathbf{x}_{i+1}$. The endoscope enters the patient through the trocar at position $^\text{W}\mathbf{x}_\text{trocar}$. The \acrshort{rcm} position $^\text{W}\mathbf{x}_\text{RCM}$ is required to lie along the line connecting $^\text{W}\mathbf{x}_i$ to $^\text{W}\mathbf{x}_{i+1}$, hence
+For the task control with \gls{rcm} objective, we follow the derivation of Aghakhani \emph{et al.} ~\cite{aghakhani2013task}. Therefore, as schematically shown in \figref{c2:fig:schematic}, an open kinematic chain is attached to reference frame W. An endoscope is attached to the chain. It originates at position $^\text{W}\mathbf{x}_i$ and has its camera frame at position $^\text{W}\mathbf{x}_{i+1}$. The endoscope enters the patient through the trocar at position $^\text{W}\mathbf{x}_\text{trocar}$. The \gls{rcm} position $^\text{W}\mathbf{x}_\text{RCM}$ is required to lie along the line connecting $^\text{W}\mathbf{x}_i$ to $^\text{W}\mathbf{x}_{i+1}$, hence
 \begin{equation}
 ^\text{W}\mathbf{x}_\text{RCM} = ^\text{W}\mathbf{x}_i+\lambda\left(^\text{W}\mathbf{x}_{i+1} - ^\text{W}\mathbf{x}_i\right),
 \label{c2:eq:lambda}
@@ -131,7 +131,7 @@ Expanding on~\cite{aghakhani2013task}, we introduce a feedback to $\lambda$ by p
     \begin{bmatrix}\dot{\mathbf{q}}\\\dot{\lambda}\end{bmatrix},
     \label{c2:eq:task_jac}
 \end{equation}
-where $\dot{\mathbf{t}}$ is the task velocity with task dimension $n_\text{t}$ and $\mathbf{J}_\text{t}$ is the task Jacobian. \eqref{c2:eq:task_jac} can be turned into a \acrshort{pid} controller
+where $\dot{\mathbf{t}}$ is the task velocity with task dimension $n_\text{t}$ and $\mathbf{J}_\text{t}$ is the task Jacobian. \eqref{c2:eq:task_jac} can be turned into a \gls{pid} controller
 \begin{equation}
     \centering
     \begin{bmatrix}
@@ -158,7 +158,7 @@ where $\dot{\mathbf{t}}$ is the task velocity with task dimension $n_\text{t}$ a
     \right),
     \label{c2:eq:pid}
 \end{equation}
-where $\mathbf{J}_\text{cp}^{\dagger}$ is the pseudo-inverse of the composite Jacobian from (\eqref{c2:eq:task_jac}), $\mathbf{e}^{\text{p}/\text{i}/\text{d}}_t$ and $^\text{W}\mathbf{e}^{\text{p}/\text{i}/\text{d}}_\text{RCM}$, are the proportional, integral, and differential errors for the task and the \acrshort{rcm}, respectively, and $\mathbf{K}^{\text{p}/\text{i}/\text{d}}$ are the diagonal gain matrices. Therein, $^\text{W}\mathbf{e}_\text{RCM}^{\text{i}/\text{d}}$ are computed as the integral, and the differential of the proportional error $^\text{W}\mathbf{e}_\text{RCM}^\text{p} = ^\text{W}\mathbf{x}_\text{trocar} - ^\text{W}\mathbf{x}_\text{RCM}$. 
+where $\mathbf{J}_\text{cp}^{\dagger}$ is the pseudo-inverse of the composite Jacobian from (\eqref{c2:eq:task_jac}), $\mathbf{e}^{\text{p}/\text{i}/\text{d}}_t$ and $^\text{W}\mathbf{e}^{\text{p}/\text{i}/\text{d}}_\text{RCM}$, are the proportional, integral, and differential errors for the task and the \gls{rcm}, respectively, and $\mathbf{K}^{\text{p}/\text{i}/\text{d}}$ are the diagonal gain matrices. Therein, $^\text{W}\mathbf{e}_\text{RCM}^{\text{i}/\text{d}}$ are computed as the integral, and the differential of the proportional error $^\text{W}\mathbf{e}_\text{RCM}^\text{p} = ^\text{W}\mathbf{x}_\text{trocar} - ^\text{W}\mathbf{x}_\text{RCM}$. 
 
 In the following section, we introduce a homography-based visual servoing task.
 
@@ -168,7 +168,7 @@ In the following section, we introduce a homography-based visual servoing task.
 \begin{figure}[tb]
 \centering
 \includegraphics[width=0.7\textwidth]{img/h_rcm_vs_fig.pdf}
-\caption{Schematic illustration of the setup: The axes' RGB coloring corresponds to XYZ, respectively. A serial manipulator is connected to the world frame W. The endoscope spans from $^\text{W}\mathbf{x}_i$ to $^\text{W}\mathbf{x}_{i+1}$ and it enters the trocar, which lies at $\mathbf{x}_\text{trocar}$. The camera rotates around the \acrshort{rcm} $^\text{W}\mathbf{x}_\text{RCM}$ and its entry depth is proportional to $\lambda \geq 0$.  The camera observes the surgical scene (pink) from different frames $\text{C}$ and $\text{C}^*$.}
+\caption{Schematic illustration of the setup: The axes' RGB coloring corresponds to XYZ, respectively. A serial manipulator is connected to the world frame W. The endoscope spans from $^\text{W}\mathbf{x}_i$ to $^\text{W}\mathbf{x}_{i+1}$ and it enters the trocar, which lies at $\mathbf{x}_\text{trocar}$. The camera rotates around the \gls{rcm} $^\text{W}\mathbf{x}_\text{RCM}$ and its entry depth is proportional to $\lambda \geq 0$.  The camera observes the surgical scene (pink) from different frames $\text{C}$ and $\text{C}^*$.}
 \label{c2:fig:schematic}
 \end{figure}
 
@@ -176,7 +176,7 @@ In the following section, we introduce a homography-based visual servoing task.
 \begin{figure}[tb]
 \centering
 \includegraphics[width=\textwidth]{img/h_rcm_vs_pipeline_real_view.pdf}
-\caption{Processing pipeline. A surgeon manually controls the robot through a \acrfull{gui}, collecting desired views along the way. The images are pre-processed, and a graph of desired views is built in the background by the homography generation node. Once built, the surgeon selects desired views through the \acrshort{gui}, which triggers a shortest path finding from the current vertex (yellow), to the desired one (pink), and the execution of subsequent homography estimations that lead to the target.}
+\caption{Processing pipeline. A surgeon manually controls the robot through a \gls{gui}, collecting desired views along the way. The images are pre-processed, and a graph of desired views is built in the background by the homography generation node. Once built, the surgeon selects desired views through the \gls{gui}, which triggers a shortest path finding from the current vertex (yellow), to the desired one (pink), and the execution of subsequent homography estimations that lead to the target.}
 \label{c2:fig:pipe}
 \end{figure}
 % \end{landscape}
@@ -216,12 +216,12 @@ where $\left[^\text{C}\mathbf{e}_\omega\right]_\times$ is the skew symmetric mat
     \begin{bmatrix}^\text{W}\mathbf{R}_\text{C} & \mathbf{0} \\ \mathbf{0} & ^\text{W}\mathbf{R}_\text{C}\end{bmatrix}{^\text{C}\mathbf{e}_{\text{t}'}} = ^\text{W}\mathbf{e}_{\text{t}'} \sim \mathbf{J}_{i+1}\dot{\mathbf{q}}
     \label{c2:eq:body}
 \end{equation}
-where $^\text{W}\mathbf{R}_\text{C}$ is the rotation of the camera frame with respect to the world frame, and $\mathbf{J}_{i+1}$ is the camera frame's Jacobian, including its rotational contributions. Only 4 \acrshort{dof} can be controlled at a time after imposing the \acrshort{rcm}, which constraints 2 \acrshort{dof}. To capture this, we introduce operator $\mathbf{P}$ that projects the camera frame body velocity onto the remaining \acrshort{dof}. Together with \ (\eqref{c2:eq:body}), this yields
+where $^\text{W}\mathbf{R}_\text{C}$ is the rotation of the camera frame with respect to the world frame, and $\mathbf{J}_{i+1}$ is the camera frame's Jacobian, including its rotational contributions. Only 4 \gls{dof} can be controlled at a time after imposing the \gls{rcm}, which constraints 2 \gls{dof}. To capture this, we introduce operator $\mathbf{P}$ that projects the camera frame body velocity onto the remaining \gls{dof}. Together with \ (\eqref{c2:eq:body}), this yields
 \begin{equation}
     \mathbf{P}_{a/b}{^\text{C}\mathbf{e}_{\text{t}'}} = ^\text{C}\mathbf{e}_{\text{t}_{a/b}} \sim \mathbf{P}_{a/b} \begin{bmatrix}^\text{C}\mathbf{R}_\text{W} & \mathbf{0} \\ \mathbf{0} & ^\text{C}\mathbf{R}_\text{W}\end{bmatrix}\mathbf{J}_{i+1}\dot{\mathbf{q}}.
     \label{c2:eq:proj}
 \end{equation}
-The projection operator $\mathbf{P}_{a/b}$ can take different forms, such that the task error is mapped onto any of the decoupled remaining \acrshort{dof} via
+The projection operator $\mathbf{P}_{a/b}$ can take different forms, such that the task error is mapped onto any of the decoupled remaining \gls{dof} via
 \begin{equation}
     \mathbf{P}_a = \begin{bmatrix}
         \mathbf{I}_{3\times3} & \multicolumn{3}{c}{\mathbf{0}_{3\times3}} \\
@@ -249,7 +249,7 @@ Therefore, $\mathbf{P}_a$ maps the task error $^\text{C}\mathbf{e}_{\text{t}'}$ 
     \end{cases}
     %\mathbf{J}_{\text{t}_{a/b}} = \mathbf{P}_{a/b} \begin{bmatrix}^\text{C}\mathbf{R}_\text{W} & \mathbf{0} \\ \mathbf{0} & ^\text{C}\mathbf{R}_\text{W}\end{bmatrix}\mathbf{J}_\text{i+1}, ^\text{C}\mathbf{e}_{\text{t}_{a}} = \begin{bmatrix}\mathbf{e}_v \\ e_{\omega_z} \end{bmatrix}, ^\text{C}\mathbf{e}_{\text{t}_{b}} = \begin{bmatrix}e_{v_z} \\ \mathbf{e}_{\omega} \end{bmatrix}
 \end{equation}
-This results in a task dimension $n_\text{t} = 4$, which means that together with the \acrshort{rcm} objective that introduces 3 constraints and adds the additional \acrshort{dof} $\lambda$, the robot has to have at least 6 \acrshort{dof}.
+This results in a task dimension $n_\text{t} = 4$, which means that together with the \gls{rcm} objective that introduces 3 constraints and adds the additional \gls{dof} $\lambda$, the robot has to have at least 6 \gls{dof}.
 
 \subsection{Processing Pipeline}
 \label{c2:sec:pipe}
@@ -262,9 +262,9 @@ Each image $\mathcal{I}$ that is processed within the \textit{homography generat
 
 Once the graph is built, the surgeon can browse through the image gallery, as shown in \figref{c2:fig:pipe}, where each image corresponds to a vertex within the graph. The surgeon may then select a desired view and execute the visual servo. This will trigger a Dijkstra search for the closest path from the current vertex to the desired view/vertex at constant cost per edge. This path is executed sequentially. Therefore, the homography $\mathbf{G}$ from the next vertex to the current view is computed for the visual servo. To compute the homography, we extract image features and their descriptors with a SURF feature detector~\cite{bay2006surf}. For each feature in the target view, the two nearest neighbors are found in the current view, and, via Lowe's ratio test~\cite{lowe2004distinctive}, only features with distinctive descriptors are kept. The homography that maps features from the target view to the current view is then determined under RANSAC outlier rejection.
 
-The updated camera intrinsics $\mathbf{K}^\prime$, together with the desired homography $\mathbf{G}$, are then sent down the pipeline to first transform the homography from pixel coordinates to normalized coordinates via (\eqref{c2:eq:h_norm}) and then to compute the desired task $^\text{C}\mathbf{e}_{\text{t}'}$ from (\eqref{c2:eq:dc}). The update rate of these operations are restricted by the camera frame rate, which is why the desired trocar position $^\text{W}\mathbf{x}_\text{trocar}$ is sent separately to the synchronizer node, see \figref{c2:fig:pipe}. The synchronizer node takes a homography \acrshort{rcm} visual servo action client, \textit{HRCMVSActionClient}, which request the \textit{HRCMVSActionServer} to execute the desired task $^\text{C}\mathbf{e}_{\text{t}'}$, while maintaining a desired trocar position $^\text{W}\mathbf{x}_\text{trocar}$. 
+The updated camera intrinsics $\mathbf{K}^\prime$, together with the desired homography $\mathbf{G}$, are then sent down the pipeline to first transform the homography from pixel coordinates to normalized coordinates via (\eqref{c2:eq:h_norm}) and then to compute the desired task $^\text{C}\mathbf{e}_{\text{t}'}$ from (\eqref{c2:eq:dc}). The update rate of these operations are restricted by the camera frame rate, which is why the desired trocar position $^\text{W}\mathbf{x}_\text{trocar}$ is sent separately to the synchronizer node, see \figref{c2:fig:pipe}. The synchronizer node takes a homography \gls{rcm} visual servo action client, \textit{HRCMVSActionClient}, which request the \textit{HRCMVSActionServer} to execute the desired task $^\text{C}\mathbf{e}_{\text{t}'}$, while maintaining a desired trocar position $^\text{W}\mathbf{x}_\text{trocar}$. 
 
-The \textit{HRCMVSActionServer} implements a state machine, which rejects infeasible requests. It computes the forward kinematics as well as the Jacobians and computes a joint position update $\Delta\mathbf{q}=\Delta t\dot{\mathbf{q}}$ via (\eqref{c2:eq:pid}) in the \acrshort{rcm} implementation \textit{RCMImpl}, where $\Delta t$ is the control interval. The desired joint positions are then sent to the robot.
+The \textit{HRCMVSActionServer} implements a state machine, which rejects infeasible requests. It computes the forward kinematics as well as the Jacobians and computes a joint position update $\Delta\mathbf{q}=\Delta t\dot{\mathbf{q}}$ via (\eqref{c2:eq:pid}) in the \gls{rcm} implementation \textit{RCMImpl}, where $\Delta t$ is the control interval. The desired joint positions are then sent to the robot.
 
 \section{Experimental Setup}
 \label{c2:sec:experimental_setup}
@@ -274,7 +274,7 @@ This section gives an overview of the robotic system and its components in \secr
 \subsection{Robotic System}
 \label{c2:sec:robotic_system}
 
-Our experimental setup, see \figref{in:fig:experimental_setup}, uses a KUKA \acrshort{lbr} Med 7 R800 robot. To control it, we created a bridge to \acrfull{ros} by wrapping the \acrfull{fri}~\cite{schreiber2010fast} with \acrshort{ros}' Hardware Interface functionality. We use a Storz Endocameleon Hopkins Telescope, from which we capture images using a Storz TH~102~H3-Z~FI camera head. The endoscope is mounted to the \acrshort{lbr} Med 7 R800 robot with a custom designed 3D print. For illumination, we connect a Storz TL 300 Power LED 300 light source to the endoscope. The image feed is output to SDI, which we convert to HDMI with a Monoprice 3G SDI to HDMI converter. We then grab the HDMI signal with a DeckLink 4K Extreme 12G and stream it onto the \acrshort{ros} network.
+Our experimental setup, see \figref{in:fig:experimental_setup}, uses a KUKA \gls{lbr} Med 7 R800 robot. To control it, we created a bridge to \gls{ros} by wrapping the \gls{fri}~\cite{schreiber2010fast} with \gls{ros}' Hardware Interface functionality. We use a Storz Endocameleon Hopkins Telescope, from which we capture images using a Storz TH~102~H3-Z~FI camera head. The endoscope is mounted to the \gls{lbr} Med 7 R800 robot with a custom designed 3D print. For illumination, we connect a Storz TL 300 Power LED 300 light source to the endoscope. The image feed is output to SDI, which we convert to HDMI with a Monoprice 3G SDI to HDMI converter. We then grab the HDMI signal with a DeckLink 4K Extreme 12G and stream it onto the \gls{ros} network.
 
 % The acquired images are sent to the Storz TC 300 Image1 S H3-Link, which links the camera via DisplayPort to the Storz TC 200 Image1 S Connect. From there on, the image feed...
 
@@ -291,11 +291,11 @@ In the phantom, we identify four clinically relevant views of the scene. These v
     \item Servoing to target views after phantom repositioning.
 \end{itemize}
 
-To address these scenarios, we design three experiments. For all experiments, after the laparoscope insertion, the user moves to the overview of the surgical scene, where the first image is taken through the \acrshort{gui}, which corresponds to the graph's root view/vertex, see \figref{c2:fig:pipe}. We measure the deviation of the \acrshort{rcm} from the trocar position, record the \acrfull{mpd} of SURF features from the current to the desired view, the task error, execution time, joint angles, and the camera tip position.
+To address these scenarios, we design three experiments. For all experiments, after the laparoscope insertion, the user moves to the overview of the surgical scene, where the first image is taken through the \gls{gui}, which corresponds to the graph's root view/vertex, see \figref{c2:fig:pipe}. We measure the deviation of the \gls{rcm} from the trocar position, record the \gls{mpd} of SURF features from the current to the desired view, the task error, execution time, joint angles, and the camera tip position.
 
 \subsubsection{Servoing from any current view to any target view}
 \label{c2:sec:clin_protocol_any}
-In this scenario we investigate the system's capability to autonomously execute extreme view changes. The user moves from the overview to a close-up, from where the scene is further examined. The laparoscope is then moved manually to grant view of the tool insertion area. At this stage, tools would be inserted into the patient and the user would begin to operate. Therefore, the user selects the close-up view through the \acrshort{gui} and executes the autonomous visual servo towards it.
+In this scenario we investigate the system's capability to autonomously execute extreme view changes. The user moves from the overview to a close-up, from where the scene is further examined. The laparoscope is then moved manually to grant view of the tool insertion area. At this stage, tools would be inserted into the patient and the user would begin to operate. Therefore, the user selects the close-up view through the \gls{gui} and executes the autonomous visual servo towards it.
 
 \subsubsection{Servoing to target views under tool motion}
 \label{c2:sec:clin_protocol_tool}
@@ -322,12 +322,12 @@ In this section, we first present generic findings in \secref{c2:sec:generic_res
 \centering
 \includegraphics[width=0.6\textwidth]{fig/visual_error.pdf}
 \end{subfigure}
-\caption{\acrshort{rcm} deviation (top) and task error evolution (bottom) over time for the protocol in \secref{c2:sec:clin_protocol_any}. The visual servo autonomously servos from the tool insertion area to the close-up. Target views/vertices are updated along the way, as indicated by the black dotted lines.}
+\caption{\gls{rcm} deviation (top) and task error evolution (bottom) over time for the protocol in \secref{c2:sec:clin_protocol_any}. The visual servo autonomously servos from the tool insertion area to the close-up. Target views/vertices are updated along the way, as indicated by the black dotted lines.}
 \label{c2:fig:errors}
 \end{figure}
 \subsection{Generic Results}
 \label{c2:sec:generic_res}
-In practice we found that controlling the camera frame's rotational \acrshort{dof}, using $\mathbf{P}_b$ in (\eqref{c2:eq:projection}), leads to more stable solutions. We tried to invert the task part of the composite Jacobian from (\eqref{c2:eq:pid}) within the Nullspace of the \acrshort{rcm} Jacobian, but obtained more flexible solutions by computing the pseudo-inverse as a damped least squares solution from the SVD with a damping factor of $5\mathrm{e}{-4}$. Empirically, we got good results with the following gain matrices
+In practice we found that controlling the camera frame's rotational \gls{dof}, using $\mathbf{P}_b$ in (\eqref{c2:eq:projection}), leads to more stable solutions. We tried to invert the task part of the composite Jacobian from (\eqref{c2:eq:pid}) within the Nullspace of the \gls{rcm} Jacobian, but obtained more flexible solutions by computing the pseudo-inverse as a damped least squares solution from the SVD with a damping factor of $5\mathrm{e}{-4}$. Empirically, we got good results with the following gain matrices
 \begin{equation*}
     \begin{split}
         \mathbf{K}^\text{p} &= \diag(1.2, 1.5, 1.5, 1.8, 1\mathrm{e}{2}, 1\mathrm{e}{2}, 1\mathrm{e}{2}) \\
@@ -336,14 +336,14 @@ In practice we found that controlling the camera frame's rotational \acrshort{do
         \mathbf{K}^\text{d} &= \diag(6\mathrm{e}{-2}, 5\mathrm{e}{-2}, 5\mathrm{e}{-2}, 3\mathrm{e}{-2}, 0, 0, 0).
     \end{split}
 \end{equation*}
-The integral term therein helped remove a steady state error in the homography-based image alignments. The desired homography extraction proved noisy but correct on average, so we introduced a moving average filter on the task error $^\text{C}\mathbf{e}_\text{t}$ with a buffer length of $10$ at a frame rate of $30\,\text{fps}$. The sequential execution of desired views was greatly sped up by calling early convergence for intermediate vertices/views at a \acrshort{mpd} of $5\,\text{pixels}$ and a final convergence at a \acrshort{mpd} of $1.5\,\text{pixels}$. 
+The integral term therein helped remove a steady state error in the homography-based image alignments. The desired homography extraction proved noisy but correct on average, so we introduced a moving average filter on the task error $^\text{C}\mathbf{e}_\text{t}$ with a buffer length of $10$ at a frame rate of $30\,\text{fps}$. The sequential execution of desired views was greatly sped up by calling early convergence for intermediate vertices/views at a \gls{mpd} of $5\,\text{pixels}$ and a final convergence at a \gls{mpd} of $1.5\,\text{pixels}$. 
 
 \subsection{Clinical Scenario Results}
 \label{c2:sec:clin_res}
 \subsubsection{Servoing from any current view to any target view}
 \label{c2:sec:clin_res_any}
 
-In this section we investigate the trajectory from tool insertion view to close-up, see \secref{c2:sec:clin_protocol_any}. The task error and the \acrshort{rcm} deviation from the trocar position are depicted in \figref{c2:fig:errors}. It can be seen that the deviation from the trocar position stays below $4.6\,\text{mm}$, at an average deviation of $0.8\pm0.8\,\text{mm}$. The task error converges for all vertices/views. The final task error corresponds to a camera tip deviation of $0.4\,\text{mm}$, when compared to the desired position. The joint angles deviate on average by $8.2\pm6.0^\circ$ from the initial configuration.
+In this section we investigate the trajectory from tool insertion view to close-up, see \secref{c2:sec:clin_protocol_any}. The task error and the \gls{rcm} deviation from the trocar position are depicted in \figref{c2:fig:errors}. It can be seen that the deviation from the trocar position stays below $4.6\,\text{mm}$, at an average deviation of $0.8\pm0.8\,\text{mm}$. The task error converges for all vertices/views. The final task error corresponds to a camera tip deviation of $0.4\,\text{mm}$, when compared to the desired position. The joint angles deviate on average by $8.2\pm6.0^\circ$ from the initial configuration.
 
 \subsubsection{Servoing to target views under tool motion}
 \label{c2:sec:clin_res_tool}
@@ -357,14 +357,14 @@ For this measurement, the visual servo navigates from the tool insertion area to
 
 \subsubsection{Servoing to target views after phantom repositioning}
 \label{c2:sec:clin_res_re}
-In this section we investigate the convergence of the visual error after phantom repositioning, see \secref{c2:sec:clin_protocol_re}. We perform clockwise and counterclockwise repositioning as well as phantom tilting. We keep the trocar at the initial position. The camera frame then rotates and translates towards a position that minimizes the visual error. The translation $\Delta\mathbf{x}_{i+1}$ and the angle axis rotation angle $\alpha$ are listed in \tabref{c2:tab:repositioning}. It can be seen that the robotic laparoscope performs significant motion to readjust the view. The \acrshort{mpd} is minimized to pixel range and the final deviation from the trocar remains in the submillimeter scale for all cases. 
+In this section we investigate the convergence of the visual error after phantom repositioning, see \secref{c2:sec:clin_protocol_re}. We perform clockwise and counterclockwise repositioning as well as phantom tilting. We keep the trocar at the initial position. The camera frame then rotates and translates towards a position that minimizes the visual error. The translation $\Delta\mathbf{x}_{i+1}$ and the angle axis rotation angle $\alpha$ are listed in \tabref{c2:tab:repositioning}. It can be seen that the robotic laparoscope performs significant motion to readjust the view. The \gls{mpd} is minimized to pixel range and the final deviation from the trocar remains in the submillimeter scale for all cases. 
 
 \begin{table}
 \centering
-\caption{\Acrfull{cw}, and \acrfull{ccw} repositioning, and phantom tilting, corresponding to the protocol in \secref{c2:sec:clin_protocol_re}. $\Delta\mathbf{x}_{i+1}$ indicates the camera motion, $\alpha$ the angle axis rotation angle from initial to final camera rotation, $\Delta\mathbf{q}$ the joint angle position change, $\mathbf{e}_\text{RCM}$ the final deviation of the \acrshort{rcm} from the trocar, and \acrshort{mpd} the final visual error.}
+\caption{\gls{cw}, and \gls{ccw} repositioning, and phantom tilting, corresponding to the protocol in \secref{c2:sec:clin_protocol_re}. $\Delta\mathbf{x}_{i+1}$ indicates the camera motion, $\alpha$ the angle axis rotation angle from initial to final camera rotation, $\Delta\mathbf{q}$ the joint angle position change, $\mathbf{e}_\text{RCM}$ the final deviation of the \gls{rcm} from the trocar, and \gls{mpd} the final visual error.}
 \begin{tabular}{lccc}
     \toprule
-     Metric & \acrshort{cw} & \acrshort{ccw} & Tilt \\
+     Metric & \gls{cw} & \gls{ccw} & Tilt \\
      \hline
      $\Delta\mathbf{x}_{i+1}\,/\,\text{mm}$ & $10.4$ & $6.7$ & $4.7$ \\
      \hline
@@ -374,17 +374,17 @@ In this section we investigate the convergence of the visual error after phantom
      \hline
      $^\text{W}\mathbf{e}^\text{p}_\text{RCM}\,/\,\text{mm}$& $0.1$ & $0.2$ & $0.07$ \\
      \hline
-     \acrshort{mpd} / pixel & $3.2\pm2.5$ & $2.0\pm1.0$ & $1.4\pm1.2$ \\
+     \gls{mpd} / pixel & $3.2\pm2.5$ & $2.0\pm1.0$ & $1.4\pm1.2$ \\
      \bottomrule
 \end{tabular}
 \label{c2:tab:repositioning}
 \end{table}
 %\begin{table}[]
 %    \centering
-%    \caption{Clockwise (CW), counterclockwise (CCW), and tilt patient repositioning. $\Delta\mathbf{x}_{i+1}$ indicates the camera motion, $\Delta\mathbf{q}$ the joint angle position change, $\mathbf{e}_\text{RCM}$ the final deviation of the \acrshort{rcm} from the trocar, and \acrshort{mpd} the final visual error.}
+%    \caption{Clockwise (CW), counterclockwise (CCW), and tilt patient repositioning. $\Delta\mathbf{x}_{i+1}$ indicates the camera motion, $\Delta\mathbf{q}$ the joint angle position change, $\mathbf{e}_\text{RCM}$ the final deviation of the \gls{rcm} from the trocar, and \gls{mpd} the final visual error.}
 %    \begin{tabular}{l|c|c|c|c|c}
 %    
-%         Type & $\Delta\mathbf{x}_{i+1}\,/\,\text{mm}$ & $\alpha\,/\,^\circ$ & $\Delta\mathbf{q}\,/\,^\circ$ & $\mathbf{e}_\text{RCM}\,/\,\text{mm}$ & \acrshort{mpd} / pixel \\
+%         Type & $\Delta\mathbf{x}_{i+1}\,/\,\text{mm}$ & $\alpha\,/\,^\circ$ & $\Delta\mathbf{q}\,/\,^\circ$ & $\mathbf{e}_\text{RCM}\,/\,\text{mm}$ & \gls{mpd} / pixel \\
 %         \hline
 %         CW   & $10.4$ & $16.6$ & $20.5\pm12.0$ & $0.1$  & $3.2\pm2.5$ \\
 %         CCW  & $6.7$ & $10.2$ & $17.4\pm13.4$ & $0.2$  & $2.0\pm1.0$ \\
@@ -396,10 +396,10 @@ In this section we investigate the convergence of the visual error after phantom
 \section{Conclusion}
 \label{c2:sec:conclusions}
 % summary
-In this work we introduced a visual servo that is independent of depth information and explicit tool and camera positions. The introduced method simultaneously respects a programmable \acrshort{rcm}. Our method was successfully integrated into a robotic setup and clinically relevant scenarios were investigated on an abdominal phantom.
+In this work we introduced a visual servo that is independent of depth information and explicit tool and camera positions. The introduced method simultaneously respects a programmable \gls{rcm}. Our method was successfully integrated into a robotic setup and clinically relevant scenarios were investigated on an abdominal phantom.
 
 % results discussion
-It was shown in \secref{c2:sec:clin_res_any} that the proposed composite Jacobian \acrshort{pid} controller with homography-based task simultaneously minimizes the \acrshort{rcm} and the visual servo objective. The integral term proved helpful to remove a steady state error in the image alignment. The homography estimation was noisy due to feature sparseness and required for average filtering. The graph representation allowed for visual servoing between images that were not relatable by a single homography transformation. In \secref{c2:sec:clin_res_tool}, tools were successfully introduced into the scene. It is to be noted that the tools were initially not present in the target views, which removed potential image misalignment. In \secref{c2:sec:clin_res_re} the phantom was repositioned significantly with a constant trocar position and image readjustment was successfully demonstrated. The \acrshort{mpd} got close to perfect alignment, however, the trocar was possibly moved slightly during repositioning, which made perfect convergence not possible. The robot's joint angles did not always return to their initial configuration. The camera position converged in submillimeter range to its target.
+It was shown in \secref{c2:sec:clin_res_any} that the proposed composite Jacobian \gls{pid} controller with homography-based task simultaneously minimizes the \gls{rcm} and the visual servo objective. The integral term proved helpful to remove a steady state error in the image alignment. The homography estimation was noisy due to feature sparseness and required for average filtering. The graph representation allowed for visual servoing between images that were not relatable by a single homography transformation. In \secref{c2:sec:clin_res_tool}, tools were successfully introduced into the scene. It is to be noted that the tools were initially not present in the target views, which removed potential image misalignment. In \secref{c2:sec:clin_res_re} the phantom was repositioned significantly with a constant trocar position and image readjustment was successfully demonstrated. The \gls{mpd} got close to perfect alignment, however, the trocar was possibly moved slightly during repositioning, which made perfect convergence not possible. The robot's joint angles did not always return to their initial configuration. The camera position converged in submillimeter range to its target.
 
 % future work
-We successfully demonstrated that our visual servo navigates the camera in submillimeter range without depth information or explicit tool and camera positions. This proves the future potential for safe patient application and it circumvents time-consuming registration procedures. As our setup has one redundant \acrshort{dof}, the robot did not always return to its initial configuration. This might be handled by introducing joint state objectives to the Jacobian's nullspace. While our visual servo is independent of registration procedures, the \acrshort{rcm} requires initialization, and tracking. In future work, the controller might be updated as to incorporate force-torque sensing to update the \acrshort{rcm}. Although the environment was mostly static, the homography estimation was noisy. In future research, one might, therefore, incorporate homography estimation that is invariant under object motion and robust under feature sparseness, using deep learning approaches, as shown in~\cite{huber2022deep}.
+We successfully demonstrated that our visual servo navigates the camera in submillimeter range without depth information or explicit tool and camera positions. This proves the future potential for safe patient application and it circumvents time-consuming registration procedures. As our setup has one redundant \gls{dof}, the robot did not always return to its initial configuration. This might be handled by introducing joint state objectives to the Jacobian's nullspace. While our visual servo is independent of registration procedures, the \gls{rcm} requires initialization, and tracking. In future work, the controller might be updated as to incorporate force-torque sensing to update the \gls{rcm}. Although the environment was mostly static, the homography estimation was noisy. In future research, one might, therefore, incorporate homography estimation that is invariant under object motion and robust under feature sparseness, using deep learning approaches, as shown in~\cite{huber2022deep}.

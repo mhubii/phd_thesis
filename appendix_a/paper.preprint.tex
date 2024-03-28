@@ -1,4 +1,4 @@
-\chapter[LBR-Stack]{LBR-Stack: ROS 2 and Python Integration of KUKA \acrshort{fri} for Med and
+\chapter[LBR-Stack]{LBR-Stack: ROS 2 and Python Integration of KUKA \gls{fri} for Med and
 IIWA Robots}
 \label{app:lbr_stack}
 \minitoc
@@ -10,9 +10,9 @@ IIWA Robots}
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{appendix_a/img/joss_figure.png}
-\caption[Supported robots in the \acrshort{lbr}-Stack. From left to right: KUKA \acrshort{lbr}
+\caption[Supported robots in the \gls{lbr}-Stack. From left to right: KUKA \gls{lbr}
 IIWA7, IIWA14, Med7, Med14. Visualizations made using Foxglove
-.]{Supported robots in the \acrshort{lbr}-Stack. From left to right: KUKA \acrshort{lbr}
+.]{Supported robots in the \gls{lbr}-Stack. From left to right: KUKA \gls{lbr}
 IIWA7, IIWA14, Med7, Med14. Visualizations made using Foxglove
 \footnotemark{}.}
 \end{figure}
@@ -20,42 +20,42 @@ IIWA7, IIWA14, Med7, Med14. Visualizations made using Foxglove
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
-The \texttt{\acrshort{lbr}-Stack} is a collection of packages that simplify the
-usage and extend the capabilities of KUKA's Fast Robot Interface (\acrshort{fri})
+The \texttt{\gls{lbr}-Stack} is a collection of packages that simplify the
+usage and extend the capabilities of KUKA's Fast Robot Interface (\gls{fri})
 \cite{ref-fri}. It is designed
 for mission critical hard real-time applications. Supported are the
-\texttt{KUKA\ \acrshort{lbr}\ Med7/14} and \texttt{KUKA\ \acrshort{lbr}\ IIWA7/14} robots in
+\texttt{KUKA\ \gls{lbr}\ Med7/14} and \texttt{KUKA\ \gls{lbr}\ IIWA7/14} robots in
 the Gazebo simulation~\cite{ref-gazebo} and for communication with real hardware. A demo video can be
 found
 \href{https://www.linkedin.com/posts/mhubii_robotics-opensource-ros2-activity-7009974676017848320-S3U5/?utm_source=share\&utm_medium=member_desktop}{here}.
 An overview of the software architecture is shown in Figure
 \ref{fig:fri}.
 
-At the \texttt{\acrshort{lbr}-Stack}'s core are two packages:
+At the \texttt{\gls{lbr}-Stack}'s core are two packages:
 
 \begin{itemize}
 \item
-  \textbf{fri}: Integration of KUKA's original \acrshort{fri} client library into
+  \textbf{fri}: Integration of KUKA's original \gls{fri} client library into
   CMake.
 \item
   \textbf{fri\_vendor}: Vendor library that integrates the \textbf{fri}
-  into the \acrshort{ros} 2 build sytem.
+  into the \gls{ros} 2 build sytem.
 \end{itemize}
 
 All other packages are built on top. These include Python bindings and
-packages for integration into the \acrfull{ros} and \acrshort{ros}
+packages for integration into the \gls{ros} and \gls{ros}
 2:
 
 \begin{itemize}
 \item
   \textbf{pyFRI}: Python bindings for the \textbf{fri}.
 \item
-  \textbf{lbr\_fri\_ros2\_stack}: \acrshort{ros} 1/2 integration of the
-  \texttt{KUKA\ \acrshort{lbr}}s through the \textbf{fri\_vendor}.
+  \textbf{lbr\_fri\_ros2\_stack}: \gls{ros} 1/2 integration of the
+  \texttt{KUKA\ \gls{lbr}}s through the \textbf{fri\_vendor}.
 \end{itemize}
 
-For brevity, and due to the architectural advantages over \acrshort{ros}
-\cite{ref-ros2}, only \acrshort{ros} 2 is
+For brevity, and due to the architectural advantages over \gls{ros}
+\cite{ref-ros2}, only \gls{ros} 2 is
 considered in the following. The \textbf{lbr\_fri\_ros2\_stack}
 comprises the following packages:
 
@@ -71,9 +71,9 @@ comprises the following packages:
   robots.
 \item
   \textbf{lbr\_fri\_msgs}: Interface Definition Language (IDL)
-  equivalent of \acrshort{fri} protocol buffers.
+  equivalent of \gls{fri} protocol buffers.
 \item
-  \textbf{lbr\_fri\_ros2}: \acrshort{fri} \acrshort{ros} 2 interface through
+  \textbf{lbr\_fri\_ros2}: \gls{fri} \gls{ros} 2 interface through
   \texttt{realtime\_tools}~\cite{ref-ros_control}.
 \item
   \textbf{lbr\_ros2\_control}: Interface and controllers for
@@ -87,13 +87,13 @@ comprises the following packages:
 \centering
 \includegraphics[width=\textwidth]{appendix_a/img/fri_dependency_architecture.pdf}
 \caption[An overview of the overall software architecture. There exists
-a single source for KUKA's \acrshort{fri}. This design facilitates that downstream
-packages, i.e.~the Python bindings and the \acrshort{ros} 2 package, can easily
-support multiple \acrshort{fri} versions. The \acrshort{ros} 2 side utilizes
+a single source for KUKA's \gls{fri}. This design facilitates that downstream
+packages, i.e.~the Python bindings and the \gls{ros} 2 package, can easily
+support multiple \gls{fri} versions. The \gls{ros} 2 side utilizes
 vcstool.\label{fig:fri}]{An overview of the overall software
-architecture. There exists a single source for KUKA's \acrshort{fri}. This design
+architecture. There exists a single source for KUKA's \gls{fri}. This design
 facilitates that downstream packages, i.e.~the Python bindings and the
-\acrshort{ros} 2 package, can easily support multiple \acrshort{fri} versions. The \acrshort{ros} 2 side
+\gls{ros} 2 package, can easily support multiple \gls{fri} versions. The \gls{ros} 2 side
 utilizes vcstool\footnotemark{}.\label{fig:fri}}
 \end{figure}
 \footnotetext{vcstool: \url{https://github.com/dirk-thomas/vcstool}.}
@@ -105,16 +105,16 @@ An overview of existing work that interfaces the KUKA LBRs from an
 external computer is given in Table 1. We broadly classify these works
 into custom communication solutions
 \cite{ref-iiwa_stack,ref-kuka_sunrise_toolbox,ref-libiiwa} and
-communication solutions through KUKA's \acrshort{fri} UDP channel 
+communication solutions through KUKA's \gls{fri} UDP channel 
 \cite{ref-iiwa_ros2,ref-iiwa_ros}. The
 former can offer greater flexibility while the latter offer a well
 defined interface and direct software support from KUKA. Contrary to the
-custom communication solutions, the \acrshort{fri} solutions additionally enable
+custom communication solutions, the \gls{fri} solutions additionally enable
 hard real-time communication, that is beneficial for mission critical
 development. Stemming from translational medical research, this work
-therefore focuses on the \acrshort{fri}.
+therefore focuses on the \gls{fri}.
 
-Limitations with the current \acrshort{fri} solutions are:
+Limitations with the current \gls{fri} solutions are:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -130,34 +130,34 @@ Limitations with the current \acrshort{fri} solutions are:
     Modified client source code
     \href{https://github.com/epfl-lasa/iiwa_ros}{iiwa\_ros}.
   \item
-    \acrshort{fri} client library tangled into source code
+    \gls{fri} client library tangled into source code
     \href{https://github.com/ICube-Robotics/iiwa_ros2}{iiwa\_ros2}.
   \end{itemize}
 \item
-  Partial support of \acrshort{fri} functionality. Both,
+  Partial support of \gls{fri} functionality. Both,
   \href{https://github.com/epfl-lasa/iiwa_ros}{iiwa\_ros} and
   \href{https://github.com/ICube-Robotics/iiwa_ros2}{iiwa\_ros2},
-  exclusively aim at providing implementations of the \acrshort{ros} 1/2 hardware
+  exclusively aim at providing implementations of the \gls{ros} 1/2 hardware
   abstraction layer. This does not support:
 
   \begin{itemize}
   \item
-    \acrshort{fri}'s cartesian impedance control mode.
+    \gls{fri}'s cartesian impedance control mode.
   \item
-    \acrshort{fri}'s cartesian control mode (\acrshort{fri} version 2 and above).
+    \gls{fri}'s cartesian control mode (\gls{fri} version 2 and above).
   \end{itemize}
 \end{enumerate}
 
 The first original contribution of this work is to add support for the
-\texttt{KUKA\ \acrshort{lbr}\ Med7/14} robots, which, to the best author's
+\texttt{KUKA\ \gls{lbr}\ Med7/14} robots, which, to the best author's
 knowledge, does not exist in any other work. The second novel
 contribution of this work is to provide Python bindings. This work
-solves the maintainability by outsourcing the \acrshort{fri} into the separate
-\textbf{fri} and \textbf{fri\_vendor} packages, which leaves the \acrshort{fri}'s
+solves the maintainability by outsourcing the \gls{fri} into the separate
+\textbf{fri} and \textbf{fri\_vendor} packages, which leaves the \gls{fri}'s
 source code untouched and simply provides build support. 4. is solved by
 defining an IDL message to KUKA's \texttt{nanopb} command and state
 protocol buffers in \textbf{lbr\_fri\_msgs}. These messages can then be
-interfaced from \acrshort{ros} 1/2 topics or from the \acrshort{ros} 1/2 hardware abstraction
+interfaced from \gls{ros} 1/2 topics or from the \gls{ros} 1/2 hardware abstraction
 layer.
 
 \begin{landscape}
@@ -169,7 +169,7 @@ A bullet point indicates support for the respective feature.}
 \resizebox{0.7\paperheight}{!}{
 \begin{tabular}{llllllllllll}
 \hline
-Framework                                                                      & IIWA      & Med       & \acrshort{ros}       & \acrshort{ros} 2     & Hard Real-time & \acrshort{fri}       & pyFRI     & Position Control & Impedance Control & Cartesian Impedance Control & Hardware Interface \\ \hline
+Framework                                                                      & IIWA      & Med       & \gls{ros}       & \gls{ros} 2     & Hard Real-time & \gls{fri}       & pyFRI     & Position Control & Impedance Control & Cartesian Impedance Control & Hardware Interface \\ \hline
 $\href{https://github.com/lbr-stack}{\text{lbr-stack}}$                        & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$ & $\bullet$      & $\bullet$ & $\bullet$ & $\bullet$        & $\bullet$         & $\bullet$                   & $\bullet$          \\
 $\href{https://github.com/epfl-lasa/iiwa_ros}{\text{iiwa\_ros}}$               & $\bullet$ &           & $\bullet$ &           & $\bullet$      & $\bullet$ &           & $\bullet$        & $\bullet$         &                             & $\bullet$          \\
 $\href{https://github.com/ICube-Robotics/iiwa_ros2}{\text{iiwa\_ros2}}$        & $\bullet$ &           &           & $\bullet$ & $\bullet$      & $\bullet$ &           & $\bullet$        & $\bullet$         &                             & $\bullet$          \\

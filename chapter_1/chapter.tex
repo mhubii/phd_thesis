@@ -33,8 +33,8 @@ sub-sea robotics~\cite{Brantner21}.
 %DLR MIRO research platform~\citep{miro}
 %as well as commercial systems such as 
 %the Senhance\textsuperscript{\texttrademark} Surgical System by Asensus Surgical, 
-%the Hugo\textsuperscript{\texttrademark} \acrshort{ras} System by Medtronic, 
-%the Versius\textsuperscript{\textregistered} Surgical System by \acrshort{cmr} Surgical, and 
+%the Hugo\textsuperscript{\texttrademark} \gls{ras} System by Medtronic, 
+%the Versius\textsuperscript{\textregistered} Surgical System by \gls{cmr} Surgical, and 
 %the SSI Mantra by SS Innovations.
 
 Direct teleoperation, classified as level zero in the taxonomy proposed by Yang et al.~\cite{Yang2017}, is a control approach that maps signals from a surgeon-device interface onto robot motion~\cite{Niemeyer2008}, typically using position/velocity based commands.
@@ -42,16 +42,16 @@ Currently, direct teleoperation is the gold-standard for the majority of surgica
 
 % As a result, the system integration forgoes the requirement for a collision model in these multi-arm setups. 
 
-A key requirement for future automated systems is robot base-to-base localization, i.e. each robot arm must be aware of the other arm's position and orientation with respect to its own. This is needed in order to implement an effective collision model into the automated control system ensuring patient and the operating team's safety. In the case where multi-robot arm systems are deployed on a surgical table, base localization can be derived from \acrfull{cad} models, however, these measurements may not accurately reflect reality due to manufacturing inaccuracies. In the case of the increasingly popular modular systems, mentioned in \secref{in:sec:robot_surgery_platforms}, the arm setup may be different every time the theater is prepared. Furthermore, robotic systems must also undergo localization in relation to other elements present in the operating theater, including patient anatomy, lighting fixtures, imaging systems (e.g. C-arm), and so on, see \figref{in:fig:room_setup}. This motivates the need for a robot base calibration step introduced into the surgical workflow. Such a step, however, should be designed in a way that can be quickly and safely performed by non-robotics experts, i.e. the theater staff.
+A key requirement for future automated systems is robot base-to-base localization, i.e. each robot arm must be aware of the other arm's position and orientation with respect to its own. This is needed in order to implement an effective collision model into the automated control system ensuring patient and the operating team's safety. In the case where multi-robot arm systems are deployed on a surgical table, base localization can be derived from \gls{cad} models, however, these measurements may not accurately reflect reality due to manufacturing inaccuracies. In the case of the increasingly popular modular systems, mentioned in \secref{in:sec:robot_surgery_platforms}, the arm setup may be different every time the theater is prepared. Furthermore, robotic systems must also undergo localization in relation to other elements present in the operating theater, including patient anatomy, lighting fixtures, imaging systems (e.g. C-arm), and so on, see \figref{in:fig:room_setup}. This motivates the need for a robot base calibration step introduced into the surgical workflow. Such a step, however, should be designed in a way that can be quickly and safely performed by non-robotics experts, i.e. the theater staff.
 
 % The development of commercialized RGBD camera devices has been  
 
 % Knowledge of the robot base-to-base localization is especially important in the case of the modern modular systems mentioned above.
-% However, it can also be important for systems mounted on the surgical table since the measurements from \acrshort{cad} models may not reflect reality due to .
+% However, it can also be important for systems mounted on the surgical table since the measurements from \gls{cad} models may not reflect reality due to .
 % need to recalibrate for modern modular systems 
 % especially in the case of the modern modular systems mentioned above
 % furthermore, the calibration process needs to be simplified so that it can be performed quickly by non-robotics experts
-% even in case of robots being deployed on a surgical table, the \acrshort{cad} models may need not fully reflect reality
+% even in case of robots being deployed on a surgical table, the \gls{cad} models may need not fully reflect reality
 
 % Surgical robotics has become a key tool for improving patient outcomes.
 
@@ -62,7 +62,7 @@ A key requirement for future automated systems is robot base-to-base localizatio
 
 % The established paradigm for surgical robots is to have a monolithic device which integrates all robot arms into a single connected device. Example systems that have adopted this design are the da Vinci\textsuperscript{\textregistered} by Intuitive Surgical, the avatera\textsuperscript{\textregistered} by avateramedical, and the hinotori\textsuperscript{\texttrademark} by Medicaroid. These are inflexible for use in the operating room, restrict patient access and are difficult to remove should the need arise for manual intervention.
 
-% To improve flexibility, other surgical robotics platforms have adopted a new modular design paradigm where the robot arms are mounted on individual mobile platforms or the surgical table. Examples are the  DLR MIRO~\citep{miro} research platform as well as commercial systems such as the Senhance\textsuperscript{\texttrademark} Surgical System by Asensus Surgical, the Hugo\textsuperscript{\texttrademark} \acrshort{ras} System by Medtronic, the Versius\textsuperscript{\textregistered} Surgical System by \acrshort{cmr} Surgical, and the SSI Mantra by SS Innovations.
+% To improve flexibility, other surgical robotics platforms have adopted a new modular design paradigm where the robot arms are mounted on individual mobile platforms or the surgical table. Examples are the  DLR MIRO~\citep{miro} research platform as well as commercial systems such as the Senhance\textsuperscript{\texttrademark} Surgical System by Asensus Surgical, the Hugo\textsuperscript{\texttrademark} \gls{ras} System by Medtronic, the Versius\textsuperscript{\textregistered} Surgical System by \gls{cmr} Surgical, and the SSI Mantra by SS Innovations.
 
 %While providing numerous benefits, the distributed paradigm brings its own issues, primarily the unknown location of the robots with respect to each other and with respect to the surgical setup. 
 
@@ -99,11 +99,11 @@ A key requirement for future automated systems is robot base-to-base localizatio
 \end{figure}
 In this work we make the following contributions:
 \begin{itemize}
-    \item A unified approach for eye-in-hand and eye-to-hand calibration of multiple surgical robots with no need for any calibration targets since the robot itself is used instead. Our proposed method uses a novel robust \acrfull{icp} formulation of a point-to-plane objective on a Lie algebra. Only RGB-D images, the robots' joint positions, and their respective mesh files or \acrshort{cad} models are used.
+    \item A unified approach for eye-in-hand and eye-to-hand calibration of multiple surgical robots with no need for any calibration targets since the robot itself is used instead. Our proposed method uses a novel robust \gls{icp} formulation of a point-to-plane objective on a Lie algebra. Only RGB-D images, the robots' joint positions, and their respective mesh files or \gls{cad} models are used.
     \item We conduct several benchmarks comparing our methods against classical approaches. Our method ensures safety and, based on the comparisons, demonstrates faster execution and better outcomes when compared to other options.
     \item Hardware realization of the approach on a dual robot arm system. Furthermore, we showcase a human-robot collaboration through admittance control with arm-arm collision avoidance. The collision model for the two robots relies on the measurements generated by our proposed method.
     %The two robots are controlled in a collision avoidant manner.
-    % Upon acceptance of this manuscript, our intention is to make the code-base publicly available as an open-source contribution. This will encompass both the proposed method itself and the \acrshort{phri} controller, that includes integrated collision avoidance functionality.
+    % Upon acceptance of this manuscript, our intention is to make the code-base publicly available as an open-source contribution. This will encompass both the proposed method itself and the \gls{phri} controller, that includes integrated collision avoidance functionality.
     \item We conduct an in-vivo experiment in a clinically relevant dual-arm setup for spine surgery.
 \end{itemize}
 
@@ -116,10 +116,10 @@ In this work we make the following contributions:
 \section{Related Work}
 \subsection{Eye-in-hand Calibration}
 Prior work on the eye-in-hand problem~\cite{Horaud95, Strobl06} require the user to fabricate a marker (e.g. checkerboard or AprilTag~\cite{Olson11}) with known geometry making it easy to extract a pose from images. In our work, we do not require the user to create such a marker.
-Instead, we make use of the mesh files or \acrshort{cad} models provided by the manufacturer.
+Instead, we make use of the mesh files or \gls{cad} models provided by the manufacturer.
 
 \subsection{Marker-free Registration}
-Marker-free eye-to-hand calibration is an active research field with new developments being lead by differentiable rendering frameworks, such as PyTorch3D~\cite{ravi2020pytorch3d} and Kaolin~\cite{KaolinLibrary}. Consequentially, some works utilize these frameworks to optimize for camera poses such that mesh renders match image segmentations~\cite{chen2023easyhec}. Further work proposes a fully self-supervised procedure that learns both, to segment and to estimate the eye-to-hand transformation~\cite{lu2023markerless}. These works require tailoring to dedicated robot models and depend on fully-blown differentiable rendering pipelines, which makes them difficult to use in practise. Other work that doesn't use differentiable rendering but rendering is~\cite{labbe2021single}, where the authors also predict joint states on top of the eye-to-hand registration. This work also requires training to dedicated systems. Simpler approaches suggest to predict robot joint positions and extract eye-to-hand registrations through solving a \acrshort{pnp} problem~\cite{lee2020camera}. In this work, we suggest a conceptually much simpler approach that works for any robot, but uses RGB-D images, and, as some of the other methods, robot joint states. Closest to our work comes~\cite{point_cloud_based_robot_cell_calib}, where the authors also perform point cloud registration. Their method, however, only registers a single configuration and performs complex clustering of the observed point cloud. The only marker-free work on a surgical system is presented in~\cite{hand_eye_calibration_robotic_assisted}, where the authors utilize the surgical tools as calibration target. Whilst being quite appealing, this method does not allows for external collision avoidance nor hybrid setups.
+Marker-free eye-to-hand calibration is an active research field with new developments being lead by differentiable rendering frameworks, such as PyTorch3D~\cite{ravi2020pytorch3d} and Kaolin~\cite{KaolinLibrary}. Consequentially, some works utilize these frameworks to optimize for camera poses such that mesh renders match image segmentations~\cite{chen2023easyhec}. Further work proposes a fully self-supervised procedure that learns both, to segment and to estimate the eye-to-hand transformation~\cite{lu2023markerless}. These works require tailoring to dedicated robot models and depend on fully-blown differentiable rendering pipelines, which makes them difficult to use in practise. Other work that doesn't use differentiable rendering but rendering is~\cite{labbe2021single}, where the authors also predict joint states on top of the eye-to-hand registration. This work also requires training to dedicated systems. Simpler approaches suggest to predict robot joint positions and extract eye-to-hand registrations through solving a \gls{pnp} problem~\cite{lee2020camera}. In this work, we suggest a conceptually much simpler approach that works for any robot, but uses RGB-D images, and, as some of the other methods, robot joint states. Closest to our work comes~\cite{point_cloud_based_robot_cell_calib}, where the authors also perform point cloud registration. Their method, however, only registers a single configuration and performs complex clustering of the observed point cloud. The only marker-free work on a surgical system is presented in~\cite{hand_eye_calibration_robotic_assisted}, where the authors utilize the surgical tools as calibration target. Whilst being quite appealing, this method does not allows for external collision avoidance nor hybrid setups.
 
 % TODO:~\cite{point_cloud_based_robot_cell_calib} highly complex point cloud pre-processing 
 
@@ -164,7 +164,7 @@ With reference to the schematic of a robot arm in \figref{in:fig:eye_in_hand}, t
 %    \homogeneous{R}{C} = \homogeneous{R}{R} \homogeneous{R}{E} \homogeneous{E}{C}.
 %\end{equation}
 
-\paragraph{Forward Kinematics} For an $N$-\acrshort{dof} robot manipulator, the joint positions are denoted $x\in\mathbb{R}^N$. In this work, we assume that the end-effector frame $E$ expressed in the robot base frame $R$, i.e. $\homogeneous{R}{E}$, can be computed accurately using forward kinematics. We denote the relationship between the joint positions and link poses, including the end-effector, by
+\paragraph{Forward Kinematics} For an $N$-\gls{dof} robot manipulator, the joint positions are denoted $x\in\mathbb{R}^N$. In this work, we assume that the end-effector frame $E$ expressed in the robot base frame $R$, i.e. $\homogeneous{R}{E}$, can be computed accurately using forward kinematics. We denote the relationship between the joint positions and link poses, including the end-effector, by
 \begin{equation}
     \begin{pmatrix}
          {}^{R}p_{_L}\\
@@ -176,11 +176,11 @@ With reference to the schematic of a robot arm in \figref{in:fig:eye_in_hand}, t
 
 where $\phi: \mathbb{R}^N\rightarrow\mathbb{R}^{7}$ represents the forward kinematics function. Given a geometric description of the robot's joints and links (typically in the common URDF format), the forward kinematics $\phi(\cdot)$ is easily derived.
 
-\paragraph{Modality Prerequisites} Regarding the camera, that is either placed in the environment, as in \figref{c1:fig:base2base}, or mounted at the robot end-effector, as in \figref{in:fig:eye_in_hand}, we assume stereo or RGB-D. Finally, we assume access to the mesh files or \acrshort{cad} models for each of the robot arms.
+\paragraph{Modality Prerequisites} Regarding the camera, that is either placed in the environment, as in \figref{c1:fig:base2base}, or mounted at the robot end-effector, as in \figref{in:fig:eye_in_hand}, we assume stereo or RGB-D. Finally, we assume access to the mesh files or \gls{cad} models for each of the robot arms.
 
 %\subsection{Robot Base-to-base Calibration}
 
-%In this subsection, we primarily describe the problem associated with \figref{c1:fig:base2base}. As discussed above, several robots could be positioned at once in the operating theater. To enable automated approaches, these robot arms must be aware of the other's position and orientation. With reference to \figref{c1:fig:base2base}, the transforms $\homogeneous{{E_i}}{{R_i}}$ are assumed known for each $i\in[1, 2]$. The goal of this work is to utilize information from the camera located at frame $C$, and with the mesh files or \acrshort{cad} models to compute estimates for the transforms $\homogeneous{C}{{B_1}}$ and $\homogeneous{C}{{B_2}}$. Given estimates for these frames, we can thus compute one robot pose with respect to the other. This can be expressed by
+%In this subsection, we primarily describe the problem associated with \figref{c1:fig:base2base}. As discussed above, several robots could be positioned at once in the operating theater. To enable automated approaches, these robot arms must be aware of the other's position and orientation. With reference to \figref{c1:fig:base2base}, the transforms $\homogeneous{{E_i}}{{R_i}}$ are assumed known for each $i\in[1, 2]$. The goal of this work is to utilize information from the camera located at frame $C$, and with the mesh files or \gls{cad} models to compute estimates for the transforms $\homogeneous{C}{{B_1}}$ and $\homogeneous{C}{{B_2}}$. Given estimates for these frames, we can thus compute one robot pose with respect to the other. This can be expressed by
 
 %\begin{equation}
     %\homogeneous{{B_1}}{{B_2}} = \homogeneous{{B_1}}{C} \homogeneous{C}{{B_2}} = \homogeneous{{B_1}}{C} (\homogeneous{{B_2}}{C})^{-1}
@@ -192,7 +192,7 @@ where $\phi: \mathbb{R}^N\rightarrow\mathbb{R}^{7}$ represents the forward kinem
 %In this subsection we primarily describe the problem associated with \figref{in:fig:eye_in_hand}.
 %Sensors, such as cameras, are often mounted at the robot end-effector in order to perform imaging tasks.
 %Often, the transform between the camera frame $C$ and the robot end-effector $E$ is not known.
-%Often \acrshort{cad} models are available for the mount which attaches the camera to the end-effector.
+%Often \gls{cad} models are available for the mount which attaches the camera to the end-effector.
 %However, the precise location of the camera imaging sensor is not known accurately, i.e. the camera extrinsic parameters.
 
 %Estimating the unknown static transformation frame $\homogeneous{E}{C}$ is a problem we address in this work as part of our unified approach.
@@ -211,7 +211,7 @@ where $\phi: \mathbb{R}^N\rightarrow\mathbb{R}^{7}$ represents the forward kinem
 %\end{equation}
 %where $\widehat{X}, \widehat{Y}$ are the solution to the least squares problem and represent estimated homogeneous transformation matrices.
 %In our work, we remove the need for a marker affixed in the environment.
-%Instead, we make use of the mesh files or \acrshort{cad} model for the robot arm.
+%Instead, we make use of the mesh files or \gls{cad} model for the robot arm.
 %This requires a reformulation of Equation~\ref{c1:eq:eyeinhand}, which we discuss in later sections.
 
 \section{Materials and Methods}
@@ -219,7 +219,7 @@ where $\phi: \mathbb{R}^N\rightarrow\mathbb{R}^{7}$ represents the forward kinem
 \begin{figure}[htb]
     \centering
     \includegraphics[width=\textwidth]{chapter_1/fig/hydra_registration.pdf}
-    \caption{Detailed point cloud generation and acquisition including pre-processing steps for the proposed robust point-to-plane \acrshort{icp}. Refers to \secref{c1:sec:robust_icp}.}
+    \caption{Detailed point cloud generation and acquisition including pre-processing steps for the proposed robust point-to-plane \gls{icp}. Refers to \secref{c1:sec:robust_icp}.}
     \label{c1:fig:hydra_registration}
 \end{figure}
 
@@ -249,7 +249,7 @@ where $I_{4\times4}$ is the $4\times4$ identity matrix. Therein, $\homogeneous{{
 \label{c1:sec:proposed_calibration_procedure}
 A high-level overview of the proposed method is shown in \figref{c1:fig:calibration_pipeline}. The method provides an efficient way to find the homogeneous transformation from the robot base frame to the camera frame $\homogeneous{C}{B}$. It aligns an unaligned robot model to an observed instance-segmented point cloud through registration. Importantly, the instance-segmented point cloud and unaligned robot model must be synchronized. The unaligned robot model and the instance segmentation are detailed in \secref{c1:sec:unaligned_robot_model_and_instance_segmented_point_cloud}. 
 
-For the registration step in \figref{c1:fig:calibration_pipeline}, we investigate a simple \acrshort{icp} algorithm and derive a robust point-to-plane \acrshort{icp} on a Lie algebra. The simple \acrshort{icp} variant of the registration procedure is explained in \secref{c1:sec:simple_icp_registration} and the robust point-to-plane \acrshort{icp} variant in \secref{c1:sec:robust_icp}. A single snapshot is sufficient to find the transformation, which differentiates it from classical calibration procedures described in \secref{c1:sec:handshake_calibration}. In the case of a robot-mounted camera, i.e. eye-in-hand calibration illustrated in \figref{c1:fig:eye_in_hand}, the calibration can be used to determine the transformation from robot end-effector to camera $\homogeneous{C}{E}$. In the case of an externally mounted camera, i.e. eye-to-hand calibration illustrated in \figref{c1:fig:eye_to_hand}, the calibration can be used to determine the robot base-to-base transformation $\homogeneous{{B_2}}{{B_1}}$ through $\homogeneous{{B_2}}{{B_1}} = \homogeneous{C}{{B_2}}^{-1}\,\homogeneous{C}{{B_1}}$.
+For the registration step in \figref{c1:fig:calibration_pipeline}, we investigate a simple \gls{icp} algorithm and derive a robust point-to-plane \gls{icp} on a Lie algebra. The simple \gls{icp} variant of the registration procedure is explained in \secref{c1:sec:simple_icp_registration} and the robust point-to-plane \gls{icp} variant in \secref{c1:sec:robust_icp}. A single snapshot is sufficient to find the transformation, which differentiates it from classical calibration procedures described in \secref{c1:sec:handshake_calibration}. In the case of a robot-mounted camera, i.e. eye-in-hand calibration illustrated in \figref{c1:fig:eye_in_hand}, the calibration can be used to determine the transformation from robot end-effector to camera $\homogeneous{C}{E}$. In the case of an externally mounted camera, i.e. eye-to-hand calibration illustrated in \figref{c1:fig:eye_to_hand}, the calibration can be used to determine the robot base-to-base transformation $\homogeneous{{B_2}}{{B_1}}$ through $\homogeneous{{B_2}}{{B_1}} = \homogeneous{C}{{B_2}}^{-1}\,\homogeneous{C}{{B_1}}$.
 
 \subsubsection{Unaligned Robot Model and Instance-segmented Point Cloud}
 \label{c1:sec:unaligned_robot_model_and_instance_segmented_point_cloud}
@@ -265,11 +265,11 @@ This sampling strategy guarantees somewhat equally distributed points in space, 
 
 \paragraph{Instance-segmented Point Cloud}
 \label{c1:sec:instance_segmented_point_cloud}
-The instance-segmented point cloud is generated by fusing an instance segmentation $S_t$ with a depth map $D_t$ as shown in \figref{c1:fig:calibration_pipeline}. For the instance segmentation, we combine a detector with a segmentor. In this work, a human-in-the-loop acts as the detector by selecting a few points $\mathcal{F}_t$ on the robot in the image. We then deploy the pre-trained \acrfull{sam}~\cite{segment_anything} and prompt it with the detection points $\mathcal{F}_t$. We thus achieve an instance segmentation $S_t$ of the image $I_t$. The depth map $D_t$ can either be obtained via a stereo camera or an RGB-D camera by processing it with a depth estimator. In this work, we utilize Stereolab's Neural Depth perception as the depth estimator. Simply fusing the image segmentation $S_t$ and the depth map $D_t$ then provides the instance segmented point cloud.
+The instance-segmented point cloud is generated by fusing an instance segmentation $S_t$ with a depth map $D_t$ as shown in \figref{c1:fig:calibration_pipeline}. For the instance segmentation, we combine a detector with a segmentor. In this work, a human-in-the-loop acts as the detector by selecting a few points $\mathcal{F}_t$ on the robot in the image. We then deploy the pre-trained \gls{sam}~\cite{segment_anything} and prompt it with the detection points $\mathcal{F}_t$. We thus achieve an instance segmentation $S_t$ of the image $I_t$. The depth map $D_t$ can either be obtained via a stereo camera or an RGB-D camera by processing it with a depth estimator. In this work, we utilize Stereolab's Neural Depth perception as the depth estimator. Simply fusing the image segmentation $S_t$ and the depth map $D_t$ then provides the instance segmented point cloud.
 
 \subsubsection{Simple ICP Registration}
 \label{c1:sec:simple_icp_registration}
-In the case of the simple \acrshort{icp} we perform single instance registration. The goal is to align the unaligned robot model (as detailled in \secref{c1:sec:unaligned_robot_model}), with the instance-segmented point cloud (as detailled in \secref{c1:sec:instance_segmented_point_cloud}), through finding the transform $\homogeneous{C}{B}$. First, the unaligned robot model $\mathcal{V}_\tau$ is generated (as detailled in \secref{c1:sec:unaligned_robot_model}). Next, robot instances are detected and segmented, which results in the instance-segmented point cloud $P_\tau$. We then compute the instance-segmented point cloud's center of mass for an initial guess of the transform $\homogeneous{{C}}{B,\text{init}}$. Finally, we run an \acrshort{icp}~\cite{simple_icp} algorithm between vertices $\mathcal{V}_\tau$ and point cloud $P_\tau$, see Equation~\ref{c1:eq:icp}. In contrast to~\cite{simple_icp}, we only consider vertices from $\mathcal{V}_\tau$ whose surface normals point towards the camera. That is, they should be visible to the camera.
+In the case of the simple \gls{icp} we perform single instance registration. The goal is to align the unaligned robot model (as detailled in \secref{c1:sec:unaligned_robot_model}), with the instance-segmented point cloud (as detailled in \secref{c1:sec:instance_segmented_point_cloud}), through finding the transform $\homogeneous{C}{B}$. First, the unaligned robot model $\mathcal{V}_\tau$ is generated (as detailled in \secref{c1:sec:unaligned_robot_model}). Next, robot instances are detected and segmented, which results in the instance-segmented point cloud $P_\tau$. We then compute the instance-segmented point cloud's center of mass for an initial guess of the transform $\homogeneous{{C}}{B,\text{init}}$. Finally, we run an \gls{icp}~\cite{simple_icp} algorithm between vertices $\mathcal{V}_\tau$ and point cloud $P_\tau$, see Equation~\ref{c1:eq:icp}. In contrast to~\cite{simple_icp}, we only consider vertices from $\mathcal{V}_\tau$ whose surface normals point towards the camera. That is, they should be visible to the camera.
 
 \begin{equation}
     \label{c1:eq:icp}
@@ -279,7 +279,7 @@ In the case of the simple \acrshort{icp} we perform single instance registration
 \subsubsection{Robust Point-to-plane ICP Registration}
 \label{c1:sec:robust_icp}
 \input{introduction/icp_algorithm}
-In the case of the robust point-to-plane \acrshort{icp}, we capture multiple configurations of the robot. An overview of the method is provided in \figref{c1:fig:hydra_registration}. Deviating from the simple \acrshort{icp}, \secref{c1:sec:simple_icp_registration}, we dilate the instance segmentations $S_t$ and only keep the boundary regions. Consequentially, we also only keep the boundary regions of the instance segmented point clouds $\mathcal{P} = \{P_t\}$. Similarly to the simple \acrshort{icp}, we compute the centroids for the instance segmented point clouds $\{P_t\}$ as well as for each robot model $\{\mathcal{V}_t\}$. We then use the Kabsch algorithm to find an initial estimate for the camera to base homogeneous transformation through centroid alignment. Given the initial alignment, we then perform a robust point-to-plane registration on a Lie algebra. 
+In the case of the robust point-to-plane \gls{icp}, we capture multiple configurations of the robot. An overview of the method is provided in \figref{c1:fig:hydra_registration}. Deviating from the simple \gls{icp}, \secref{c1:sec:simple_icp_registration}, we dilate the instance segmentations $S_t$ and only keep the boundary regions. Consequentially, we also only keep the boundary regions of the instance segmented point clouds $\mathcal{P} = \{P_t\}$. Similarly to the simple \gls{icp}, we compute the centroids for the instance segmented point clouds $\{P_t\}$ as well as for each robot model $\{\mathcal{V}_t\}$. We then use the Kabsch algorithm to find an initial estimate for the camera to base homogeneous transformation through centroid alignment. Given the initial alignment, we then perform a robust point-to-plane registration on a Lie algebra. 
 %We follow the derivation of \chapref{chap:introduction}, \secref{in:sec:p2plane}. A summary for which is provided in \algoref{c1:alg:liep2plan}.
 
 % Tom's notes
@@ -310,7 +310,7 @@ In the case of the robust point-to-plane \acrshort{icp}, we capture multiple con
 
 \section{Experimental Setup}
 \label{c1:sec:experimental_setup}
-Two experiments are considered. First, we perform ex-vivo experiments for the simple \acrshort{icp} algorithm from \secref{c1:sec:simple_icp_registration} in \secref{c1:sec:ex_vivo_experiments}. An overview for the different ex-vivo calibration baselines is given in \figref{c1:fig:calibrations}. Next, we perform in-vivo experiments for the robust point-to-plane \acrshort{icp} algorithm from \secref{c1:sec:robust_icp} in \secref{c1:sec:in_vivo_experiments}. The in-vivo experimental setup is presented in \figref{c1:fig:in_vivo_setup}.
+Two experiments are considered. First, we perform ex-vivo experiments for the simple \gls{icp} algorithm from \secref{c1:sec:simple_icp_registration} in \secref{c1:sec:ex_vivo_experiments}. An overview for the different ex-vivo calibration baselines is given in \figref{c1:fig:calibrations}. Next, we perform in-vivo experiments for the robust point-to-plane \gls{icp} algorithm from \secref{c1:sec:robust_icp} in \secref{c1:sec:in_vivo_experiments}. The in-vivo experimental setup is presented in \figref{c1:fig:in_vivo_setup}.
 
 \subsection{Ex-vivo Experiments}
 \label{c1:sec:ex_vivo_experiments}
@@ -340,7 +340,7 @@ Two experiments are considered. First, we perform ex-vivo experiments for the si
     \label{c1:fig:calibrations}
 \end{figure}
 
-The experimental setup is shown in \figref{c1:fig:handshake}-\figref{c1:fig:eye_to_hand}. We utilize two KUKA \acrshort{lbr} Med 7 robots and control them via the \acrshort{lbr}-Stack~\cite{huber2023lbr} at a control rate of $100\,\text{Hz}$. For the handshake calibration, we deploy them in impedance control mode, see \secref{c1:sec:handshake_calibration}, for all other calibrations we use position control mode. The robots are mounted on a table and are fixed with respect to each other. By construction, their distance is $38\,\text{cm}$. For the camera we use a ZED 2i (Stereolabs, USA). We collect images and depth maps with a resolution of $448 \times 256$ at a frame rate of $15\,\text{Hz}$. For the depth estimation, we utilize the camera in neural depth perception mode.
+The experimental setup is shown in \figref{c1:fig:handshake}-\figref{c1:fig:eye_to_hand}. We utilize two KUKA \gls{lbr} Med 7 robots and control them via the \gls{lbr}-Stack~\cite{huber2023lbr} at a control rate of $100\,\text{Hz}$. For the handshake calibration, we deploy them in impedance control mode, see \secref{c1:sec:handshake_calibration}, for all other calibrations we use position control mode. The robots are mounted on a table and are fixed with respect to each other. By construction, their distance is $38\,\text{cm}$. For the camera we use a ZED 2i (Stereolabs, USA). We collect images and depth maps with a resolution of $448 \times 256$ at a frame rate of $15\,\text{Hz}$. For the depth estimation, we utilize the camera in neural depth perception mode.
 
 Four experiments are conducted, two regarding eye-in-hand and two regarding eye-to-hand calibration. For the eye-in-hand calibration, the camera is mounted to the robot via a GRIP G-SHW063 tool connector, see \figref{c1:fig:eye_in_hand}. For the baseline calibration experiments, see \secref{c1:sec:handshake_calibration}, we use a $3\times4$ ArUco marker target of square size $15.77\,\text{mm}$. $1259$ image-joint position correspondences are collected. For the proposed method, see \secref{c1:sec:simple_icp_registration}, we have the robot observe itself through the camera. We collect $1272$ image-joint position correspondences, but only use one. For the eye-to-hand calibration, the camera is put on an external tripod, see \figref{c1:fig:eye_to_hand}. $790$ image-joint position correspondences are collected, again only one is used. Robot 1 and robot 2 are calibrated and the base-to-base calibration is extracted, see \secref{c1:sec:proposed_calibration_procedure}. The base-to-base calibration is compared to a handshake calibration, see \figref{c1:fig:handshake} and \secref{c1:sec:handshake_calibration}. For the handshake, the robots are rigidly connected via a calibration fixture. $27700$ data points are collected of which $277$ are used for the calibration.
 
@@ -352,7 +352,7 @@ Four experiments are conducted, two regarding eye-in-hand and two regarding eye-
     \caption{Clinical setup. A camera is mounted against a wall and both robots are registered using the proposed method of \secref{c1:sec:robust_icp}. Notably, the registration is performed prior to draping. Refers to \secref{c1:sec:in_vivo_experiments}.}
     \label{c1:fig:in_vivo_setup}
 \end{figure}
-To qualitatively verify the proposed method in a clinically relevant scenario, and to collect data, we conduct an in-vivo study. The primary goal of this experiment, however, is data collection. Given the registration, the recorded data can serve as ground truth for further marker-free registration despite draping. In the study, spine surgery is investigated, and in particular, robot-assisted pedicle screw placement. The pig is put under general anesthesia at all times. An overview of the setup is shown in \figref{c1:fig:in_vivo_setup}. Two KUKA \acrshort{lbr} Med7 R800 are deployed. Notably, both robots are draped, turning the proposed registration procedure unfeasible. Thus, registration is performed prior to draping, and neither the robots, nor the camera are moved thereafter. A ZED 2i stereo camera (Stereolabs, USA) is wall-mounted, so both robots and the surgical scene are in sight. We record stereo images and depth maps at a resolution of $540 \times 960$. Both robots are put into admittance control mode and are hand-guided into different configurations for sample collection.
+To qualitatively verify the proposed method in a clinically relevant scenario, and to collect data, we conduct an in-vivo study. The primary goal of this experiment, however, is data collection. Given the registration, the recorded data can serve as ground truth for further marker-free registration despite draping. In the study, spine surgery is investigated, and in particular, robot-assisted pedicle screw placement. The pig is put under general anesthesia at all times. An overview of the setup is shown in \figref{c1:fig:in_vivo_setup}. Two KUKA \gls{lbr} Med7 R800 are deployed. Notably, both robots are draped, turning the proposed registration procedure unfeasible. Thus, registration is performed prior to draping, and neither the robots, nor the camera are moved thereafter. A ZED 2i stereo camera (Stereolabs, USA) is wall-mounted, so both robots and the surgical scene are in sight. We record stereo images and depth maps at a resolution of $540 \times 960$. Both robots are put into admittance control mode and are hand-guided into different configurations for sample collection.
 
 \section{Results}
 \label{c1:sec:results}
@@ -452,7 +452,7 @@ Base-to-base via eye-to-hand  & Proposed     & $\homogeneous{{B_2}}{{B_1}} = \ho
     \caption{Segmented robot (left) and rendered robot given registration (right). Visually, the render shows good alignment with the robot, hinting to an accurate calibration. Refers to \secref{c1:sec:in_vivo_results}.}
     \label{c1:fig:in_vivo_results}
 \end{figure}
-Initially, we collect 12 measurements for the drilling robot, and 14 measurements for the hyperspecral camera robot. These measurements include joint state, image, and depth correspondences. The positioning of both robots with respect to the camera is shown in \figref{c1:fig:in_vivo_setup}. Using these measurements, we perform a eye-to-hand calibration via the robust point-to-plane \acrshort{icp}, refer \secref{c1:sec:robust_icp}. 
+Initially, we collect 12 measurements for the drilling robot, and 14 measurements for the hyperspecral camera robot. These measurements include joint state, image, and depth correspondences. The positioning of both robots with respect to the camera is shown in \figref{c1:fig:in_vivo_setup}. Using these measurements, we perform a eye-to-hand calibration via the robust point-to-plane \gls{icp}, refer \secref{c1:sec:robust_icp}. 
 
 For both robots, we collect a total of $4588$ stereo frames and depth maps with corresponding joint states, corresponding to about $10$ minutes of data at an average recorded frame rate of $8\,\text{fps}$. We collect an additional $5611$ correspondences for only one robot, either the drilling or the hyperspectral camera robot. This corresponds to about $7$ minutes of data at an average recorded frame rate of $13\,\text{fps}$.
 
@@ -487,41 +487,41 @@ Qualitative results of the registration for the drilling robot are shown in \fig
     \label{c1:fig:masks}
 \end{figure}
 
-For the total set of collected samples, we determine the average \acrfull{iou} between instance segmentations $S_t$ and renders $R_t$. Therein, the \acrshort{iou} is expressed through
+For the total set of collected samples, we determine the average \gls{iou} between instance segmentations $S_t$ and renders $R_t$. Therein, the \gls{iou} is expressed through
 \begin{equation}
     \text{IoU} = \frac{|S_t \cup R_t|}{|S_t \cap R_t|}
 \end{equation}
-The results are summarized in \tabref{c1:tab:iou}. As can be see, and as already visually observed in \figref{c1:fig:masks}, we find close to perfect average \acrshort{iou}. For the drilling robot, the average \acrshort{iou} is slightly worse than for the camera robot. This is because the instance segmentations $S_t$ are systematically off by human annotator.
+The results are summarized in \tabref{c1:tab:iou}. As can be see, and as already visually observed in \figref{c1:fig:masks}, we find close to perfect average \gls{iou}. For the drilling robot, the average \gls{iou} is slightly worse than for the camera robot. This is because the instance segmentations $S_t$ are systematically off by human annotator.
 \begin{table}[tb]
 \centering
-\caption{Average \acrshort{iou} of segmented and rendered mask. Also compare to \figref{c1:fig:masks}. Refers to \secref{c1:sec:in_vivo_results}.}
+\caption{Average \gls{iou} of segmented and rendered mask. Also compare to \figref{c1:fig:masks}. Refers to \secref{c1:sec:in_vivo_results}.}
 \label{c1:tab:iou}
 \begin{tabular}{@{}ll@{}}
 \toprule
-Robot         & \acrshort{iou} {[}a.u{]}   \\ \midrule
+Robot         & \gls{iou} {[}a.u{]}   \\ \midrule
 Camera (left)    & $0.92 \pm 0.01$ \\
 Drilling (right) & $0.84 \pm 0.01$ \\ \bottomrule
 \end{tabular}
 \end{table}
 
 %Drill:
-%Average \acrshort{iou}: 0.8394461441870494
-%Std \acrshort{iou}: 0.013859811026686823
+%Average \gls{iou}: 0.8394461441870494
+%Std \gls{iou}: 0.013859811026686823
 %HSI:
-%Average \acrshort{iou}: 0.9234094580204967
-%Std \acrshort{iou}: 0.009454594255256406
+%Average \gls{iou}: 0.9234094580204967
+%Std \gls{iou}: 0.009454594255256406
 
 \section{Conclusion and Future Work}% and outlook}
 In this work we present a novel vision-based robot calibration procedure that unifies eye-in-hand and eye-to-hand calibration through casting them the same problem formulation. This is achieved by treating the robot as calibration target itself. In the eye-in-hand calibration scenario, the robot simply observes itself whilst in the eye-to-hand scenario the camera observes the robot from an external stand. The introduced formulation can further be used for rapid robot base-to-base calibrations.
 
-\paragraph{Ex-vivo Summary} Promising qualitative results for the simple \acrshort{icp} (\secref{c1:sec:simple_icp_registration}) are presented in \figref{c1:fig:registration_results}. For both, eye-in-hand \figref{c1:fig:self_registration} and eye-to-hand \figref{c1:fig:double_registration}, the instance-segmented point cloud, as well as the robot model align well after registration. These qualitative observations also solidify through our quantitative comparisons against baselines, which are summarized in \tabref{c1:tab:calibration_results}. Whilst an error remains, the proposed method is much quicker, as it is single shot, is much safer to use, as opposed to the handshake calibration, and does not require any calibration targets, as opposed to the eye-in-hand calibration with ArUco target.
+\paragraph{Ex-vivo Summary} Promising qualitative results for the simple \gls{icp} (\secref{c1:sec:simple_icp_registration}) are presented in \figref{c1:fig:registration_results}. For both, eye-in-hand \figref{c1:fig:self_registration} and eye-to-hand \figref{c1:fig:double_registration}, the instance-segmented point cloud, as well as the robot model align well after registration. These qualitative observations also solidify through our quantitative comparisons against baselines, which are summarized in \tabref{c1:tab:calibration_results}. Whilst an error remains, the proposed method is much quicker, as it is single shot, is much safer to use, as opposed to the handshake calibration, and does not require any calibration targets, as opposed to the eye-in-hand calibration with ArUco target.
 
-\paragraph{In-vivo Summary} For the in-vivo experiments \secref{c1:sec:in_vivo_experiments}, we deploy an improved version of the registration algorithm, see \secref{c1:sec:robust_icp}. Applicability to a clinical scenario was demonstrated, see \figref{c1:fig:in_vivo_setup}. Visually, we find close to pixel-perfect registrations, see \figref{c1:fig:in_vivo_results}. These visual observations are further confirmed through the measured average \acrshort{iou}, see \tabref{c1:tab:iou}.
+\paragraph{In-vivo Summary} For the in-vivo experiments \secref{c1:sec:in_vivo_experiments}, we deploy an improved version of the registration algorithm, see \secref{c1:sec:robust_icp}. Applicability to a clinical scenario was demonstrated, see \figref{c1:fig:in_vivo_setup}. Visually, we find close to pixel-perfect registrations, see \figref{c1:fig:in_vivo_results}. These visual observations are further confirmed through the measured average \gls{iou}, see \tabref{c1:tab:iou}.
 % Given the vast amount of collected data and precise localization, see \secref{c1:sec:in_vivo_results}
 
 \paragraph{Limitations} Shortcomings of this work are that a sufficient view of the robot is required to perform the calibration. In a surgical scenario, draping would cause an insufficient view. Consequentially, the calibration would have to be carried out as initialization and the robots would not be allowed to move afterwards. Clinically, however, it is necessary to drape the robots prior to moving them into position, i.e. prior to moving them into the sterile field.
-%Another limitation is the simple \acrshort{icp} algorithm that was used in \algoref{alg:registration}, \secref{c1:sec:simple_icp_registration}. At times, convergence to local minima is observed.
+%Another limitation is the simple \gls{icp} algorithm that was used in \algoref{alg:registration}, \secref{c1:sec:simple_icp_registration}. At times, convergence to local minima is observed.
 
 \paragraph{Future Work} In this work we present a very simplistic registration procedure which already provides highly accurate registration results. These results could immediately be deployed to industrial robots, e.g. for collision avoidance purposes. In the clinical scenario, however, draping is an unsolved issue. Since draping does deform the observed point clouds significantly, the presented method would ultimately fail. However, vast amounts of data and precise localizations were collected as part of the in-vivo study, see \secref{c1:sec:in_vivo_results}. Future work could, therefore, use this data to develop marker-free registration procedures that might function despite draping.
 
-%Improvements could focus on addressing the above, but also on exploring novel concepts. Instead of using a simple \acrshort{icp} algorithm for registration, one should investigate registration methods that deal well with registering partially observable points clouds. To address the partially observable point cloud issue, one might further move from single shot towards multi shot registration, where multiple robot configurations are observed. This should help improve the calibration accuracy. Research might find that optimal robot configurations exist for performing self-observation in eye-in-hand calibration and also for eye-to-hand calibration. The system might actively sense itself and its surroundings by minimizing uncertainty. Finally, it was omitted in this work that the presented method can also be used to have a robot observe itself and other surrounding robots. Active sensing could be deployed to have an observing robot understand its environment with high precision.
+%Improvements could focus on addressing the above, but also on exploring novel concepts. Instead of using a simple \gls{icp} algorithm for registration, one should investigate registration methods that deal well with registering partially observable points clouds. To address the partially observable point cloud issue, one might further move from single shot towards multi shot registration, where multiple robot configurations are observed. This should help improve the calibration accuracy. Research might find that optimal robot configurations exist for performing self-observation in eye-in-hand calibration and also for eye-to-hand calibration. The system might actively sense itself and its surroundings by minimizing uncertainty. Finally, it was omitted in this work that the presented method can also be used to have a robot observe itself and other surrounding robots. Active sensing could be deployed to have an observing robot understand its environment with high precision.
