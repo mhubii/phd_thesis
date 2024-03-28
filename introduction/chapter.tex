@@ -464,7 +464,7 @@ Alongside automation via kinematic data, visual servoing, i.e. control through i
 \begin{figure}[htb]
     \centering
     \includegraphics{introduction/fig/shared_domain.pdf}
-    \caption{The vision domain is a shared domain between \acrshort{mis} and \acrshort{rmis} procedures. Laparoscopic views taken from Cholec80~\cite{twinanda2016endonet}, and SurgVisDom.~\cite{zia2021surgical}. Refers to \secref{in:sec:automation_approaches}.}
+    \caption{The vision domain is a shared domain between \acrshort{mis} and \acrshort{rmis} procedures. Laparoscopic views taken from Cholec80~\cite{twinanda2016endonet}, and SurgVisDom~\cite{zia2021surgical}. Refers to \secref{in:sec:automation_approaches}.}
     \label{in:fig:shared_domain}
 \end{figure}
 It characterizes \acrshort{mis} to \acrshort{rmis} transferability, as was targeted in \secref{in:sec:enhancing_current_systems}. Vision poses a shared domain between \acrshort{mis} and \acrshort{rmis}, the vision domain, as shown in \figref{in:fig:shared_domain}. Visual servoing methodologies could thus be transferred from \acrshort{mis} to \acrshort{rmis} and vice-versa. In the next section, we will, therefore, review rule-based visual servoing approaches.
@@ -498,7 +498,7 @@ Where a mechanical \acrshort{rcm} is not available, it can be achieved programma
 \begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{introduction/fig/auxiliary_tasks.pdf}
-    \caption{Auxiliary tasks that could be used for laparoscopic camera automation but that are not used in practise. None of the data-driven methods directly attempts laparoscopic camera motion automation in realistic scenarios. The surgical phases refer e.g. back to \secref{in:sec:cholecystectomy_procedure}. Laparoscopic view shows an image from a da Vinci\textsuperscript{\textregistered} system in the SurgVisDom\cite{zia2021surgical} dataset. Monocular depth estimated using~\cite{oquab2023dinov2}, segmentations generated through~\cite{segment_anything}. Refers to \secref{in:sec:auxiliary_tasks}.}
+    \caption{Auxiliary tasks that could be used for laparoscopic camera automation but that are not used in practise. None of the data-driven methods directly attempts laparoscopic camera motion automation in realistic scenarios. The surgical phases refer e.g. back to \secref{in:sec:cholecystectomy_procedure}. Laparoscopic view shows an image from a da Vinci\textsuperscript{\textregistered} system in the SurgVisDom~\cite{zia2021surgical} dataset. Monocular depth estimated using~\cite{oquab2023dinov2}, segmentations generated through~\cite{segment_anything}. Refers to \secref{in:sec:auxiliary_tasks}.}
     \label{in:fig:auxiliary_tasks}
 \end{figure}
 Apparently, current visual servos oversimplify the automation task greatly. Only~\cite{gruijthuijsen2021autonomous} incorporate neural networks for autonomous instrument tracking. What is generally lacking is an understanding for the surgical scene that could help overcome the simplifications that are currently made for visual servoing. Indeed, there exists plenty of research on solving auxiliary vision tasks through data-driven methods, see \figref{in:fig:auxiliary_tasks}. Some of which, will be highlighted below. 
@@ -609,7 +609,7 @@ Having outlined the scope for laparoscopic camera motion automation - embodiment
         \hline
         \multirow{8}{*}{\href{https://endovis.grand-challenge.org/}{\shortstack{Endoscopic\\Vision\\Challenge}}} &\href{https://www.synapse.org/#!Synapse:syn21776936/wiki/601700}{MISAW}~\cite{mitsuishi2013master}&2020&$128102$&$30$&$460\times 540$&no&synthetic \\
         \cline{2-8}
-        &\href{https://surgvisdom.grand-challenge.org/}{SurgVisDom}\cite{zia2021surgical}&2020&$185620$&$20$&$540\times960$&occasional&da Vinci\textsuperscript{\textregistered} \\
+        &\href{https://surgvisdom.grand-challenge.org/}{SurgVisDom}~\cite{zia2021surgical}&2020&$185620$&$20$&$540\times960$&occasional&da Vinci\textsuperscript{\textregistered} \\
         \cline{2-8}
         &\href{https://robustmis2019.grand-challenge.org/}{ROBUST-\acrshort{mis}}~\cite{maier2020heidelberg}\cite{ross2020robust}&2019&$7546968$&$25$&$540\times 960$&yes&laparoscopic \\
         \cline{2-8}
