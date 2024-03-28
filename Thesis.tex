@@ -60,14 +60,15 @@
 \input{ListOfPublications}
 
 % acronyms
-%\clearpage
-\phantomsection
-\mtcaddchapter[Acronyms]
+% \cleardoublepage
 \input{Acronyms}
-% \printglossary
+\phantomsection
 \printglossary[type=\acronymtype]
+\mtcaddchapter[Acronyms]
+% \printglossary
 
 \cleardoublepage
+\phantomsection
 \tableofcontents
 
 % KCL and UCL want a list of tables and figures
