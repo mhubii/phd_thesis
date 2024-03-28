@@ -10,9 +10,9 @@ IIWA Robots}
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{appendix_a/img/joss_figure.png}
-\caption[Supported robots in the LBR-Stack. From left to right: KUKA LBR
+\caption[Supported robots in the \acrshort{lbr}-Stack. From left to right: KUKA \acrshort{lbr}
 IIWA7, IIWA14, Med7, Med14. Visualizations made using Foxglove
-.]{Supported robots in the LBR-Stack. From left to right: KUKA LBR
+.]{Supported robots in the \acrshort{lbr}-Stack. From left to right: KUKA \acrshort{lbr}
 IIWA7, IIWA14, Med7, Med14. Visualizations made using Foxglove
 \footnotemark{}.}
 \end{figure}
@@ -20,18 +20,18 @@ IIWA7, IIWA14, Med7, Med14. Visualizations made using Foxglove
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
-The \texttt{LBR-Stack} is a collection of packages that simplify the
+The \texttt{\acrshort{lbr}-Stack} is a collection of packages that simplify the
 usage and extend the capabilities of KUKA's Fast Robot Interface (\acrshort{fri})
 \cite{ref-fri}. It is designed
 for mission critical hard real-time applications. Supported are the
-\texttt{KUKA\ LBR\ Med7/14} and \texttt{KUKA\ LBR\ IIWA7/14} robots in
+\texttt{KUKA\ \acrshort{lbr}\ Med7/14} and \texttt{KUKA\ \acrshort{lbr}\ IIWA7/14} robots in
 the Gazebo simulation~\cite{ref-gazebo} and for communication with real hardware. A demo video can be
 found
 \href{https://www.linkedin.com/posts/mhubii_robotics-opensource-ros2-activity-7009974676017848320-S3U5/?utm_source=share\&utm_medium=member_desktop}{here}.
 An overview of the software architecture is shown in Figure
 \ref{fig:fri}.
 
-At the \texttt{LBR-Stack}'s core are two packages:
+At the \texttt{\acrshort{lbr}-Stack}'s core are two packages:
 
 \begin{itemize}
 \item
@@ -51,7 +51,7 @@ packages for integration into the \acrfull{ros} and \acrshort{ros}
   \textbf{pyFRI}: Python bindings for the \textbf{fri}.
 \item
   \textbf{lbr\_fri\_ros2\_stack}: \acrshort{ros} 1/2 integration of the
-  \texttt{KUKA\ LBR}s through the \textbf{fri\_vendor}.
+  \texttt{KUKA\ \acrshort{lbr}}s through the \textbf{fri\_vendor}.
 \end{itemize}
 
 For brevity, and due to the architectural advantages over \acrshort{ros}
@@ -149,7 +149,7 @@ Limitations with the current \acrshort{fri} solutions are:
 \end{enumerate}
 
 The first original contribution of this work is to add support for the
-\texttt{KUKA\ LBR\ Med7/14} robots, which, to the best author's
+\texttt{KUKA\ \acrshort{lbr}\ Med7/14} robots, which, to the best author's
 knowledge, does not exist in any other work. The second novel
 contribution of this work is to provide Python bindings. This work
 solves the maintainability by outsourcing the \acrshort{fri} into the separate
