@@ -298,8 +298,8 @@ We can write the objective as:
 + \min_{p_R|S_R(p_R)=1}|| \varphi\big(M_R \Theta q_i\big) - p_R||^2
 \end{equation}
 
-Similar to the approach in~\cite{Fitzgibbon:IVC:2003}, this formulation can be substantially accelerated by taking advantage of the fact that the segmentations are defined on a regular grid. We can thus use a Euclidean Distance Transform (EDT) for which optimized algorithms exist on both \acrfull{cpu}~\cite{Felzenszwalb:TC:2012}\footnote{\url{https://github.com/cai4cai/distance_transform}} and \acrshort{gpu}~\cite{Cao:SIGGRAPH:2010}\footnote{\url{https://docs.rapids.ai/api/cucim/stable/api/\#cucim.core.operations.morphology.distance_transform_edt}}.
-Let $\mathcal{D}_{S_L}$ be the EDT computed from $S_L$ (respectively $\mathcal{D}_{S_R}$ for $S_R$).
+Similar to the approach in~\cite{Fitzgibbon:IVC:2003}, this formulation can be substantially accelerated by taking advantage of the fact that the segmentations are defined on a regular grid. We can thus use a \acrfull{edt} for which optimized algorithms exist on both \acrfull{cpu}~\cite{Felzenszwalb:TC:2012}\footnote{\url{https://github.com/cai4cai/distance_transform}} and \acrshort{gpu}~\cite{Cao:SIGGRAPH:2010}\footnote{\url{https://docs.rapids.ai/api/cucim/stable/api/\#cucim.core.operations.morphology.distance_transform_edt}}.
+Let $\mathcal{D}_{S_L}$ be the \acrshort{edt} computed from $S_L$ (respectively $\mathcal{D}_{S_R}$ for $S_R$).
 We can now write
 \begin{equation}\label{eq:dt3d2d}
 \arg\min_{\Theta} \sum_i \mathcal{D}_{S_L}^2\big( \varphi(M_L \Theta q_i) \big)
