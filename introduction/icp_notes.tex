@@ -1,8 +1,8 @@
-\subsection{Point-to-plane ICP: A Lie algebra formulation}
+\subsection{Point-to-plane \acrshort{icp}: A Lie algebra formulation}
 \label{in:sec:p2plane}
 
 \paragraph{Basic formulation.}
-We first introduce the problem solved by the point-to-plane iterative closest point algorithm (point-to-plane ICP)~\cite{Rusinkiewicz:IC3DIM:2001}.
+We first introduce the problem solved by the point-to-plane iterative closest point algorithm (point-to-plane \acrshort{icp})~\cite{Rusinkiewicz:IC3DIM:2001}.
 Let $p_i$ and $q_i$ be corresponding 3D points in homogeneous coordinates. Let $n_i$ be a normal vector associated with $q_i$. We search a rigid body transformation $\Theta$ in $SE(3)$ that minimizes:
 \begin{equation}
 \sum_i ||n_i^T \cdot (\Theta \cdot p_i - q_i)||^2 = \sum_i (n_i^T \cdot \Theta \cdot p_i - n_i^T \cdot q_i)^2
