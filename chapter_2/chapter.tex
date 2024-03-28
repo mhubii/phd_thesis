@@ -176,7 +176,7 @@ In the following section, we introduce a homography-based visual servoing task.
 \begin{figure}[tb]
 \centering
 \includegraphics[width=\textwidth]{img/h_rcm_vs_pipeline_real_view.pdf}
-\caption{Processing pipeline. A surgeon manually controls the robot through a GUI, collecting desired views along the way. The images are pre-processed, and a graph of desired views is built in the background by the homography generation node. Once built, the surgeon selects desired views through the GUI, which triggers a shortest path finding from the current vertex (yellow), to the desired one (pink), and the execution of subsequent homography estimations that lead to the target.}
+\caption{Processing pipeline. A surgeon manually controls the robot through a \acrfull{gui}, collecting desired views along the way. The images are pre-processed, and a graph of desired views is built in the background by the homography generation node. Once built, the surgeon selects desired views through the \acrshort{gui}, which triggers a shortest path finding from the current vertex (yellow), to the desired one (pink), and the execution of subsequent homography estimations that lead to the target.}
 \label{c2:fig:pipe}
 \end{figure}
 % \end{landscape}
@@ -291,11 +291,11 @@ In the phantom, we identify four clinically relevant views of the scene. These v
     \item Servoing to target views after phantom repositioning.
 \end{itemize}
 
-To address these scenarios, we design three experiments. For all experiments, after the laparoscope insertion, the user moves to the overview of the surgical scene, where the first image is taken through the GUI, which corresponds to the graph's root view/vertex, see \figref{c2:fig:pipe}. We measure the deviation of the \acrshort{rcm} from the trocar position, record the \acrfull{mpd} of SURF features from the current to the desired view, the task error, execution time, joint angles, and the camera tip position.
+To address these scenarios, we design three experiments. For all experiments, after the laparoscope insertion, the user moves to the overview of the surgical scene, where the first image is taken through the \acrshort{gui}, which corresponds to the graph's root view/vertex, see \figref{c2:fig:pipe}. We measure the deviation of the \acrshort{rcm} from the trocar position, record the \acrfull{mpd} of SURF features from the current to the desired view, the task error, execution time, joint angles, and the camera tip position.
 
 \subsubsection{Servoing from any current view to any target view}
 \label{c2:sec:clin_protocol_any}
-In this scenario we investigate the system's capability to autonomously execute extreme view changes. The user moves from the overview to a close-up, from where the scene is further examined. The laparoscope is then moved manually to grant view of the tool insertion area. At this stage, tools would be inserted into the patient and the user would begin to operate. Therefore, the user selects the close-up view through the GUI and executes the autonomous visual servo towards it.
+In this scenario we investigate the system's capability to autonomously execute extreme view changes. The user moves from the overview to a close-up, from where the scene is further examined. The laparoscope is then moved manually to grant view of the tool insertion area. At this stage, tools would be inserted into the patient and the user would begin to operate. Therefore, the user selects the close-up view through the \acrshort{gui} and executes the autonomous visual servo towards it.
 
 \subsubsection{Servoing to target views under tool motion}
 \label{c2:sec:clin_protocol_tool}
