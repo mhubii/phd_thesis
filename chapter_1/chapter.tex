@@ -279,7 +279,8 @@ In the case of the simple \gls{icp} we perform single instance registration. The
     \text{ICP} = \argmin_{\homogeneous{C}{B}} || \homogeneous{C}{B}(\mathcal{V}_\tau) - P_\tau||_2
 \end{equation}
 
-\subsection{Robust Point-to-plane ICP Registration}
+\subsection{Robust Point-to-plane ICP Registration: A Lie Algebra Formulation}
+% \subsubsection{Point-to-plane ICP: A Lie Algebra Formulation}
 \label{c1:sec:robust_icp}
 \input{introduction/icp_algorithm}
 In the case of the robust point-to-plane \gls{icp}, we capture multiple configurations of the robot. An overview of the method is provided in \figref{c1:fig:hydra_registration}. Deviating from the simple \gls{icp}, \secref{c1:sec:simple_icp_registration}, we dilate the instance segmentations $S_t$ and only keep the boundary regions. Consequentially, we also only keep the boundary regions of the instance segmented point clouds $\mathcal{P} = \{P_t\}$. Similarly to the simple \gls{icp}, we compute the centroids for the instance segmented point clouds $\{P_t\}$ as well as for each robot model $\{\mathcal{V}_t\}$. We then use the Kabsch algorithm to find an initial estimate for the camera to base homogeneous transformation through centroid alignment. Given the initial alignment, we then perform a robust point-to-plane registration on a Lie algebra. 
