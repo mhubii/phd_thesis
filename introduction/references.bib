@@ -434,7 +434,9 @@
   number    = {5},
   pages     = {368--369},
   year      = {2021},
-  publisher = {Nature Publishing Group UK London}
+  publisher = {Nature Publishing Group UK London},
+  doi       = {10.1038/s42256-021-00349-4},
+  url       = {https://doi.org/10.1038/s42256-021-00349-4}
 }
 
 @article{zhang2017automation,
@@ -769,12 +771,16 @@
 }
 
 @inproceedings{garcia2016real,
-  title        = {Real-time segmentation of non-rigid surgical tools based on deep learning and tracking},
-  author       = {Garc{\'\i}a-Peraza-Herrera, Luis C and Li, Wenqi and Gruijthuijsen, Caspar and Devreker, Alain and Attilakos, George and Deprest, Jan and Vander Poorten, Emmanuel and Stoyanov, Danail and Vercauteren, Tom and Ourselin, S{\'e}bastien},
-  booktitle    = {International Workshop on Computer-Assisted and Robotic Endoscopy},
-  pages        = {84--95},
-  year         = {2016},
-  organization = {Springer}
+  author    = {Garc{\'i}a-Peraza-Herrera, Luis C. and Li, Wenqi and Gruijthuijsen, Caspar and Devreker, Alain and Attilakos, George and Deprest, Jan and Vander Poorten, Emmanuel and Stoyanov, Danail and Vercauteren, Tom and Ourselin, S{\'e}bastien},
+  title     = {Real-Time Segmentation of Non-rigid Surgical Tools Based on Deep Learning and Tracking},
+  booktitle = {Computer-Assisted and Robotic Endoscopy},
+  year      = {2017},
+  publisher = {Springer International Publishing},
+  address   = {Cham},
+  pages     = {84--95},
+  abstract  = {Real-time tool segmentation is an essential component in computer-assisted surgical systems. We propose a novel real-time automatic method based on Fully Convolutional Networks (FCN) and optical flow tracking. Our method exploits the ability of deep neural networks to produce accurate segmentations of highly deformable parts along with the high speed of optical flow. Furthermore, the pre-trained FCN can be fine-tuned on a small amount of medical images without the need to hand-craft features. We validated our method using existing and new benchmark datasets, covering both ex vivo and in vivo real clinical cases where different surgical instruments are employed. Two versions of the method are presented, non-real-time and real-time. The former, using only deep learning, achieves a balanced accuracy of 89.6{\%} on a real clinical dataset, outperforming the (non-real-time) state of the art by 3.8{\%} points. The latter, a combination of deep learning with optical flow tracking, yields an average balanced accuracy of 78.2{\%} across all the validated datasets.},
+  isbn      = {978-3-319-54057-3},
+  doi       = {10.1007/978-3-319-54057-3_8}
 }
 
 @article{islam2019real,
@@ -905,13 +911,17 @@
   publisher = {Springer}
 }
 
-@incollection{funke2018temporal,
-  title     = {Temporal coherence-based self-supervised learning for laparoscopic workflow analysis},
+@inproceedings{funke2018temporal,
   author    = {Funke, Isabel and Jenke, Alexander and Mees, S{\"o}ren Torge and Weitz, J{\"u}rgen and Speidel, Stefanie and Bodenstedt, Sebastian},
-  booktitle = {OR 2.0 context-aware operating theaters, computer assisted robotic endoscopy, clinical image-based procedures, and skin image analysis},
-  pages     = {85--93},
+  title     = {Temporal Coherence-based Self-supervised Learning for Laparoscopic Workflow Analysis},
+  booktitle = {OR 2.0 Context-Aware Operating Theaters, Computer Assisted Robotic Endoscopy, Clinical Image-Based Procedures, and Skin Image Analysis},
   year      = {2018},
-  publisher = {Springer}
+  publisher = {Springer International Publishing},
+  address   = {Cham},
+  pages     = {85--93},
+  abstract  = {In order to provide the right type of assistance at the right time, computer-assisted surgery systems need context awareness. To achieve this, methods for surgical workflow analysis are crucial. Currently, convolutional neural networks provide the best performance for video-based workflow analysis tasks. For training such networks, large amounts of annotated data are necessary. However, collecting a sufficient amount of data is often costly, time-consuming, and not always feasible. In this paper, we address this problem by presenting and comparing different approaches for self-supervised pretraining of neural networks on unlabeled laparoscopic videos using temporal coherence. We evaluate our pretrained networks on Cholec80, a publicly available dataset for surgical phase segmentation, on which a maximum {\$}{\$}F{\_}1{\$}{\$}score of 84.6 was reached. Furthermore, we were able to achieve an increase of the {\$}{\$}F{\_}1{\$}{\$}score of up to 10 points when compared to a non-pretrained neural network.},
+  isbn      = {978-3-030-01201-4},
+  doi       = {10.1007/978-3-030-01201-4_11}
 }
 
 @article{bodenstedt2019active,
@@ -1061,13 +1071,13 @@
   year      = {2000}
 }
 
-@inproceedings{finn2017one,
-  title        = {One-shot visual imitation learning via meta-learning},
-  author       = {Finn, Chelsea and Yu, Tianhe and Zhang, Tianhao and Abbeel, Pieter and Levine, Sergey},
-  booktitle    = {Conference on Robot Learning},
-  pages        = {357--368},
-  year         = {2017},
-  organization = {PMLR}
+@misc{finn2017one,
+  title         = {One-Shot Visual Imitation Learning via Meta-Learning},
+  author        = {Chelsea Finn and Tianhe Yu and Tianhao Zhang and Pieter Abbeel and Sergey Levine},
+  year          = {2017},
+  eprint        = {1709.04905},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG}
 }
 
 @inproceedings{nair2018overcoming,
@@ -1133,12 +1143,15 @@
 }
 
 @inproceedings{finn2017deep,
-  title        = {Deep visual foresight for planning robot motion},
-  author       = {Finn, Chelsea and Levine, Sergey},
-  booktitle    = {2017 IEEE International Conference on Robotics and Automation (ICRA)},
-  pages        = {2786--2793},
-  year         = {2017},
-  organization = {IEEE}
+  author    = {Finn, Chelsea and Levine, Sergey},
+  booktitle = {2017 IEEE International Conference on Robotics and Automation (ICRA)},
+  title     = {Deep visual foresight for planning robot motion},
+  year      = {2017},
+  volume    = {},
+  number    = {},
+  pages     = {2786-2793},
+  keywords  = {Predictive models;Robot sensing systems;Visualization;Robot kinematics;Data models;Three-dimensional displays},
+  doi       = {10.1109/ICRA.2017.7989324}
 }
 
 @inproceedings{srinivas2018universal,
@@ -1450,18 +1463,6 @@
   doi     = {10.1109/70.34770}
 }
 
-@article{horaud1995hand,
-  title     = {Hand-eye calibration},
-  author    = {Horaud, Radu and Dornaika, Fadi},
-  journal   = {The international journal of robotics research},
-  volume    = {14},
-  number    = {3},
-  pages     = {195--210},
-  year      = {1995},
-  publisher = {Sage Publications Sage CA: Thousand Oaks, CA},
-  doi       = {10.1177/027836499501400301}
-}
-
 % pose
 @article{li2020super,
   title     = {Super: A surgical perception framework for endoscopic tissue manipulation with surgical robotics},
@@ -1484,13 +1485,17 @@
 }
 
 @article{hasan2021detection,
-  title     = {Detection, segmentation, and 3D pose estimation of surgical tools using convolutional neural networks and algebraic geometry},
-  author    = {Hasan, Md Kamrul and Calvet, Lilian and Rabbani, Navid and Bartoli, Adrien},
-  journal   = {Medical Image Analysis},
-  volume    = {70},
-  pages     = {101994},
-  year      = {2021},
-  publisher = {Elsevier}
+  title    = {Detection, segmentation, and 3D pose estimation of surgical tools using convolutional neural networks and algebraic geometry},
+  journal  = {Medical Image Analysis},
+  volume   = {70},
+  pages    = {101994},
+  year     = {2021},
+  issn     = {1361-8415},
+  doi      = {https://doi.org/10.1016/j.media.2021.101994},
+  url      = {https://www.sciencedirect.com/science/article/pii/S1361841521000402},
+  author   = {Md. Kamrul Hasan and Lilian Calvet and Navid Rabbani and Adrien Bartoli},
+  keywords = {Computer-assisted laparoscopy, Augmented reality, Deep learning, Segmentation, 3D pose, Algebraic geometry},
+  abstract = {Background and objective:Surgical tool detection, segmentation, and 3D pose estimation are crucial components in Computer-Assisted Laparoscopy (CAL). The existing frameworks have two main limitations. First, they do not integrate all three components. Integration is critical; for instance, one should not attempt computing pose if detection is negative. Second, they have highly specific requirements, such as the availability of a CAD model. We propose an integrated and generic framework whose sole requirement for the 3D pose is that the tool shaft is cylindrical. Our framework makes the most of deep learning and geometric 3D vision by combining a proposed Convolutional Neural Network (CNN) with algebraic geometry. We show two applications of our framework in CAL: tool-aware rendering in Augmented Reality (AR) and tool-based 3D measurement. Methods:We name our CNN as ART-Net (Augmented Reality Tool Network). It has a Single Input Multiple Output (SIMO) architecture with one encoder and multiple decoders to achieve detection, segmentation, and geometric primitive extraction. These primitives are the tool edge-lines, mid-line, and tip. They allow the tool’s 3D pose to be estimated by a fast algebraic procedure. The framework only proceeds if a tool is detected. The accuracy of segmentation and geometric primitive extraction is boosted by a new Full resolution feature map Generator (FrG). We extensively evaluate the proposed framework with the EndoVis and new proposed datasets. We compare the segmentation results against several variants of the Fully Convolutional Network (FCN) and U-Net. Several ablation studies are provided for detection, segmentation, and geometric primitive extraction. The proposed datasets are surgery videos of different patients. Results:In detection, ART-Net achieves 100.0% in both average precision and accuracy. In segmentation, it achieves 81.0% in mean Intersection over Union (mIoU) on the robotic EndoVis dataset (articulated tool), where it outperforms both FCN and U-Net, by 4.5pp and 2.9pp, respectively. It achieves 88.2% in mIoU on the remaining datasets (non-articulated tool). In geometric primitive extraction, ART-Net achieves 2.45∘ and 2.23∘ in mean Arc Length (mAL) error for the edge-lines and mid-line, respectively, and 9.3 pixels in mean Euclidean distance error for the tool-tip. Finally, in terms of 3D pose evaluated on animal data, our framework achieves 1.87 mm, 0.70 mm, and 4.80 mm mean absolute errors on the X, Y, and Z coordinates, respectively, and 5.94∘ angular error on the shaft orientation. It achieves 2.59 mm and 1.99 mm in mean and median location error of the tool head evaluated on patient data. Conclusions:The proposed framework outperforms existing ones in detection and segmentation. Compared to separate networks, integrating the tasks in a single network preserves accuracy in detection and segmentation but substantially improves accuracy in geometric primitive extraction. Overall, our framework has similar or better accuracy in 3D pose estimation while largely improving robustness against the very challenging imaging conditions of laparoscopy. The source code of our framework and our annotated dataset will be made publicly available at https://github.com/kamruleee51/ART-Net.}
 }
 
 % depth
