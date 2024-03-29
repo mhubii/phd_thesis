@@ -1,4 +1,4 @@
-\subsection{Point-to-plane ICP: A Lie Algebra Formulation}
+\subsubsection{Point-to-plane ICP: A Lie Algebra Formulation}
 \label{in:sec:p2plane}
 
 \paragraph{Basic Formulation}
@@ -274,42 +274,43 @@ One aspect we haven't addressed yet it the choice of $\kappa$ for the Huber loss
 \hat{\sigma} = \frac{\MAD(\{b_i\})}{0.6745} = \frac{\median(\{|b_i-\median(\{b_i\}|)\})}{0.6745}
 \end{equation}
 
-\subsection{Registration of a 3D Point Cloud with 2D Stereo Segmentations}
-\label{in:sec:registration_of_3d_point_cloud}
-%
-Let $q_i$ be 3D points associated to a model object as expressed in an object specific coordinate frame.
-Let $I_L$ and $I_R$ be a pair of stereo images with associated $M_L$ and $M_R$ camera matrices (including both extrinsic and intrinsic).
-We assume that the stereo images are observing the object in an unknown pose $\Theta$.
-We also assume that the object is relatively textureless and that we do not have a good means of extracting keypoints of interest from the images.
-We however assume that a segmentation of the object in each image can readily be computed, e.g. with the \gls{sam}~\cite{Kirillov:arxiv:2023}.
-%
-While differentiable rendering could be used in this context~\cite{Hannemose:SPIE:2019,Labbe:CVPR:2021,Chen:RAL:2023},
-we expect that a simpler algorithm can be designed given the segmentation availability by matching points from 3D to 2D.
-We also expect to potentially gain robustness against illumination and other factors that would impact the appearance of the object in the images.
+%% unused section in PhD thesis
+% \subsubsection{Registration of a 3D Point Cloud with 2D Stereo Segmentations}
+% \label{in:sec:registration_of_3d_point_cloud}
+% %
+% Let $q_i$ be 3D points associated to a model object as expressed in an object specific coordinate frame.
+% Let $I_L$ and $I_R$ be a pair of stereo images with associated $M_L$ and $M_R$ camera matrices (including both extrinsic and intrinsic).
+% We assume that the stereo images are observing the object in an unknown pose $\Theta$.
+% We also assume that the object is relatively textureless and that we do not have a good means of extracting keypoints of interest from the images.
+% We however assume that a segmentation of the object in each image can readily be computed, e.g. with the \gls{sam}~\cite{Kirillov:arxiv:2023}.
+% %
+% While differentiable rendering could be used in this context~\cite{Hannemose:SPIE:2019,Labbe:CVPR:2021,Chen:RAL:2023},
+% we expect that a simpler algorithm can be designed given the segmentation availability by matching points from 3D to 2D.
+% We also expect to potentially gain robustness against illumination and other factors that would impact the appearance of the object in the images.
 
-Let $S_L$ and $S_R$ be the object segmentation masks in the left and right image respectively.
-We here seek to recover the pose $\Theta$ such that the projected model points ${M_L \Theta q}$ match the observed segmentation $S_L$ (respectively ${M_R \Theta q}$ to match $S_R$).
-Let $\varphi$ be a function to transform from homogeneous to Cartesian coordinates.
-That is $\varphi([x,y,f])=[x/f,y/f]$ and similarly in 3D.
-We can write the objective as:
-\begin{equation}
-\arg\min_{\Theta} \sum_i
-\min_{p_L|S_L(p_L)=1}|| \varphi\big(M_L \Theta q_i\big) - p_L||^2
-+ \min_{p_R|S_R(p_R)=1}|| \varphi\big(M_R \Theta q_i\big) - p_R||^2
-\end{equation}
+% Let $S_L$ and $S_R$ be the object segmentation masks in the left and right image respectively.
+% We here seek to recover the pose $\Theta$ such that the projected model points ${M_L \Theta q}$ match the observed segmentation $S_L$ (respectively ${M_R \Theta q}$ to match $S_R$).
+% Let $\varphi$ be a function to transform from homogeneous to Cartesian coordinates.
+% That is $\varphi([x,y,f])=[x/f,y/f]$ and similarly in 3D.
+% We can write the objective as:
+% \begin{equation}
+% \arg\min_{\Theta} \sum_i
+% \min_{p_L|S_L(p_L)=1}|| \varphi\big(M_L \Theta q_i\big) - p_L||^2
+% + \min_{p_R|S_R(p_R)=1}|| \varphi\big(M_R \Theta q_i\big) - p_R||^2
+% \end{equation}
 
-Similar to the approach in~\cite{Fitzgibbon:IVC:2003}, this formulation can be substantially accelerated by taking advantage of the fact that the segmentations are defined on a regular grid. We can thus use a \gls{edt} for which optimized algorithms exist on both \gls{cpu}~\cite{Felzenszwalb:TC:2012}\footnote{\url{https://github.com/cai4cai/distance_transform}} and \gls{gpu}~\cite{Cao:SIGGRAPH:2010}\footnote{\url{https://docs.rapids.ai/api/cucim/stable/api/\#cucim.core.operations.morphology.distance_transform_edt}}.
-Let $\mathcal{D}_{S_L}$ be the \gls{edt} computed from $S_L$ (respectively $\mathcal{D}_{S_R}$ for $S_R$).
-We can now write
-\begin{equation}\label{eq:dt3d2d}
-\arg\min_{\Theta} \sum_i \mathcal{D}_{S_L}^2\big( \varphi(M_L \Theta q_i) \big)
-+ \mathcal{D}_{S_R}^2\big( \varphi(M_R \Theta q_i) \big)
-\end{equation}
+% Similar to the approach in~\cite{Fitzgibbon:IVC:2003}, this formulation can be substantially accelerated by taking advantage of the fact that the segmentations are defined on a regular grid. We can thus use a \gls{edt} for which optimized algorithms exist on both \gls{cpu}~\cite{Felzenszwalb:TC:2012}\footnote{\url{https://github.com/cai4cai/distance_transform}} and \gls{gpu}~\cite{Cao:SIGGRAPH:2010}\footnote{\url{https://docs.rapids.ai/api/cucim/stable/api/\#cucim.core.operations.morphology.distance_transform_edt}}.
+% Let $\mathcal{D}_{S_L}$ be the \gls{edt} computed from $S_L$ (respectively $\mathcal{D}_{S_R}$ for $S_R$).
+% We can now write
+% \begin{equation}\label{eq:dt3d2d}
+% \arg\min_{\Theta} \sum_i \mathcal{D}_{S_L}^2\big( \varphi(M_L \Theta q_i) \big)
+% + \mathcal{D}_{S_R}^2\big( \varphi(M_R \Theta q_i) \big)
+% \end{equation}
 
-As in \secref{in:sec:p2plane}, the square loss terms could be replaced by robust alternatives.
-It should further be noted that the evaluation of a distance transform $\mathcal{D}_{S}$ at an arbitrary point $p$ requires the use of an interpolator.
-A typical choice is to rely on bilinear interpolation for which optimized implementations exist on both \gls{cpu} and \gls{gpu}\footnote{\url{https://pytorch.org/docs/stable/generated/torch.nn.functional.grid_sample.html}}.
+% As in \secref{in:sec:p2plane}, the square loss terms could be replaced by robust alternatives.
+% It should further be noted that the evaluation of a distance transform $\mathcal{D}_{S}$ at an arbitrary point $p$ requires the use of an interpolator.
+% A typical choice is to rely on bilinear interpolation for which optimized implementations exist on both \gls{cpu} and \gls{gpu}\footnote{\url{https://pytorch.org/docs/stable/generated/torch.nn.functional.grid_sample.html}}.
 
-Solving for \eqref{eq:dt3d2d} can be done again by taking advantage of the Lie group structure of SE(3). For simplicity, a generic Lie group non-linear least-squares optimizer as found in Theseus\footnote{\url{https://github.com/facebookresearch/theseus}}~\cite{Pineda:NeurIPS:2023} or Ceres\footnote{\url{https://github.com/ceres-solver/ceres-solver}}~\cite{Agarwal:Ceres:2022} can be used.
+% Solving for \eqref{eq:dt3d2d} can be done again by taking advantage of the Lie group structure of SE(3). For simplicity, a generic Lie group non-linear least-squares optimizer as found in Theseus\footnote{\url{https://github.com/facebookresearch/theseus}}~\cite{Pineda:NeurIPS:2023} or Ceres\footnote{\url{https://github.com/ceres-solver/ceres-solver}}~\cite{Agarwal:Ceres:2022} can be used.
 
-It is worth realising that even if a rigid body model is used, formulation \eqref{eq:dt3d2d} may have somewhat trivial solutions if configurations can be found where the projected 2D point set can fit completely inside of the object segmentation mask as this would lead to a zero loss. It may thus be advantageous to somewhat also consider points outside of the model and make sure that these stay outside of the segmentation mask.
+% It is worth realising that even if a rigid body model is used, formulation \eqref{eq:dt3d2d} may have somewhat trivial solutions if configurations can be found where the projected 2D point set can fit completely inside of the object segmentation mask as this would lead to a zero loss. It may thus be advantageous to somewhat also consider points outside of the model and make sure that these stay outside of the segmentation mask.
