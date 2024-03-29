@@ -2,7 +2,7 @@
 \label{in:sec:p2plane}
 
 \paragraph{Basic Formulation}
-We first introduce the problem solved by the point-to-plane iterative closest point algorithm (point-to-plane \gls{icp})~\cite{Rusinkiewicz:IC3DIM:2001}.
+We first introduce the problem solved by the point-to-plane \gls{icp} algorithm~\cite{Rusinkiewicz:IC3DIM:2001}.
 Let $p_i$ and $q_i$ be corresponding 3D points in homogeneous coordinates. Let $n_i$ be a normal vector associated with $q_i$. We search a rigid body transformation $\Theta$ in $SE(3)$ that minimizes:
 \begin{equation}
 \sum_i ||n_i^T \cdot (\Theta \cdot p_i - q_i)||^2 = \sum_i (n_i^T \cdot \Theta \cdot p_i - n_i^T \cdot q_i)^2
@@ -306,7 +306,7 @@ We can now write
 + \mathcal{D}_{S_R}^2\big( \varphi(M_R \Theta q_i) \big)
 \end{equation}
 
-As in Section \ref{in:sec:p2plane}, the square loss terms could be replaced by robust alternatives.
+As in \secref{in:sec:p2plane}, the square loss terms could be replaced by robust alternatives.
 It should further be noted that the evaluation of a distance transform $\mathcal{D}_{S}$ at an arbitrary point $p$ requires the use of an interpolator.
 A typical choice is to rely on bilinear interpolation for which optimized implementations exist on both \gls{cpu} and \gls{gpu}\footnote{\url{https://pytorch.org/docs/stable/generated/torch.nn.functional.grid_sample.html}}.
 

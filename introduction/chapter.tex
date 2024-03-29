@@ -3,7 +3,9 @@
 \label{chap:introduction}
 % TODO: remove
 %And Schmidhuber said, Let there be backpropagation, and there was backpropagation.
+\adjustmtc % https://tex.stackexchange.com/questions/291743/minitoc-of-wrong-chapter
 \minitoc
+\newpage
 
 %\paragraph{Disclaimer} While vast parts in this \chapref{chap:introduction} are novel, and references were added otherwise, some parts were re-utilized from~\cite{huber2021homographybased, huber2022deep, huber2023deep} to remove redundancy from the introduction and methods sections of the chapters largely based on these publications.
 
@@ -35,14 +37,14 @@ When compared to other domains, such as autonomous driving, service and househol
 %Others~\cite{lecun2022path} have
 \citet{lecun2022path}
 argued that machines will need to interact with the real world in order to become truly intelligent and, arguably, \gls{rmis} has grown to be the most advanced \gls{phri} domain with thousands of deployed robots.
+
+As we dive deeper into level five autonomy endoscopic camera motion automation, this introductory chapter will provide a necessary clinical background for laparoscopy in \secref{in:sec:laparoscopy}, a sub-domain of endoscopy, including an in-depth explanation of laparoscopic cholecystectomy (minimally invasive gallbladder removal). Laparoscopic cholecystectomy is the most commonly performed laparoscopic procedure~\cite{sheetz2020trends}, and can be considered relatively simple. Therefore, due to vast amounts of readily available data, it serves as the perfect test-bed for the methods that are derived as part of this thesis. 
 \begin{figure}[tbh]
     \centering
     \includegraphics[width=0.6\textwidth]{introduction/img/robotic_since_introduction.png}
     \caption{Increase of laparoscopy over open approaches and robotic laparoscopy versus other methods, respectively. Data normalized to year zero, the introduction of robotic laparoscopy. The use of robotic laparoscopy increased from $1.8\%$ to $15.1\%$. For inguinal hernia repair, an increase in robotic surgery from $0.7\%$ to $28.8\%$ was found. A total of $169.404$ cases over 73 hospitals in Michigan, United States, were investigated. Figure and data provided with courtesy of~\cite{sheetz2020trends}. Refers to \secref{in:sec:foreword}.}
     \label{in:fig:robotic_vs_laparoscopic_vs_open}
 \end{figure}
-
-As we dive deeper into level five autonomy endoscopic camera motion automation, this introductory chapter will provide a necessary clinical background for laparoscopy in \secref{in:sec:laparoscopy}, a sub-domain of endoscopy, including an in-depth explanation of laparoscopic cholecystectomy (minimally invasive gallbladder removal). Laparoscopic cholecystectomy is the most commonly performed laparoscopic procedure~\cite{sheetz2020trends}, and can be considered relatively simple. Therefore, due to vast amounts of readily available data, it serves as the perfect test-bed for the methods that are derived as part of this thesis. 
 
 Next, we explain the rise of robot assisted laparoscopy in \secref{in:sec:robot_assisted_laparoscopy} and the potentials of automation that evolve with it. We highlight different commercial systems, their limitations, and propose innovative solutions. Identified limitations will include spatial awareness, refer \secref{in:sec:spatial_awareness}, as most \gls{rmis} systems lack a world model, and, crucially, camera motion automation, for which a thorough review of related methods is provided in \secref{in:sec:camera_motion_automation}. Following the camera motion automation literature review, we will hypothesize an approach to near-term full automation. The proposed approach will revolve around a mixture of \gls{il} an classical control. It is grounded in successful automation in related domains and will be discussed in \secref{in:sec:imitation_learning_for_camera_motion_automation}.
 
@@ -440,7 +442,11 @@ We will therefore introduce the idea of marker-free calibration for eye-to-hand 
 \label{in:sec:marker_free_unified_calibration}
 To address the needing of calibration targets, recent works have focused on utilizing the robot itself as calibration target. The idea is simple, the robot mesh, given the current robot configuration, see e.g. \figref{in:fig:eye_in_hand_setup}, is compared against the real robot, thus allowing to estimate camera position with respect to the robot. Initial work estimates joint positions from images and solves a \gls{pnp} problem, given the robot kinematics to estimate poses~\cite{labbe2021single}. Other work performs differentiable rendering for increased accuracy~\cite{chen2023easy}, and some turn \gls{pnp} and differentiable rendering into a self-supervised problem~\cite{lu2023markerless}.
 
-Since we are mostly interested in estimating the robot pose in eye-to-hand scenarios, as was described in \secref{in:sec:enhancing_current_systems}, and due to the difficulties with eye-in-hand setups with laparoscopic cameras, as was explained in the previous section, this work will focus on using external cameras for pose estimation rather than the laparoscope itself. We will be assuming access to a stereo camera, therefore, simplifying the registration task. Access to stereo images should improve registration reliability, which is important for surgery. The following sections will explain an iterative closest point registration on Lie-algebra for said purpose in \secref{in:sec:p2plane}. Following that, image-based registration refinements, given a segmentation mask without the need for differentiable rendering are explained in \secref{in:sec:registration_of_3d_point_cloud}.
+Since we are mostly interested in estimating the robot pose in eye-to-hand scenarios, as was described in \secref{in:sec:enhancing_current_systems}, and due to the difficulties with eye-in-hand setups with laparoscopic cameras, as was explained in the previous section, this work will focus on using external cameras for pose estimation rather than the laparoscope itself. We will be assuming access to a stereo camera, therefore, simplifying the registration task. Access to stereo images should improve registration reliability, which is important for surgery. 
+
+
+
+% The following sections will explain an \gls{icp} registration on Lie-algebra for said purpose in \secref{in:sec:p2plane}. Following that, image-based registration refinements, given a segmentation mask without the need for differentiable rendering are explained in \secref{in:sec:registration_of_3d_point_cloud}.
 
 % Tom's notes
 % \input{introduction/icp_notes}
