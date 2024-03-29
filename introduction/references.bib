@@ -558,7 +558,8 @@
   journal   = {International Journal of Computer Assisted Radiology and Surgery},
   pages     = {1--9},
   year      = {2023},
-  publisher = {Springer}
+  publisher = {Springer},
+  doi       = {10.1007/s11548-023-02967-2}
 }
 
 @article{alhusseinawi2023validation,
@@ -614,13 +615,17 @@
   primaryclass  = {cs.RO}
 }
 
-@misc{zhang2019content,
-  title         = {Content-Aware Unsupervised Deep Homography Estimation},
-  author        = {Jirong Zhang and Chuan Wang and Shuaicheng Liu and Lanpeng Jia and Nianjin Ye and Jue Wang and Ji Zhou and Jian Sun},
-  year          = {2020},
-  eprint        = {1909.05983},
-  archiveprefix = {arXiv},
-  primaryclass  = {cs.CV}
+  @inproceedings{zhang2019content,
+  author    = {Zhang, Jirong and Wang, Chuan and Liu, Shuaicheng and Jia, Lanpeng and Ye, Nianjin and Wang, Jue and Zhou, Ji and Sun, Jian},
+  title     = {Content-Aware Unsupervised Deep Homography Estimation},
+  booktitle = {Computer Vision -- ECCV 2020},
+  year      = {2020},
+  publisher = {Springer International Publishing},
+  address   = {Cham},
+  pages     = {653--669},
+  abstract  = {Homography estimation is a basic image alignment method in many applications. It is usually conducted by extracting and matching sparse feature points, which are error-prone in low-light and low-texture images. On the other hand, previous deep homography approaches use either synthetic images for supervised learning or aerial images for unsupervised learning, both ignoring the importance of handling depth disparities and moving objects in real world applications. To overcome these problems, in this work we propose an unsupervised deep homography method with a new architecture design. In the spirit of the RANSAC procedure in traditional methods, we specifically learn an outlier mask to only select reliable regions for homography estimation. We calculate loss with respect to our learned deep features instead of directly comparing image content as did previously. To achieve the unsupervised training, we also formulate a novel triplet loss customized for our network. We verify our method by conducting comprehensive comparisons on a new dataset that covers a wide range of scenes with varying degrees of difficulties for the task. Experimental results reveal that our method outperforms the state-of-the-art including deep solutions and feature-based solutions.},
+  isbn      = {978-3-030-58452-8},
+  doi       = {10.1007/978-3-030-58452-8_38}
 }
 
 @misc{ye2017self,
@@ -883,14 +888,14 @@
 }
 
 @article{twinanda2018rsdnet,
-  title     = {RSDNet: Learning to predict remaining surgery duration from laparoscopic videos without manual annotations},
-  author    = {Twinanda, Andru Putra and Yengera, Gaurav and Mutter, Didier and Marescaux, Jacques and Padoy, Nicolas},
-  journal   = {IEEE transactions on medical imaging},
-  volume    = {38},
-  number    = {4},
-  pages     = {1069--1078},
-  year      = {2018},
-  publisher = {IEEE}
+  author  = {Twinanda, Andru Putra and Yengera, Gaurav and Mutter, Didier and Marescaux, Jacques and Padoy, Nicolas},
+  journal = {IEEE Transactions on Medical Imaging},
+  title   = {RSDNet: Learning to Predict Remaining Surgery Duration from Laparoscopic Videos Without Manual Annotations},
+  year    = {2019},
+  volume  = {38},
+  number  = {4},
+  pages   = {1069-1078},
+  doi     = {10.1109/TMI.2018.2878055}
 }
 
 @article{bodenstedt2019prediction,
@@ -1028,12 +1033,16 @@
 }
 
 @inproceedings{stauder2014random,
-  title        = {Random forests for phase detection in surgical workflow analysis},
-  author       = {Stauder, Ralf and Okur, Asl{\i} and Peter, Lo\"{i}c and Schneider, Armin and Kranzfelder, Michael and Feussner, Hubertus and Navab, Nassir},
-  booktitle    = {International Conference on Information Processing in Computer-Assisted Interventions},
-  pages        = {148--157},
-  year         = {2014},
-  organization = {Springer}
+  author    = {Stauder, Ralf and Okur, Asl{\i} and Peter, Lo{\"i}c and Schneider, Armin and Kranzfelder, Michael and Feussner, Hubertus and Navab, Nassir},
+  title     = {Random Forests for Phase Detection in Surgical Workflow Analysis},
+  booktitle = {Information Processing in Computer-Assisted Interventions},
+  year      = {2014},
+  publisher = {Springer International Publishing},
+  address   = {Cham},
+  pages     = {148--157},
+  abstract  = {Identifying and recognizing the workflow of surgical interventions is a field of growing interest. Several methods have been developed to identify intra-operative activities, detect common phases in the surgical workflow and combine the gained knowledge into Surgical Process Models. Numerous applications of this knowledge are conceivable, from semi-automatic report generation, teaching and objective surgeon evaluation to context-aware operating rooms and simulation of interventions to optimize the operating room layout.},
+  isbn      = {978-3-319-07521-1},
+  doi       = {10.1007/978-3-319-07521-1_16}
 }
 
 @article{malpani2016system,
@@ -1191,21 +1200,26 @@
 }
 
 @inproceedings{srinivas2018universal,
-  title        = {Universal planning networks: Learning generalizable representations for visuomotor control},
-  author       = {Srinivas, Aravind and Jabri, Allan and Abbeel, Pieter and Levine, Sergey and Finn, Chelsea},
-  booktitle    = {International Conference on Machine Learning},
-  pages        = {4732--4741},
-  year         = {2018},
-  organization = {PMLR}
+  title     = {Universal Planning Networks: Learning Generalizable Representations for Visuomotor Control},
+  author    = {Srinivas, Aravind and Jabri, Allan and Abbeel, Pieter and Levine, Sergey and Finn, Chelsea},
+  booktitle = {Proceedings of the 35th International Conference on Machine Learning},
+  pages     = {4732--4741},
+  year      = {2018},
+  editor    = {Dy, Jennifer and Krause, Andreas},
+  volume    = {80},
+  series    = {Proceedings of Machine Learning Research},
+  month     = {07},
+  publisher = {PMLR},
+  url       = {https://proceedings.mlr.press/v80/srinivas18b.html}
 }
 
-@inproceedings{xie2018few,
-  title        = {Few-shot goal inference for visuomotor learning and planning},
-  author       = {Xie, Annie and Singh, Avi and Levine, Sergey and Finn, Chelsea},
-  booktitle    = {Conference on Robot Learning},
-  pages        = {40--52},
-  year         = {2018},
-  organization = {PMLR}
+@misc{xie2018few,
+  title         = {Few-Shot Goal Inference for Visuomotor Learning and Planning},
+  author        = {Annie Xie and Avi Singh and Sergey Levine and Chelsea Finn},
+  year          = {2018},
+  eprint        = {1810.00482},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG}
 }
 
 @misc{yu2018one,
@@ -1366,11 +1380,14 @@
 }
 
 @inproceedings{xu2017end,
-  title     = {End-to-end learning of driving models from large-scale video datasets},
   author    = {Xu, Huazhe and Gao, Yang and Yu, Fisher and Darrell, Trevor},
-  booktitle = {Proceedings of the IEEE conference on computer vision and pattern recognition},
-  pages     = {2174--2182},
-  year      = {2017}
+  booktitle = {2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  title     = {End-to-End Learning of Driving Models from Large-Scale Video Datasets},
+  year      = {2017},
+  volume    = {},
+  number    = {},
+  pages     = {3530-3538},
+  doi       = {10.1109/CVPR.2017.376}
 }
 
 @inproceedings{schroff2015facenet,
@@ -1411,13 +1428,13 @@
   primaryclass  = {cs.LG}
 }
 
-@inproceedings{srivastava2015unsupervised,
-  title        = {Unsupervised learning of video representations using lstms},
-  author       = {Srivastava, Nitish and Mansimov, Elman and Salakhudinov, Ruslan},
-  booktitle    = {International conference on machine learning},
-  pages        = {843--852},
-  year         = {2015},
-  organization = {PMLR}
+@misc{srivastava2015unsupervised,
+  title         = {Unsupervised Learning of Video Representations using LSTMs},
+  author        = {Nitish Srivastava and Elman Mansimov and Ruslan Salakhutdinov},
+  year          = {2016},
+  eprint        = {1502.04681},
+  archiveprefix = {arXiv},
+  primaryclass  = {cs.LG}
 }
 
 @misc{sun2019adversarial,
@@ -1439,19 +1456,25 @@
 }
 
 @inproceedings{wang2015unsupervised,
-  title     = {Unsupervised learning of visual representations using videos},
   author    = {Wang, Xiaolong and Gupta, Abhinav},
-  booktitle = {Proceedings of the IEEE international conference on computer vision},
-  pages     = {2794--2802},
-  year      = {2015}
+  booktitle = {2015 IEEE International Conference on Computer Vision (ICCV)},
+  title     = {Unsupervised Learning of Visual Representations Using Videos},
+  year      = {2015},
+  volume    = {},
+  number    = {},
+  pages     = {2794-2802},
+  doi       = {10.1109/ICCV.2015.320}
 }
 
 @inproceedings{vondrick2016anticipating,
-  title     = {Anticipating visual representations from unlabeled video},
   author    = {Vondrick, Carl and Pirsiavash, Hamed and Torralba, Antonio},
-  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
-  pages     = {98--106},
-  year      = {2016}
+  booktitle = {2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  title     = {Anticipating Visual Representations from Unlabeled Video},
+  year      = {2016},
+  volume    = {},
+  number    = {},
+  pages     = {98-106},
+  doi       = {10.1109/CVPR.2016.18}
 }
 
 @inproceedings{lenz2015deepmpc,
@@ -1463,11 +1486,14 @@
 }
 
 @inproceedings{wang2014learning,
-  title     = {Learning fine-grained image similarity with deep ranking},
   author    = {Wang, Jiang and Song, Yang and Leung, Thomas and Rosenberg, Chuck and Wang, Jingbin and Philbin, James and Chen, Bo and Wu, Ying},
-  booktitle = {Proceedings of the IEEE conference on computer vision and pattern recognition},
-  pages     = {1386--1393},
-  year      = {2014}
+  booktitle = {2014 IEEE Conference on Computer Vision and Pattern Recognition},
+  title     = {Learning Fine-Grained Image Similarity with Deep Ranking},
+  year      = {2014},
+  volume    = {},
+  number    = {},
+  pages     = {1386-1393},
+  doi       = {10.1109/CVPR.2014.180}
 }
 
 @article{pomerleau1991efficient,
@@ -1568,14 +1594,14 @@
 }
 
 @article{xu2022self,
-  title     = {Self-supervised monocular depth estimation with 3-D displacement module for laparoscopic images},
-  author    = {Xu, Chi and Huang, Baoru and Elson, Daniel S},
-  journal   = {IEEE transactions on medical robotics and bionics},
-  volume    = {4},
-  number    = {2},
-  pages     = {331--334},
-  year      = {2022},
-  publisher = {IEEE}
+  author  = {Xu, Chi and Huang, Baoru and Elson, Daniel S.},
+  journal = {IEEE Transactions on Medical Robotics and Bionics},
+  title   = {Self-Supervised Monocular Depth Estimation With 3-D Displacement Module for Laparoscopic Images},
+  year    = {2022},
+  volume  = {4},
+  number  = {2},
+  pages   = {331-334},
+  doi     = {10.1109/TMRB.2022.3170206}
 }
 
 @inproceedings{li2023multi,
@@ -1655,7 +1681,8 @@
   number    = {7587},
   pages     = {484--489},
   year      = {2016},
-  publisher = {Nature Publishing Group}
+  publisher = {Nature Publishing Group},
+  doi       = {10.1038/nature16961}
 }
 
 @misc{silver2017mastering,
