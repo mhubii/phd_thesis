@@ -156,7 +156,7 @@ Zoom-in/out corresponds to all four point displacements $\Delta\mathbf{uv}$ cons
 
 \subsubsection{Online Camera Motion Estimation}
 \label{c4:sec:online_camera_motion_estimation}
-Since the camera motion estimator is executed online, memory footprint and computational efficiency are of importance. Therefore, we evaluate the estimator from~\cite{huber2022deep} with a ResNet-34 backbone, SURF \& RANSAC, and LoFTR~\cite{sun2021loftr} \& RANSAC. Each estimator is run 1000 times on a single image sequence of length $N+M=15$ with an NVIDIA GeForce RTX 2070 \gls{gpu} and an Intel(R) Core(TM) i7-9750H \gls{cpu} @ 2.60GHz.
+Since the camera motion estimator is executed online, memory footprint and computational efficiency are of importance. Therefore, we evaluate the estimator from~\cite{huber2022deep} with a ResNet-34 backbone, \grl{surf} \& RANSAC, and LoFTR~\cite{sun2021loftr} \& RANSAC. Each estimator is run 1000 times on a single image sequence of length $N+M=15$ with an NVIDIA GeForce RTX 2070 \gls{gpu} and an Intel(R) Core(TM) i7-9750H \gls{cpu} @ 2.60GHz.
 
 \subsection{Camera Motion Predictor}
 \label{c4:sec:camera_motion_predictor_experiments}
@@ -218,7 +218,7 @@ The results of the online camera motion estimation are summarized in \tabref{c4:
             \midrule
             Resnet34 & $\mathbf{0.016 \pm 0.048}$ & $\mathbf{11.1}$ & $\mathbf{664} / \mathbf{457}$  \\
             LoFTR \& RANSAC & $0.178 \pm 0.06$ & $1.0$ & $669 / 2412$ \\
-            SURF \& RANSAC & $0.131 \pm 0.024$ & $1.4$ & NA \\
+            \grl{surf} \& RANSAC & $0.131 \pm 0.024$ & $1.4$ & NA \\
             \bottomrule
         \end{tabular}
     }
