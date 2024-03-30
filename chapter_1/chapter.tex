@@ -42,7 +42,7 @@ Currently, direct teleoperation is the gold-standard for the majority of surgica
 
 % As a result, the system integration forgoes the requirement for a collision model in these multi-arm setups. 
 
-A key requirement for future automated systems is robot base-to-base localization, i.e. each robot arm must be aware of the other arm's position and orientation with respect to its own. This is needed in order to implement an effective collision model into the automated control system ensuring patient and the operating team's safety. In the case where multi-robot arm systems are deployed on a surgical table, base localization can be derived from \gls{cad} models, however, these measurements may not accurately reflect reality due to manufacturing inaccuracies. In the case of the increasingly popular modular systems, mentioned in \secref{in:sec:robot_surgery_platforms}, the arm setup may be different every time the theater is prepared. Furthermore, robotic systems must also undergo localization in relation to other elements present in the operating theater, including patient anatomy, lighting fixtures, imaging systems (e.g. C-arm), and so on, see \figref{in:fig:room_setup}. This motivates the need for a robot base calibration step introduced into the surgical workflow. Such a step, however, should be designed in a way that can be quickly and safely performed by non-robotics experts, i.e. the theater staff.
+A key requirement for future automated systems is robot base-to-base localization, i.e. each robot arm must be aware of each other arm's relative position and orientation. This is required to implement an effective collision model into the automated control system ensuring patient and the operating team's safety. In the case where multi-robot arm systems are deployed on a surgical table, base localization can be derived from \gls{cad} models, however, these measurements may not accurately reflect reality due to manufacturing inaccuracies. In the case of the increasingly popular modular systems, mentioned in \secref{in:sec:robot_surgery_platforms}, the arm setup may be different every time the theater is prepared. Furthermore, robotic systems must also undergo localization in relation to other elements present in the operating theater, including patient anatomy, lighting fixtures, imaging systems (e.g. C-arm), and so on, see \figref{in:fig:room_setup}. This motivates the need for a robot base calibration step introduced into the surgical workflow. Such a step, however, should be designed in a way that can be quickly and safely performed by non-robotics experts, i.e. the theater staff.
 
 % The development of commercialized RGBD camera devices has been  
 
@@ -223,7 +223,7 @@ where $\phi: \mathbb{R}^N\rightarrow\mathbb{R}^{7}$ represents the forward kinem
     \label{c1:fig:hydra_registration}
 \end{figure}
 
-This section introduces a baseline base-to-base baseline calibration procedure via handshake in \secref{c1:sec:handshake_calibration}. For the eye-in-hand and eye-to-hand scenario, baselines as introduced in \secref{in:sec:eye_in_to_hand_calibration} are utilized. The baseline calibration procedures are considered the reference for the proposed calibration method. The proposed calibration method is explained outlined in \secref{c1:sec:proposed_calibration_procedure} and an overview is given in \figref{c1:fig:calibration_pipeline} and \figref{c1:fig:hydra_registration}. Instantiations thereof, through a simple \gls{icp}, and our novel robust point-to-plane \gls{icp}, are detailed in \secref{c1:sec:simple_icp_registration} and \secref{c1:sec:robust_icp}, respectively.
+This section introduces a baseline base-to-base calibration procedure via handshake in \secref{c1:sec:handshake_calibration}. For the eye-in/to-hand scenarios, baselines as introduced in \secref{in:sec:eye_in_to_hand_calibration} are utilized. The baseline calibration procedures are considered the reference for the proposed calibration method. The proposed calibration method is explained outlined in \secref{c1:sec:proposed_calibration_procedure} and an overview is given in \figref{c1:fig:calibration_pipeline} and \figref{c1:fig:hydra_registration}. Instantiations thereof, through a simple \gls{icp}, and our novel robust point-to-plane \gls{icp}, are detailed in \secref{c1:sec:simple_icp_registration} and \secref{c1:sec:robust_icp}, respectively.
 
 In the following sections, homogeneous transforms, from the coordinate frame $A$ to $B$, are denoted through Equation~\ref{c1:eq:ht}
 % \begin{equation}
@@ -391,22 +391,30 @@ To qualitatively verify the proposed method in a clinically relevant scenario, a
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{chapter_1/img/admittance_avoidance.png}
+        \caption{Collision avoidant admittance control with spherical constraints, indicated in red.}
+        \label{c1:fig:admittance}
     \end{subfigure}
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
         \includegraphics[width=\textwidth]{chapter_1/img/base_to_base_reg.png}
+        \caption{Base-to-base registration and mesh overlay onto point cloud.}
+        \label{c1:fig:base_to_base}
     \end{subfigure}
-    \caption{(Left) collision avoidant admittance control with spherical constraints. (Right) base-to-base registration and mesh overlay onto point cloud. Refers to \secref{c1:sec:ex_vivo_results}.}
-    \label{c1:fig:admittance_base_to_base}
+    \caption{Downstream applications of the eye-to-hand calibration. Refers to \secref{c1:sec:ex_vivo_results}. Video are made available online\protect\footnotemark.}
+    \label{c1:fig:downstream}
 \end{figure}
+
+\footnotetext{\\
+Collision avoidant admittance control: \url{https://drive.google.com/file/d/14IhWxNsEmjGmVBnxTaMYIDQDOuo6Ihak/view?usp=sharing} \\
+Base-to-base registration: \url{https://drive.google.com/file/d/18KFJyxDw6UiQ1N95tSQadi4TyGtBAQvc/view?usp=sharing}}
 
 \paragraph{Quantitative Baseline Results - Simple ICP} Quantitative results are summarized in \tabref{c1:tab:calibration_results}. For the eye-in-hand calibrations, it can be seen that the classical calibration procedure via ArUco markers deviates significantly from the manufactured values. This is most likely caused by noisy samples. In contrast, the proposed method, although single-shot, compares better with the expected manufactured values, which aligns well with the qualitative results in \figref{c1:fig:self_registration}. For the base-to-base calibration, it should be noted that the robots are fixed on a plain surface. The manufactured values can, therefore, be considered accurate. The proposed method yields precise results along the y-axis (distance between the robots), whereas the handshake deviates by $1\,\text{cm}$. The proposed method deviates $1\,\text{cm}$ along the z-axis from the manufactured and the handshake values. This dimension is the perpendicular offset to the surface plane. It can further be seen that the proposed method deviates slightly from the orientations of the handshake calibrations when compared to the manufactured values. The deviations might be caused by insufficiently synchronized images and joint states.
 
-\paragraph{Qualitative Admittance Control - Simple ICP} Given the simple \gls{icp} registration results, refer \secref{c1:sec:simple_icp_registration}, we perform collision avoidant admittance control using the OpTas library~\cite{optas}. The spherical collision avoidance model is depicted in \figref{c1:fig:admittance_base_to_base} (left). Therein, the spherical constraints are indicated through red spheres are the links. As seen in the accompanying video\footnote[1]{Collision avoidant admittance control: \url{https://drive.google.com/file/d/14IhWxNsEmjGmVBnxTaMYIDQDOuo6Ihak/view?usp=sharing}}, the robot can be safely hand-guided in admittance control mode whilst avoiding collision within the spherical constraints.
+\paragraph{Qualitative Admittance Control - Simple ICP} Given the simple \gls{icp} registration results, refer \secref{c1:sec:simple_icp_registration}, we perform collision avoidant admittance control using the OpTas library~\cite{optas}. The spherical collision avoidance model is depicted in \figref{c1:fig:admittance}. Therein, the spherical constraints are indicated through red spheres are the links. As seen in the accompanying video (\figref{c1:fig:admittance}), the robot can be safely hand-guided in admittance control mode whilst avoiding collision within the spherical constraints.
 
 % single registration: \footnote[1]{Eye-to-hand calibration: \url{https://drive.google.com/file/d/1hN1wlVfnZ5D_zGIQtjSIh_OJwUPOeExR/view?usp=sharing}}
 
-\paragraph{Qualitative Base-to-base Registration - Robust ICP} The qualitative results for the base-to-base via dual eye-to-hand calibration using the robust point-to-plane \gls{icp} of \secref{c1:sec:robust_icp} are shown in \figref{c1:fig:admittance_base_to_base} (right). In the accompanying video\footnote[2]{Base-to-base registration: \url{https://drive.google.com/file/d/18KFJyxDw6UiQ1N95tSQadi4TyGtBAQvc/view?usp=sharing}}, as can be seen in the figure, the robot meshes align well with the observed point cloud. Given these results, it is justified to deploy the method in the in-vivo scenario, see \secref{c1:sec:in_vivo_experiments} and \secref{c1:sec:in_vivo_results}.
+\paragraph{Qualitative Base-to-base Registration - Robust ICP} The qualitative results for the base-to-base via dual eye-to-hand calibration using the robust point-to-plane \gls{icp} of \secref{c1:sec:robust_icp} are shown in \figref{c1:fig:base_to_base}. In the accompanying video (\figref{c1:fig:base_to_base}), the robot meshes align well with the observed point cloud. Given these results, it is justified to deploy the method in the in-vivo scenario, see \secref{c1:sec:in_vivo_experiments} and \secref{c1:sec:in_vivo_results}.
 
 
 % NOTE TO SELF:
