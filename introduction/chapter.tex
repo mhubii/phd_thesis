@@ -408,14 +408,14 @@ which can be re-arranged as
     \homogeneous{E}{B}^{2}\homogeneous{B}{E}^{1}\homogeneous{E}{C} = \homogeneous{E}{C}\homogeneous{C}{T}^{2}\homogeneous{T}{C}^{1},
 \end{equation}
 
-thus yielding an equation of the form $\mathbf{A}\mathbf{X} = \mathbf{X}\mathbf{B}$ with $\mathbf{A}=\homogeneous{E}{B}^{2}\homogeneous{B}{E}^{1}$ and $\mathbf{B}=\homogeneous{C}{T}^{2}\homogeneous{T}{C}^{1}$. Solving for $X=\homogeneous{E}{C}$ provides the desired eye-in-hand transformation. Similarly, a system of the form $\mathbf{A}\mathbf{X} = \mathbf{X}\mathbf{B}$ can be derived for the eye-to-hand setup. A system of this form can e.g. be solved using~\cite{tsai1989new, park1994robot, Horaud95}.
+thus yielding an equation of the form $\mathbf{A}\mathbf{X} = \mathbf{X}\mathbf{B}$ with $\mathbf{A}=\homogeneous{E}{B}^{2}\homogeneous{B}{E}^{1}$ and $\mathbf{B}=\homogeneous{C}{T}^{2}\homogeneous{T}{C}^{1}$. Solving for $\mathbf{X}=\homogeneous{E}{C}$ provides the desired eye-in-hand transformation. Similarly, a system of the form $\mathbf{A}\mathbf{X} = \mathbf{X}\mathbf{B}$ can be derived for the eye-to-hand setup. A system of this form can e.g. be solved using~\cite{tsai1989new, park1994robot, Horaud95}.
 
 % good video: https://www.youtube.com/watch?v=xQ79ysnrzUk
 % https://docs.opencv.org/4.5.4/d9/d0c/group__calib3d.html#gaebfc1c9f7434196a374c382abf43439b
 
 \subsection{Unified Calibration for Optimal Clinical Workflow}
 \label{in:sec:unified_calibration}
-Having a solid understanding of the calibrations that are required for this thesis, we will now investigate the question of applicability within the clinical context. When applied within the clinical scenario, e.g. for collision avoidance or autonomous control, as was explained in \secref{in:sec:enhancing_current_systems}, it is of utmost importance that the clinical workflow must not be disturbed. In this section, implications of the different calibrations to the clinical workflow will be discussed. Following that, the idea of marker-free calibration is introduced, and it is explained how the introduced clinical workflow constraints could be resolved.
+Having a solid understanding of the calibrations that are required for this thesis, we will now investigate the applicability within the clinical context. When applied within the clinical scenario, e.g. for collision avoidance or autonomous control, as was explained in \secref{in:sec:enhancing_current_systems}, it is of utmost importance that the clinical workflow must not be disturbed. In this section, implications of the different calibrations to the clinical workflow will be discussed. Following that, the idea of marker-free calibration is introduced, and it is explained how calibration related clinical workflow constraints could be resolved.
 
 \subsubsection{Implications of Calibrations to the Clinical Workflow}
 \label{in:sec:implications_of_calibrations_to_workflow}

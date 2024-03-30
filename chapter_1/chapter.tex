@@ -139,9 +139,9 @@ Subsequently, we outline our problems in the remaining subsections.
 
 \subsection{Notation and Assumptions}
 In general, we use 
-Greek letters (e.g. $\alpha, \gamma$) to denote scalars, 
-Latin letters (e.g. $a, b$) to denote vectors, 
-capital letters (e.g. $A, \Gamma$) to denote matrices, and 
+Greek letters (e.g. $\alpha, \gamma$) to denote scalars, bold 
+Latin letters (e.g. $\mathbf{a}, \mathbf{b}$) to denote vectors, 
+capital bold letters (e.g. $\mathbf{A}, \mathbf{\Gamma}$) to denote matrices, and 
 calligraphy and blackboard formats (e.g. $\mathcal{A}, \mathbb{B}$) to denote sets and spaces.
 
 \paragraph{Coordinate Frame Transformations} A homogeneous transformation matrix, denoted $\homogeneous{B}{A}\in\mathbb{R}^{4 \times 4}$, represents the pose of frame $A$ with respect to $B$ (i.e. $B$, in this case, is the base frame).
@@ -149,13 +149,13 @@ The matrix $\homogeneous{B}{A}$ can be expressed as
 \begin{equation}
 \homogeneous{B}{A} = 
     \begin{bmatrix}
-     R\big({}^{B}q_A\big) & {}^{B}p_A \\
-     0_3 & 1
+     \mathbf{R}\big({}^{B}\mathbf{q}_{_A}\big) & {}^{B}\mathbf{p}_{_A} \\
+     \mathbf{0}_{1\times3} & 1
     \end{bmatrix}
     \label{c1:eq:ht}
 \end{equation}
 
-where ${}^{B}p_{_A}\in\mathbb{R}^3$ is a column vector representing the position, $R:\mathbb{R}^4\rightarrow\mathbb{R}^{3\times 3}$ is function that converts the unit-quaternion ${}^{B}q_{_A}\in\mathbb{R}^4$ to a rotation matrix, and $0_3$ is the three element row vector containing only zeros.
+where ${}^{B}\mathbf{p}_{_A}\in\mathbb{R}^3$ is a column vector representing the position, $\mathbf{R}:\mathbb{R}^4\rightarrow\mathbb{R}^{3\times 3}$ is function that converts the unit-quaternion ${}^{B}\mathbf{q}_{_A}\in\mathbb{R}^4$ to a rotation matrix, and $0_3$ is the three element row vector containing only zeros.
 With reference to the schematic of a robot arm in \figref{in:fig:eye_in_hand}, the camera frame $C$ is expressed in the end-effector frame $E$ by $\homogeneous{E}{C}$, and $E$ is expressed in the robot base frame $R$ by $\homogeneous{R}{E}$. 
 %and
 %$R$ is expressed in the world frame $W$ by $\homogeneous{R}{R}$.
@@ -164,13 +164,13 @@ With reference to the schematic of a robot arm in \figref{in:fig:eye_in_hand}, t
 %    \homogeneous{R}{C} = \homogeneous{R}{R} \homogeneous{R}{E} \homogeneous{E}{C}.
 %\end{equation}
 
-\paragraph{Forward Kinematics} For an $N$-\gls{dof} robot manipulator, the joint positions are denoted $x\in\mathbb{R}^N$. In this work, we assume that the end-effector frame $E$ expressed in the robot base frame $R$, i.e. $\homogeneous{R}{E}$, can be computed accurately using forward kinematics. We denote the relationship between the joint positions and link poses, including the end-effector, by
+\paragraph{Forward Kinematics} For an $N$-\gls{dof} robot manipulator, the joint positions are denoted $\mathbf{x}\in\mathbb{R}^N$. In this work, we assume that the end-effector frame $E$ expressed in the robot base frame $R$, i.e. $\homogeneous{R}{E}$, can be computed accurately using forward kinematics. We denote the relationship between the joint positions and link poses, including the end-effector, by
 \begin{equation}
     \begin{pmatrix}
-         {}^{R}p_{_L}\\
-         {}^{R}q_{_L}
+         {}^{R}\mathbf{p}_{_L}\\
+         {}^{R}\mathbf{q}_{_L}
     \end{pmatrix}
-    = \phi(x),
+    = \phi(\mathbf{x}),
     \label{c1:eq:fk}
 \end{equation}
 
@@ -238,10 +238,10 @@ For the handshake calibration procedure, the two robots are rigidly linked to on
 %
 \begin{equation}
     \label{c1:eq:handsake}
-    \min_{\homogeneous{{E_1}}{{E_2}}, \homogeneous{{B_2}}{{B_1}}} \sum_{l=0}^{L-1}\,\homogeneous{{B_1}}{{E_1}}^l\,\homogeneous{{E_1}}{{E_2}}\,\homogeneous{{E_2}}{{B_2}}^l\,\homogeneous{{B_2}}{{B_1}} - I_{4\times4},
+    \min_{\homogeneous{{E_1}}{{E_2}}, \homogeneous{{B_2}}{{B_1}}} \sum_{l=0}^{L-1}\,\homogeneous{{B_1}}{{E_1}}^l\,\homogeneous{{E_1}}{{E_2}}\,\homogeneous{{E_2}}{{B_2}}^l\,\homogeneous{{B_2}}{{B_1}} - \mathbf{I}^{4\times4},
 \end{equation}
 %
-where $I_{4\times4}$ is the $4\times4$ identity matrix. Therein, $\homogeneous{{E_1}}{{E_2}}$ is part of the optimization to correct for manufacturing errors.
+where $\mathbf{I}^{4\times4}$ is the $4\times4$ identity matrix. Therein, $\homogeneous{{E_1}}{{E_2}}$ is part of the optimization to correct for manufacturing errors.
 
 % Classically, eye-in-hand calibration is conducted by collecting end-effector to base $\homogeneous{B}{E}$ and camera to ArUco marker transformations $\homogeneous{A}{C}$~\citep{eye_in_hand}. The correspondences are re-arranged into an equation of the form $\mathbf{A}\mathbf{X}=\mathbf{X}\mathbf{B}$, with $\mathbf{A}$ containing multiple $\homogeneous{{E_j}}{{E_i}}$ and $\mathbf{B}$ containing multiple $\homogeneous{{C_j}}{{C_i}}$. A 2-step regression is applied to solve for $\mathbf{X}=\homogeneous{{B_2}}{{B_1}}$.
 
@@ -255,9 +255,9 @@ For the registration step in \figref{c1:fig:calibration_pipeline}, we investigat
 \label{c1:sec:unaligned_robot_model_and_instance_segmented_point_cloud}
 \paragraph{Unaligned Robot Model}
 \label{c1:sec:unaligned_robot_model}
-To obtain an unaligned robot model, the proposed registration procedure takes as input measured joint positions $x_t$ and link mesh files $\mathcal{M} = \{M_i\}$. Only the mesh vertices $\mathcal{V} = \{V_i\}$ are extracted from the meshes and everything else, e.g. color, is discarded. All mesh vertices $V_i$ are then transformed through $\homogeneous{{L_i}}{R}$, where, given the joint positions, $\homogeneous{{L_i}}{R}$ is obtained via forward kinematics $\phi(x_t)$, see Equation~\ref{c1:eq:fk}. From the transformed mesh vertices $\mathcal{V}$, we sample a total of $N$ points. Therefore, we estimate the volume that each link occupies through its respective bounding box. We then sample $n_i$ points per link vertices $V_i$ via a Poisson-disk sampling strategy, where
+To obtain an unaligned robot model, the proposed registration procedure takes as input measured joint positions $\mathbf{x}_t$ and link mesh files $\mathcal{M} = \{M_i\}$. Only the mesh vertices $\mathcal{V} = \{\mathbf{V}_i\}$ are extracted from the meshes and everything else, e.g. color, is discarded. All mesh vertices $V_i$ are then transformed through $\homogeneous{{L_i}}{R}$, where, given the joint positions, $\homogeneous{{L_i}}{R}$ is obtained via forward kinematics $\phi(\mathbf{x}_t)$, see Equation~\ref{c1:eq:fk}. From the transformed mesh vertices $\mathcal{V}$, we sample a total of $N$ points. Therefore, we estimate the volume that each link occupies through its respective bounding box volume $b(\mathbf{{V}):\mathbb{R}}^M \rightarrow \mathbb{R}$. We then sample $n_i$ points per link vertices $\mathbf{V}_i$ via a Poisson-disk sampling strategy, where
 \begin{equation}
-    n_i = N\frac{b(V_i)}{\sum_j b(V_j)}.
+    n_i = N\frac{b(\mathbf{V}_i)}{\sum_j b(\mathbf{V}_j)}.
 \end{equation}
 This sampling strategy guarantees somewhat equally distributed points in space, although future version might only want to perform Poisson-disk sampling over the entire robot.
 
@@ -265,32 +265,32 @@ This sampling strategy guarantees somewhat equally distributed points in space, 
 
 \paragraph{Instance-segmented Point Cloud}
 \label{c1:sec:instance_segmented_point_cloud}
-The instance-segmented point cloud is generated by fusing an instance segmentation $S_t$ with a depth map $D_t$ as shown in \figref{c1:fig:calibration_pipeline}. For the instance segmentation, we combine a detector with a segmentor. In this work, a human-in-the-loop acts as the detector by selecting a few points $\mathcal{F}_t$ on the robot in the image. We then deploy the pre-trained \gls{sam}~\cite{Kirillov:arxiv:2023} and prompt it with the detection points $\mathcal{F}_t$. We thus achieve an instance segmentation $S_t$ of the image $I_t$. The depth map $D_t$ can either be obtained via a stereo camera or an RGB-D camera by processing it with a depth estimator. In this work, we utilize Stereolab's Neural Depth perception as the depth estimator. Simply fusing the image segmentation $S_t$ and the depth map $D_t$ then provides the instance segmented point cloud.
+The instance-segmented point cloud is generated by fusing an instance segmentation $\mathbf{S}_t$ with a depth map $\mathbf{D}_t$ as shown in \figref{c1:fig:calibration_pipeline}. For the instance segmentation, we combine a detector with a segmentor. In this work, a human-in-the-loop acts as the detector by selecting a few points $\mathcal{F}_t$ on the robot in the image. We then deploy the pre-trained \gls{sam}~\cite{Kirillov:arxiv:2023} and prompt it with the detection points $\mathcal{F}_t$. We thus achieve an instance segmentation $\mathbf{S}_t$ of the image $\mathbf{I}_t$. The depth map $\mathbf{D}_t$ can either be obtained via a stereo camera or an RGB-D camera by processing it with a depth estimator. In this work, we utilize Stereolab's Neural Depth perception as the depth estimator. Simply fusing the image segmentation $\mathbf{S}_t$ and the depth map $\mathbf{D}_t$ then provides the instance segmented point cloud.
 
 
 % The following sections will explain an \gls{icp} registration on Lie-algebra for said purpose in \secref{c1:sec:robust_icp}. Following that, image-based registration refinements, given a segmentation mask without the need for differentiable rendering are explained in \secref{in:sec:registration_of_3d_point_cloud}.
 
 \subsection{Simple ICP Registration}
 \label{c1:sec:simple_icp_registration}
-In the case of the simple \gls{icp} we perform single instance registration. The goal is to align the unaligned robot model (as detailled in \secref{c1:sec:unaligned_robot_model}), with the instance-segmented point cloud (as detailled in \secref{c1:sec:instance_segmented_point_cloud}), through finding the transform $\homogeneous{C}{B}$. First, the unaligned robot model $\mathcal{V}_\tau$ is generated (as detailled in \secref{c1:sec:unaligned_robot_model}). Next, robot instances are detected and segmented, which results in the instance-segmented point cloud $P_\tau$. We then compute the instance-segmented point cloud's center of mass for an initial guess of the transform $\homogeneous{{C}}{B,\text{init}}$. Finally, we run an \gls{icp}~\cite{simple_icp} algorithm between vertices $\mathcal{V}_\tau$ and point cloud $P_\tau$, see Equation~\ref{c1:eq:icp}. In contrast to~\cite{simple_icp}, we only consider vertices from $\mathcal{V}_\tau$ whose surface normals point towards the camera. That is, they should be visible to the camera.
+In the case of the simple \gls{icp} we perform single instance registration. The goal is to align the unaligned robot model (as detailled in \secref{c1:sec:unaligned_robot_model}), with the instance-segmented point cloud (as detailled in \secref{c1:sec:instance_segmented_point_cloud}), through finding the transform $\homogeneous{C}{B}$. First, the unaligned robot model $\mathcal{V}_\tau$ is generated (as detailled in \secref{c1:sec:unaligned_robot_model}). Next, robot instances are detected and segmented, which results in the instance-segmented point cloud $\mathbf{P}_\tau$. We then compute the instance-segmented point cloud's center of mass for an initial guess of the transform $\homogeneous{{C}}{B,\text{init}}$. Finally, we run an \gls{icp}~\cite{simple_icp} algorithm between vertices $\mathcal{V}_\tau$ and point cloud $\mathbf{P}_\tau$, see Equation~\ref{c1:eq:icp}. In contrast to~\cite{simple_icp}, we only consider vertices from $\mathcal{V}_\tau$ whose surface normals point towards the camera. That is, they should be visible to the camera.
 
 \begin{equation}
     \label{c1:eq:icp}
-    \text{ICP} = \argmin_{\homogeneous{C}{B}} || \homogeneous{C}{B}(\mathcal{V}_\tau) - P_\tau||_2
+    \text{ICP} = \argmin_{\homogeneous{C}{B}} || \homogeneous{C}{B}(\mathcal{V}_\tau) - \mathbf{P}_\tau||_2
 \end{equation}
 
 \subsection{Robust Point-to-plane ICP Registration: A Lie Algebra Formulation}
 % \subsubsection{Point-to-plane ICP: A Lie Algebra Formulation}
 \label{c1:sec:robust_icp}
 \input{introduction/icp_algorithm}
-In the case of the robust point-to-plane \gls{icp}, we capture multiple configurations of the robot. An overview of the method is provided in \figref{c1:fig:hydra_registration}. Deviating from the simple \gls{icp}, \secref{c1:sec:simple_icp_registration}, we dilate the instance segmentations $S_t$ and only keep the boundary regions. Consequentially, we also only keep the boundary regions of the instance segmented point clouds $\mathcal{P} = \{P_t\}$. Similarly to the simple \gls{icp}, we compute the centroids for the instance segmented point clouds $\{P_t\}$ as well as for each robot model $\{\mathcal{V}_t\}$. We then use the Kabsch algorithm to find an initial estimate for the camera to base homogeneous transformation through centroid alignment. Given the initial alignment, we then perform a robust point-to-plane registration on a Lie algebra, as further detailed below.
+In the case of the robust point-to-plane \gls{icp}, we capture multiple configurations of the robot. An overview of the method is provided in \figref{c1:fig:hydra_registration}. Deviating from the simple \gls{icp}, \secref{c1:sec:simple_icp_registration}, we dilate the instance segmentations $\mathbf{S}_t$ and only keep the boundary regions. Consequentially, we also only keep the boundary regions of the instance segmented point clouds $\mathcal{P} = \{\mathbf{P}_t\}$. Similarly to the simple \gls{icp}, we compute the centroids for the instance segmented point clouds $\{\mathbf{P}_t\}$ as well as for each robot model $\{\mathcal{V}_t\}$. We then use the Kabsch algorithm to find an initial estimate for the camera to base homogeneous transformation through centroid alignment. Given the initial alignment, we then perform a robust point-to-plane registration on a Lie algebra, as further detailed below.
 %We follow the derivation of \chapref{chap:introduction}, \secref{c1:sec:robust_icp}. A summary for which is provided in \algoref{c1:alg:liep2plan}.
 
 % Tom's notes
 \input{introduction/icp_notes}
 
 %\begin{algorithm}
-%\caption{Registration algorithm (refer to \secref{c1:sec:simple_icp_registration} for details). Joint positions $x_t$, images $I_t$, and depth map $D_t$ all correspond to a single configuration, e.g. they are all synchronously observed at time $t=\tau$.}
+%\caption{Registration algorithm (refer to \secref{c1:sec:simple_icp_registration} for details). Joint positions $\mathbf{x}_t$, images $\mathbf{I}_t$, and depth map $\mathbf{D}_t$ all correspond to a single configuration, e.g. they are all synchronously observed at time $t=\tau$.}
 %\label{alg:registration}
 %\begin{algorithmic}
     %\Function{UnalignedRobotModel}{N, $x$, $\mathcal{M}$}
@@ -300,13 +300,13 @@ In the case of the robust point-to-plane \gls{icp}, we capture multiple configur
         %\State $V =$ \Call{Sample}{N, $V$} \Comment{sample vertices on robot surface}
 %        \State \Return $V$
 %    \EndFunction
-%    \Function{Registration}{N, $x_\tau$,   $\mathcal{M}$, $I_\tau$, $D_\tau$}
+%    \Function{Registration}{N, $x_\tau$,   $\mathcal{M}$, $\mathbf{I}_\tau$, $D_\tau$}
 %        \State $\mathcal{V}_\tau =$ \Call{UnalignedRobotModel}{N, $x_\tau$,   $\mathcal{M}$} \Comment{get unaligned robot model}
-%        \State $\mathcal{F}_\tau =$ \Call{Detector}{$I_\tau$} %\Comment{detect robot instances}
-%        \State $\mathbf{M}_\tau =$ \Call{Segmentor}{$I_\tau$, $\mathcal{F}_\tau$} \Comment{segment robot instances}
-%        \State $P_\tau = \mathbf{M}_\tau \odot D_\tau$ %\Comment{compute Hadamard product}
-%        \State $\homogeneous{{}}{\text{init}} =$ \Call{CoM}{$P_\tau$} %\Comment{center of mass as initial transform}
-%        \State $\homogeneous{C}{B} =$ \Call{ICP}{$\homogeneous{{}}{\text{init}}$, $\mathcal{V}_\tau$, $P_\tau$} \Comment{run iterative closest point}
+%        \State $\mathcal{F}_\tau =$ \Call{Detector}{$\mathbf{I}_\tau$} %\Comment{detect robot instances}
+%        \State $\mathbf{M}_\tau =$ \Call{Segmentor}{$\mathbf{I}_\tau$, $\mathcal{F}_\tau$} \Comment{segment robot instances}
+%        \State $\mathbf{P}_\tau = \mathbf{M}_\tau \odot D_\tau$ %\Comment{compute Hadamard product}
+%        \State $\homogeneous{{}}{\text{init}} =$ \Call{CoM}{$\mathbf{P}_\tau$} %\Comment{center of mass as initial transform}
+%        \State $\homogeneous{C}{B} =$ \Call{ICP}{$\homogeneous{{}}{\text{init}}$, $\mathcal{V}_\tau$, $\mathbf{P}_\tau$} \Comment{run iterative closest point}
 %        \State \Return $\homogeneous{C}{B}$
 %    \EndFunction
 %\end{algorithmic}
@@ -381,10 +381,10 @@ To qualitatively verify the proposed method in a clinically relevant scenario, a
          \caption{Eye-to-hand calibration, corresponding to \figref{c1:fig:eye_to_hand}. Left: Instance segmentation. The camera is mounted externally and observes robot one (blue mask) and robot two (orange mask). Right: Point cloud to robot model registration.}
          \label{c1:fig:double_registration}
      \end{subfigure}
-     \caption{Ex-vivo eye-in-hand and eye-to-hand registrations. The instance-segmented point clouds $P_\tau$ align well with the robot model $\mathcal{V}_\tau$. Refers to \secref{c1:sec:ex_vivo_results}.}
+     \caption{Ex-vivo eye-in-hand and eye-to-hand registrations. The instance-segmented point clouds $\mathbf{P}_\tau$ align well with the robot model $\mathcal{V}_\tau$. Refers to \secref{c1:sec:ex_vivo_results}.}
      \label{c1:fig:registration_results}
 \end{figure}
-\paragraph{Qualitative Baseline Results - Simple ICP} The registrations are shown in \figref{c1:fig:registration_results}. It can be observed that in both scenarios, i.e. eye-in-hand (\figref{c1:fig:self_registration}) and base-to-base via eye-to-hand (\figref{c1:fig:double_registration}), the segmentation via initial detection works well. The detections $\mathcal{F}_\tau$ are indicated through stars. Robot one and two can be clearly separated. This precise segmentation $S_\tau$ results in an instance-segmented point cloud with very little outliers. The registration of the unaligned robot models $\mathcal{V}_\tau$ onto the instance-segmented point clouds $P_\tau$ results in a visually compelling alignment (\figref{c1:fig:self_registration} - right - and \figref{c1:fig:double_registration} - right). Therein, the instance-segmented point clouds are visualized in yellow and the aligned robot models are shown in purple.
+\paragraph{Qualitative Baseline Results - Simple ICP} The registrations are shown in \figref{c1:fig:registration_results}. It can be observed that in both scenarios, i.e. eye-in-hand (\figref{c1:fig:self_registration}) and base-to-base via eye-to-hand (\figref{c1:fig:double_registration}), the segmentation via initial detection works well. The detections $\mathcal{F}_\tau$ are indicated through stars. Robot one and two can be clearly separated. This precise segmentation $\mathbf{S}_\tau$ results in an instance-segmented point cloud with very little outliers. The registration of the unaligned robot models $\mathcal{V}_\tau$ onto the instance-segmented point clouds $\mathbf{P}_\tau$ results in a visually compelling alignment (\figref{c1:fig:self_registration} - right - and \figref{c1:fig:double_registration} - right). Therein, the instance-segmented point clouds are visualized in yellow and the aligned robot models are shown in purple.
 
 \begin{figure}[tbh]
     \centering
@@ -465,7 +465,7 @@ Initially, we collect 12 measurements for the drilling robot, and 14 measurement
 
 For both robots, we collect a total of $4588$ stereo frames and depth maps with corresponding joint states, corresponding to about $10$ minutes of data at an average recorded frame rate of $8\,\text{fps}$. We collect an additional $5611$ correspondences for only one robot, either the drilling or the hyperspectral camera robot. This corresponds to about $7$ minutes of data at an average recorded frame rate of $13\,\text{fps}$.
 
-Qualitative results of the registration for the drilling robot are shown in \figref{c1:fig:in_vivo_results}. Therein, and given the registration, we render the robot's meshes into the observed image. The render aligns well with the robot. It should be noted that the segmentation, \figref{c1:fig:in_vivo_results} - left, does not cover the entire robot but misses the bottom left bit. This was the case for all observed drilling robot mask and could be corrected through proper selection of points $\mathcal{F}_t$. For the camera robot on the other hand, we obtain close to perfect instance segmentations $\{S_t\}$. Further exemplary segmentation masks and rendered masks, as well as difference images between segmentation and render, for both, the drilling robot and the camera robot, are shown in \figref{c1:fig:masks}.
+Qualitative results of the registration for the drilling robot are shown in \figref{c1:fig:in_vivo_results}. Therein, and given the registration, we render the robot's meshes into the observed image. The render aligns well with the robot. It should be noted that the segmentation, \figref{c1:fig:in_vivo_results} - left, does not cover the entire robot but misses the bottom left bit. This was the case for all observed drilling robot mask and could be corrected through proper selection of points $\mathcal{F}_t$. For the camera robot on the other hand, we obtain close to perfect instance segmentations $\{\mathbf{S}_t\}$. Further exemplary segmentation masks and rendered masks, as well as difference images between segmentation and render, for both, the drilling robot and the camera robot, are shown in \figref{c1:fig:masks}.
 \begin{figure}[tb]
     \centering
     \begin{subfigure}[b]{0.32\textwidth}
@@ -496,11 +496,11 @@ Qualitative results of the registration for the drilling robot are shown in \fig
     \label{c1:fig:masks}
 \end{figure}
 
-For the total set of collected samples, we determine the average \gls{iou} between instance segmentations $S_t$ and renders $R_t$. Therein, the \gls{iou} is expressed through
+For the total set of collected samples, we determine the average \gls{iou} between instance segmentations $\mathbf{S}_t$ and renders $\mathbf{R}_t$. Therein, the \gls{iou} is expressed through
 \begin{equation}
-    \text{IoU} = \frac{|S_t \cup R_t|}{|S_t \cap R_t|}
+    \text{IoU} = \frac{|\mathbf{S}_t \cup \mathbf{R}_t|}{|\mathbf{S}_t \cap \mathbf{R}_t|}
 \end{equation}
-The results are summarized in \tabref{c1:tab:iou}. As can be see, and as already visually observed in \figref{c1:fig:masks}, we find close to perfect average \gls{iou}. For the drilling robot, the average \gls{iou} is slightly worse than for the camera robot. This is because the instance segmentations $S_t$ are systematically off by human annotator.
+The results are summarized in \tabref{c1:tab:iou}. As can be see, and as already visually observed in \figref{c1:fig:masks}, we find close to perfect average \gls{iou}. For the drilling robot, the average \gls{iou} is slightly worse than for the camera robot. This is because the instance segmentations $\mathbf{S}_t$ are systematically off by human annotator.
 \begin{table}[tb]
 \centering
 \caption{Average \gls{iou} of segmented and rendered mask. Also compare to \figref{c1:fig:masks}. Refers to \secref{c1:sec:in_vivo_results}.}
