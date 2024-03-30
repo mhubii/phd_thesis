@@ -223,7 +223,7 @@ where $\phi: \mathbb{R}^N\rightarrow\mathbb{R}^{7}$ represents the forward kinem
     \label{c1:fig:hydra_registration}
 \end{figure}
 
-This section introduces a base-to-base baseline calibration procedure in \secref{c1:sec:handshake_calibration}. For the eye-in-hand and eye-to-hand scenario, baselines as introduced in \secref{in:sec:eye_in_to_hand_calibration} are utilized. The baseline calibration procedures are considered the reference for the proposed calibration method. The proposed calibration method is explained in \secref{c1:sec:proposed_calibration_procedure} and an overview is given in \figref{c1:fig:calibration_pipeline} and \figref{c1:fig:hydra_registration}.
+This section introduces a baseline base-to-base baseline calibration procedure via handshake in \secref{c1:sec:handshake_calibration}. For the eye-in-hand and eye-to-hand scenario, baselines as introduced in \secref{in:sec:eye_in_to_hand_calibration} are utilized. The baseline calibration procedures are considered the reference for the proposed calibration method. The proposed calibration method is explained outlined in \secref{c1:sec:proposed_calibration_procedure} and an overview is given in \figref{c1:fig:calibration_pipeline} and \figref{c1:fig:hydra_registration}. Instantiations thereof, through a simple \gls{icp}, and our novel robust point-to-plane \gls{icp}, are detailed in \secref{c1:sec:simple_icp_registration} and \secref{c1:sec:robust_icp}, respectively.
 
 In the following sections, homogeneous transforms, from the coordinate frame $A$ to $B$, are denoted through Equation~\ref{c1:eq:ht}
 % \begin{equation}
@@ -283,7 +283,7 @@ In the case of the simple \gls{icp} we perform single instance registration. The
 % \subsubsection{Point-to-plane ICP: A Lie Algebra Formulation}
 \label{c1:sec:robust_icp}
 \input{introduction/icp_algorithm}
-In the case of the robust point-to-plane \gls{icp}, we capture multiple configurations of the robot. An overview of the method is provided in \figref{c1:fig:hydra_registration}. Deviating from the simple \gls{icp}, \secref{c1:sec:simple_icp_registration}, we dilate the instance segmentations $S_t$ and only keep the boundary regions. Consequentially, we also only keep the boundary regions of the instance segmented point clouds $\mathcal{P} = \{P_t\}$. Similarly to the simple \gls{icp}, we compute the centroids for the instance segmented point clouds $\{P_t\}$ as well as for each robot model $\{\mathcal{V}_t\}$. We then use the Kabsch algorithm to find an initial estimate for the camera to base homogeneous transformation through centroid alignment. Given the initial alignment, we then perform a robust point-to-plane registration on a Lie algebra. 
+In the case of the robust point-to-plane \gls{icp}, we capture multiple configurations of the robot. An overview of the method is provided in \figref{c1:fig:hydra_registration}. Deviating from the simple \gls{icp}, \secref{c1:sec:simple_icp_registration}, we dilate the instance segmentations $S_t$ and only keep the boundary regions. Consequentially, we also only keep the boundary regions of the instance segmented point clouds $\mathcal{P} = \{P_t\}$. Similarly to the simple \gls{icp}, we compute the centroids for the instance segmented point clouds $\{P_t\}$ as well as for each robot model $\{\mathcal{V}_t\}$. We then use the Kabsch algorithm to find an initial estimate for the camera to base homogeneous transformation through centroid alignment. Given the initial alignment, we then perform a robust point-to-plane registration on a Lie algebra, as further detailed below.
 %We follow the derivation of \chapref{chap:introduction}, \secref{c1:sec:robust_icp}. A summary for which is provided in \algoref{c1:alg:liep2plan}.
 
 % Tom's notes
@@ -314,7 +314,7 @@ In the case of the robust point-to-plane \gls{icp}, we capture multiple configur
 
 \section{Experimental Setup}
 \label{c1:sec:experimental_setup}
-Two experiments are considered. First, we perform ex-vivo experiments for the simple \gls{icp} algorithm from \secref{c1:sec:simple_icp_registration} in \secref{c1:sec:ex_vivo_experiments}. An overview for the different ex-vivo calibration baselines is given in \figref{c1:fig:calibrations}. Next, we perform in-vivo experiments for the robust point-to-plane \gls{icp} algorithm from \secref{c1:sec:robust_icp} in \secref{c1:sec:in_vivo_experiments}. The in-vivo experimental setup is presented in \figref{c1:fig:in_vivo_setup}.
+Two types of experiments are considered, ex-vivo experiments in \secref{c1:sec:ex_vivo_experiments}, and in-vivo experiments in \secref{c1:sec:in_vivo_experiments}. The ex-vivo experiments include comprehensive comparisons against eye-in-hand, eye-to-hand, and base-to-base baselines for the simple \gls{icp} algorithm from \secref{c1:sec:simple_icp_registration}. An overview for the different ex-vivo calibration baselines is given in \figref{c1:fig:calibrations}. This section further includes downstream applications such as the collision avoidant admittance control. Furthermore, an initial ex-vivo dual arm calibration for the proposed robust point-to-plane \gls{icp} algorithm from \secref{c1:sec:robust_icp} is presented. The in-vivo experiments use the robust point-to-plane \gls{icp} algorithm from \secref{c1:sec:robust_icp}. The in-vivo experimental setup is presented in \figref{c1:fig:in_vivo_setup}.
 
 \subsection{Ex-vivo Experiments}
 \label{c1:sec:ex_vivo_experiments}
@@ -346,7 +346,9 @@ Two experiments are considered. First, we perform ex-vivo experiments for the si
 
 The experimental setup is shown in \figref{c1:fig:handshake}-\figref{c1:fig:eye_to_hand}. We utilize two KUKA \gls{lbr} Med 7 robots and control them via the \gls{lbr}-Stack~\cite{huber2023lbr} at a control rate of $100\,\text{Hz}$. For the handshake calibration, we deploy them in impedance control mode, see \secref{c1:sec:handshake_calibration}, for all other calibrations we use position control mode. The robots are mounted on a table and are fixed with respect to each other. By construction, their distance is $38\,\text{cm}$. For the camera we use a ZED 2i (Stereolabs, USA). We collect images and depth maps with a resolution of $448 \times 256$ at a frame rate of $15\,\text{Hz}$. For the depth estimation, we utilize the camera in neural depth perception mode.
 
-Four experiments are conducted, two regarding eye-in-hand and two regarding eye-to-hand calibration. For the eye-in-hand calibration, the camera is mounted to the robot via a GRIP G-SHW063 tool connector, see \figref{c1:fig:eye_in_hand}. For the baseline calibration experiments, see \secref{c1:sec:handshake_calibration}, we use a $3\times4$ ArUco marker target of square size $15.77\,\text{mm}$. $1259$ image-joint position correspondences are collected. For the proposed method, see \secref{c1:sec:simple_icp_registration}, we have the robot observe itself through the camera. We collect $1272$ image-joint position correspondences, but only use one. For the eye-to-hand calibration, the camera is put on an external tripod, see \figref{c1:fig:eye_to_hand}. $790$ image-joint position correspondences are collected, again only one is used. Robot 1 and robot 2 are calibrated and the base-to-base calibration is extracted, see \secref{c1:sec:proposed_calibration_procedure}. The base-to-base calibration is compared to a handshake calibration, see \figref{c1:fig:handshake} and \secref{c1:sec:handshake_calibration}. For the handshake, the robots are rigidly connected via a calibration fixture. $27700$ data points are collected of which $277$ are used for the calibration.
+Four baseline experiments are conducted, two regarding eye-in-hand and two regarding eye-to-hand calibration. For the eye-in-hand calibration, the camera is mounted to the robot via a GRIP G-SHW063 tool connector, see \figref{c1:fig:eye_in_hand}. For the baseline calibration experiments, see \secref{c1:sec:handshake_calibration}, we use a $3\times4$ ArUco marker target of square size $15.77\,\text{mm}$. $1259$ image-joint position correspondences are collected. For the proposed method, see \secref{c1:sec:simple_icp_registration}, we have the robot observe itself through the camera. We collect $1272$ image-joint position correspondences, but only use one. For the eye-to-hand calibration, the camera is put on an external tripod, see \figref{c1:fig:eye_to_hand}. $790$ image-joint position correspondences are collected, again only one is used. Robot 1 and robot 2 are calibrated and the base-to-base calibration is extracted, see \secref{c1:sec:proposed_calibration_procedure}. The base-to-base calibration is compared to a handshake calibration, see \figref{c1:fig:handshake} and \secref{c1:sec:handshake_calibration}. For the handshake, the robots are rigidly connected via a calibration fixture. $27700$ data points are collected of which $277$ are used for the calibration.
+
+Finally, collision avoidant admittance control using the simple \gls{icp}, and exemplary base-to-base calibrations using the robust point-to-plane \gls{icp} are conducted. The collision avoidant admittance control is tested by moving the robots towards each other. The base-to-base calibration is evaluated visually.
 
 \subsection{In-vivo Experiment}
 \label{c1:sec:in_vivo_experiments}
@@ -382,31 +384,34 @@ To qualitatively verify the proposed method in a clinically relevant scenario, a
      \caption{Ex-vivo eye-in-hand and eye-to-hand registrations. The instance-segmented point clouds $P_\tau$ align well with the robot model $\mathcal{V}_\tau$. Refers to \secref{c1:sec:ex_vivo_results}.}
      \label{c1:fig:registration_results}
 \end{figure}
-\paragraph{Qualitative Results} The registrations are shown in \figref{c1:fig:registration_results}. It can be observed that in both scenarios, i.e. eye-in-hand (\figref{c1:fig:self_registration}) and base-to-base via eye-to-hand (\figref{c1:fig:double_registration}), the segmentation via initial detection works well. The detections $\mathcal{F}_\tau$ are indicated through stars. Robot one and two can be clearly separated. This precise segmentation $S_\tau$ results in an instance-segmented point cloud with very little outliers. The registration of the unaligned robot models $\mathcal{V}_\tau$ onto the instance-segmented point clouds $P_\tau$ results in a visually compelling alignment (\figref{c1:fig:self_registration} - right - and \figref{c1:fig:double_registration} - right). Therein, the instance-segmented point clouds are visualized in yellow and the aligned robot models are shown in purple.
+\paragraph{Qualitative Baseline Results - Simple ICP} The registrations are shown in \figref{c1:fig:registration_results}. It can be observed that in both scenarios, i.e. eye-in-hand (\figref{c1:fig:self_registration}) and base-to-base via eye-to-hand (\figref{c1:fig:double_registration}), the segmentation via initial detection works well. The detections $\mathcal{F}_\tau$ are indicated through stars. Robot one and two can be clearly separated. This precise segmentation $S_\tau$ results in an instance-segmented point cloud with very little outliers. The registration of the unaligned robot models $\mathcal{V}_\tau$ onto the instance-segmented point clouds $P_\tau$ results in a visually compelling alignment (\figref{c1:fig:self_registration} - right - and \figref{c1:fig:double_registration} - right). Therein, the instance-segmented point clouds are visualized in yellow and the aligned robot models are shown in purple.
 
-\paragraph{Quantitative Results} Quantitative results are summarized in \tabref{c1:tab:calibration_results}. For the eye-in-hand calibrations, it can be seen that the classical calibration procedure via ArUco markers deviates significantly from the manufactured values. This is most likely caused by noisy samples. In contrast, the proposed method, although single-shot, compares better with the expected manufactured values, which aligns well with the qualitative results in \figref{c1:fig:self_registration}. For the base-to-base calibration, it should be noted that the robots are fixed on a plain surface. The manufactured values can, therefore, be considered accurate. The proposed method yields precise results along the y-axis (distance between the robots), whereas the handshake deviates by $1\,\text{cm}$. The proposed method deviates $1\,\text{cm}$ along the z-axis from the manufactured and the handshake values. This dimension is the perpendicular offset to the surface plane. It can further be seen that the proposed method deviates slightly from the orientations of the handshake calibrations when compared to the manufactured values. The deviations might be caused by insufficiently synchronized images and joint states.
+\begin{figure}[tbh]
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter_1/img/admittance_avoidance.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{chapter_1/img/base_to_base_reg.png}
+    \end{subfigure}
+    \caption{(Left) collision avoidant admittance control with spherical constraints. (Right) base-to-base registration and mesh overlay onto point cloud. Refers to \secref{c1:sec:ex_vivo_results}.}
+    \label{c1:fig:admittance_base_to_base}
+\end{figure}
+
+\paragraph{Quantitative Baseline Results - Simple ICP} Quantitative results are summarized in \tabref{c1:tab:calibration_results}. For the eye-in-hand calibrations, it can be seen that the classical calibration procedure via ArUco markers deviates significantly from the manufactured values. This is most likely caused by noisy samples. In contrast, the proposed method, although single-shot, compares better with the expected manufactured values, which aligns well with the qualitative results in \figref{c1:fig:self_registration}. For the base-to-base calibration, it should be noted that the robots are fixed on a plain surface. The manufactured values can, therefore, be considered accurate. The proposed method yields precise results along the y-axis (distance between the robots), whereas the handshake deviates by $1\,\text{cm}$. The proposed method deviates $1\,\text{cm}$ along the z-axis from the manufactured and the handshake values. This dimension is the perpendicular offset to the surface plane. It can further be seen that the proposed method deviates slightly from the orientations of the handshake calibrations when compared to the manufactured values. The deviations might be caused by insufficiently synchronized images and joint states.
+
+\paragraph{Qualitative Admittance Control - Simple ICP} Given the simple \gls{icp} registration results, refer \secref{c1:sec:simple_icp_registration}, we perform collision avoidant admittance control using the OpTas library~\cite{optas}. The spherical collision avoidance model is depicted in \figref{c1:fig:admittance_base_to_base} (left). Therein, the spherical constraints are indicated through red spheres are the links. As seen in the accompanying video\footnote[1]{Collision avoidant admittance control: \url{https://drive.google.com/file/d/14IhWxNsEmjGmVBnxTaMYIDQDOuo6Ihak/view?usp=sharing}}, the robot can be safely hand-guided in admittance control mode whilst avoiding collision within the spherical constraints.
+
+% single registration: \footnote[1]{Eye-to-hand calibration: \url{https://drive.google.com/file/d/1hN1wlVfnZ5D_zGIQtjSIh_OJwUPOeExR/view?usp=sharing}}
+
+\paragraph{Qualitative Base-to-base Registration - Robust ICP} The qualitative results for the base-to-base via dual eye-to-hand calibration using the robust point-to-plane \gls{icp} of \secref{c1:sec:robust_icp} are shown in \figref{c1:fig:admittance_base_to_base} (right). In the accompanying video\footnote[2]{Base-to-base registration: \url{https://drive.google.com/file/d/18KFJyxDw6UiQ1N95tSQadi4TyGtBAQvc/view?usp=sharing}}, as can be seen in the figure, the robot meshes align well with the observed point cloud. Given these results, it is justified to deploy the method in the in-vivo scenario, see \secref{c1:sec:in_vivo_experiments} and \secref{c1:sec:in_vivo_results}.
+
 
 % NOTE TO SELF:
 % classical eye-in-hand calibration seems odd. Only 5 samples were used for registration
 % the proposed solution to eye-in-hand seems solid
-
-\begin{landscape}
-\begin{table}[htb]
-\caption{Calibration results using the proposed method (\secref{c1:sec:proposed_calibration_procedure}) and the baseline methods (\secref{c1:sec:handshake_calibration}). In addition to the calibration baselines, the table also lists manufactured values. The transforms are displayed in terms of translations $t_{x/y/z}$ and rotations in terms of Euler angles $r_{x/y/z}$.}
-\label{c1:tab:calibration_results}
-\centering
-\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
-\hline
-Calibration Class             & Method       & Transform                                                                                                        & $t_x\,[\text{m}]$ & $t_y\,[\text{m}]$ & $t_z\,[\text{m}]$ & $r_x\,[^\circ]$ & $r_y\,[^\circ]$ & $r_z\,[^\circ]$ \\ \hline
-\multirow{3}{*}{Eye-in-hand}  & Manufactured & $\homogeneous{C}{E}$                                                                                  & $ 0.0$            & $-0.06$           & $-0.06$           & $ 0.0$          & $-2.9$          & $-145.0$        \\ \cline{2-9} 
-                              & ArUco        & $\homogeneous{C}{E}$                                                                                  & $ 0.0$            & $-0.04$           & $ 0.03$           & $-1.1$          & $-15.0$         & $-167.7$        \\ \cline{2-9} 
-                              & Proposed     & $\homogeneous{C}{E}$                                                                                  & $ 0.0$            & $-0.07$           & $-0.08$           & $ 1.6$          & $ 1.6$          & $-146.7$        \\ \hline
-\multirow{2}{*}{Base-to-base} & Manufactured & $\homogeneous{{B_2}}{{B_1}}$                                                                           & $ 0.0$            & $-0.38$           & $ 0.0$            & $0.0$           & $0.0$           & $ 0.0$          \\ \cline{2-9}
-                              & Handshake    & $\homogeneous{{B_2}}{{B_1}}$                                                                           & $-0.01$           & $-0.37$           & $ 0.0$            & $1.3$           & $0.3$           & $-0.6$          \\ \hline
-Base-to-base via eye-to-hand  & Proposed     & $\homogeneous{{B_2}}{{B_1}} = \homogeneous{C}{{B_2}}^{-1}\,\homogeneous{C}{{B_1}}$ & $-0.01$           & $-0.38$           & $-0.01$           & $1.7$           & $2.2$           & $-5.1$          \\ \hline
-\end{tabular}
-\end{table}
-\end{landscape}
 
 % classical eye in hand (huanyu)
 % mean translation:
@@ -424,8 +429,8 @@ Base-to-base via eye-to-hand  & Proposed     & $\homogeneous{{B_2}}{{B_1}} = \ho
 % euler:
 %  [  2.199 -14.881 167.56 ]
 
-% proposed
 % translation:
+% proposed
 % [-0.04  -0.056  0.085]
 % euler_c_ee:
 % [  0.461   2.212 146.686]
@@ -529,3 +534,21 @@ In this work we present a novel vision-based robot calibration procedure that un
 \paragraph{Future Work} In this work we present a very simplistic registration procedure which already provides highly accurate registration results. These results could immediately be deployed to industrial robots, e.g. for collision avoidance purposes. In the clinical scenario, however, draping is an unsolved issue. Since draping does deform the observed point clouds significantly, the presented method would ultimately fail. However, vast amounts of data and precise localizations were collected as part of the in-vivo study, see \secref{c1:sec:in_vivo_results}. Future work could, therefore, use this data to develop marker-free registration procedures that might function despite draping.
 
 %Improvements could focus on addressing the above, but also on exploring novel concepts. Instead of using a simple \gls{icp} algorithm for registration, one should investigate registration methods that deal well with registering partially observable points clouds. To address the partially observable point cloud issue, one might further move from single shot towards multi shot registration, where multiple robot configurations are observed. This should help improve the calibration accuracy. Research might find that optimal robot configurations exist for performing self-observation in eye-in-hand calibration and also for eye-to-hand calibration. The system might actively sense itself and its surroundings by minimizing uncertainty. Finally, it was omitted in this work that the presented method can also be used to have a robot observe itself and other surrounding robots. Active sensing could be deployed to have an observing robot understand its environment with high precision.
+
+\begin{landscape}
+    \begin{table}[htb]
+    \caption{Calibration results using the proposed method (\secref{c1:sec:proposed_calibration_procedure}) and the baseline methods (\secref{c1:sec:handshake_calibration}). In addition to the calibration baselines, the table also lists manufactured values. The transforms are displayed in terms of translations $t_{x/y/z}$ and rotations in terms of Euler angles $r_{x/y/z}$.}
+    \label{c1:tab:calibration_results}
+    \centering
+    \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+    \hline
+    Calibration Class             & Method       & Transform                                                                                                        & $t_x\,[\text{m}]$ & $t_y\,[\text{m}]$ & $t_z\,[\text{m}]$ & $r_x\,[^\circ]$ & $r_y\,[^\circ]$ & $r_z\,[^\circ]$ \\ \hline
+    \multirow{3}{*}{Eye-in-hand}  & Manufactured & $\homogeneous{C}{E}$                                                                                  & $ 0.0$            & $-0.06$           & $-0.06$           & $ 0.0$          & $-2.9$          & $-145.0$        \\ \cline{2-9} 
+                                  & ArUco        & $\homogeneous{C}{E}$                                                                                  & $ 0.0$            & $-0.04$           & $ 0.03$           & $-1.1$          & $-15.0$         & $-167.7$        \\ \cline{2-9} 
+                                  & Proposed     & $\homogeneous{C}{E}$                                                                                  & $ 0.0$            & $-0.07$           & $-0.08$           & $ 1.6$          & $ 1.6$          & $-146.7$        \\ \hline
+    \multirow{2}{*}{Base-to-base} & Manufactured & $\homogeneous{{B_2}}{{B_1}}$                                                                           & $ 0.0$            & $-0.38$           & $ 0.0$            & $0.0$           & $0.0$           & $ 0.0$          \\ \cline{2-9}
+                                  & Handshake    & $\homogeneous{{B_2}}{{B_1}}$                                                                           & $-0.01$           & $-0.37$           & $ 0.0$            & $1.3$           & $0.3$           & $-0.6$          \\ \hline
+    Base-to-base via eye-to-hand  & Proposed     & $\homogeneous{{B_2}}{{B_1}} = \homogeneous{C}{{B_2}}^{-1}\,\homogeneous{C}{{B_1}}$ & $-0.01$           & $-0.38$           & $-0.01$           & $1.7$           & $2.2$           & $-5.1$          \\ \hline
+    \end{tabular}
+    \end{table}
+\end{landscape}

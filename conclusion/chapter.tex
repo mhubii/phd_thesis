@@ -18,7 +18,7 @@ In the introductory \chapref{chap:introduction}, we analyzed the inevitable rise
 \begin{figure}[tb]
     \centering
     \includegraphics[width=\textwidth]{conclusion/img/draped_ground_truth.pdf}
-    \caption{Render of robots, given the registration results of \secref{c1:sec:in_vivo_results}, overlayed on view in draped stage. Hyperspectral camera robot (left, blue) and drilling robot (right, red), see \figref{c1:fig:in_vivo_setup}. Refers to \secref{con:sec:marker_free}.}
+    \caption{Render of robots, given the registration results of \secref{c1:sec:in_vivo_results}, overlayed on view in draped stage. Note that the camera drifted slightly and the registration was not corrected for in the above, yet. Hyperspectral camera robot (left, blue) and drilling robot (right, red), see \figref{c1:fig:in_vivo_setup}. Refers to \secref{con:sec:marker_free}.}
     \label{con:fig:draped_ground_truth}
 \end{figure}
 The proposed robust \gls{icp} already exhibits convincing registration results and impressive scalability to any industrial serial manipulator with, compared to the differentiable rendering alternatives, little dependencies. In the clinical context, however, draping poses a procedural necessity that renders the proposed approach infeasible. As such, future work should focus on marker-free registration despite draping. To this end, we contribute a dataset of draped robots with ground-truth registrations, see \figref{con:fig:draped_ground_truth}.
@@ -76,7 +76,7 @@ In the spirit of fostering a beginner's mindset, we conclude with a quote from t
 \vspace{5mm}
 \hspace{20mm} --- Shunryu Suzuki~\cite{beginnersmind}
 \end{center}
-\vspace*{\fill}
+% \vspace*{\fill}
 
 As such, we envision this thesis serving as a catalyst, fostering innovation and inspiring fresh perspectives in approaching this complex problem of laparoscopic camera motion automation.
 
