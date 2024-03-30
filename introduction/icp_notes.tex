@@ -17,13 +17,13 @@ $\mathbf{\Theta}_0$: $\mathbf{\Theta}_1 = \mathbf{\Theta}_0 \cdot \exp(\Delta\ma
 
 \paragraph{Mathematical Preliminaries}
 For convenience, we take advantage of the relationship between the 3D cross product, the Lie bracket on SO(3), and the skew-symmetric matrix operator.
-Let $\mathbf{\omega} = [\omega_x, \omega_y, \omega_z]^T$ and $\mathbf{\eta} = [\eta_x, \eta_y, \eta_z]^T$ be two 3D vectors, we have
+Let $\boldsymbol{\omega} = [\omega_x, \omega_y, \omega_z]^T$ and $\boldsymbol{\eta} = [\eta_x, \eta_y, \eta_z]^T$ be two 3D vectors, we have
 \begin{equation}
-[\mathbf{\omega}, \mathbf{\eta}] = \mathbf{\omega} \times \mathbf{\eta} = \mathbf{\omega}_\times \mathbf{\eta}
+[\boldsymbol{\omega}, \boldsymbol{\eta}] = \boldsymbol{\omega} \times \boldsymbol{\eta} = \boldsymbol{\omega}_\times \boldsymbol{\eta}
 \end{equation}
 where
 \begin{equation}
-\mathbf{\omega}_\times =
+\boldsymbol{\omega}_\times =
 \begin{bmatrix}
 0         & -\omega_z & \omega_y \\
 \omega_z  & 0         & -\omega_x \\
@@ -31,15 +31,15 @@ where
 \end{bmatrix}
 \end{equation}
 
-It can be shown that the Lie group exponential in SO(3) admits a closed form through the Rodrigues’ formula. Let us consider $\mathbf{\omega}$ as an element of $\mathfrak{so}(3)$, we now have
+It can be shown that the Lie group exponential in SO(3) admits a closed form through the Rodrigues’ formula. Let us consider $\boldsymbol{\omega}$ as an element of $\mathfrak{so}(3)$, we now have
 \begin{equation}
-\expl(\mathbf{\omega}) = \exp(\mathbf{\omega}_\times) = \id + \frac{\sin(||\mathbf{\omega}||)}{||\mathbf{\omega}||}\mathbf{\omega}_\times + \frac{1-\cos(||\mathbf{\omega}||)}{||\mathbf{\omega}||^2}\mathbf{\omega}_\times^2
+\expl(\boldsymbol{\omega}) = \exp(\boldsymbol{\omega}_\times) = \mathbf{I}^{3\times3} + \frac{\sin(||\boldsymbol{\omega}||)}{||\boldsymbol{\omega}||}\boldsymbol{\omega}_\times + \frac{1-\cos(||\boldsymbol{\omega}||)}{||\boldsymbol{\omega}||^2}\boldsymbol{\omega}_\times^2
 \end{equation}
-which for small values of $||\mathbf{\omega}||$ leads to the following numerically stable approximation
+which for small values of $||\boldsymbol{\omega}||$ leads to the following numerically stable approximation
 \begin{equation}
-\expl(\mathbf{\omega}) \approx \id
-+ (1-\frac{||\mathbf{\omega}||^2}{6}+\frac{||\mathbf{\omega}||^4}{120})\mathbf{\omega}_\times
-+ (\frac{1}{2}-\frac{||\mathbf{\omega}||^2}{24}+\frac{||\mathbf{\omega}||^4}{720}))\mathbf{\omega}_\times^2
+\expl(\boldsymbol{\omega}) \approx \mathbf{I}^{3\times3}
++ (1-\frac{||\boldsymbol{\omega}||^2}{6}+\frac{||\boldsymbol{\omega}||^4}{120})\boldsymbol{\omega}_\times
++ (\frac{1}{2}-\frac{||\boldsymbol{\omega}||^2}{24}+\frac{||\boldsymbol{\omega}||^4}{720}))\boldsymbol{\omega}_\times^2
 \end{equation}
 
 \iffalse
@@ -95,87 +95,87 @@ e_6 &=
 \end{align}
 \fi
 
-Let us consider a 6D vector $u=[\mathbf{\omega};\tau]$ as an element of $\mathfrak{se}(3)$. Its matrix representation is provided by
+Let us consider a 6D vector $\mathbf{u}=[\boldsymbol{\omega};\boldsymbol{\tau}]$ as an element of $\mathfrak{se}(3)$. Its matrix representation is provided by
 \begin{equation}
-u_\dagger =
+  \mathbf{u}_\dagger =
 \begin{bmatrix}
-\mathbf{\omega}_\times & \tau \\
+\boldsymbol{\omega}_\times & \boldsymbol{\tau} \\
 0  & 0
-\end{bmatrix}
+\end{bmatrix} \in \mathbb{R}^{4\times4}
 \end{equation}
 which leads to the following closed-form formula for the Lie group exponential for SE(3):
 \begin{equation}
-\expl(u) = \exp(u_\dagger) =
+\expl(\mathbf{u}) = \exp(\mathbf{u}_\dagger) =
 \begin{bmatrix}
-\expl(\mathbf{\omega}) & L(\mathbf{\omega})\tau \\
+\expl(\boldsymbol{\omega}) & L(\boldsymbol{\omega})\boldsymbol{\tau} \\
 0  & 1
 \end{bmatrix}
 \end{equation}
 where
 \begin{equation}
-L(\mathbf{\omega}) = \id
-+ \frac{1-\cos(||\mathbf{\omega}||)}{||\mathbf{\omega}||^2}\mathbf{\omega}_\times
-+ \frac{||\mathbf{\omega}||-\sin(||\mathbf{\omega}||)}{||\mathbf{\omega}||^3}\mathbf{\omega}_\times^2
+L(\boldsymbol{\omega}) = \mathbf{I}^{3\times3}
++ \frac{1-\cos(||\boldsymbol{\omega}||)}{||\boldsymbol{\omega}||^2}\boldsymbol{\omega}_\times
++ \frac{||\boldsymbol{\omega}||-\sin(||\boldsymbol{\omega}||)}{||\boldsymbol{\omega}||^3}\boldsymbol{\omega}_\times^2
 \end{equation}
-where a Taylor expansion should again be used for numerical stability if $||\mathbf{\omega}||$ is small:
+where a Taylor expansion should again be used for numerical stability if $||\boldsymbol{\omega}||$ is small:
 \begin{equation}
-L(\mathbf{\omega}) \approx \id
-+ (\frac{1}{2}-\frac{||\mathbf{\omega}||^2}{24}+\frac{||\mathbf{\omega}||^4}{720})\mathbf{\omega}_\times
-+ (\frac{1}{6}-\frac{||\mathbf{\omega}||^2}{120}+\frac{||\mathbf{\omega}||^4}{5040})\mathbf{\omega}_\times^2
+L(\boldsymbol{\omega}) \approx \mathbf{I}^{3\times3}
++ (\frac{1}{2}-\frac{||\boldsymbol{\omega}||^2}{24}+\frac{||\boldsymbol{\omega}||^4}{720})\boldsymbol{\omega}_\times
++ (\frac{1}{6}-\frac{||\boldsymbol{\omega}||^2}{120}+\frac{||\boldsymbol{\omega}||^4}{5040})\boldsymbol{\omega}_\times^2
 \end{equation}
 
 \paragraph{First-order Linearization of the Action of the Exponential in $\mathfrak{se}(3)$}
-Let $p=[\tilde{p};1]$ be a 3D point in homogeneous coordinates. We consider an infinitesimal element $\Delta u=[\Delta \mathbf{\omega};\Delta \tau]$ of $\mathfrak{se}(3)$ and consider the corresponding action on $p$:
+Let $\mathbf{p}=[\tilde{\mathbf{p}};1]$ be a 3D point in homogeneous coordinates. We consider an infinitesimal element $\Delta \mathbf{u}=[\Delta \boldsymbol{\omega};\Delta \boldsymbol{\tau}]$ of $\mathfrak{se}(3)$ and consider the corresponding action on $p$:
 \begin{equation}
 \begin{split}
-\expl(\Delta u)p &\approx (\id+\Delta u_\dagger)p = p +
+\expl(\Delta \mathbf{u})\mathbf{p} &\approx (\mathbf{I}^{4\times4}+\Delta \mathbf{u}_\dagger)\mathbf{p} = \mathbf{p} +
 \begin{bmatrix}
-\Delta \mathbf{\omega}_\times & \Delta \tau \\
+\Delta \boldsymbol{\omega}_\times & \Delta \boldsymbol{\tau} \\
 0  & 0
-\end{bmatrix} p
-= p +
+\end{bmatrix} \mathbf{p}
+= \mathbf{p} +
 \begin{bmatrix}
-\Delta \mathbf{\omega}_\times \tilde{p}+\Delta \tau \\
+\Delta \boldsymbol{\omega}_\times \tilde{\mathbf{p}}+\Delta \boldsymbol{\tau} \\
 0
 \end{bmatrix} \\
-&= p +
+&= \mathbf{p} +
 \begin{bmatrix}
-\Delta \mathbf{\omega} \times \tilde{p}+\Delta \tau \\
+\Delta \boldsymbol{\omega} \times \tilde{\mathbf{p}}+\Delta \boldsymbol{\tau} \\
 0
 \end{bmatrix}
-= p +
+= \mathbf{p} +
 \begin{bmatrix}
--\tilde{p} \times \Delta \mathbf{\omega} + \Delta \tau \\
+-\tilde{\mathbf{p}} \times \Delta \boldsymbol{\omega} + \Delta \boldsymbol{\tau} \\
 0
 \end{bmatrix} \\
-&= p +
+&= \mathbf{p} +
 \begin{bmatrix}
--\tilde{p}_\times & \id \\
+-\tilde{\mathbf{p}}_\times & \mathbf{I}^{3\times3} \\
 0 & 0
-\end{bmatrix} \Delta u
-= p + D(p)\Delta u
+\end{bmatrix} \Delta \mathbf{u}
+= \mathbf{p} + \mathbf{D}(\mathbf{p})\Delta \mathbf{u}
 \end{split}
 \end{equation}
 where
 \begin{equation}
-D(p) = 
+\mathbf{D}(\mathbf{p}) = 
 \begin{bmatrix}
--\tilde{p}_\times & \id \\
+-\tilde{\mathbf{p}}_\times & \mathbf{I}^{3\times3} \\
 0 & 0
-\end{bmatrix}
+\end{bmatrix} \in \mathbb{R}^{4\times6}
 \end{equation}
 
 \paragraph{Lie Algebra Linearization of the Point-to-plane Objective}
 Plugging this in the original cost function we get the following linearization:
 \begin{equation}
 \begin{split}
-\sum_i & \Big(\mathbf{n}_i^T \mathbf{\Theta}_0 \big(\mathbf{p}_i + D(\mathbf{p}_i)\Delta\mathbf{\Theta} \big) - \mathbf{n}_i^T \mathbf{q}_i\Big)^2
+\sum_i & \Big(\mathbf{n}_i^T \mathbf{\Theta}_0 \big(\mathbf{p}_i + \mathbf{D}(\mathbf{p}_i)\Delta\mathbf{\Theta} \big) - \mathbf{n}_i^T \mathbf{q}_i\Big)^2
 \\
-&= \sum_i \Big(\mathbf{n}_i^T \mathbf{\Theta}_0 D(\mathbf{p}_i)\Delta\mathbf{\Theta} + \mathbf{n}_i^T \mathbf{\Theta}_0 \mathbf{p}_i - \mathbf{n}_i^T \mathbf{q}_i\Big)^2
+&= \sum_i \Big(\mathbf{n}_i^T \mathbf{\Theta}_0 \mathbf{D}(\mathbf{p}_i)\Delta\mathbf{\Theta} + \mathbf{n}_i^T \mathbf{\Theta}_0 \mathbf{p}_i - \mathbf{n}_i^T \mathbf{q}_i\Big)^2
 \end{split}
 \end{equation}
-Denoting $a_i = \mathbf{n}_i^T \mathbf{\Theta}_0 D(\mathbf{p}_i)$, $\mathbf{A}=[a_0;\ldots;a_N]$,
-$b_i = \mathbf{n}_i^T (\mathbf{q}_i - \mathbf{\Theta}_0 \mathbf{p}_i)$, and $b=[b_0;\ldots;b_N]$, we end up with a standard linear least squares problem:
+Denoting $\mathbf{a}_i = \mathbf{n}_i^T \mathbf{\Theta}_0 \mathbf{D}(\mathbf{p}_i)$, $\mathbf{A}=[\mathbf{a}_0;\ldots;\mathbf{a}_N]$,
+$b_i = \mathbf{n}_i^T (\mathbf{q}_i - \mathbf{\Theta}_0 \mathbf{p}_i)$, and $\mathbf{B}=[b_0;\ldots;b_N]$, we end up with a standard linear least squares problem:
 \begin{equation}
 ||\mathbf{A} \Delta\mathbf{\Theta} - \mathbf{B}||^2
 \end{equation}
@@ -195,11 +195,11 @@ and relying on a Cholesky decomposition:
 
 Note that by expressing $\mathbf{A}$ and $\mathbf{B}$ without homogeneous coordinates, we get:
 \begin{equation}
-a_i = [-\tilde{n}_i^T R_0 {{\tilde{p}}_{i\times}}, \tilde{n}_i^T R_0]
+\mathbf{a}_i = [-\tilde{\mathbf{n}}_i^T \mathbf{R}_0 {{\tilde{\mathbf{p}}}_{i\times}}, \tilde{\mathbf{n}}_i^T \mathbf{R}_0] \in \mathbb{R}^{1\times6}
 \end{equation}
 and
 \begin{equation}
-b_i = \tilde{n}_i^T (\tilde{q}_i - R_0 \tilde{p}_i - T_0)
+b_i = \tilde{\mathbf{n}}_i^T (\tilde{\mathbf{q}}_i - \mathbf{R}_0 \tilde{\mathbf{p}}_i - T_0) \in \mathbb{R}
 \end{equation}
 
 \paragraph{Robust Formulation}
@@ -234,7 +234,7 @@ Using the identity loss function $\rho(z)=z$ leads to the original least-squares
 \end{equation}
 or equivalently if we start from a given estimate in the above Lie group setting:
 \begin{equation}
-\sum_i \rho_k\Big(a_i \Delta\mathbf{\Theta} - b_i\Big)
+\sum_i \rho_k\Big(\mathbf{a}_i \Delta\mathbf{\Theta} - b_i\Big)
 \end{equation}
 %
 Using the square loss function $\rho_\kappa(z)=z^2$ leads to the original least-squares problem. A classical robust alternatives is the Huber loss
@@ -252,11 +252,11 @@ The latter is referred to as the Triggs correction in \url{http://ceres-solver.o
 Here, for simplicity we thus restrict ourselves to standard \gls{irls}.
 Given a choice of scaling factor $\kappa$ and an estimate of the parameters $\mathbf{\Theta}$, the robust problem is converted to a weighted least-squares:
 \begin{equation}
-\sum_i \mathbf{\omega}_\kappa(b_i) ||a_i \Delta\mathbf{\Theta} - b_i||^2
+\sum_i \boldsymbol{\omega}_\kappa(b_i) ||\mathbf{a}_i \Delta\mathbf{\Theta} - b_i||^2
 \end{equation}
-with $\mathbf{\omega}_\kappa(z) = \rho'_\kappa(z) / z$ being the weight function associated with the Huber loss:
+with $\boldsymbol{\omega}_\kappa(z) = \rho'_\kappa(z) / z$ being the weight function associated with the Huber loss:
 \begin{equation}
-\mathbf{\omega}_\kappa(z) =
+\boldsymbol{\omega}_\kappa(z) =
 \begin{cases}
   1 &\texttt{ if } |z| <= \kappa \\
   \kappa / |z|  &\texttt{ otherwise }
@@ -267,7 +267,7 @@ This leads us to the following weighted normal equation:
 \begin{equation}
 (\mathbf{A}^T W \mathbf{A}) \Delta\mathbf{\Theta} = \mathbf{A}^T \mathbf{W} \mathbf{B}
 \end{equation}
-where $\mathbf{W} = \diag\big(\mathbf{\omega}_\kappa(b_0), \ldots, \mathbf{\omega}_\kappa(b_N)\big)$.
+where $\mathbf{W} = \diag\big(\boldsymbol{\omega}_\kappa(b_0), \ldots, \boldsymbol{\omega}_\kappa(b_N)\big)$.
 
 One aspect we haven't addressed yet it the choice of $\kappa$ for the Huber loss. As mentioned earlier, a typical choice is to use $\kappa=1.345\sigma$. We are thus left with the need to robustly estimate the standard deviation of the residuals. This is typically done through a \gls{mad}:
 \begin{equation}
