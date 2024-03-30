@@ -267,8 +267,7 @@ Indeed, some companies, e.g. Moon Surgical (Maestro\textsuperscript{\textregiste
 \section{Spatial Awareness in Robotic Laparoscopy}
 \label{in:sec:spatial_awareness_in_robotic_laparoscopy} 
 
-\secref{in:sec:enhancing_current_systems} outlined the need for improved spatial awareness in robotic laparoscopy, i.e. knowing the robot's and the laparoscope's locations. It is a prerequisite for automation and facilitates improved clinical workflow for reduced surgery time and surgeon convenience but also adds clinically relevant workspace knowledge. Since we are interested in adding spatial awareness through low cost sensors, i.e. cameras, in this section we will initially summarize camera intrinsic parameter calibration in \secref{in:sec:camera_intrinsic_calibration}, which is a prerequisite for all that follows. Then, the concepts of eye-in-hand and eye-to-hand calibration are discussed in \secref{in:sec:eye_in_to_hand}, see \figref{in:fig:coordinate_frames}. Next, we evaluate the clinical workflow implications for these types of calibrations in \secref{in:sec:unified_calibration}, and finally we propose novel methods for marker-free calibration that do not alter the clinical workflow \secref{in:sec:unified_calibration}.
-\label{in:sec:eye_in_to_hand}
+\secref{in:sec:enhancing_current_systems} outlined the need for improved spatial awareness in robotic laparoscopy, i.e. knowing the robot's and the laparoscope's locations. It is a prerequisite for automation and facilitates improved clinical workflow for reduced surgery time and surgeon convenience but also adds clinically relevant workspace knowledge. Since we are interested in adding spatial awareness through low cost sensors, i.e. cameras, in this section we will initially summarize camera intrinsic parameter calibration in \secref{in:sec:camera_intrinsic_calibration}, which is a prerequisite for all that follows. Then, the concepts of eye-in-hand and eye-to-hand calibration are discussed in \secref{in:sec:eye_in_to_hand_calibration}, see \figref{in:fig:coordinate_frames}. Next, we evaluate the clinical workflow implications for these types of calibrations in \secref{in:sec:implications_of_calibrations_to_workflow}, and finally we propose novel methods for marker-free calibration that do not alter the clinical workflow \secref{in:sec:marker_free_unified_calibration}.
 
 \begin{figure}[tb]
     \centering
@@ -291,38 +290,38 @@ Indeed, some companies, e.g. Moon Surgical (Maestro\textsuperscript{\textregiste
 
 \subsection{Camera Intrinsic Parameter Calibration}
 \label{in:sec:camera_intrinsic_calibration}
-Camera intrinsic parameters describe how 3D points are projected onto the observed 2D image plane. This image formation process is crucial for relating 3D points to 2D observations and vice-versa. Let $p_{_W}$ be a 3D point expressed in homogeneous coordinates with respect to the world frame $W$, $p_{_W} = \begin{bmatrix}
-    x_{_W} & 1
-\end{bmatrix}^T$, $x_{_W} = \begin{pmatrix}
-    x_{_W} & y_{_W} & z_{_W}
-\end{pmatrix}^T$. It is projected into the camera coordinate frame $C$ via a homogeneous transform $\homogeneous{C}{W}$ as
+Camera intrinsic parameters describe how 3D points are projected onto the observed 2D image plane. This image formation process is crucial for relating 3D points to 2D observations and vice-versa. Let ${}^W\mathbf{p}$ be a 3D point expressed in homogeneous coordinates with respect to the world frame $W$, ${}^W\mathbf{p} = \begin{bmatrix}
+    {}^W\mathbf{x} & 1
+\end{bmatrix}^T$, ${}^W\mathbf{x} = \begin{bmatrix}
+    {}^Wx & {}^Wy & {}^Wz
+\end{bmatrix}^T$. It is projected into the camera coordinate frame $C$ via a homogeneous transform $\homogeneous{C}{W}$ as
 
 \begin{equation}
-    p_{_C} = \homogeneous{C}{W} p_{_W}.
+    {}^C\mathbf{p} = \homogeneous{C}{W} {}^W\mathbf{p}.
 \end{equation}
 
-Under the pinhole camera model, the point $p_{_C}$ is then projected onto the image plane via the intrinsic camera parameters $K$
+Under the pinhole camera model, the point ${}^C\mathbf{p}$ is then projected onto the image plane via the intrinsic camera parameters $\mathbf{K}$
 
 % e.g. https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html
 % https://docs.opencv.org/4.x/d9/d0c/group__calib3d.html
 \begin{equation}
-    K = \begin{bmatrix}
+    \mathbf{K} = \begin{bmatrix}
         f_x & 0 & c_x \\
         0 & f_y & c_y \\
         0 & 0 & 1 \\
     \end{bmatrix},
 \end{equation}
 
-containing the focal lengths $f_{x/y}$, and the principal point $c_{x/y}$. Thus, the observed point in homogeneous image coordinates $u = \begin{pmatrix}
+containing the focal lengths $f_{x/y}$, and the principal point $c_{x/y}$. Thus, the observed point in homogeneous image coordinates $\mathbf{u} = \begin{bmatrix}
     u & v & 1
-\end{pmatrix}^T$ is obtained through
+\end{bmatrix}^T$ is obtained through
 
 \begin{equation}
-    su = K P \homogeneous{C}{W} p_{_W},
+    s\mathbf{u} = \mathbf{K} \mathbf{P} \homogeneous{C}{W} {}^W\mathbf{p},
 \end{equation}
 
-With $P = \begin{bmatrix}
-    I^{3\times3} &  0
+With $\mathbf{P} = \begin{bmatrix}
+    \mathbf{I}^{3\times3} &  \mathbf{0}^{3\times1}
 \end{bmatrix}$, simply being a projection matrix, and $s$ being a scalar usually set to $s = z_{_C}$ when $z_{_C} \neq 0$. Therefore yielding
 
 \begin{equation}
@@ -375,13 +374,13 @@ and
     \end{bmatrix}.
 \end{equation}
 
-Therein, $k_i$ are radial distortion coefficients, $p_i$ tangential distortion coefficients, and $s_i$ then prism coefficients. A camera calibration is performed through observing a pattern of known dimensions, e.g. a checkerboard, from various angles and positions, and optimizing for the model parameters, i.e. camera intrinsic parameters and distortion coefficients, such that the known projected points equal the observed and undistorted points.
+Therein, $k_i$ are radial distortion coefficients, $p_i$ tangential distortion coefficients, and $s_i$ thin prism coefficients. A camera calibration is performed through observing a pattern of known dimensions, e.g. a checkerboard, from various angles and positions, and optimizing for the model parameters, i.e. camera intrinsic parameters and distortion coefficients, such that the known projected points equal the observed and undistorted points.
 
 \subsection{Eye-in-hand and Eye-to-hand Calibration}
 \label{in:sec:eye_in_to_hand_calibration}
 An overview of eye-in-hand and eye-to-hand setups is shown in \figref{in:fig:coordinate_frames}. Eye-in-hand calibration refers to the process of finding the camera frame $C$ to robot end-effector frame $E$ transformation $\homogeneous{E}{C}$ when the camera is attached to the robot's end-effector. Eye-to-hand calibration refers to finding the camera frame $C$ to robot base frame $B$ transformation $\homogeneous{B}{C}$ when the camera is statically placed next to the robot. A prerequisite for this type of calibration is a well known camera model, as was described in \secref{in:sec:camera_intrinsic_calibration}.
 
-The calibration is performed by collecting target to camera $\homogeneous{T}{C}$ and robot base to end-effector transformations $\homogeneous{E}{B}$. Given undistorted camera images, and the camera intrinsic parameters, refer \secref{in:sec:camera_intrinsic_calibration}, target to camera transforms $\homogeneous{T}{C}$ can e.g. be obtained through solving a \gls{pnp} problem, where points are commonly obtained through ArUco markers, see \figref{in:fig:eye_in_hand_setup}. The base to end-effector transformation $\homogeneous{E}{B}$ can be obtained through robot kinematics.
+The calibration is performed by collecting camera to target $\homogeneous{T}{C}$ and end-effector to robot base transformations $\homogeneous{E}{B}$. Given undistorted camera images, and the camera intrinsic parameters, refer \secref{in:sec:camera_intrinsic_calibration}, camera to target transforms $\homogeneous{T}{C}$ can e.g. be obtained through solving a \gls{pnp} problem, where points are commonly obtained through ArUco markers, see \figref{in:fig:eye_in_hand_setup}. The base to end-effector transformation $\homogeneous{E}{B}$ can be obtained through robot kinematics.
 \begin{figure}[htb]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
@@ -397,7 +396,7 @@ The calibration is performed by collecting target to camera $\homogeneous{T}{C}$
     \caption{Eye-in-hand calibration example in a realistic scenario. Used hardware includes: Storz VITOM Telescope $0^\circ$ w Integ. Illuminator., Storz TH 102 H3-Z FI camera head, and KUKA \gls{lbr} Med7 R800. Refers to \secref{in:sec:eye_in_to_hand_calibration}.}
     \label{in:fig:eye_in_hand_setup}
 \end{figure}
-In both, the eye-in-hand and eye-to-hand scenario, it is known that the transformation from end-effector to camera $\homogeneous{C}{E}$ and end-effector to target $\homogeneous{E}{T}$, respectively, remains unchanged. Therefore, recording transforms, e.g. for the eye-in-hand setup, in two configurations lets one determine
+In both, the eye-in-hand and eye-to-hand scenario, it is known that the transformation from end-effector to camera $\homogeneous{C}{E}$ and target to end-effector $\homogeneous{E}{T}$, respectively, remains unchanged. Therefore, recording transforms, e.g. for the eye-in-hand setup, in two configurations lets one determine
 
 \begin{equation}
     \homogeneous{B}{E}^{1}\homogeneous{E}{C}\homogeneous{C}{T}^{1} = \homogeneous{B}{E}^{2}\homogeneous{E}{C}\homogeneous{C}{T}^{2},
@@ -409,7 +408,7 @@ which can be re-arranged as
     \homogeneous{E}{B}^{2}\homogeneous{B}{E}^{1}\homogeneous{E}{C} = \homogeneous{E}{C}\homogeneous{C}{T}^{2}\homogeneous{T}{C}^{1},
 \end{equation}
 
-thus yielding an equation of the form $AX = XB$ with $A=\homogeneous{E}{B}^{2}\homogeneous{B}{E}^{1}$ and $B=\homogeneous{C}{T}^{2}\homogeneous{T}{C}^{1}$. Solving for $X=\homogeneous{E}{C}$ provides the desired eye-in-hand transformation. Similarly, a system of the form $AX = XB$ can be derived for the eye-to-hand setup. A system of this form can e.g. be solved using~\cite{tsai1989new, park1994robot, Horaud95}.
+thus yielding an equation of the form $\mathbf{A}\mathbf{X} = \mathbf{X}\mathbf{B}$ with $\mathbf{A}=\homogeneous{E}{B}^{2}\homogeneous{B}{E}^{1}$ and $\mathbf{B}=\homogeneous{C}{T}^{2}\homogeneous{T}{C}^{1}$. Solving for $X=\homogeneous{E}{C}$ provides the desired eye-in-hand transformation. Similarly, a system of the form $\mathbf{A}\mathbf{X} = \mathbf{X}\mathbf{B}$ can be derived for the eye-to-hand setup. A system of this form can e.g. be solved using~\cite{tsai1989new, park1994robot, Horaud95}.
 
 % good video: https://www.youtube.com/watch?v=xQ79ysnrzUk
 % https://docs.opencv.org/4.5.4/d9/d0c/group__calib3d.html#gaebfc1c9f7434196a374c382abf43439b
@@ -419,6 +418,7 @@ thus yielding an equation of the form $AX = XB$ with $A=\homogeneous{E}{B}^{2}\h
 Having a solid understanding of the calibrations that are required for this thesis, we will now investigate the question of applicability within the clinical context. When applied within the clinical scenario, e.g. for collision avoidance or autonomous control, as was explained in \secref{in:sec:enhancing_current_systems}, it is of utmost importance that the clinical workflow must not be disturbed. In this section, implications of the different calibrations to the clinical workflow will be discussed. Following that, the idea of marker-free calibration is introduced, and it is explained how the introduced clinical workflow constraints could be resolved.
 
 \subsubsection{Implications of Calibrations to the Clinical Workflow}
+\label{in:sec:implications_of_calibrations_to_workflow}
 As discussed in the above, \secref{in:sec:camera_intrinsic_calibration} and \secref{in:sec:eye_in_to_hand_calibration}, calibrations require calibration targets. In current practise, the necessity of a calibration target would add overhead to the clinical workflow. Calibrations also depend on the type of camera used, which refers back to \secref{in:sec:automation} - Robot-free Surgeries. Standard laparoscopic camera heads are detachable for sterilization of the laparoscope and provide an adjustable focus. Both actions potentially alter the camera intrinsic parameters and make re-calibration necessary. For the remainder of this thesis, we will therefore assume that the focal length stays fixed in a range appropriate for surgery. Furthermore, we will assume that the camera head does not rotate about the optics. This assumption is, however, not as crucial for the camera intrinsic calibration, since surgery optics are of extremely high quality with very little distortion. It is more relevant for eye-in-hand calibrations, where the obtained camera pose is crucial for control. For any external camera, these assumptions do not need to be made and they are allowed to move freely.
 
 The implications of calibrations to the clinical workflow refer back to \figref{in:fig:advancing_robotic_laparoscopy}, where additional operation time and surgeon convenience were identified as vital aspects for the shortcomings and advantages of \gls{rmis}, respectively. An overview of the implications of the different calibrations is provided in \tabref{in:tab:calibrations}.
