@@ -151,12 +151,12 @@ The following two sections elaborate the experiments we conduct to investigate t
 \subsection{Camera Motion Estimator}
 \label{c4:sec:camera_motion_estimator}
 \subsubsection{Camera Motion Distribution} 
-To extract the camera motion distribution, we run the camera motion estimator from~\cite{huber2022deep} with a ResNet-34 backbone over all datasets from \secref{c4:sec:data_and_data_preparation}. We map the estimated four point homographies to up/down/left/right/zoom-in/zoom-out for interpretability. Left/right/up/down corresponds to all four point displacements $\Delta\mathbf{uv}$ consistently pointing left/right/{\allowbreak}up/down respectively.
+To extract the camera motion distribution, we run the camera motion estimator of \chapref{chap:camera_motion_extraction} with a ResNet-34 backbone over all datasets from \secref{c4:sec:data_and_data_preparation}. We map the estimated four point homographies to up/down/left/right/zoom-in/zoom-out for interpretability. Left/right/up/down corresponds to all four point displacements $\Delta\mathbf{uv}$ consistently pointing left/right/{\allowbreak}up/down respectively.
 Zoom-in/out corresponds to all four point displacements $\Delta\mathbf{uv}$ consistently pointing inwards/outwards. Rotation left corresponds to all four point displacements pointing up right, bottom right, and so on. Same for rotation right. Camera motion is defined static if it lies below the standard deviation in the dataset. The frame increment is set to $0.25\,\text{s}$, corresponding to $\Delta n = 5$ for the $25\,\text{fps}$ videos.
 
 \subsubsection{Online Camera Motion Estimation}
 \label{c4:sec:online_camera_motion_estimation}
-Since the camera motion estimator is executed online, memory footprint and computational efficiency are of importance. Therefore, we evaluate the estimator from~\cite{huber2022deep} with a ResNet-34 backbone, \gls{surf} \& \gls{ransac}, and \gls{loftr}~\cite{sun2021loftr} \& \gls{ransac}. Each estimator is run 1000 times on a single image sequence of length $N+M=15$ with an NVIDIA GeForce RTX 2070 \gls{gpu} and an Intel(R) Core(TM) i7-9750H \gls{cpu} @ 2.60GHz.
+Since the camera motion estimator is executed online, memory footprint and computational efficiency are of importance. Therefore, we evaluate the estimator of \chapref{chap:camera_motion_extraction} with a ResNet-34 backbone, \gls{surf} \& \gls{ransac}, and \gls{loftr}~\cite{sun2021loftr} \& \gls{ransac}. Each estimator is run 1000 times on a single image sequence of length $N+M=15$ with an NVIDIA GeForce RTX 2070 \gls{gpu} and an Intel(R) Core(TM) i7-9750H \gls{cpu} @ 2.60GHz.
 
 \subsection{Camera Motion Predictor}
 \label{c4:sec:camera_motion_predictor_experiments}
@@ -368,7 +368,7 @@ AutoLaparo               & $5.9e4$                                              
 
 \section{Conclusion and Future Work}
 %In this work, we are the first
-To the best of our knowledge, this work is the first
+\paragraph{Results Discussion} To the best of our knowledge, this work is the first
 to demonstrate that camera motion can indeed be learned from 
 %publicly available
 retrospective
@@ -378,7 +378,7 @@ with no manual annotation.
 Self-supervision is achieved 
 by harvesting image-motion correspondences using a camera motion estimator, see \figref{c4:fig:training_pipeline}. The camera motion predictor is shown to generate statistically significant better predictions over a baseline in \tabref{c4:tab:camera_motion_prediction} as measured using pseudo-ground-truth and on multi-class manually annotated motion labels from AutoLaparo in \figref{c4:fig:autolapato_results}. An exemplary image sequence in \figref{c4:fig:predicted_camera_motion_sequence} demonstrates successful camera motion prediction on HeiChole. These results were achieved through the key finding from \figref{c4:fig:camera_motion_distribution}, which states that most image sequences, i.e. static ones, are irrelevant to learning camera motion. Consequentially, we contribute a novel importance sampling method, as described in \secref{c4:sec:video_database_and_importance_sampling}. Finally, we hope that our open-source commitment will help the community explore this area of research further.
 
-A current limitations of this work is the preview horizon $M$ of length $1$. One might want to extend it for model predictive control. Furthermore, to improve explainability to the surgeon, but also to improve the prediction in general, it would be beneficial to include auxiliary tasks, e.g. tool and organ segmentation, surgical phase recognition, and audio. There also exist limitations for the camera motion estimator. The utilized camera motion estimator is efficient and isolates object motion well from camera motion, but is limited to relatively small camera motions. Improving the camera motion estimator to large camera motions would help increase the preview horizon $M$.
+\paragraph{Limitations} A current limitations of this work is the preview horizon $M$ of length $1$. One might want to extend it for model predictive control. Furthermore, to improve explainability to the surgeon, but also to improve the prediction in general, it would be beneficial to include auxiliary tasks, e.g. tool and organ segmentation, surgical phase recognition, and audio. There also exist limitations for the camera motion estimator. The utilized camera motion estimator is efficient and isolates object motion well from camera motion, but is limited to relatively small camera motions. Improving the camera motion estimator to large camera motions would help increase the preview horizon $M$.
 
-In future work, we will execute this model in a real setup for investigating transferability. This endeavor is backed by~\cite{huber2021homographybased}, which demonstrates how the learned homography could immediately be deployed on a robotic laparoscope holder. It  might proof necessary to fine-tune the presented policy through \gls{rlhf}.
+\paragraph{Future Work} In future work, we will execute this model in a real setup for investigating transferability. This endeavor is backed by \chapref{chap:robotic_endoscope}, which demonstrates how the learned homography could immediately be deployed on a robotic laparoscope holder. It  might proof necessary to fine-tune the presented policy through \gls{rlhf}.
 
