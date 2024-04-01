@@ -126,7 +126,7 @@ L(\boldsymbol{\omega}) \approx \mathbf{I}^{3\times3}
 
 \paragraph{First-order Linearization of the Action of the Exponential in $\mathfrak{se}(3)$}
 Let $\mathbf{p}=[\tilde{\mathbf{p}};1]$ be a 3D point in homogeneous coordinates. We consider an infinitesimal element $\Delta \mathbf{u}=[\Delta \boldsymbol{\omega};\Delta \boldsymbol{\tau}]$ of $\mathfrak{se}(3)$ and consider the corresponding action on $p$:
-\begin{equation}
+\begin{equation}\label{eq:lieactionlinearisation}
 \begin{split}
 \expl(\Delta \mathbf{u})\mathbf{p} &\approx (\mathbf{I}^{4\times4}+\Delta \mathbf{u}_\dagger)\mathbf{p} = \mathbf{p} +
 \begin{bmatrix}
@@ -166,7 +166,7 @@ where
 \end{equation}
 
 \paragraph{Lie Algebra Linearization of the Point-to-plane Objective}
-Plugging this in the original cost function we get the following linearization:
+Plugging \eqref{eq:lieactionlinearisation} in the original point-to-plane ICP cost function we get the following linearization:
 \begin{equation}
 \begin{split}
 \sum_i & \Big(\mathbf{n}_i^T \mathbf{\Theta}_0 \big(\mathbf{p}_i + \mathbf{D}(\mathbf{p}_i)\Delta\mathbf{\Theta} \big) - \mathbf{n}_i^T \mathbf{q}_i\Big)^2
@@ -176,15 +176,15 @@ Plugging this in the original cost function we get the following linearization:
 \end{equation}
 Denoting $\mathbf{a}_i = \mathbf{n}_i^T \mathbf{\Theta}_0 \mathbf{D}(\mathbf{p}_i)$, $\mathbf{A}=[\mathbf{a}_0;\ldots;\mathbf{a}_N]$,
 $b_i = \mathbf{n}_i^T (\mathbf{q}_i - \mathbf{\Theta}_0 \mathbf{p}_i)$, and $\mathbf{B}=[b_0;\ldots;b_N]$, we end up with a standard linear least squares problem:
-\begin{equation}
+\begin{equation}\label{eq:icplls}
 ||\mathbf{A} \Delta\mathbf{\Theta} - \mathbf{B}||^2
 \end{equation}
-which can be expressed using the pseudo-inverse $\mathbf{A}^{\dagger}$ of $\mathbf{A}$:
+which can conveniently be expressed using the pseudo-inverse $\mathbf{A}^{\dagger}$ of $\mathbf{A}$:
 \begin{equation}
 \Delta\mathbf{\Theta} = \mathbf{A}^{\dagger} \mathbf{B}
 \end{equation}
 
-Given the dimensions of $\mathbf{A}$, $b$ and $\Delta\mathbf{\Theta}$ is probably best solved by using the normal equations
+In practice, given the dimensions of $\mathbf{A}$, $b$ and $\Delta\mathbf{\Theta}$, \eqref{eq:icplls} is probably best solved by using the normal equations
 \begin{equation}
 (\mathbf{A}^T \mathbf{A}) \Delta\mathbf{\Theta} = \mathbf{A}^T \mathbf{B}
 \end{equation}
@@ -248,15 +248,15 @@ Using the square loss function $\rho_\kappa(z)=z^2$ leads to the original least-
 with $\kappa=1.345\sigma$ being advocated to provide robustness while retaining appropriate properties when the errors are Gaussian.
 
 This minimisation can be achieved by a standard \gls{irls} approach~\cite{Green:JRSSB:1984} or by including a second order terms in a slightly more advanced reweighted Gauss-Newton approach as discussed in~\cite{Triggs:VisAlg:2000}.
-The latter is referred to as the Triggs correction in \url{http://ceres-solver.org/nnls_modeling.html#theory}. While elegant, previous work has shown that the Triggs correction does not significantly improve on the standard \gls{irls}~\cite{Zach:ECCV:2014,Zach:ECCV:2018}.
+The latter is referred to as the Triggs correction in \footnote{\url{http://ceres-solver.org/nnls_modeling.html\#theory}}. While elegant, previous work has shown that the Triggs correction does not significantly improve on the standard \gls{irls}~\cite{Zach:ECCV:2014,Zach:ECCV:2018}.
 Here, for simplicity we thus restrict ourselves to standard \gls{irls}.
 Given a choice of scaling factor $\kappa$ and an estimate of the parameters $\mathbf{\Theta}$, the robust problem is converted to a weighted least-squares:
 \begin{equation}
-\sum_i \boldsymbol{\omega}_\kappa(b_i) ||\mathbf{a}_i \Delta\mathbf{\Theta} - b_i||^2
+\sum_i \omega_\kappa(b_i) ||\mathbf{a}_i \Delta\mathbf{\Theta} - b_i||^2
 \end{equation}
-with $\boldsymbol{\omega}_\kappa(z) = \rho'_\kappa(z) / z$ being the weight function associated with the Huber loss:
+with $\omega_\kappa(z) = \rho'_\kappa(z) / z$ being the weight function associated with the Huber loss:
 \begin{equation}
-\boldsymbol{\omega}_\kappa(z) =
+\omega_\kappa(z) =
 \begin{cases}
   1 &\texttt{ if } |z| <= \kappa \\
   \kappa / |z|  &\texttt{ otherwise }
@@ -265,9 +265,9 @@ with $\boldsymbol{\omega}_\kappa(z) = \rho'_\kappa(z) / z$ being the weight func
 
 This leads us to the following weighted normal equation:
 \begin{equation}
-(\mathbf{A}^T W \mathbf{A}) \Delta\mathbf{\Theta} = \mathbf{A}^T \mathbf{W} \mathbf{B}
+(\mathbf{A}^T \mathbf{W} \mathbf{A}) \Delta\mathbf{\Theta} = \mathbf{A}^T \mathbf{W} \mathbf{B}
 \end{equation}
-where $\mathbf{W} = \diag\big(\boldsymbol{\omega}_\kappa(b_0), \ldots, \boldsymbol{\omega}_\kappa(b_N)\big)$.
+where $\mathbf{W} = \diag\big(\omega_\kappa(b_0), \ldots, \omega_\kappa(b_N)\big)$.
 
 One aspect we haven't addressed yet it the choice of $\kappa$ for the Huber loss. As mentioned earlier, a typical choice is to use $\kappa=1.345\sigma$. We are thus left with the need to robustly estimate the standard deviation of the residuals. This is typically done through a \gls{mad}:
 \begin{equation}
