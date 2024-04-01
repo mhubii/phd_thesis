@@ -229,7 +229,7 @@ In this work, and as will be discussed in the following paragraphs, we will be l
 
 \paragraph{Automation in Robot-free Surgeries} Surgery cost might not only be reduced through continuous camera motion, it might also be reduced in procedures where robot assistance is currently not common practise, such as laparoscopic cholecystectomy. In Michigan, United States, e.g., only $7.5\%$ of all laparoscopic cholecystectomies were performed with a robot~\cite{sheetz2020trends}. The numbers are likely lower in other countries. Domains without robot dominance could initially benefit from replacing the camera holder assistant, refer \figref{in:fig:room_setup}, thus reducing the cost drastically and also allowing the assistant to perform more meaningful tasks. This could further remove the communication barrier between surgeon and camera holder, therefore improving surgeon convenience and reducing the operation time. 
 
-Indeed, some companies, e.g. Moon Surgical (Maestro\textsuperscript{\textregistered}), \gls{cmr} Surgical (Versius\textsuperscript{\textregistered}), and Distalmotion (Dexter\textsuperscript{\textregistered}), target this area through their modular systems, even if they are not introducing automation yet. Due to the progressive nature of healthcare~\cite{chatterjee2024advancements}, it is almost certain that automation will grow in importance as robots will be deployed to laparoscopic cholecystectomy. Automating camera motion in domains without robot dominance introduces implications that will become clearer in \secref{in:sec:imitation_learning}. We hold the opinion that any laparoscopic camera motion automation attempt should be compatible with surgeries that are robotic and those that will be robotic or hybrid.
+Indeed, some companies, e.g. Moon Surgical (Maestro\textsuperscript{\textregistered}), \gls{cmr} Surgical (Versius\textsuperscript{\textregistered}), and Distalmotion (Dexter\textsuperscript{\textregistered}), target this area through their modular systems, even if they are not introducing automation yet. Due to the progressive nature of healthcare~\cite{chatterjee2024advancements}, it is almost certain that automation will grow in importance as robots will be deployed to broader laparoscopy. Automating camera motion in domains without robot dominance introduces implications that will become clearer in \secref{in:sec:imitation_learning}. We hold the opinion that any laparoscopic camera motion automation attempt should be compatible with surgeries that are robotic and those that will be robotic or hybrid.
 
 
 
@@ -290,11 +290,11 @@ Indeed, some companies, e.g. Moon Surgical (Maestro\textsuperscript{\textregiste
 
 \subsection{Camera Intrinsic Parameter Calibration}
 \label{in:sec:camera_intrinsic_calibration}
-Camera intrinsic parameters describe how 3D points are projected onto the observed 2D image plane. This image formation process is crucial for relating 3D points to 2D observations and vice-versa. Let ${}^W\mathbf{p}$ be a 3D point expressed in homogeneous coordinates with respect to the world frame $W$, ${}^W\mathbf{p} = \begin{bmatrix}
+Camera intrinsic parameters describe how 3D observed points are projected onto the 2D image plane. This image formation process is crucial for relating 3D points to 2D observations and vice-versa. Let ${}^W\mathbf{p}$ be a 3D point expressed in homogeneous coordinates with respect to the world frame $W$, ${}^W\mathbf{p} = \begin{bmatrix}
     {}^W\mathbf{x} & 1
 \end{bmatrix}^T$, ${}^W\mathbf{x} = \begin{bmatrix}
     {}^Wx & {}^Wy & {}^Wz
-\end{bmatrix}^T$. It is projected into the camera coordinate frame $C$ via a homogeneous transform $\homogeneous{C}{W}$ as
+\end{bmatrix}^T$. It is transformed into the camera coordinate frame $C$ via a homogeneous transform $\homogeneous{C}{W}$ as
 
 \begin{equation}
     {}^C\mathbf{p} = \homogeneous{C}{W} {}^W\mathbf{p}.
