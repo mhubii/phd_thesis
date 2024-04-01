@@ -23,7 +23,7 @@
     \State Compute the robust weights: $\omega_i \gets \omega_{1.345\sigma}(b_i)$
     \State Compute the linear coefficients: $\mathbf{a}_i \gets [-\tilde{\mathbf{n}}_i^T \mathbf{R}_{t,\tau} {{\tilde{\mathbf{p}}}_{i\times}}, \tilde{\mathbf{n}}_i^T \mathbf{R}_{t,\tau}]$
     \State Solve the weighted normal equation:
-    \State \quad $\Delta\mathbf{\Theta} \gets \texttt{chol\_solve}(\mathbf{A}^T W \mathbf{A}, \mathbf{A}^T W \mathbf{A})$
+    \State \quad $\Delta\mathbf{\Theta} \gets \texttt{chol\_solve}(\mathbf{A}^T \mathbf{W} \mathbf{A}, \mathbf{A}^T \mathbf{W} \mathbf{A})$
     \State Update the transformation: $\mathbf{\Theta}_{t,\tau+1} \gets \mathbf{\Theta}_{t,\tau} \cdot \exp(\Delta\mathbf{\Theta})$
     \State $\tau \gets \tau+1$
   \EndWhile
