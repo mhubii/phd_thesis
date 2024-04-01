@@ -282,7 +282,7 @@ In the case of the simple \gls{icp} we perform single instance registration. The
 % \subsubsection{Point-to-plane ICP: A Lie Algebra Formulation}
 \label{c1:sec:robust_icp}
 \input{introduction/icp_algorithm}
-In the case of the robust point-to-plane \gls{icp}, we capture multiple configurations of the robot. An overview of the method is provided in \figref{c1:fig:hydra_registration}. Deviating from the simple \gls{icp}, \secref{c1:sec:simple_icp_registration}, we dilate the instance segmentations $\mathbf{S}_t$ and only keep the boundary regions. Consequentially, we also only keep the boundary regions of the instance segmented point clouds $\mathcal{P} = \{\mathbf{P}_t\}$. Similarly to the simple \gls{icp}, we compute the centroids for the instance segmented point clouds $\{\mathbf{P}_t\}$ as well as for each robot model $\{\mathcal{V}_t\}$. We then use the Kabsch algorithm to find an initial estimate for the camera to base homogeneous transformation through centroid alignment. Given the initial alignment, we then perform a robust point-to-plane registration on a Lie algebra, as further detailed below.
+To guarantee robust convergence of the noisy point cloud to the robot mesh, we further propose a robust point-to-plane \gls{icp} formulation. We capture multiple configurations of the robot. An overview of the method is provided in \figref{c1:fig:hydra_registration}. Deviating from the simple \gls{icp}, \secref{c1:sec:simple_icp_registration}, we dilate the instance segmentations $\mathbf{S}_t$ and only keep the boundary regions. Consequentially, we also only keep the boundary regions of the instance segmented point clouds $\mathcal{P} = \{\mathbf{P}_t\}$. Similarly to the simple \gls{icp}, we compute the centroids for the instance segmented point clouds $\{\mathbf{P}_t\}$ as well as for each robot model $\{\mathcal{V}_t\}$. We then use the Kabsch algorithm to find an initial estimate for the camera to base homogeneous transformation through centroid alignment. Given the initial alignment, we then perform a robust point-to-plane registration on a Lie algebra, as further detailed below.
 %We follow the derivation of \chapref{chap:introduction}, \secref{c1:sec:robust_icp}. A summary for which is provided in \algoref{c1:alg:liep2plan}.
 
 % Tom's notes
@@ -399,17 +399,17 @@ To qualitatively verify the proposed method in a clinically relevant scenario, a
         \caption{Base-to-base registration and mesh overlay onto point cloud.}
         \label{c1:fig:base_to_base}
     \end{subfigure}
-    \caption{Downstream applications of the eye-to-hand calibration. Refers to \secref{c1:sec:ex_vivo_results}. Video are made available online\protect\footnotemark.}
+    \caption{Downstream applications of the eye-to-hand calibration. Refers to \secref{c1:sec:ex_vivo_results}. Videos are made available online\protect\footnotemark.}
     \label{c1:fig:downstream}
 \end{figure}
-
-\footnotetext{\\
-Collision avoidant admittance control: \url{https://drive.google.com/file/d/14IhWxNsEmjGmVBnxTaMYIDQDOuo6Ihak/view?usp=sharing} \\
-Base-to-base registration: \url{https://drive.google.com/file/d/18KFJyxDw6UiQ1N95tSQadi4TyGtBAQvc/view?usp=sharing}}
 
 \paragraph{Quantitative Baseline Results - Simple ICP} Quantitative results are summarized in \tabref{c1:tab:calibration_results}. For the eye-in-hand calibrations, it can be seen that the classical calibration procedure via ArUco markers deviates significantly from the manufactured values. This is most likely caused by noisy samples. In contrast, the proposed method, although single-shot, compares better with the expected manufactured values, which aligns well with the qualitative results in \figref{c1:fig:self_registration}. For the base-to-base calibration, it should be noted that the robots are fixed on a plain surface. The manufactured values can, therefore, be considered accurate. The proposed method yields precise results along the y-axis (distance between the robots), whereas the handshake deviates by $1\,\text{cm}$. The proposed method deviates $1\,\text{cm}$ along the z-axis from the manufactured and the handshake values. This dimension is the perpendicular offset to the surface plane. It can further be seen that the proposed method deviates slightly from the orientations of the handshake calibrations when compared to the manufactured values. The deviations might be caused by insufficiently synchronized images and joint states.
 
 \paragraph{Qualitative Admittance Control - Simple ICP} Given the simple \gls{icp} registration results, refer \secref{c1:sec:simple_icp_registration}, we perform collision avoidant admittance control using the OpTas library~\cite{optas}. The spherical collision avoidance model is depicted in \figref{c1:fig:admittance}. Therein, the spherical constraints are indicated through red spheres are the links. As seen in the accompanying video (\figref{c1:fig:admittance}), the robot can be safely hand-guided in admittance control mode whilst avoiding collision within the spherical constraints.
+
+\footnotetext{\\
+Collision avoidant admittance control: \url{https://drive.google.com/file/d/14IhWxNsEmjGmVBnxTaMYIDQDOuo6Ihak/view?usp=sharing} \\
+Base-to-base registration: \url{https://drive.google.com/file/d/18KFJyxDw6UiQ1N95tSQadi4TyGtBAQvc/view?usp=sharing}}
 
 % single registration: \footnote[1]{Eye-to-hand calibration: \url{https://drive.google.com/file/d/1hN1wlVfnZ5D_zGIQtjSIh_OJwUPOeExR/view?usp=sharing}}
 
@@ -456,7 +456,7 @@ Base-to-base registration: \url{https://drive.google.com/file/d/18KFJyxDw6UiQ1N9
 
 \subsection{In-vivo Results}
 \label{c1:sec:in_vivo_results}
-\begin{figure}[tb]
+\begin{figure}[htb]
     \centering
     \begin{subfigure}[b]{0.49\textwidth}
         \centering
