@@ -21,7 +21,7 @@ In the introductory \chapref{chap:introduction}, we analyzed the inevitable rise
     \caption{Render of robots, given the registration results of \secref{c1:sec:in_vivo_results}, overlayed on view in draped stage. Note that the camera drifted slightly and the registration was not corrected for in the above, yet. Hyperspectral camera robot (left, blue) and drilling robot (right, red), see \figref{c1:fig:in_vivo_setup}. Refers to \secref{con:sec:marker_free}.}
     \label{con:fig:draped_ground_truth}
 \end{figure}
-The proposed robust \gls{icp} already exhibits convincing registration results and impressive scalability to any industrial serial manipulator with, compared to the differentiable rendering alternatives, little dependencies. In the clinical context, however, draping poses a procedural necessity that renders the proposed approach infeasible. As such, future work should focus on marker-free registration despite draping. To this end, we contribute a dataset of draped robots with ground-truth registrations, see \figref{con:fig:draped_ground_truth}.
+The proposed robust \gls{icp} already exhibits convincing registration results and impressive scalability to any industrial serial manipulator with, compared to the differentiable rendering alternatives, little dependencies. In the clinical context, however, draping poses a procedural necessity that renders the proposed approach infeasible. As such, future work should focus on marker-free registration despite draping. To this end, we contribute a dataset of draped robots with ground-truth registrations, see \figref{con:fig:draped_ground_truth}. The collected dataset could be used to train a segmentation model on ignoring the draping, thus facilitating registration via methods, such as differentiable rendering. The learned segmentation model could further be used to alleviate the need for manual segmentation, see \figref{c1:fig:calibration_pipeline}, that is currently required to prompt \gls{sam}, which poses a significant challenge for clinical translation.
 
 \paragraph{Key Takeaways}
 In \chapref{chap:registration}, we address the need for improved spatial awareness with unaltered clinical workflows, \secref{in:sec:spatial_awareness}, \figref{in:fig:advancing_robotic_laparoscopy}. We contribute a novel dataset for first steps towards clinical translation on draped systems. Moving forward, this research should enhance modular systems \secref{in:sec:robot_surgery_platforms}, \tabref{in:tab:systems}, with accompanying benefits such as reduced cost and operation time. Serial manipulators in industrial applications could benefit through the presented approach immediately.
@@ -68,8 +68,9 @@ In the spirit of fostering a beginner's mindset, we conclude with a quote from t
 
 %In the hope, that this thesis forms a beginners perspective, I would thus like to end it with a quote from the book Zen Mind, Beginner's Mind, and hope this thesis is far from :
 
-\topskip0pt
-\vspace*{\fill}
+% \topskip0pt
+% \vspace*{\fill}
+\vspace{5mm}
 \begin{center}
 \textit{In the beginner’s mind there are many possibilities, but in the expert’s there are few.}
 

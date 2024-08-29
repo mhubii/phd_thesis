@@ -97,7 +97,7 @@ To remove status indicator overlays from the laparoscopic videos, which may hind
 
 All three datasets are split into training, validation, and testing datasets. We split the videos by frame count into $80\pm 1\,\%$ training and $20 \pm 1\,\%$ testing. Training and testing videos never intersect. We repeat this step to further split the training dataset into (pure) training and validation datasets.
 
-Due to errors during processing the raw data, we exclude videos $19$, $21$, and $23$ from HeiChole, as well as videos $22$, $40$, $65$, and $80$ from Cholec80. This results in dataset sizes of: Cholec80 - $4.4e6$ frames at $25\,\text{fps}$, HeiChole - $9.5e5$ frames at $25\,\text{fps}$, and AutoLaparo - $7.1e4$ frames at $25\,\text{fps}$.
+Due to errors during processing the raw data, i.e. failure to detect the bounding circle automatically, we exclude videos $19$, $21$, and $23$ from HeiChole, as well as videos $22$, $40$, $65$, and $80$ from Cholec80. This results in dataset sizes of: Cholec80 - $4.4e6$ frames at $25\,\text{fps}$, HeiChole - $9.5e5$ frames at $25\,\text{fps}$, and AutoLaparo - $7.1e4$ frames at $25\,\text{fps}$.
 
 % cholec80 frames: 4422770
 % heichole frames: 948929
