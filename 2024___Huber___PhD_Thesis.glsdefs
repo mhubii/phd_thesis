@@ -1,0 +1,1260 @@
+\glsdefs@newdocentry{ras}%
+{%
+name={RAS},%
+sort={RAS},%
+type={acronym},%
+first={robot assisted surgery\glsspace (RAS)},%
+firstplural={robot assisted surgery\acrpluralsuffix \glsspace (RAS\acrpluralsuffix )},%
+text={RAS},%
+plural={RAS\acrpluralsuffix },%
+description={robot assisted surgery},%
+descriptionplural={robot assisted surgery\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={robot assisted surgery},%
+longplural={robot assisted surgerys},%
+short={RAS},%
+shortplural={RASs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{mis}%
+{%
+name={MIS},%
+sort={MIS},%
+type={acronym},%
+first={minimally invasive surgery\glsspace (MIS)},%
+firstplural={minimally invasive surgery\acrpluralsuffix \glsspace (MIS\acrpluralsuffix )},%
+text={MIS},%
+plural={MIS\acrpluralsuffix },%
+description={minimally invasive surgery},%
+descriptionplural={minimally invasive surgery\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={minimally invasive surgery},%
+longplural={minimally invasive surgerys},%
+short={MIS},%
+shortplural={MISs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{rmis}%
+{%
+name={RMIS},%
+sort={RMIS},%
+type={acronym},%
+first={robot assisted minimally invasive surgery\glsspace (RMIS)},%
+firstplural={robot assisted minimally invasive surgery\acrpluralsuffix \glsspace (RMIS\acrpluralsuffix )},%
+text={RMIS},%
+plural={RMIS\acrpluralsuffix },%
+description={robot assisted minimally invasive surgery},%
+descriptionplural={robot assisted minimally invasive surgery\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={robot assisted minimally invasive surgery},%
+longplural={robot assisted minimally invasive surgerys},%
+short={RMIS},%
+shortplural={RMISs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{phri}%
+{%
+name={pHRI},%
+sort={pHRI},%
+type={acronym},%
+first={physical human-robot interaction\glsspace (pHRI)},%
+firstplural={physical human-robot interaction\acrpluralsuffix \glsspace (pHRI\acrpluralsuffix )},%
+text={pHRI},%
+plural={pHRI\acrpluralsuffix },%
+description={physical human-robot interaction},%
+descriptionplural={physical human-robot interaction\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={physical human-robot interaction},%
+longplural={physical human-robot interactions},%
+short={pHRI},%
+shortplural={pHRIs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{dnn}%
+{%
+name={DNN},%
+sort={DNN},%
+type={acronym},%
+first={deep neural network\glsspace (DNN)},%
+firstplural={deep neural network\acrpluralsuffix \glsspace (DNN\acrpluralsuffix )},%
+text={DNN},%
+plural={DNN\acrpluralsuffix },%
+description={deep neural network},%
+descriptionplural={deep neural network\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={deep neural network},%
+longplural={deep neural networks},%
+short={DNN},%
+shortplural={DNNs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{icp}%
+{%
+name={ICP},%
+sort={ICP},%
+type={acronym},%
+first={iterative closest point\glsspace (ICP)},%
+firstplural={iterative closest point\acrpluralsuffix \glsspace (ICP\acrpluralsuffix )},%
+text={ICP},%
+plural={ICP\acrpluralsuffix },%
+description={iterative closest point},%
+descriptionplural={iterative closest point\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={iterative closest point},%
+longplural={iterative closest points},%
+short={ICP},%
+shortplural={ICPs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{il}%
+{%
+name={IL},%
+sort={IL},%
+type={acronym},%
+first={imitation learning\glsspace (IL)},%
+firstplural={imitation learning\acrpluralsuffix \glsspace (IL\acrpluralsuffix )},%
+text={IL},%
+plural={IL\acrpluralsuffix },%
+description={imitation learning},%
+descriptionplural={imitation learning\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={imitation learning},%
+longplural={imitation learnings},%
+short={IL},%
+shortplural={ILs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{rl}%
+{%
+name={RL},%
+sort={RL},%
+type={acronym},%
+first={reinforcement learning\glsspace (RL)},%
+firstplural={reinforcement learning\acrpluralsuffix \glsspace (RL\acrpluralsuffix )},%
+text={RL},%
+plural={RL\acrpluralsuffix },%
+description={reinforcement learning},%
+descriptionplural={reinforcement learning\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={reinforcement learning},%
+longplural={reinforcement learnings},%
+short={RL},%
+shortplural={RLs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{rlhf}%
+{%
+name={RLHF},%
+sort={RLHF},%
+type={acronym},%
+first={reinforcement learning from human feedback\glsspace (RLHF)},%
+firstplural={reinforcement learning from human feedback\acrpluralsuffix \glsspace (RLHF\acrpluralsuffix )},%
+text={RLHF},%
+plural={RLHF\acrpluralsuffix },%
+description={reinforcement learning from human feedback},%
+descriptionplural={reinforcement learning from human feedback\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={reinforcement learning from human feedback},%
+longplural={reinforcement learning from human feedbacks},%
+short={RLHF},%
+shortplural={RLHFs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{sota}%
+{%
+name={SOTA},%
+sort={SOTA},%
+type={acronym},%
+first={state of the art\glsspace (SOTA)},%
+firstplural={state of the art\acrpluralsuffix \glsspace (SOTA\acrpluralsuffix )},%
+text={SOTA},%
+plural={SOTA\acrpluralsuffix },%
+description={state of the art},%
+descriptionplural={state of the art\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={state of the art},%
+longplural={state of the arts},%
+short={SOTA},%
+shortplural={SOTAs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{rcm}%
+{%
+name={RCM},%
+sort={RCM},%
+type={acronym},%
+first={remote center of motion\glsspace (RCM)},%
+firstplural={remote center of motion\acrpluralsuffix \glsspace (RCM\acrpluralsuffix )},%
+text={RCM},%
+plural={RCM\acrpluralsuffix },%
+description={remote center of motion},%
+descriptionplural={remote center of motion\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={remote center of motion},%
+longplural={remote center of motions},%
+short={RCM},%
+shortplural={RCMs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{com}%
+{%
+name={CoM},%
+sort={CoM},%
+type={acronym},%
+first={center of mass\glsspace (CoM)},%
+firstplural={center of mass\acrpluralsuffix \glsspace (CoM\acrpluralsuffix )},%
+text={CoM},%
+plural={CoM\acrpluralsuffix },%
+description={center of mass},%
+descriptionplural={center of mass\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={center of mass},%
+longplural={center of masss},%
+short={CoM},%
+shortplural={CoMs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{dof}%
+{%
+name={DoF},%
+sort={DoF},%
+type={acronym},%
+first={degrees of freedom\glsspace (DoF)},%
+firstplural={degrees of freedom\acrpluralsuffix \glsspace (DoF\acrpluralsuffix )},%
+text={DoF},%
+plural={DoF\acrpluralsuffix },%
+description={degrees of freedom},%
+descriptionplural={degrees of freedom\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={degrees of freedom},%
+longplural={degrees of freedoms},%
+short={DoF},%
+shortplural={DoFs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{fri}%
+{%
+name={FRI},%
+sort={FRI},%
+type={acronym},%
+first={fast robot interface\glsspace (FRI)},%
+firstplural={fast robot interface\acrpluralsuffix \glsspace (FRI\acrpluralsuffix )},%
+text={FRI},%
+plural={FRI\acrpluralsuffix },%
+description={fast robot interface},%
+descriptionplural={fast robot interface\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={fast robot interface},%
+longplural={fast robot interfaces},%
+short={FRI},%
+shortplural={FRIs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{cad}%
+{%
+name={CAD},%
+sort={CAD},%
+type={acronym},%
+first={computer-aided design\glsspace (CAD)},%
+firstplural={computer-aided design\acrpluralsuffix \glsspace (CAD\acrpluralsuffix )},%
+text={CAD},%
+plural={CAD\acrpluralsuffix },%
+description={computer-aided design},%
+descriptionplural={computer-aided design\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={computer-aided design},%
+longplural={computer-aided designs},%
+short={CAD},%
+shortplural={CADs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{hfr}%
+{%
+name={HFR},%
+sort={HFR},%
+type={acronym},%
+first={high frame rate\glsspace (HFR)},%
+firstplural={high frame rate\acrpluralsuffix \glsspace (HFR\acrpluralsuffix )},%
+text={HFR},%
+plural={HFR\acrpluralsuffix },%
+description={high frame rate},%
+descriptionplural={high frame rate\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={high frame rate},%
+longplural={high frame rates},%
+short={HFR},%
+shortplural={HFRs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{tpc}%
+{%
+name={TPC},%
+sort={TPC},%
+type={acronym},%
+first={thesis progression committee\glsspace (TPC)},%
+firstplural={thesis progression committee\acrpluralsuffix \glsspace (TPC\acrpluralsuffix )},%
+text={TPC},%
+plural={TPC\acrpluralsuffix },%
+description={thesis progression committee},%
+descriptionplural={thesis progression committee\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={thesis progression committee},%
+longplural={thesis progression committees},%
+short={TPC},%
+shortplural={TPCs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{cpu}%
+{%
+name={CPU},%
+sort={CPU},%
+type={acronym},%
+first={central processing unit\glsspace (CPU)},%
+firstplural={central processing unit\acrpluralsuffix \glsspace (CPU\acrpluralsuffix )},%
+text={CPU},%
+plural={CPU\acrpluralsuffix },%
+description={central processing unit},%
+descriptionplural={central processing unit\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={central processing unit},%
+longplural={central processing units},%
+short={CPU},%
+shortplural={CPUs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{gpu}%
+{%
+name={GPU},%
+sort={GPU},%
+type={acronym},%
+first={graphics processing unit\glsspace (GPU)},%
+firstplural={graphics processing unit\acrpluralsuffix \glsspace (GPU\acrpluralsuffix )},%
+text={GPU},%
+plural={GPU\acrpluralsuffix },%
+description={graphics processing unit},%
+descriptionplural={graphics processing unit\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={graphics processing unit},%
+longplural={graphics processing units},%
+short={GPU},%
+shortplural={GPUs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{cmr}%
+{%
+name={CMR},%
+sort={CMR},%
+type={acronym},%
+first={Cambridge Medical Robotics\glsspace (CMR)},%
+firstplural={Cambridge Medical Robotics\acrpluralsuffix \glsspace (CMR\acrpluralsuffix )},%
+text={CMR},%
+plural={CMR\acrpluralsuffix },%
+description={Cambridge Medical Robotics},%
+descriptionplural={Cambridge Medical Robotics\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Cambridge Medical Robotics},%
+longplural={Cambridge Medical Roboticss},%
+short={CMR},%
+shortplural={CMRs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{ros}%
+{%
+name={ROS},%
+sort={ROS},%
+type={acronym},%
+first={robot operating system\glsspace (ROS)},%
+firstplural={robot operating system\acrpluralsuffix \glsspace (ROS\acrpluralsuffix )},%
+text={ROS},%
+plural={ROS\acrpluralsuffix },%
+description={robot operating system},%
+descriptionplural={robot operating system\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={robot operating system},%
+longplural={robot operating systems},%
+short={ROS},%
+shortplural={ROSs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{pnp}%
+{%
+name={PnP},%
+sort={PnP},%
+type={acronym},%
+first={perspective-n-point\glsspace (PnP)},%
+firstplural={perspective-n-point\acrpluralsuffix \glsspace (PnP\acrpluralsuffix )},%
+text={PnP},%
+plural={PnP\acrpluralsuffix },%
+description={perspective-n-point},%
+descriptionplural={perspective-n-point\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={perspective-n-point},%
+longplural={perspective-n-points},%
+short={PnP},%
+shortplural={PnPs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{iou}%
+{%
+name={IoU},%
+sort={IoU},%
+type={acronym},%
+first={intersection over union\glsspace (IoU)},%
+firstplural={intersection over union\acrpluralsuffix \glsspace (IoU\acrpluralsuffix )},%
+text={IoU},%
+plural={IoU\acrpluralsuffix },%
+description={intersection over union},%
+descriptionplural={intersection over union\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={intersection over union},%
+longplural={intersection over unions},%
+short={IoU},%
+shortplural={IoUs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{mpd}%
+{%
+name={MPD},%
+sort={MPD},%
+type={acronym},%
+first={mean pairwise distance\glsspace (MPD)},%
+firstplural={mean pairwise distance\acrpluralsuffix \glsspace (MPD\acrpluralsuffix )},%
+text={MPD},%
+plural={MPD\acrpluralsuffix },%
+description={mean pairwise distance},%
+descriptionplural={mean pairwise distance\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={mean pairwise distance},%
+longplural={mean pairwise distances},%
+short={MPD},%
+shortplural={MPDs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{cw}%
+{%
+name={CW},%
+sort={CW},%
+type={acronym},%
+first={clockwise\glsspace (CW)},%
+firstplural={clockwise\acrpluralsuffix \glsspace (CW\acrpluralsuffix )},%
+text={CW},%
+plural={CW\acrpluralsuffix },%
+description={clockwise},%
+descriptionplural={clockwise\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={clockwise},%
+longplural={clockwises},%
+short={CW},%
+shortplural={CWs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{ccw}%
+{%
+name={CCW},%
+sort={CCW},%
+type={acronym},%
+first={counterclockwise\glsspace (CCW)},%
+firstplural={counterclockwise\acrpluralsuffix \glsspace (CCW\acrpluralsuffix )},%
+text={CCW},%
+plural={CCW\acrpluralsuffix },%
+description={counterclockwise},%
+descriptionplural={counterclockwise\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={counterclockwise},%
+longplural={counterclockwises},%
+short={CCW},%
+shortplural={CCWs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{ifo}%
+{%
+name={IfO},%
+sort={IfO},%
+type={acronym},%
+first={imitation from observation\glsspace (IfO)},%
+firstplural={imitation from observation\acrpluralsuffix \glsspace (IfO\acrpluralsuffix )},%
+text={IfO},%
+plural={IfO\acrpluralsuffix },%
+description={imitation from observation},%
+descriptionplural={imitation from observation\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={imitation from observation},%
+longplural={imitation from observations},%
+short={IfO},%
+shortplural={IfOs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{bc}%
+{%
+name={BC},%
+sort={BC},%
+type={acronym},%
+first={behavioral cloning\glsspace (BC)},%
+firstplural={behavioral cloning\acrpluralsuffix \glsspace (BC\acrpluralsuffix )},%
+text={BC},%
+plural={BC\acrpluralsuffix },%
+description={behavioral cloning},%
+descriptionplural={behavioral cloning\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={behavioral cloning},%
+longplural={behavioral clonings},%
+short={BC},%
+shortplural={BCs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{irl}%
+{%
+name={IRL},%
+sort={IRL},%
+type={acronym},%
+first={inverse reinforcement learning\glsspace (IRL)},%
+firstplural={inverse reinforcement learning\acrpluralsuffix \glsspace (IRL\acrpluralsuffix )},%
+text={IRL},%
+plural={IRL\acrpluralsuffix },%
+description={inverse reinforcement learning},%
+descriptionplural={inverse reinforcement learning\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={inverse reinforcement learning},%
+longplural={inverse reinforcement learnings},%
+short={IRL},%
+shortplural={IRLs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{gui}%
+{%
+name={GUI},%
+sort={GUI},%
+type={acronym},%
+first={graphical user interface\glsspace (GUI)},%
+firstplural={graphical user interface\acrpluralsuffix \glsspace (GUI\acrpluralsuffix )},%
+text={GUI},%
+plural={GUI\acrpluralsuffix },%
+description={graphical user interface},%
+descriptionplural={graphical user interface\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={graphical user interface},%
+longplural={graphical user interfaces},%
+short={GUI},%
+shortplural={GUIs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{lbr}%
+{%
+name={LBR},%
+sort={LBR},%
+type={acronym},%
+first={Leichtbauroboter\glsspace (LBR)},%
+firstplural={Leichtbauroboter\acrpluralsuffix \glsspace (LBR\acrpluralsuffix )},%
+text={LBR},%
+plural={LBR\acrpluralsuffix },%
+description={Leichtbauroboter},%
+descriptionplural={Leichtbauroboter\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Leichtbauroboter},%
+longplural={Leichtbauroboters},%
+short={LBR},%
+shortplural={LBRs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{maml}%
+{%
+name={MAML},%
+sort={MAML},%
+type={acronym},%
+first={model-agnostic meta-learning\glsspace (MAML)},%
+firstplural={model-agnostic meta-learning\acrpluralsuffix \glsspace (MAML\acrpluralsuffix )},%
+text={MAML},%
+plural={MAML\acrpluralsuffix },%
+description={model-agnostic meta-learning},%
+descriptionplural={model-agnostic meta-learning\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={model-agnostic meta-learning},%
+longplural={model-agnostic meta-learnings},%
+short={MAML},%
+shortplural={MAMLs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{irls}%
+{%
+name={IRLS},%
+sort={IRLS},%
+type={acronym},%
+first={iteratively reweighted least squares\glsspace (IRLS)},%
+firstplural={iteratively reweighted least squares\acrpluralsuffix \glsspace (IRLS\acrpluralsuffix )},%
+text={IRLS},%
+plural={IRLS\acrpluralsuffix },%
+description={iteratively reweighted least squares},%
+descriptionplural={iteratively reweighted least squares\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={iteratively reweighted least squares},%
+longplural={iteratively reweighted least squaress},%
+short={IRLS},%
+shortplural={IRLSs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{sam}%
+{%
+name={SAM},%
+sort={SAM},%
+type={acronym},%
+first={segment anything model\glsspace (SAM)},%
+firstplural={segment anything model\acrpluralsuffix \glsspace (SAM\acrpluralsuffix )},%
+text={SAM},%
+plural={SAM\acrpluralsuffix },%
+description={segment anything model},%
+descriptionplural={segment anything model\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={segment anything model},%
+longplural={segment anything models},%
+short={SAM},%
+shortplural={SAMs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{edt}%
+{%
+name={EDT},%
+sort={EDT},%
+type={acronym},%
+first={Euclidean distance transform\glsspace (EDT)},%
+firstplural={Euclidean distance transform\acrpluralsuffix \glsspace (EDT\acrpluralsuffix )},%
+text={EDT},%
+plural={EDT\acrpluralsuffix },%
+description={Euclidean distance transform},%
+descriptionplural={Euclidean distance transform\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Euclidean distance transform},%
+longplural={Euclidean distance transforms},%
+short={EDT},%
+shortplural={EDTs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{mad}%
+{%
+name={MAD},%
+sort={MAD},%
+type={acronym},%
+first={median absolute deviation\glsspace (MAD)},%
+firstplural={median absolute deviation\acrpluralsuffix \glsspace (MAD\acrpluralsuffix )},%
+text={MAD},%
+plural={MAD\acrpluralsuffix },%
+description={median absolute deviation},%
+descriptionplural={median absolute deviation\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={median absolute deviation},%
+longplural={median absolute deviations},%
+short={MAD},%
+shortplural={MADs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{pid}%
+{%
+name={PID},%
+sort={PID},%
+type={acronym},%
+first={proportional-integral-derivative\glsspace (PID)},%
+firstplural={proportional-integral-derivative\acrpluralsuffix \glsspace (PID\acrpluralsuffix )},%
+text={PID},%
+plural={PID\acrpluralsuffix },%
+description={proportional-integral-derivative},%
+descriptionplural={proportional-integral-derivative\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={proportional-integral-derivative},%
+longplural={proportional-integral-derivatives},%
+short={PID},%
+shortplural={PIDs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{kcl}%
+{%
+name={KCL},%
+sort={KCL},%
+type={acronym},%
+first={King's College London\glsspace (KCL)},%
+firstplural={King's College London\acrpluralsuffix \glsspace (KCL\acrpluralsuffix )},%
+text={KCL},%
+plural={KCL\acrpluralsuffix },%
+description={King's College London},%
+descriptionplural={King's College London\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={King's College London},%
+longplural={King's College Londons},%
+short={KCL},%
+shortplural={KCLs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{ct}%
+{%
+name={CT},%
+sort={CT},%
+type={acronym},%
+first={computed tomography\glsspace (CT)},%
+firstplural={computed tomography\acrpluralsuffix \glsspace (CT\acrpluralsuffix )},%
+text={CT},%
+plural={CT\acrpluralsuffix },%
+description={computed tomography},%
+descriptionplural={computed tomography\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={computed tomography},%
+longplural={computed tomographys},%
+short={CT},%
+shortplural={CTs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{cdf}%
+{%
+name={CDF},%
+sort={CDF},%
+type={acronym},%
+first={cumulative distribution function\glsspace (CDF)},%
+firstplural={cumulative distribution function\acrpluralsuffix \glsspace (CDF\acrpluralsuffix )},%
+text={CDF},%
+plural={CDF\acrpluralsuffix },%
+description={cumulative distribution function},%
+descriptionplural={cumulative distribution function\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={cumulative distribution function},%
+longplural={cumulative distribution functions},%
+short={CDF},%
+shortplural={CDFs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{rvim}%
+{%
+name={RViM},%
+sort={RViM},%
+type={acronym},%
+first={Robotics and Vision in Medicine\glsspace (RViM)},%
+firstplural={Robotics and Vision in Medicine\acrpluralsuffix \glsspace (RViM\acrpluralsuffix )},%
+text={RViM},%
+plural={RViM\acrpluralsuffix },%
+description={Robotics and Vision in Medicine},%
+descriptionplural={Robotics and Vision in Medicine\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={Robotics and Vision in Medicine},%
+longplural={Robotics and Vision in Medicines},%
+short={RViM},%
+shortplural={RViMs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{faros}%
+{%
+name={FAROS},%
+sort={FAROS},%
+type={acronym},%
+first={functionally accurate robotic surgery\glsspace (FAROS)},%
+firstplural={functionally accurate robotic surgery\acrpluralsuffix \glsspace (FAROS\acrpluralsuffix )},%
+text={FAROS},%
+plural={FAROS\acrpluralsuffix },%
+description={functionally accurate robotic surgery},%
+descriptionplural={functionally accurate robotic surgery\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={functionally accurate robotic surgery},%
+longplural={functionally accurate robotic surgerys},%
+short={FAROS},%
+shortplural={FAROSs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{surf}%
+{%
+name={SURF},%
+sort={SURF},%
+type={acronym},%
+first={speeded up robust features\glsspace (SURF)},%
+firstplural={speeded up robust features\acrpluralsuffix \glsspace (SURF\acrpluralsuffix )},%
+text={SURF},%
+plural={SURF\acrpluralsuffix },%
+description={speeded up robust features},%
+descriptionplural={speeded up robust features\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={speeded up robust features},%
+longplural={speeded up robust featuress},%
+short={SURF},%
+shortplural={SURFs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{ransac}%
+{%
+name={RANSAC},%
+sort={RANSAC},%
+type={acronym},%
+first={random sample consensus\glsspace (RANSAC)},%
+firstplural={random sample consensus\acrpluralsuffix \glsspace (RANSAC\acrpluralsuffix )},%
+text={RANSAC},%
+plural={RANSAC\acrpluralsuffix },%
+description={random sample consensus},%
+descriptionplural={random sample consensus\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={random sample consensus},%
+longplural={random sample consensuss},%
+short={RANSAC},%
+shortplural={RANSACs},%
+counter={page},%
+parent={},%
+%
+}%
+
+\glsdefs@newdocentry{loftr}%
+{%
+name={LoFTR},%
+sort={LoFTR},%
+type={acronym},%
+first={local feature matching\glsspace (LoFTR)},%
+firstplural={local feature matching\acrpluralsuffix \glsspace (LoFTR\acrpluralsuffix )},%
+text={LoFTR},%
+plural={LoFTR\acrpluralsuffix },%
+description={local feature matching},%
+descriptionplural={local feature matching\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={local feature matching},%
+longplural={local feature matchings},%
+short={LoFTR},%
+shortplural={LoFTRs},%
+counter={page},%
+parent={},%
+%
+}%
+
