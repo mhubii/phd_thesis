@@ -91,6 +91,7 @@ The majority of existing methods rely on the tool distance to infer a control la
 Our paper addresses the above limitations with the following contributions:
 \begin{itemize}
     \item We introduce a visual servo that navigates towards desired images rather than towards points.
+    \item We introduce a collaborative semi-autonomous scheme where the surgeon selects desired views. 
     \item We formulate a visual servo control law that depends neither on explicit tool and camera positions nor on depth information.
 \end{itemize} 
 These are achieved with a programmable \gls{rcm}, as it, in contrast to a mechanical \gls{rcm}, is more flexible. 
@@ -327,7 +328,7 @@ In this section, we first present generic findings in \secref{c2:sec:generic_res
 \end{figure}
 \subsection{Generic Results}
 \label{c2:sec:generic_res}
-In practice we found that controlling the camera frame's rotational \gls{dof}, using $\mathbf{P}_b$ in (\eqref{c2:eq:projection}), leads to more stable solutions. We tried to invert the task part of the composite Jacobian from (\eqref{c2:eq:pid}) within the Nullspace of the \gls{rcm} Jacobian, but obtained more flexible solutions by computing the pseudo-inverse as a damped least squares solution from the SVD with a damping factor of $5\mathrm{e}{-4}$. Empirically, we got good results with the following gain matrices
+In practice we found that controlling the camera frame's rotational \gls{dof}, using $\mathbf{P}_b$ in (\eqref{c2:eq:projection}), leads to more stable solutions. We tried to invert the task part of the composite Jacobian from (\eqref{c2:eq:pid}) within the Nullspace of the \gls{rcm} Jacobian, but obtained more flexible solutions by computing the pseudo-inverse as a damped least squares solution from the SVD with a damping factor of $5\mathrm{e}{-4}$. Through hand tuning, we got good results with the following gain matrices
 \begin{equation*}
     \begin{split}
         \mathbf{K}^\text{p} &= \diag(1.2, 1.5, 1.5, 1.8, 1\mathrm{e}{2}, 1\mathrm{e}{2}, 1\mathrm{e}{2}) \\
